@@ -48,7 +48,10 @@ Rules learned from earlier runs:
 - **size**: `weightKg` = [min, max] race-day 馬体重 over the career; `typicalKg` = weight at its biggest
   wins. `withersCm`, `girthCm`, `cannonCm` only if documented (else null). `build` one of
   `compact, average, tall, heavy, rangy`.
-- **gear**: booleans for what it actually raced in; `notes` for colour/when (e.g. "white shadow roll").
+- **gear**: what it actually raced in (photos of its big races), drawn by the engine: `hood` (メンコ) with
+  `hoodColors` { main, trim (eye-hole and edge trim), ears (ear covers) } as hex; `blinkers` / `shadowRoll` /
+  `bitLifter` (ハミ吊り) booleans; `bridle` hex (leather brown '#3a2a20' if unknown, '#f2f0ea' for white);
+  `pompom` hex if it wore a poll pompom; `bandages` { fore, hind } hex if it raced bandaged. `notes` for when/which race.
 - **silks**: real owner's 勝負服 — owner name, description in words, colours as hex.
 
 ## Output — exactly this shape, nothing else before or after except one line of caveats if needed
@@ -60,7 +63,7 @@ Rules learned from earlier runs:
   legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'pastern' },
   style: { primary: 'senko', secondary: null, why: '' },
   size: { weightKg: [470, 486], typicalKg: 476, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: '' },
-  gear: { shadowRoll: false, blinkers: false, hood: false, notes: '' },
+  gear: { hood: true, hoodColors: { main: '#f2f0ea', trim: '#d22630', ears: '#d22630' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: null, notes: '' },
   silks: { owner: '', desc: '', colors: ['#000000'] },
   career: 'one line: key G1 wins with years',
   sources: ['https://…'],

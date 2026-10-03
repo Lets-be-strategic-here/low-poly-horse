@@ -233,11 +233,57 @@ window.LOCATIONS = [
     sources: ['https://www.jra.go.jp/facilities/race/chukyo/course/index.html', 'https://ja.wikipedia.org/wiki/中京競馬場', 'https://en.wikipedia.org/wiki/Chukyo_Racecourse', 'https://ja.wikipedia.org/wiki/高松宮記念_(競馬)', 'https://ja.wikipedia.org/wiki/チャンピオンズカップ_(競馬)', 'https://www.yamashitasekkei.co.jp/project/post_4/', 'https://commons.wikimedia.org/wiki/File:Chukyo_Racecourse_Main-Stand_PEGASUS,_Toyoake_2018.jpg'],
     uncertain: ['time (computed sun; sunAzimDeg 70–78)', 'turf / dirt widths (secondary source)', 'stand.colors and size (photos, aerial)', 'stand.floors', 'infield[0] jump count', 'backdrop (flat horizon; heights are guesses)', 'backdrop.landmarks[0] (the screen is really ~60 m away; size estimated)', 'facts.straightProfile (only the 340→240 m climb is sourced)', 'needs new kits: the Pegasus membrane-fin roof, Twin Hat, power pylons'],
   },
+  {
+    id: 'oi', en: 'Oi Racecourse (night)', jp: '大井競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
+    hand: 'right', surface: 'dirt', lead: 'L', W: 400, seed: 2036,
+    dirtOnly: true, // one 25 m dirt course, no turf: the infield starts at its inner rail
+    // Teio Sho (JpnI, 2000 m), a "Twinkle" night race in early July, post ~20:10; the sun is 12° below the horizon,
+    // so the horse is lit by the floodlights (floodlights.*), not by `sunElevDeg`
+    time: {
+      month: 7, post: '20:10', sunElevDeg: -12, sunAzimDeg: -161, fogNear: 150, fogFar: 480, exposure: 1.15, night: true,
+      sky: { top: '#060b1d', mid: '#111a35', horizon: '#3e3650', sun: '#2a2540' }, // navy sky, mauve city glow at the horizon
+      hemiSky: '#26304a', hemiGround: '#2b2822', hemiIntensity: 0.4,
+    },
+    floodlights: { count: 10, heightM: 32, color: '#f4f2ea', intensity: 1.0, poleColor: '#b8bcc0' }, // masts per 400 m, both sides
+    dirt: { color: '#d3ccbd', widthM: 25 }, // pale, near-white Western Australian sand (since 2023)
+    rails: { color: '#f4f4f0' },
+    lawn: '#3f6a31', apron: '#5fa391', // the teal-coated apron in front of the stands; the infield is lit less than the track
+    leaf: ['#3f6436', '#4d7340', '#5a7d45'], autumn: 0, dust: '#bdb5a5',
+    stand: { name: 'L-WING (2003) and G-FRONT (2015)', lengthM: 330, floors: 7, depthM: 40, colors: { body: '#e3e5e6', roof: '#eceeef', glass: '#5d7a87', seats: '#e07a3c' } },
+    infield: [], infieldTrees: 3, // hedges and a few trees, not a park
+    backdrop: {
+      ranges: [], // reclaimed Tokyo Bay lowland: no hills, the horizon is all city
+      landmarks: [
+        { type: 'screen', bearingDeg: 0, distM: 300, wM: 28.48, hM: 8.0, liftM: 4 },        // Aurora Vision
+        { type: 'skyline', fromDeg: -45, toDeg: 25, distM: 520, heightM: [8, 30] },       // Heiwajima warehouses and flats across the infield
+        { type: 'skyline', fromDeg: -120, toDeg: -65, distM: 520, heightM: [25, 75] },    // Minami-Oi / Omori-kaigan towers
+        { type: 'skyline', fromDeg: 30, toDeg: 105, distM: 520, heightM: [6, 14] },       // Tokyo Monorail viaduct along the Keihin Canal
+        { type: 'skyline', fromDeg: 145, toDeg: 180, distM: 520, heightM: [60, 140] },    // Shinagawa high-rises behind the stands
+      ],
+      clouds: 3,
+    },
+    facts: {
+      turfCircM: null, dirtCircM: 1600, turfStraightM: null, dirtStraightM: 386, elevationM: 0,
+      straightProfile: [[386, 0], [0, 0]],
+      races: [
+        { name: 'Haneda Hai', jp: '羽田盃', surface: 'dirt', distM: 1800, month: 4 },
+        { name: 'Tokyo Derby', jp: '東京ダービー', surface: 'dirt', distM: 2000, month: 6 },
+        { name: 'Teio Sho', jp: '帝王賞', surface: 'dirt', distM: 2000, month: 7 },
+        { name: 'Japan Dirt Classic', jp: 'ジャパンダートクラシック', surface: 'dirt', distM: 2000, month: 10 },
+        { name: 'JBC Classic (host years)', jp: 'JBCクラシック', surface: 'dirt', distM: 2000, month: 11 },
+        { name: 'JBC Sprint (host years)', jp: 'JBCスプリント', surface: 'dirt', distM: 1200, month: 11 },
+        { name: 'JBC Ladies’ Classic (host years)', jp: 'JBCレディスクラシック', surface: 'dirt', distM: 1800, month: 11 },
+        { name: 'Tokyo Daishoten', jp: '東京大賞典', surface: 'dirt', distM: 2000, month: 12 },
+      ],
+    },
+    signature: 'Twinkle night racing (Japan’s first, 1986): a flat, near-white sand oval glowing under tall floodlight masts, a 386 m straight, the L-WING’s white cantilevered roof beside the G-FRONT glass stand, and the lit city all around.',
+    sources: ['https://ja.wikipedia.org/wiki/大井競馬場', 'https://www.oddspark.com/keiba/racetrack/33/course.html', 'https://keibajo.jp/oi/top.html', 'https://ja.wikipedia.org/wiki/帝王賞', 'https://ja.wikipedia.org/wiki/ジャパンダートクラシック', 'https://ja.wikipedia.org/wiki/東京大賞典', 'https://ja.wikipedia.org/wiki/ナイター競走', 'https://commons.wikimedia.org/wiki/File:大井競馬場.jpg'],
+    uncertain: ['time.post (20:10 assumed)', 'sky / light values (chosen for an urban night)', 'dirt.color (dusk photo)', 'stand size and colours', 'floodlights (count, height, colour from photos; no published spec)', 'backdrop.landmarks[0] (28.48 × 8.0 m from an old install list; position unknown)', 'skyline bearings and heights (OSM)', 'the Tokyo Daishoten is run at a day/dusk meeting, not under lights', 'needs new kits: the monorail with a lit train, the L-WING roof, the left-handed course (2021)'],
+  },
 ];
 
 // Every other venue on the roadmap, shown as "soon" in the picker (order = build order).
 window.LOCATION_QUEUE = [
-  { id: 'oi', en: 'Oi Racecourse (night)', group: 'NAR JpnI' },
   { id: 'kawasaki', en: 'Kawasaki Racecourse', group: 'NAR JpnI' },
   { id: 'funabashi', en: 'Funabashi Racecourse', group: 'NAR JpnI' },
   { id: 'urawa', en: 'Urawa Racecourse', group: 'NAR JpnI' },

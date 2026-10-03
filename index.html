@@ -31,6 +31,9 @@
   .title h1 { margin: 0; font-size: 15px; font-weight: 650; letter-spacing: 0.02em; }
   .title p { margin: 2px 0 0; font-size: 11.5px; color: var(--ink-soft); letter-spacing: 0.02em; }
   .hint { position: fixed; right: max(16px, env(safe-area-inset-right)); top: max(16px, env(safe-area-inset-top)); font-size: 11px; color: var(--ink-soft); pointer-events: none; user-select: none; }
+  /* night locations: light text over the dark sky */
+  body.night .title, body.night .hint { color: #f1ece4; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85); }
+  body.night .title p, body.night .hint { color: #cfc8bd; }
   .bar {
     position: fixed; left: 50%; bottom: max(14px, env(safe-area-inset-bottom)); transform: translateX(-50%);
     display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px;
@@ -143,6 +146,7 @@
     <label class="row"><span>Weight</span><input id="weight" type="range" min="400" max="560" step="2"><output id="weightOut"></output></label>
     <label class="row"><span>Mane</span><input id="maneLen" type="range" min="0.4" max="1.8" step="0.05"></label>
     <label class="row"><span>Tail</span><input id="tailLen" type="range" min="0.5" max="1.6" step="0.05"></label>
+    <label class="row"><span>Gear</span><input id="gearOn" type="checkbox" checked> <small id="gearNote"></small></label>
   </section>
   <button id="resetLook" class="reset" type="button">Reset</button>
 </aside>
@@ -701,8 +705,75 @@ function buildHorse(look = {}, seed = 1337) {
     head.add(mount);
     rig.ears.push({ mesh: ear, side: s });
   }
-  // forelock: two shards lying over the forehead
-  for (let i = 0; i < 2; i++) {
+  /* ----- racing gear (data/horses.js `gear`), authored in head space like the head itself ----- */
+  const gear = look.gear;
+  if (gear) buildGear(gear);
+  function buildGear(G) {
+    const H0 = HEAD[0], HN = HEAD[HEAD.length - 1];
+    const rowAt = (x) => { // [top, bot, w] of the head at x, interpolated between the authored rows
+      if (x <= H0[0]) return H0.slice(1);
+      for (let i = 1; i < HEAD.length; i++) if (x <= HEAD[i][0]) { const a = HEAD[i - 1], b = HEAD[i], t = (x - a[0]) / (b[0] - a[0]); return [1, 2, 3].map((j) => lerp(a[j], b[j], t)); }
+      return HN.slice(1);
+    };
+    const ringX = (x, grow) => { const [top, bot, w] = rowAt(x), t = top + grow, b = bot + grow * 0.6, ww = w + grow; return ringAt(V(x, (t - b) / 2), X_AXIS, Y_AXIS, PROF.head, { up: (t + b) / 2, down: (t + b) / 2, w: ww, wUp: ww * 0.78, wDown: ww * 0.7 }); };
+    const keepFaces = (geo, fn) => { // drop the faces fn rejects (tested on head-space centroid / normal)
+      const src = (geo.index ? geo.toNonIndexed() : geo).attributes.position.array, out = [], a = V(0, 0), b = V(0, 0), c = V(0, 0), n = V(0, 0), e = V(0, 0);
+      for (let i = 0; i < src.length; i += 9) {
+        a.fromArray(src, i); b.fromArray(src, i + 3); c.fromArray(src, i + 6);
+        n.subVectors(b, a).cross(e.subVectors(c, a)).normalize();
+        if (fn(a.clone().add(b).add(c).multiplyScalar(1 / 3), n)) out.push(...src.slice(i, i + 9));
+      }
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(out, 3)); return g;
+    };
+    const band = (x0, x1, grow, color, keep = () => true) => paint(keepFaces(loft([ringX(x0, grow), ringX(x1, grow)]), keep), flat(hex(color), rnd, 0.03));
+    // a flat strap between head-space points (used for cheekpieces and the bit-lifter)
+    const strap = (pts, color, wd = 0.016) => merge(pts.slice(1).map((p, i) => {
+      const a = pts[i], d = p.clone().sub(a), len = d.length();
+      const g = new THREE.BoxGeometry(len + 0.01, wd, 0.006).toNonIndexed();
+      const q = new THREE.Quaternion().setFromUnitVectors(X_AXIS, d.normalize());
+      return paint(g.applyQuaternion(q).translate((a.x + p.x) / 2, (a.y + p.y) / 2, (a.z + p.z) / 2), flat(hex(color), rnd, 0.03));
+    }));
+    const parts = []; // every head-mounted piece is merged into one mesh (one draw call)
+    const toHead = (geo) => { geo.applyMatrix4(headM); if (geo.attributes.uv) geo.deleteAttribute('uv'); parts.push(geo); };
+    const EYE = V(0.225, 0.02), hole = (c, r) => Math.abs(c.z) > 0.04 && Math.hypot(c.x - EYE.x, c.y - EYE.y) < r;
+    const bridle = G.bridle === undefined ? (look.racehorse ? '#3a2a20' : null) : G.bridle;
+    if (G.hood) {
+      // メンコ: a close-fitting shell over the poll and face down to the cheeks, with eye holes, trimmed edges
+      const C = { main: '#f2f0ea', ...(G.hoodColors ?? {}) }; C.trim ??= C.main; C.ears ??= C.main;
+      const rings = []; for (let x = -0.07; x <= 0.401; x += 0.035) rings.push(ringX(x, 0.011));
+      const shell = keepFaces(loft(rings), (c) => c.y > -0.085 && !hole(c, 0.045));
+      toHead(paint(shell, (c) => shade(hex(c.x > 0.36 || c.y < -0.06 || hole(c, 0.068) ? C.trim : C.main), rnd, 0.03)));
+      for (const e of rig.ears) { // ear covers ride on the animated ears
+        const cover = new THREE.ConeGeometry(0.046, 0.16, 5, 1).translate(0, 0.074, 0).scale(0.7, 1, 1);
+        e.mesh.add(new THREE.Mesh(paint(jitter(cover, 0.003, 90), flat(hex(C.ears), rnd, 0.03)), mat));
+      }
+    }
+    if (G.blinkers) for (const s of [-1, 1]) {
+      const cup = new THREE.CylinderGeometry(0.042, 0.03, 0.04, 6, 1, true).rotateX(Math.PI / 2).rotateY(-s * 0.55).translate(EYE.x - 0.012, EYE.y + 0.004, s * 0.13);
+      const C = G.hoodColors ?? {}; toHead(paint(cup.toNonIndexed(), flat(hex(G.blinkerColor ?? C.trim ?? C.main ?? '#1c1c1c'), rnd, 0.03)));
+    }
+    if (bridle) {
+      toHead(band(-0.035, -0.012, 0.012, bridle));                                  // headpiece over the poll + throatlatch
+      toHead(band(0.05, 0.072, 0.012, G.browband ?? bridle, (c) => c.y > 0.0));     // browband across the forehead
+      toHead(band(0.425, 0.455, 0.009, G.noseband ?? bridle));                     // noseband
+      for (const s of [-1, 1]) {
+        const [, , w0] = rowAt(0.0), [, , w1] = rowAt(0.18), [, , w2] = rowAt(0.53);
+        toHead(strap([V(-0.01, 0.0, s * (w0 + 0.01)), V(0.18, -0.035, s * (w1 * 0.95 + 0.012)), V(0.53, -0.072, s * (w2 * 0.85 + 0.008))], bridle));
+        toHead(paint(new THREE.TorusGeometry(0.018, 0.005, 4, 8).translate(0.555, -0.075, s * 0.072).toNonIndexed(), flat(0xb9bcbf, rnd, 0.03))); // bit ring
+      }
+    }
+    if (G.bitLifter) { // ハミ吊り: a strap down the middle of the face that forks to the bit
+      const c = G.bitLifter === true ? '#f2f0ea' : G.bitLifter, y = (x) => rowAt(x)[0] + 0.012;
+      toHead(strap([V(0.07, y(0.07), 0), V(0.4, y(0.4), 0)], c, 0.02));
+      for (const s of [-1, 1]) toHead(strap([V(0.4, y(0.4), 0), V(0.47, rowAt(0.47)[0] - 0.02, s * 0.06), V(0.54, -0.06, s * 0.074)], c, 0.016));
+    }
+    if (G.shadowRoll) { const [t] = rowAt(0.44); toHead(paint(jitter(new THREE.IcosahedronGeometry(0.046, 0).scale(0.8, 0.75, 2.1), 0.006, 91).translate(0.44, t + 0.012, 0), flat(hex(G.shadowRoll === true ? '#f4f1ea' : G.shadowRoll), rnd, 0.04))); }
+    if (G.pompom) { const [t] = rowAt(-0.03); toHead(paint(jitter(new THREE.IcosahedronGeometry(0.034, 0), 0.008, 92).translate(-0.03, t + 0.035, 0), flat(hex(G.pompom), rnd, 0.05))); }
+    if (parts.length) attach(head, merge(parts)).name = 'gear';
+  }
+
+  // forelock: two shards lying over the forehead (tucked under a hood)
+  for (let i = 0; i < (gear?.hood ? 0 : 2); i++) {
     const fl = (0.17 - i * 0.03) * (0.6 + 0.4 * maneLen);
     const g = new THREE.ConeGeometry(0.035, fl, 4, 1).translate(0, fl / 2, 0).scale(1, 1, 0.45);
     const lock = new THREE.Mesh(paint(jitter(g, 0.006, 30 + i), flat(pal.mane, rnd)), mat);
@@ -812,6 +883,8 @@ function buildHorse(look = {}, seed = 1337) {
       attach(L.fa, limb(el, kn, [[-0.1, 0.075, 0.085, 0.07], [0.1, 0.095, 0.08, 0.082], [0.42, 0.066, 0.055, 0.06], [0.82, 0.042, 0.04, 0.043], [1.0, 0.045, 0.04, 0.048]], wh(pointsColor(el, kn, 0.72, 0.97, rnd, pal)), 72, kMid, 0.03, UP));
       attach(L.can, limb(kn, fe, [[-0.06, 0.042, 0.038, 0.046], [0.06, 0.047, 0.042, 0.05], [0.2, 0.031, 0.04, 0.036], [0.55, 0.03, 0.041, 0.035], [0.8, 0.03, 0.042, 0.034], [1.0, 0.034, 0.045, 0.038]], wh(flat(pal.legs, rnd)), 73));
       Object.assign(L, lower(L, fe, co, top, 74));
+      const bf = look.gear?.bandages?.fore;
+      if (bf) attach(L.can, limb(kn, fe, [[0.12, 0.05, 0.05, 0.052], [0.5, 0.045, 0.052, 0.047], [0.98, 0.05, 0.056, 0.052]], flat(hex(bf), rnd, 0.04), 76));
       L.rest = { sc, sh, humerus: ang(sh, el), forearm: ang(el, kn), cannon: ang(kn, fe), pastern: ang(fe, co) };
       L.len = { arm: sh.distanceTo(el), fa: el.distanceTo(kn), can: kn.distanceTo(fe) };
     } else {
@@ -826,6 +899,8 @@ function buildHorse(look = {}, seed = 1337) {
       attach(L.tib, limb(st, ho, [[-0.12, 0.075, 0.11, 0.082], [0.12, 0.08, 0.17, 0.088], [0.45, 0.058, 0.125, 0.068], [0.8, 0.042, 0.06, 0.05], [1.0, 0.042, 0.045, 0.048]], wh(pointsColor(st, ho, 0.8, 1.02, rnd, pal)), 81, kMid, 0.03, UP));
       attach(L.can, limb(ho, fe, [[-0.12, 0.04, 0.05, 0.045], [-0.02, 0.045, 0.085, 0.05], [0.1, 0.038, 0.055, 0.045], [0.25, 0.031, 0.043, 0.036], [0.63, 0.03, 0.043, 0.035], [0.85, 0.03, 0.043, 0.034], [1.0, 0.034, 0.045, 0.038]], wh(flat(pal.legs, rnd)), 82));
       Object.assign(L, lower(L, fe, co, top, 84));
+      const bh = look.gear?.bandages?.hind;
+      if (bh) attach(L.can, limb(ho, fe, [[0.22, 0.044, 0.058, 0.05], [0.6, 0.044, 0.056, 0.047], [0.98, 0.05, 0.058, 0.052]], flat(hex(bh), rnd, 0.04), 86));
       L.hip = hip;
       L.rest = { femur: ang(hip, st), tibia: ang(st, ho), cannon: ang(ho, fe), pastern: ang(fe, co) };
       L.len = { fem: hip.distanceTo(st), tib: st.distanceTo(ho), can: ho.distanceTo(fe) };
@@ -1118,12 +1193,13 @@ function buildBackdrop(sunDir, spec, S) {
   const group = new THREE.Group(), rnd = mulberry32(spec.seed ?? 99);
   const hor = colorOf(spec.horizon);
   const pos = [], cols = [], n = V(0, 0), e = V(0, 0), cen = V(0, 0);
-  const tri = (A, B, C, base, haze, center = null) => {
+  const tri = (A, B, C, base, haze, center = null, glow = false) => {
     cen.copy(A).add(B).add(C).multiplyScalar(1 / 3);
     n.subVectors(B, A).cross(e.subVectors(C, A)).normalize();
     if (center ? n.dot(cen.clone().sub(center)) < 0 : n.dot(cen) > 0) n.negate(); // outward / toward the world's centre
     const light = 0.74 + 0.36 * Math.max(0, n.dot(sunDir));
-    const c = colorOf(base).multiplyScalar(light).offsetHSL(0, 0, (rnd() - 0.5) * 0.03).lerp(hor, clamp(haze, 0, 1));
+    // glowing faces (lit windows, a screen at night) keep their own colour: no shading, no haze
+    const c = glow ? colorOf(base).offsetHSL(0, 0, (rnd() - 0.5) * 0.06) : colorOf(base).multiplyScalar(light).offsetHSL(0, 0, (rnd() - 0.5) * 0.03).lerp(hor, clamp(haze, 0, 1));
     for (const v of [A, B, C]) { pos.push(v.x, v.y, v.z); cols.push(c.r, c.g, c.b); }
   };
   // bake a three.js geometry: colorFn(centroid) -> [hex, haze]; normals face away from `center`
@@ -1131,8 +1207,8 @@ function buildBackdrop(sunDir, spec, S) {
     const g = geo.index ? geo.toNonIndexed() : geo, p = g.attributes.position, a = V(0, 0), b = V(0, 0), c = V(0, 0), m = V(0, 0);
     for (let i = 0; i < p.count; i += 3) {
       a.fromBufferAttribute(p, i); b.fromBufferAttribute(p, i + 1); c.fromBufferAttribute(p, i + 2);
-      const [base, haze] = colorFn(m.copy(a).add(b).add(c).multiplyScalar(1 / 3));
-      tri(a, b, c, base, haze, center);
+      const [base, haze, glow] = colorFn(m.copy(a).add(b).add(c).multiplyScalar(1 / 3));
+      tri(a, b, c, base, haze, center, glow);
     }
   };
   const at = (a, r, y) => V(Math.cos(a) * r, y, Math.sin(a) * r);
@@ -1153,7 +1229,7 @@ function buildBackdrop(sunDir, spec, S) {
       face(L, P, F); face(P, Rt, F); face(Lb, L, F); face(F, Rt, Rb); face(Lb, F, Rb);
     });
   }
-  for (const L of spec.landmarks ?? []) LANDMARKS[L.type]?.(L, { bake, rnd, at: (deg, d, y = 0) => bearingAt(deg, d, y, S) });
+  for (const L of spec.landmarks ?? []) LANDMARKS[L.type]?.(L, { bake, rnd, night: !!spec.night, at: (deg, d, y = 0) => bearingAt(deg, d, y, S) });
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
   g.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
@@ -1189,7 +1265,7 @@ const LANDMARKS = {
     bake(geo, (c) => [c.y > snowLine + (rnd() - 0.5) * h * 0.14 ? L.snow ?? '#f2f4f8' : L.base ?? '#6d7a99', L.haze ?? 0.4], V(P.x, h * 0.3, P.z));
   },
   // giant screen on two legs, facing the stands; the panel shows a race (sky over turf)
-  screen(L, { bake, at }) {
+  screen(L, { bake, at, night }) {
     const P = at(L.bearingDeg, L.distM), yaw = Math.atan2(-P.x, -P.z), w = L.wM, h = L.hM, lift = L.liftM ?? 5;
     const place = (g) => g.rotateY(yaw).translate(P.x, 0, P.z);
     const center = V(P.x, lift + h / 2, P.z), haze = L.haze ?? 0.3;
@@ -1198,7 +1274,7 @@ const LANDMARKS = {
     const panel = place(new THREE.BoxGeometry(w, h, 0.3, 1, 3).translate(0, lift + h / 2, 0.6));
     bake(panel, (c) => {
       const t = (c.y - lift) / h;
-      return [t > 0.62 ? '#8fb6e0' : t > 0.3 ? '#5e9a46' : '#283444', haze * 0.6];
+      return [t > 0.62 ? '#8fb6e0' : t > 0.3 ? '#5e9a46' : '#283444', haze * 0.6, night];
     }, center);
   },
   // a single great tree (e.g. Tokyo's 大ケヤキ)
@@ -1211,11 +1287,14 @@ const LANDMARKS = {
     });
   },
   // a row of city blocks between two bearings
-  skyline(L, { bake, rnd, at }) {
+  skyline(L, { bake, rnd, at, night }) {
     for (let a = L.fromDeg; a < L.toDeg; a += 1.5 + rnd() * 2.5) {
       const P = at(a, L.distM + (rnd() - 0.5) * 40), h = L.heightM[0] + (L.heightM[1] - L.heightM[0]) * rnd() ** 2;
-      const g = new THREE.BoxGeometry(8 + rnd() * 14, h, 8 + rnd() * 12).translate(0, h / 2, 0).rotateY(rnd()).translate(P.x, 0, P.z);
-      bake(g, () => [pick(L.colors ?? ['#a9adb3', '#c2c0ba', '#8e959e'], rnd), L.haze ?? 0.5], V(P.x, h / 2, P.z));
+      const wall = pick(L.colors ?? (night ? ['#2b3040', '#33384a', '#262a36'] : ['#a9adb3', '#c2c0ba', '#8e959e']), rnd);
+      // at night the walls get a grid of faces, some of them lit windows
+      const g = new THREE.BoxGeometry(8 + rnd() * 14, h, 8 + rnd() * 12, night ? 3 : 1, night ? Math.max(1, Math.round(h / 4)) : 1, night ? 3 : 1)
+        .translate(0, h / 2, 0).rotateY(rnd()).translate(P.x, 0, P.z);
+      bake(g, () => (night && rnd() < 0.3 ? [pick(['#ffd889', '#fff0c4', '#cfe3ff'], rnd), 0, true] : [wall, L.haze ?? 0.5]), V(P.x, h / 2, P.z));
     }
   },
 };
@@ -1279,13 +1358,18 @@ function buildGround(spec) {
 // Racetrack cross-section in the stand frame (zs = z*S, metres; the horse runs at zs = 0 near the
 // inner rail). JRA courses put the dirt course inside the turf; the back straight mirrors the home one
 // at the turns' diameter, which follows from the circumference and the straight length.
+// A dirt-only course (NAR tracks such as Oi: `dirtOnly: true`) has one course: the horse's lane is dirt and
+// there is no inner course, so the infield starts at its inner rail.
 function trackLayout(loc) {
-  const turfW = loc.turf?.widthM ?? 30, dirtW = loc.dirt?.widthM ?? 25, gap = 1.4, off = 2.6, f = loc.facts ?? {};
-  const D = f.turfCircM && f.turfStraightM ? clamp((f.turfCircM - 2 * f.turfStraightM) / Math.PI, 220, 420) : 320;
-  const inner = -off, outer = inner + turfW, dOut = inner - gap, dIn = dOut - dirtW;
-  const bInner = inner - D, bdOut = bInner + gap, bdIn = bdOut + dirtW, bOuter = bInner - turfW;
+  const dirtOnly = !!loc.dirtOnly, f = loc.facts ?? {}, gap = 1.4, off = 2.6;
+  const turfW = dirtOnly ? loc.dirt?.widthM ?? 25 : loc.turf?.widthM ?? 30, dirtW = dirtOnly ? 0 : loc.dirt?.widthM ?? 25;
+  const circ = dirtOnly ? f.dirtCircM : f.turfCircM, straight = dirtOnly ? f.dirtStraightM : f.turfStraightM;
+  const D = circ && straight ? clamp((circ - 2 * straight) / Math.PI, 220, 420) : 320;
+  const inner = -off, outer = inner + turfW, dOut = dirtOnly ? inner : inner - gap, dIn = dOut - dirtW;
+  const bInner = inner - D, bdOut = dirtOnly ? bInner : bInner + gap, bdIn = bdOut + dirtW, bOuter = bInner - turfW;
   const standFront = outer + 14;
-  return { turfW, dirtW, D, inner, outer, dOut, dIn, bInner, bdOut, bdIn, bOuter, standFront, rails: [inner, outer, dOut, dIn, bInner, bdOut, bdIn, bOuter] };
+  const rails = dirtOnly ? [inner, outer, bInner, bOuter] : [inner, outer, dOut, dIn, bInner, bdOut, bdIn, bOuter];
+  return { dirtOnly, turfW, dirtW, D, inner, outer, dOut, dIn, bInner, bdOut, bdIn, bOuter, standFront, rails };
 }
 
 const GROUND = {
@@ -1341,9 +1425,10 @@ const GROUND = {
   // racetrack: striped turf, dirt course inside, infield lawn and ponds, apron in front of the stands
   track(loc, S) {
     const T = trackLayout(loc), k = TAU / W;
-    const turf = colorOf(loc.turf?.color ?? '#5f8f3a'), turfB = turf.clone().offsetHSL(0, 0.02, 0.035);
+    // the horse's own course: turf, or the sand of a dirt-only track (harrowed in faint bands)
+    const turf = colorOf(T.dirtOnly ? loc.dirt?.color ?? '#c9bea6' : loc.turf?.color ?? '#5f8f3a'), turfB = turf.clone().offsetHSL(0, T.dirtOnly ? 0 : 0.02, T.dirtOnly ? 0.02 : 0.035);
     const dirt = colorOf(loc.dirt?.color ?? '#b9a58a'), verge = colorOf(loc.verge ?? '#6b8f45');
-    const lawn = colorOf(loc.lawn ?? '#6f9a46'), apron = colorOf('#bdb9ae'), outside = colorOf(loc.outside ?? '#7d8a62');
+    const lawn = colorOf(loc.lawn ?? '#6f9a46'), apron = colorOf(loc.apron ?? '#bdb9ae'), outside = colorOf(loc.outside ?? '#7d8a62');
     const water = colorOf(loc.water ?? '#4f7f97'), worn = turf.clone().lerp(dirt, 0.18);
     const ponds = (loc.infield ?? []).filter((f) => f.type === 'pond').map((p) => ({ x: (p.xFrac ?? 0.3) * W, ...p }));
     const inPond = (x, zs, m = 0) => ponds.some((p) => wrap01((x - p.x + m) / W) * W < p.sizeM[0] + 2 * m && zs < -p.distM + m && zs > -p.distM - p.sizeM[1] - m);
@@ -1554,11 +1639,12 @@ function jumpSet(k, f, T) {
 
 // Grandstand: a stepped seating bowl, a glazed block of floors behind it, fins and a roof canopy.
 // Built along x (centred), seats rising away from the track (+z); placed at the stand front, once per period.
-function standGeometry(st, rnd) {
+// At night the glazed floors glow (returned separately as `lit`, drawn with an unlit material).
+function standGeometry(st, rnd, night = false) {
   const len = st.lengthM, floors = st.floors ?? 6, fl = 4.3, H = 6 + floors * fl;
   const c = { body: 0xd9d6cf, roof: 0xe9ecee, glass: 0x7f97a8, seats: 0x8b9aa6, ...Object.fromEntries(Object.entries(st.colors ?? {}).map(([k, v]) => [k, hex(v)])) };
-  const parts = [];
-  const box = (w, h, d, x, y, z, fn) => parts.push(paint(noUV(new THREE.BoxGeometry(w, h, d).translate(x, y, z)), fn));
+  const parts = [], lit = [];
+  const box = (w, h, d, x, y, z, fn, list = parts) => list.push(paint(noUV(new THREE.BoxGeometry(w, h, d, list === lit ? Math.max(1, Math.round(w / 9)) : 1).translate(x, y, z)), fn));
   const by = (hexv, amt = 0.03) => flat(hexv, rnd, amt);
   const steps = 9, stepD = 2.3, rise = 1.25;
   for (let i = 0; i < steps; i++) box(len, rise * (i + 1), stepD, 0, (rise * (i + 1)) / 2, i * stepD + stepD / 2, (q, n) => shade(n.y > 0.5 ? c.seats : 0xbab6ac, rnd, 0.04));
@@ -1567,20 +1653,42 @@ function standGeometry(st, rnd) {
   for (let f = 0; f < floors; f++) {
     const y0 = rise * steps + 1 + f * fl;
     if (y0 + fl > H) break;
-    box(len, fl - 1.1, 0.6, 0, y0 + (fl - 1.1) / 2, z0 + 0.3, by(c.glass, 0.05));
+    if (night) box(len, fl - 1.1, 0.6, 0, y0 + (fl - 1.1) / 2, z0 + 0.3, () => shade(rnd() < 0.8 ? 0xffe3ad : 0x8a8f9a, rnd, 0.08), lit);
+    else box(len, fl - 1.1, 0.6, 0, y0 + (fl - 1.1) / 2, z0 + 0.3, by(c.glass, 0.05));
     box(len, 1.1, 0.9, 0, y0 + fl - 0.55, z0 + 0.35, by(c.body));
   }
   for (let x = -len / 2 + 6; x < len / 2; x += 18) box(0.9, H - 2, 1.4, x, (H - 2) / 2 + 2, z0 + 0.2, by(c.body));
   const roofD = z0 + depth + 6;
   box(len + 6, 1.1, roofD, 0, H + 1.6, roofD / 2 - 6, by(c.roof));
   for (let x = -len / 2 + 9; x < len / 2; x += 36) box(0.7, H + 1.6 - rise * steps, 0.7, x, (H + 1.6 + rise * steps) / 2, 1.2, by(c.body)); // canopy columns
-  return merge(parts);
+  return { geo: merge(parts), lit: lit.length ? merge(lit) : null };
+}
+
+// Floodlight masts (night racing): a grey pole with a tilted bank of lamps that glows (unlit material),
+// in rows in front of the stands and beyond the back straight, aimed at the track.
+function floodlightSet(k, F, T) {
+  const { item, colored, mat, addSet, S } = k, h = F.heightM ?? 30, per = Math.max(1, Math.round((F.count ?? 10) / 2));
+  const pole = colored(new THREE.CylinderGeometry(0.28, 0.45, h, 6).translate(0, h / 2, 0), hex(F.poleColor ?? '#b8bcc0'), 0.03);
+  const frame = colored(new THREE.BoxGeometry(7.2, 4.4, 0.7).rotateX(-0.5).translate(0, h + 1.4, -0.4), 0x5d6168, 0.03);
+  const lampMat = new THREE.MeshBasicMaterial({ vertexColors: true, fog: false });
+  const lamps = paint(noUV(new THREE.BoxGeometry(6.6, 3.8, 0.2, 6, 4, 1).rotateX(-0.5).translate(0, h + 1.4, -0.82)), flat(hex(F.color ?? '#f4f2ea'), k.rnd, 0.06));
+  const masts = [];
+  for (let i = 0; i < per; i++) {
+    const x = ((i + 0.5) / per) * W;
+    masts.push(item(x, (T.outer + 9) * S, 1, S > 0 ? 0 : Math.PI, 0));         // in front of the stands, facing the track
+    masts.push(item(x + W / per / 2, (T.bOuter - 10) * S, 1, S > 0 ? Math.PI : 0, 0)); // beyond the back straight, facing back
+  }
+  addSet(pole, mat, masts);
+  addSet(frame, mat, masts);
+  addSet(lamps, lampMat, masts);
 }
 
 function standSet(k, loc, T) {
   const { rnd, item, mat, addSet, S } = k;
   const st = { ...loc.stand, lengthM: Math.min(loc.stand.lengthM ?? 220, W - 60) };
-  addSet(standGeometry(st, rnd), mat, [item(W / 2, T.standFront * S, 1, S > 0 ? 0 : Math.PI, 0)]);
+  const { geo, lit } = standGeometry(st, rnd, !!loc.time?.night), at = [item(W / 2, T.standFront * S, 1, S > 0 ? 0 : Math.PI, 0)];
+  addSet(geo, mat, at);
+  if (lit) addSet(lit, new THREE.MeshBasicMaterial({ vertexColors: true }), at.map((it) => ({ ...it })));
 }
 
 const PROP_BUILDERS = {
@@ -1618,6 +1726,7 @@ const PROP_BUILDERS = {
     const T = trackLayout(loc), { S } = k, rail = loc.rails?.color ?? '#f4f4f0';
     for (const zs of T.rails) fenceLine(k, zs * S, { gap: 3, post: rail, rail, rails: [0.95], postH: 0.95, postR: 0.045, postSeg: 4, boardH: 0.11, boardD: 0.11, wobble: 0.004, tint: 0.05 });
     if (loc.stand) standSet(k, loc, T);
+    if (loc.floodlights) floodlightSet(k, loc.floodlights, T);
     const infield = (r) => S * (T.dIn - 8 - r() * (T.D - T.turfW - T.dirtW - 30)); // somewhere between the two dirt courses
     tuftSet(k, perLoop(60), (r) => S * (T.dIn - 2 - r() * 60), ['#6f9a46', '#78a24c'], '#a6b660');
     const blossom = loc.blossom ? [loc.blossom].flat() : null;
@@ -1656,7 +1765,9 @@ function buildWorld(loc) {
   const fogFar = t.fogFar ?? 92, reach = fogFar + (loc.stand ? Math.min(loc.stand.lengthM ?? 220, W - 60) / 2 : 12);
   COPIES = 1;
   while ((COPIES * W) / 2 < reach) COPIES += 2; // odd, so the strip and the wrap agree; its edge stays in the fog
-  const sunDir = sunDirOf(t, S), sky = { ...DEFAULT_SKY, ...(t.sky ?? {}) };
+  // at night the key light is the floodlights: high and from the stand side (the sun itself is below the horizon)
+  const night = !!t.night, sunDir = sunDirOf(night ? { sunElevDeg: loc.floodlights?.elevDeg ?? 52, sunAzimDeg: loc.floodlights?.azimDeg ?? 12 } : t, S);
+  const sky = { ...DEFAULT_SKY, ...(t.sky ?? {}) };
   const ground = buildGround(GROUND[loc.builder](loc, S));
   const kit = makeKit(loc, ground.heightAt, S);
   PROP_BUILDERS[loc.builder](kit, loc);
@@ -1665,8 +1776,8 @@ function buildWorld(loc) {
   kit.sets.forEach((s) => group.add(s.mesh));
   const back = loc.backdrop ?? {};
   const statics = new THREE.Group();
-  statics.add(buildSky(sunDir, sky), buildBackdrop(sunDir, { horizon: sky.horizon, ranges: back.ranges ?? DEFAULT_RANGES, landmarks: back.landmarks, clouds: back.clouds, seed: back.seed }, S));
-  return { loc, S, group, statics, ground, props: kit.sets, sunDir, sky, fog: [t.fogNear ?? 24, fogFar] };
+  statics.add(buildSky(night ? V(0, -1, 0) : sunDir, sky), buildBackdrop(sunDir, { horizon: sky.horizon, ranges: back.ranges ?? DEFAULT_RANGES, landmarks: back.landmarks, clouds: back.clouds, seed: back.seed, night }, S));
+  return { loc, S, group, statics, ground, props: kit.sets, sunDir, sky, night, fog: [t.fogNear ?? 24, fogFar] };
 }
 
 // Dust kicked up at each hoof strike; a pure function of gait phase (one puff per hoof per stride).
@@ -1801,6 +1912,8 @@ function currentLook() {
     size: { ...h.size, ...c.size },
     maneLen: c.maneLen ?? h.maneLen ?? 1,
     tailLen: c.tailLen ?? h.tailLen ?? 1,
+    gear: c.gearOff ? null : h.gear ?? null,
+    racehorse: !!h.silks, // racehorses get a bridle unless their gear says otherwise
   };
 }
 
@@ -1887,12 +2000,15 @@ function setLocation(id) {
   hemi.color.set(hex(t.hemiSky ?? 0xdfe6f0));
   hemi.groundColor.set(hex(t.hemiGround ?? 0x8a7550));
   hemi.intensity = t.hemiIntensity ?? 1.25;
-  sun.color.set(hex(t.sunColor ?? 0xffe7c4));
-  sun.intensity = t.sunIntensity ?? 2.9;
+  const flood = world.night ? loc.floodlights ?? {} : null; // banks of lamps on both sides light the horse at night
+  sun.color.set(hex(flood ? flood.color ?? '#f4f2ea' : t.sunColor ?? 0xffe7c4));
+  sun.intensity = flood ? 2.6 * (flood.intensity ?? 1) : t.sunIntensity ?? 2.9;
   sun.position.copy(world.sunDir).multiplyScalar(14);
   fill.position.set(-world.sunDir.x, Math.max(0.35, world.sunDir.y), -world.sunDir.z).multiplyScalar(14);
-  fill.intensity = t.fillIntensity ?? 0.55;
+  fill.color.set(hex(flood ? flood.color ?? '#f4f2ea' : 0xdfe8f4));
+  fill.intensity = flood ? 1.1 * (flood.intensity ?? 1) : t.fillIntensity ?? 0.55;
   renderer.toneMappingExposure = t.exposure ?? 1.02;
+  document.body.classList.toggle('night', world.night);
   dust.on = loc.dust !== null;
   dust.setColor(loc.dust ?? PAL.dust);
   state.lead = loc.lead ?? 'L';
@@ -2085,6 +2201,7 @@ function buildPickers() {
   $('weight').addEventListener('input', (e) => tweak((x) => { x.size = { ...x.size, typicalKg: +e.target.value, weightKg: null }; }));
   $('maneLen').addEventListener('input', (e) => tweak((x) => { x.maneLen = +e.target.value; }));
   $('tailLen').addEventListener('input', (e) => tweak((x) => { x.tailLen = +e.target.value; }));
+  $('gearOn').addEventListener('change', (e) => tweak((x) => { x.gearOff = !e.target.checked; }));
   $('resetLook').addEventListener('click', () => { state.custom = {}; rebuildHorse(); syncPanel(); });
 }
 
@@ -2122,7 +2239,7 @@ function renderCard() {
     ['Markings', markingText(h)],
     ['Style', st ? `${st[0]} ${st[1]}${h.style.secondary && STYLES[h.style.secondary] ? ` / ${STYLES[h.style.secondary][1].toLowerCase()}` : ''}` : 'n/a (never raced)'],
     ['Size', sizeText(h.size)],
-    ['Gear', Object.entries({ shadowRoll: 'shadow roll', blinkers: 'blinkers', hood: 'hood' }).filter(([k]) => h.gear?.[k]).map(([, v]) => v).join(', ') || 'none noted'],
+    ['Gear', Object.entries({ hood: 'hood (メンコ)', blinkers: 'blinkers', shadowRoll: 'shadow roll', bitLifter: 'bit-lifter (ハミ吊り)', pompom: 'poll pompom', bandages: 'leg bandages' }).filter(([k]) => h.gear?.[k]).map(([, v]) => v).join(', ') || 'none noted'],
     ['Silks', h.silks?.desc || '—'],
     ['Career', h.career || '—'],
   ];
@@ -2151,6 +2268,8 @@ function syncPanel(editing = null) {
   $('greyRow').hidden = $('dappleRow').hidden = look.coat.key !== 'ashige';
   $('greyness').value = look.coat.greyness ?? 0.5;
   $('dapple').value = pal.dapple ?? 0;
+  $('gearOn').checked = !state.custom.gearOff;
+  $('gearOn').disabled = !state.horse.gear;
   for (const [id, col] of [['cCoat', pal.coat], ['cMane', pal.mane], ['cLegs', pal.legs]]) if (id !== editing) $(id).value = toCss(col);
   $('faceSel').value = MARKS[look.face] ? look.face : 'none';
   for (const id of ['LF', 'RF', 'LH', 'RH']) $(`leg${id}`).value = look.legs[id] ?? 'none';

@@ -7,17 +7,17 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 ## What's in it
 
 - **Procedural horse.** Built in code from low-segment primitives with vertex sculpting and flat shading. There are no model or texture files. A hierarchical rig covers the spine, neck, head, ears, four legs, a chained tail and a mane.
-- **Real horses.** 27 so far, from Byerley Turk (c.1680) to Mejiro Palmer (1987). Each one sets:
+- **Real horses.** 35 so far, from Byerley Turk (c.1680) to Mihono Bourbon (1989). Each one sets:
   - coat, using the JBIS registry colour (鹿毛, 黒鹿毛, 芦毛 …);
   - face and leg markings;
   - size: height at the withers and race weight;
   - running style (逃げ, 先行, 差し or 追込);
-  - gear and the owner's silks.
+  - racing gear (hood, blinkers, bit-lifter, bridle…) and the owner's silks.
 
   The values are researched and sourced; anything unconfirmed is listed in the horse's info card. The full build queue (152 horses) is in `data/roster.js`.
-- **Customization.** Coat presets and colour pickers, greyness and dapple sliders for greys, 10 face markings, white height per leg, height, weight, and mane and tail length.
+- **Customization.** Coat presets and colour pickers, greyness and dapple sliders for greys, 10 face markings, white height per leg, height, weight, mane and tail length, and a gear toggle.
 - **Locations.**
-  - Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses. They're built from JRA course data: left- or right-handed layout, turf and dirt courses, rails, grandstand, infield (steeplechase jumps, Tokyo's garden pond, Kyoto's lake), the big screen, Mt Fuji behind Tokyo, and Hanshin's cherry blossom.
+  - Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses, and Oi (NAR) at night under floodlights on its white sand. They're built from JRA course data: left- or right-handed layout, turf and dirt courses, rails, grandstand, infield (steeplechase jumps, Tokyo's garden pond, Kyoto's lake), the big screen, Mt Fuji behind Tokyo, and Hanshin's cherry blossom.
   - A Hidaka stud farm, where the horse walks with a companion and other horses graze.
   - The original countryside trail.
 - **Gaits.**
@@ -50,10 +50,11 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 
 ## Status
 
-- **Batches 1–3 of 19 are done:** 27 of 152 horses (Byerley Turk to Mejiro Palmer), plus 7 locations: Hidaka, the countryside trail, and the Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses.
+- **Batches 1–4 of 19 are done:** 35 of 152 horses (Byerley Turk to Mihono Bourbon), plus 8 locations: Hidaka, the countryside trail, the Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses, and Oi at night.
 - **Batch 2 added** dappled grey coats (Oguri Cap, Tamamo Cross), cherry blossom at Hanshin, Kyoto's infield lake, and a reworked chest and forelimbs.
 - **Batch 3 added** a racing gallop at about 16 m/s (7 m strides), the default on racecourses.
-- **Batch 4 is next:** horses #28–35 (Mejiro Ryan to Mihono Bourbon), Oi racecourse at night, and gear rendering (hoods, blinkers, bit-lifters).
+- **Batch 4 added** racing gear (hoods/メンコ in each horse's colours, blinkers, shadow rolls, bit-lifters, bridles, pompoms, bandages) and night racing under floodlights at Oi.
+- **Batch 5 is next:** horses #36–43 (Nishino Flower to Sakura Chitose O), the Kawasaki and Funabashi tracks, and a saddle and saddle cloth.
 - **Unconfirmed values:** a value the sources couldn't confirm is never presented as fact. Each one is flagged in the data's `uncertain` lists, shown on the horse's info card, and listed as a to-do in `ROADMAP.md`. Examples are which hind leg is white on Mr. C.B., and Saint Lite's silks.
 
 ## Run locally
