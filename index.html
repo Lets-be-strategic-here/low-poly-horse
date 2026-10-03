@@ -1004,7 +1004,19 @@ function buildHorse(look = {}, seed = 1337) {
       // runs straight down the cheek instead of zig-zagging across the faces
       const v = (c) => { const [top, bot] = rowAt(c.x), t = top + 0.011, bb = bot + 0.0066; return (c.y - (t - bb) / 2) / ((t + bb) / 2); };
       const shell = keepFaces(subdivide(loft(rings), 1), (c) => v(c) > -0.3 && !hole(c, 0.045)); // finer faces: rounder eye holes
-      toHead(paint(shell, (c) => shade(hex(c.x > 0.367 || v(c) < 0.03 || hole(c, 0.068) ? C.trim : C.main), rnd, 0.03)));
+      // a pattern over the crown (`hoodColors.pattern`, in `accent`): 'stripes' running poll to nose, 'hoops' round the head, 'checks' (市松), a 'centre'
+      // stripe, a 'band' across the brow with bars round the eye holes, or an 'x' across the face. around = 0 on the forehead's
+      // centre line, ±π/2 down the cheeks
+      const around = (c) => Math.atan2(c.z / Math.max(0.02, rowAt(c.x)[2]), v(c));
+      const pat = {
+        stripes: (c) => Math.floor((around(c) + Math.PI) / (Math.PI / 7)) % 2 === 1,
+        checks: (c) => (Math.floor((c.x + 0.07) / 0.06) + Math.floor((around(c) + Math.PI) / (Math.PI / 6))) % 2 === 1,
+        centre: (c) => Math.abs(around(c)) < 0.2,
+        hoops: (c) => (c.x > -0.02 && c.x < 0.05) || (c.x > 0.29 && c.x < 0.35), // two bands round the head, clear of the eye holes
+        band: (c) => (c.x > 0.12 && c.x < 0.17) || (Math.abs(c.z) > 0.04 && Math.abs(Math.hypot(c.x - EYE.x, c.y - EYE.y) - 0.082) < 0.013),
+        x: (c) => { const u = (c.x - 0.2) / 0.15, w = around(c) / 0.9; return Math.abs(u) < 1 && (Math.abs(w - u) < 0.24 || Math.abs(w + u) < 0.24); },
+      }[C.pattern];
+      toHead(paint(shell, (c) => shade(hex(c.x > 0.367 || v(c) < 0.03 || hole(c, 0.068) ? C.trim : pat?.(c) ? C.accent ?? C.trim : C.main), rnd, 0.03)));
       if (C.ears !== false) for (const e of rig.ears) { // ear covers ride on the animated ears (`ears: false`: a hood without them)
         const cover = new THREE.ConeGeometry(0.046, 0.16, 5, 1).translate(0, 0.074, 0).scale(0.7, 1, 1);
         e.mesh.add(new THREE.Mesh(paint(jitter(cover, 0.003, 90), flat(hex(C.ears), rnd, 0.03)), mat));
@@ -3147,7 +3159,10 @@ function parseSilks(silks) {
     // hoops named after the sleeves run across the sleeves too (「青、赤袖、白三本輪」)
     if (pat && sleevesSet && pat.kind === 'hoops' && !out.sleevePattern) out.sleevePattern = { ...out.pattern, color: out.pattern.color.clone() };
   });
-  if (!sleevesSet) out.sleeves = out.body.clone(); // no sleeve entry: the sleeves match the body
+  if (!sleevesSet) { // no sleeve entry: the sleeves match the body, and hoops carry on round them (「黒、茶三本輪」)
+    out.sleeves = out.body.clone();
+    if (out.pattern?.kind === 'hoops') out.sleevePattern = { ...out.pattern, color: out.pattern.color.clone() };
+  }
   return out;
 }
 // JRA cap colours follow the gate bracket (枠); with the field size unknown, a full 18-runner field is assumed.

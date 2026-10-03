@@ -7,12 +7,12 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 ## What's in it
 
 - **Procedural horse.** Built in code from low-segment primitives with vertex sculpting and flat shading. There are no model or texture files. A hierarchical rig covers the spine, neck, head, ears, four legs, a chained tail and a mane.
-- **Real horses.** 131 so far, from Byerley Turk (c.1680) to Epiphaneia (2010). Each one sets:
+- **Real horses.** 139 so far, from Byerley Turk (c.1680) to Vivlos (2013). Each one sets:
   - coat, using the JBIS registry colour (鹿毛, 黒鹿毛, 芦毛 …);
   - face and leg markings;
   - size: height at the withers and race weight;
   - running style (逃げ, 先行, 差し or 追込);
-  - racing gear (hood, blinkers, bit-lifter, bridle…), the owner's silks (worn by the jockey on racecourses, read from the JRA notation, with reins from the bit to the rider's hands), and its number in its signature win (on the saddle cloth).
+  - racing gear (hood with its pattern, blinkers, bit-lifter, bridle…), the owner's silks (worn by the jockey on racecourses, read from the JRA notation, with reins from the bit to the rider's hands), and its number in its signature win (on the saddle cloth).
 
   The values are researched and sourced; anything unconfirmed is listed in the horse's info card. The full build queue (152 horses) is in `data/roster.js`.
 - **Customization.** Coat presets and colour pickers, greyness and dapple sliders for greys, 10 face markings, white height per leg, height, weight, neck length, crest, head size, head profile (dished to Roman), ear size, mane and tail length, and a gear toggle.
@@ -24,7 +24,7 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
   - A Hidaka stud farm, where the horse walks with a companion and other horses graze, and the same farm in February snow: horses in winter rugs, steaming breath, white mountains.
   - The original countryside trail.
   - Race-day crowds along the rail and up the stands, biggest on Derby day.
-  - Seasonal variants of the courses: Tokyo on Derby day, Kyoto in spring for the Tenno Sho, and Hanshin in the rainy season for the Takarazuka Kinen, with rain that rakes past at racing speed, a grey sky over the Rokko hills, and clods flying off the soaked turf.
+  - Seasonal variants of the courses: Tokyo on Derby day, Nakayama in spring for the Satsuki Sho, Kyoto in spring for the Tenno Sho, and Hanshin in the rainy season for the Takarazuka Kinen, with rain that rakes past at racing speed, a grey sky over the Rokko hills, and clods flying off the soaked turf.
 - **Race mode.** On a racecourse, **Field** runs a race against the 17 roster horses foaled closest to yours, each in its own coat, gear and silks: out of an 18-stall starting gate, into running-style order (逃げ in front, 追込 at the back) along the inner rail, then fanning out across the home straight as the closers come, past the winning post, and round again. A line at the top right shows your horse's place and the leader, then the result.
 - **Gaits.**
   - Four-beat lateral walk.
@@ -57,7 +57,7 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 
 ## Status
 
-- **Batches 1–16 of 19 are done:** 131 of 152 horses (Byerley Turk to Epiphaneia), plus 21 locations: Hidaka in summer and in snow, the countryside trail, a beach at dawn, the Ritto hill gallop, the Tokyo paddock, the Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses, Oi, Kawasaki and Funabashi at night, Urawa at twilight, Morioka at night, Kanazawa and Saga, Tokyo on Derby day, Kyoto in spring and Hanshin in the rain.
+- **Batches 1–17 of 19 are done:** 139 of 152 horses (Byerley Turk to Vivlos), plus 22 locations: Hidaka in summer and in snow, the countryside trail, a beach at dawn, the Ritto hill gallop, the Tokyo paddock, the Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses, Oi, Kawasaki and Funabashi at night, Urawa at twilight, Morioka at night, Kanazawa and Saga, Tokyo on Derby day, Nakayama and Kyoto in spring, and Hanshin in the rain.
 - **Batch 2 added** dappled grey coats (Oguri Cap, Tamamo Cross), cherry blossom at Hanshin, Kyoto's infield lake, and a reworked chest and forelimbs.
 - **Batch 3 added** a racing gallop at about 16 m/s (7 m strides), the default on racecourses.
 - **Batch 4 added** racing gear (hoods/メンコ in each horse's colours, blinkers, shadow rolls, bit-lifters, bridles, pompoms, bandages) and night racing under floodlights at Oi.
@@ -73,7 +73,8 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 - **Batch 14 added** rain and seasonal variants of the courses, starting with a wet Takarazuka Kinen at Hanshin.
 - **Batch 15 added** reins, riders whose hands follow the horse's mouth and who push in the home straight, a quieter upper body over the horse's back, puddles on a soaked course, and Tokyo on Derby day.
 - **Batch 16 added** race-day crowds on the apron and up the stands, Gold Ship's tail ribbon, and Kyoto in spring.
-- **Batches 17–19 are next:** horses #132–152 (Logotype to Forever Young), more seasonal variants, and polish.
+- **Batch 17 added** patterned hoods (stripes, hoops, checks, a centre stripe, a brow band, an X) and Nakayama for the Satsuki Sho.
+- **Batches 18–19 are next:** horses #140–152 (Kiseki to Forever Young), more seasonal variants, and polish.
 - **Unconfirmed values:** a value the sources couldn't confirm is never presented as fact. Each one is flagged in the data's `uncertain` lists, shown on the horse's info card, and listed as a to-do in `ROADMAP.md`. Examples are which hind leg is white on Mr. C.B., and Saint Lite's silks.
 
 ## Run locally

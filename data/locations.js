@@ -185,6 +185,58 @@ window.LOCATIONS = [
     uncertain: ['stand.colors', 'stand.lengthM', 'backdrop'],
   },
   {
+    // Seasonal variant: Nakayama on Satsuki Sho day (皐月賞). `variantOf` takes the 'nakayama' entry (stand, course, jumps, backdrop, facts)
+    // and merges these fields over it.
+    id: 'nakayama-satsuki', variantOf: 'nakayama', en: 'Nakayama Racecourse (Satsuki Sho)', jp: '中山競馬場（皐月賞）', group: 'JRA G1',
+    // Turf 2000 m, right-handed. Run between 14 and 20 April in every year 2019-2026 (ja.wikipedia); post 15:40 in every running checked (netkeiba 2021-2026).
+    // Sun (NOAA algorithm) for 19 Apr 2026, 15:40 JST, at 35.7259N 139.9624E: elevation 30.6°, true azimuth 261.5°. Scene mapping from the base entry
+    // (its -50 is for ~24 Dec 15:40, true azimuth 233.4°): sunAzimDeg = trueAz - 283.4, the same rule as Kyoto's (the stand's facing, ~103°, + 180).
+    time: {
+      month: 4, post: '15:40', sunElevDeg: 31, sunAzimDeg: -22, fogNear: 120, fogFar: 380, exposure: 1.02,
+      sky: { top: '#82a8d4', mid: '#c4d5e6', horizon: '#e6e6df', sun: '#fff3de' }, // pale, hazy Kanto spring blue
+      sunColor: '#fff0da', sunIntensity: 2.85,                                    // mid-afternoon sun about 31° up, softened by spring haze
+      hemiSky: '#e0e8f2', hemiGround: '#7d884c', hemiIntensity: 1.22,             // yellow-green bounce off the fresh turf
+    },
+    // JRA 2025/2026 Nakayama going pages: Italian ryegrass overseeded. By mid-April the overseed is fresh green but a little yellower than Tokyo or
+    // Kyoto in May (race-day samples 2022-2025, toned down for the scene's sun).
+    turf: { color: '#76993e' },
+    lawn: '#84945a', verge: '#7c9452', // noshiba-only lawns and banks still greening
+    leaf: ['#6f9a4a', '#82a656', '#4e6b3f', '#3d5237'], autumn: 0, // pale new spring leaves, plus dark evergreens
+    blossom: null, // Somei Yoshino are well past full bloom (JMA Tokyo full bloom 22 Mar-4 Apr in 2021-2026); no blossom in any race-day photo checked
+    dust: '#837352', // mostly dry ground: 良 in 4 of 6 runnings 2021-2026 (稍重 2021, 重 2023)
+    crowd: 0.8,      // a classic: a packed paddock and apron (2023 photo), below Derby day
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // classic: 紫紺 with yellow text (ja.wikipedia ゼッケン; seen in 2023 and 2024 photos)
+    signature: 'Satsuki Sho, the first colts\' classic: a packed mid-April crowd under a pale, hazy spring sky, fresh overseeded turf against noshiba lawns still greening, cherries already in leaf, and purple classic cloths with yellow numbers coming up the 310 m straight and its 2.2 m hill.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/皐月賞',
+      'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)',
+      'https://ja.wikipedia.org/wiki/中山競馬場',
+      'https://race.netkeiba.com/race/result.html?race_id=202606030811',
+      'https://race.netkeiba.com/race/result.html?race_id=202506030811',
+      'https://race.netkeiba.com/race/result.html?race_id=202406030811',
+      'https://race.netkeiba.com/race/result.html?race_id=202306030811',
+      'https://race.netkeiba.com/race/result.html?race_id=202206030811',
+      'https://race.netkeiba.com/race/result.html?race_id=202106030811',
+      'https://www.jra.go.jp/keiba/baba/overview/2026_2-3_nakayama.html',
+      'https://www.jra.go.jp/keiba/baba/overview/2025_2-3_nakayama.html',
+      'https://www.data.jma.go.jp/sakura/data/sakura004_07.html',
+      'https://commons.wikimedia.org/wiki/File:中山競馬場パドック20230416-P1025343.jpg',
+      'https://commons.wikimedia.org/wiki/File:Sol_Oriens_20230416a.jpg',
+      'https://commons.wikimedia.org/wiki/File:2024年皐月賞.jpg',
+      'https://commons.wikimedia.org/wiki/File:皐月賞2022.jpg',
+    ],
+    uncertain: [
+      'time.sunAzimDeg (-22 keeps the base entry\'s offset; the low-resolution GSI tile only roughly confirms the ~103° stand facing it implies)',
+      'time.sunElevDeg (31 is the real computed value, but the base raises a real ~8° December sun to 16, so the two are not raised the same way)',
+      'time.sky, fog, exposure, light colours and intensities (look values from 2023-2025 race-day photos, not measured)',
+      'turf / lawn / verge / leaf colours (median samples from Commons photos 2022-2025, toned down by eye)',
+      'blossom: null (JMA Tokyo full-bloom dates plus photos; 2024 was closest at 10 days past full bloom and might keep a few petals)',
+      'crowd 0.8 (no attendance figure found)',
+      'dust (estimated; only the going is sourced)',
+      'needs a kit: the magenta azalea bank on the infield side of the dirt course; flower beds round the paddock; the B/C-course inner rail',
+    ],
+  },
+  {
     id: 'kyoto', en: 'Kyoto Racecourse', jp: '京都競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
     hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2033,
     // Kikuka Sho, late October (post 15:40): a low WSW sun toward the 4th corner, slightly behind the stand

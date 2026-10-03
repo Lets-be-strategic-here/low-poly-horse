@@ -4,11 +4,12 @@ Where the low-poly horse goes next, in build order. Each **batch** adds the next
 order, a location or two, and one engine item. Horses come from the official character list at
 <https://umamusume.jp/character/>; every entry models the **real racehorse** behind a character.
 
-## Status after batch 16 (October 2026)
+## Status after batch 17 (October 2026)
 
 | Area | Done |
 |---|---|
 | Engine | Horse profiles drive the whole model: coat, markings, size and hair length. A gait table holds the gallop (left or right lead), a new **walk** and a standing **graze** pose. Stride counts are recomputed for each horse and location, so the loop stays seamless and planted hooves have 0.00 mm slip (measured). Includes a location system, background horses, the side panel and the URL hash. |
+| Hood patterns (B17) | A hood can carry a **pattern** over the crown in a second colour (`hoodColors.pattern`, `accent`): `stripes` running poll to nose, `hoops` round the head, `checks` (市松), a `centre` stripe, a `band` across the brow with bars round the eye holes, or an `x` across the face. Painted per face on the hood's own rows, like the silks. Eleven horses use one: Nice Nature, Durandal and Win Variation (stripes), Wonder Acute (stripes), Hishi Miracle (hoops), Furioso (checks), Kawakami Princess (centre), Air Messiah and Hokko Tarumae (band), Believe and Verxina (x). The fourth seasonal variant is **Nakayama for the Satsuki Sho** (`nakayama-satsuki`): a pale, hazy mid-April sky, fresh overseeded turf, cherries already in leaf, the classics' cloth with yellow numbers and a 0.8 crowd. Silks: hoops on the body now carry on round the sleeves when the notation names no sleeves (Kitasan Black's 「黒、茶三本輪」). |
 | Race-day crowds (B16) | Racecourses now have their **crowd** (`crowd` 0..1, 0.4 by default): people pressed two deep against the outer rail, scattered across the apron, and two rows to every terrace step of the stand, all along its length. Each figure is a jacket in one of a few clothing colours over dark trousers, and a head, about 32 triangles, drawn as two instanced meshes. Derby day is the full crowd (`crowd: 1`); the wet Takarazuka Kinen a thin one. A **tail ribbon** (`gear.tailRibbon`), the red bow tied in the top of a kicker's tail, is drawn for Gold Ship. The third seasonal variant is **Kyoto for the Tenno Sho (Spring)** (`kyoto-tenno-spring`): a high Golden Week sun, the overseeded turf at its freshest, new-leaf trees round the lake (no blossom, no autumn colour) and a 0.6 crowd. |
 | Reins and a quieter rider (B15) | **Reins** run from the bit rings to the jockey's hands (`gear.reins` colour, else the bridle's). Each end rides on its own node, a marker on the head and one at the rider's hands, and the strap between is skinned to both with the weight sliding along it, so it stays taut between them however the head nods (one extra draw call per ridden horse). The **rider now hangs from a pivot at the irons** and turns against about 70% of the back's pitch, so the upper body stays quieter over a horse that rocks under it. Each **arm** is its own node: the hands give and take along the rein as the head nods out and back (up to 6 cm about a slow running mean, so the rein keeps its length within about 3 cm at racing speed), and in race mode the riders **push** in the home straight, the hands pumping once a stride until past the post. **Puddles** (`wet.puddles`) lie on the dirt course and the apron of a soaked racecourse: flat glossy patches the colour of the grey sky. The second seasonal variant is **Tokyo on Derby day** (`tokyo-derby`): a bright, hazy early-summer afternoon with a higher, whiter sun, the overseeded turf at its greenest, trees in fresh leaf, Fuji faint with snow only near the top, and the Derby's white saddle cloths with black text and gold edging. Changing location now rebuilds the hero whenever its tack changes (a Derby cloth to a G1 cloth, not only cloth to no cloth). |
 | Rain and seasonal variants (B14) | **Location variants:** `variantOf: 'hanshin'` takes an existing entry and merges the variant's fields over it (objects key by key; arrays, colours and `null` replace), so a season or a race day reuses the course, stand and backdrop and changes only the light, colours and weather. **Rain** (`rain` { intensity, slantDeg }): fine streaks in a box that rides with the horse, a whole number of box lengths per scenery period and box heights per loop, so the loop stays seamless. Each streak is the path its drop sweeps in a 35 ms exposure as seen from the camera, so it falls nearly straight at a walk and rakes back past the horse at racing speed; wind slants it across the course. On a soaked course the hooves throw dark clods instead of dust. The first variant is **Hanshin for the Takarazuka Kinen in the rainy season** (梅雨): a flat grey overcast with soft, almost shadowless light, fog that swallows the Rokko hills, deep-green summer noshiba, dark wet dirt and the standard G1 cloth. Silks: hoops named after the sleeves now run across the sleeves too (「青、赤袖、白三本輪」). |
@@ -31,7 +32,7 @@ order, a location or two, and one engine item. Horses come from the official cha
 | Forelimbs (B2) | Deeper, broader brisket so the elbow and forearm tuck into the chest instead of hanging off a rounded barrel; a broad flat shoulder blade, a triceps mass and a muscular forearm top; at the gallop the forefoot flips up into a hook behind the knee (deeper fetlock curl, higher fore lift). |
 | Colour | All 8 JBIS registry coats (鹿毛 … 白毛), pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. **Greys (B2):** greyness slider with a slow-greying curve, **dapples** (cellular noise painted on 16× subdivided coplanar faces, strongest at mid grey, with their own slider), lighter faces and dark lower legs on young greys, and a separate `coat.tail` colour. |
 | Parts | Mane and tail length, height (uniform scale) and weight (bulk of trunk, neck and upper limbs). |
-| Horses | 131 of 152, roster #1–#131, from Byerley Turk (c.1680) to Epiphaneia (2010). 127 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
+| Horses | 139 of 152, roster #1–#139, from Byerley Turk (c.1680) to Vivlos (2013). 135 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
 | Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), and the JRA G1 courses **Tokyo**, **Nakayama**, **Kyoto** (infield lake), **Hanshin** (cherry blossom: `blossom` colours flowering broadleaf trees only) and **Chukyo** (B3); the NAR tracks **Oi** (B4), **Kawasaki** and **Funabashi** (B5) at night, **Urawa** at twilight and **Morioka** at night with the turf course inside the dirt (`innerTurf`, B6), **Kanazawa** in low November sun and **Saga** at night (B7); the **Tokyo Racecourse paddock** on Derby day, walked in path mode with the rest of the field (B8); a **beach at dawn** modelled on Kujukuri, the sun rising out of the Pacific behind the horse (B9); the **Ritto hill gallop** (坂路), an endless climb up the wood chips (B10); a **snowy Hidaka farm** on a clear February morning (B11); **Hanshin in the rain** for the Takarazuka Kinen, the first seasonal variant (B14). |
 | Research | Two reusable agent templates in `.claude/agents/`, run for every horse and track since batch 2 (8–10 agents in parallel, about 3–9 minutes each). |
 
@@ -64,7 +65,8 @@ Engine items are placed before the first horse that needs them.
 | ✅ 14 | #108–115 · 2004–06 · Vodka, Casino Drive, Espoir City, Smart Falcon, Buena Vista, Nakayama Festa, Red Desire, Tosen Jordan | Hanshin in the rain (Takarazuka Kinen, 梅雨) | Location variants (`variantOf`); rain; clods off a wet course |
 | ✅ 15 | #116–123 · 2006–08 · Transcend, Wonder Acute, Curren Chan, Eishin Flash, Rose Kingdom, Rulership, Victoire Pisa, Orfevre | Tokyo on Derby day | Reins; the rider steadied at the irons |
 | ✅ 16 | #124–131 · 2008–10 · Win Variation, Fenomeno, Gentildonna, Gold Ship, Hokko Tarumae, Verxina, Copano Rickey, Epiphaneia | Kyoto for the Tenno Sho (Spring) | Race-day crowds on the apron and the stand; tail ribbons |
-| 17–19 | #132–152 · 2010–2021 · Logotype … Forever Young (the exact split is in `data/roster.js`) | More seasonal variants of existing tracks | Polish |
+| ✅ 17 | #132–139 · 2010–13 · Logotype, Sounds of Earth, Cheval Grand, Duramente, Kitasan Black, Satono Crown, Satono Diamond, Vivlos | Nakayama for the Satsuki Sho | Hood patterns (stripes, hoops, checks, centre, band, x) |
+| 18–19 | #140–152 · 2014–2021 · Kiseki … Forever Young (the exact split is in `data/roster.js`) | More seasonal variants of existing tracks | Polish |
 
 Before every batch, re-read the official list. New characters are added over time, and they slot into the roster by foaling year.
 
@@ -107,6 +109,7 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
 | Hanshin in the rainy season, Takarazuka Kinen (B14) | ✅ |
 | Tokyo on Derby day (B15) | ✅ |
 | Kyoto in spring, Tenno Sho (Spring) (B16) | ✅ |
+| Nakayama in spring, Satsuki Sho (B17) | ✅ |
 
 ## Anatomical accuracy (ordered by visual payoff)
 1. ✅ **Race-speed gallop** (B3; the old gallop stays as the "Gallop" button). The old gallop has 2.6 m strides at 0.42 s, about 6 m/s, which is a canter pace. A racing Thoroughbred runs about 16–17 m/s:
@@ -390,6 +393,19 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Copano Rickey.** The white hind is put on LH from three photos; 「黄、赤一本輪、黄袖」 is Wikipedia's wording (JRA's order may differ); he raced hooded (perhaps with blinkers) from 2016.
 - [ ] **Epiphaneia.** The star may be a star with a short stripe; the tongue tie is not drawn.
 
+### Horses (batch 17)
+- [ ] **Logotype.** Always hooded, so a star can't be ruled out; the badge and "T" patch on his hood are not drawn.
+- [ ] **Sounds of Earth.** No graded win: his number is from the 2015 Arima Kinen (2nd); the small star and the white hinds are from small photos; his later black hood (2017-18) is not drawn. Teruya Yoshida's silks are written 「黄、黒縦縞、赤袖」 here and 「黄、黒縦縞、袖赤」 in an older entry (the same silks).
+- [ ] **Cheval Grand.** The blaze may be a star-stripe-snip; ja.wikipedia now lists him as a gelding (he raced entire); his paddock hood with the X is left off.
+- [ ] **Duramente.** The brown hood is read from photos only; a star under it can't be ruled out.
+- [ ] **Kitasan Black.** Height (170 cm) and girth (190 cm) were measured at two, before he raced; the white hind is put on LH from two photos.
+- [ ] **Satono Crown.** A tiny pale fleck under the forelock may be a very small star; the sheepskin tufts on his noseband are not drawn.
+- [ ] **Satono Diamond.** The text says 流星 but the photos show only a diamond-shaped star.
+- [ ] **Vivlos.** The coronet/pastern split between the hinds is read from which leg overlaps the other; the white label on her hood is not drawn.
+
+### Hood patterns
+- [ ] Not drawn: lettering (Ines Fujin's "AF", Nice Nature, Gold Ship, Copano Rickey), King Halo's polka dots, Haru Urara's Hello Kitty face, emblems (Dantsu Flame, Gentildonna, Curren Chan), Admire Groove's "RK" monogram, Twin Turbo's ringed ear covers, Wonder Acute's second (red) stripe colour. Paddock-only patterned hoods (Air Groove's band, Sweep Tosho's checks, Still in Love's cross) stay off because those horses raced bare-headed.
+
 ### Race-day crowds
 - [ ] Crowd sizes per location are guesses (0.4 by default; Derby day 1, the wet Takarazuka 0.25); the figures don't move, cheer or hold umbrellas, and there are none in the paddock's stand or at the farm.
 
@@ -422,6 +438,7 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Hanshin in the rain.** The light, sky, fog and rain strength are look values for a tsuyu overcast, not measured; turf, lawn and clod colours are read off June 2026 photos; umbrellas in the crowd are not drawn and the puddles (B15) are scattered at random; the Takarazuka Kinen runs on the inner course, whose straight is shorter than the outer course's profile used here.
 - [ ] **Tokyo on Derby day.** The sun keeps the base Tokyo entry's bearing offset, but OpenStreetMap puts the straight at ~268° true, so the real Derby sun would be at +85° in the scene frame (the Japan Cup sun at +122°) and Fuji at about +66°: the base Tokyo bearings need re-deriving. Light and colours are look values from Derby-day photos; the C-course rail 6 m out is not drawn.
 - [ ] **Kyoto in spring.** The sun bearing relies on the base entry's stand facing (~145° from the aerial); light and colours are look values from 2023–2025 photos; the crowd size is a guess; the flower beds by the winning post, the C-course rail and the tall hedge along the dirt course need kits.
+- [ ] **Nakayama in spring.** The sun bearing keeps the base entry's offset; the elevation is the real 31° while the base raises its December sun; light and colours are look values from 2022–2025 photos; the crowd size is a guess; the magenta azalea bank inside the dirt course and the paddock flower beds need kits.
 - [ ] **Morioka.** Mt Iwate really stands behind the stand (bearing ~178°) and is moved across the infield as artistic licence; floodlight count, height and colour are not published; the screen's size and the pond are read from the aerial; needs kits for the V-shaped glass atrium, the pale inner ring and the forest behind the back straight.
 
 ### Source access (affects every batch)
