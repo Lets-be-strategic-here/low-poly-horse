@@ -2490,4 +2490,275 @@ window.HORSES = [
     ],
     uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hoodColors', 'gear.bridle', 'gear.bitLifter', 'silks.desc', 'silks.colors'],
   },
+  // ---- Batch 18 (2026-10): #140–147, foaled 2014–16 — Almond Eye (#141), Curren Bouquetd'or (#145) and Loves Only You (#147) still to research ----
+  {
+    id: 'kiseki', en: 'Kiseki', jp: 'キセキ', born: 2014, sex: 'male', // 牡, born 13 May 2014 (ja.wiki, en.wiki), ルーラーシップ ('rulership') x ブリッツフィナーレ (by Deep Impact), bred by 下河辺牧場 (Hidaka), owner 石川達絵, trained by 角居勝彦 (Ritto), later 中竹和也 and 辻野泰之. Registration cancelled 7 Jan 2022; at stud at Breeders' Stallion Station from 2022
+    coat: { reg: '黒鹿毛', key: 'kurokage', greyness: null, tone: 0.2, mane: null, notes: 'The ja.wiki infobox gives 黒鹿毛 and en.netkeiba / en.wiki say "Dark Bay"; JBIS returned 403. Photos: in sun (2018 Japan Cup paddock, 2017 Sumire S) a rich, fairly bright red-brown bay, darker over the back and flank, with black lower legs, mane and tail. Soaked in the rain of the 不良 2017 Kikuka Sho he looks almost black. The tone value comes from the sunny photos.' },
+    face: { type: 'star', notes: 'photo: a small, narrow white star high on the forehead between the eyes, a little off-centre; no stripe, and the nose and muzzle are plain brown with no snip (Commons 2017 Sumire S head-on photo, 2018 JC paddock photo). No text source.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: he raced and paraded with all four legs bandaged; the pasterns below are black over dark hooves. White under the bandages can't be ruled out
+    style: { primary: 'nige', secondary: 'sashi', why: 'en.netkeiba 通過, first call / field: Mainichi Hai 7/8, Kobe Shimbun Hai 9/14, Kikuka 2017 14/18 (14-14-12-7, the win), Takarazuka 2018 14/16, Mainichi Okan 2/13, Tenno Sho (Autumn) 2018 1/12 (1-1-1), JC 2018 1/14 (1-1-1-1), Arima 2018 1/16, Osaka Hai 2019 2/14, Takarazuka 2019 1/12 (1-1-1-1), Tenno Sho (Spring) 2020 1/14, JC 2020 1/15, and from the back at times after 2020 gate trouble (JC 2021 18/18). A closer at 3, then a front-runner from autumn 2018. ja.wiki: JC 2018 「好スタートからハナを奪って」; Kikuka 「逃げ粘るクリンチャーらを残り100m付近で差し切り」.' },
+    size: { weightKg: [482, 516], typicalKg: 488, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Race-day 馬体重 from en.netkeiba (overseas starts not weighed): 494 at his debut, 482 (-4, 2017 Mainichi Hai, the lightest), 488 (+2) in the 2017 Kikuka Sho win (also on the JRA result page), 504 (+8) in the 2018 JC, 506 to 508 in 2019, 516 in the 2020 and 2021 Arima Kinen (the heaviest). No measurements were found.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1714', pompom: null, bandages: { fore: '#f2f0ea', hind: '#f2f0ea' }, notes: 'photo: in the 2017 Kikuka Sho (Commons race photo, JRA photos 1-4) he raced bare-headed, with no menko, blinkers or shadow roll and bare ears. A black bridle and black reins with a ring snaffle. White bandages on all four legs, each finished at the top with white tape carrying two green bands (not drawn). The same in the 2018 Japan Cup. In the 2017 Sumire S photo his black bridle has a gold-studded browband.' },
+    silks: { owner: '石川達絵 (Tatsue Ishikawa)', desc: '白、緑二本輪、白袖', colors: ['#ffffff', '#1f9a55'] }, // read from the Commons silks image "Owner_Ishikawa_Tatsue.svg" (white body and sleeves, two green hoops on the lower body) and race photos; 白袖 is written out so the hoops stay on the body. Not an official JRA text
+    saddleNumber: 13, // 2017 菊花賞 (Kyoto, 22 Oct 2017, 不良): 7枠13番 of 18 under M. デムーロ, 1番人気, won by 2 lengths, his only graded win (JRA result page, en.netkeiba, ja.wiki, and the "13 キセキ" saddle cloth in the JRA and Commons photos). Alternative: 2018 Japan Cup (2nd to Almond Eye's record) = 8
+    career: 'Kikuka Sho 2017 (GI, on 不良 ground, from 14th at the first corner). 2nd in the Japan Cup 2018 (leading until the last 150 m, beaten 1 3/4 lengths by Almond Eye in a world record), the Osaka Hai 2019, the Takarazuka Kinen 2019 and 2020, the Kobe Shimbun Hai 2017 and the Kyoto Daishoten 2020. 7th in the 2019 Arc. 33 starts, 4 wins.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/キセキ_(競走馬)',
+      'https://en.wikipedia.org/wiki/Kiseki_(horse)',
+      'https://en.netkeiba.com/db/horse/result/2014101976/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/kikka/result/kikka2017.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/kikka/result/photo/2017-1.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/kikka/result/photo/2017-4.jpg',
+      'https://commons.wikimedia.org/wiki/Category:Kiseki_(horse)',
+      'https://commons.wikimedia.org/wiki/File:Kiseki_Kikuka_Syo_2017(IMG1).jpg',
+      'https://commons.wikimedia.org/wiki/File:Kiseki_(JPN)_IMG_5297-1_20170226.jpg',
+      'https://commons.wikimedia.org/wiki/File:Kiseki,_Paddock_Japan_Cup_(45322370344).jpg',
+      'https://commons.wikimedia.org/wiki/File:Owner_Ishikawa_Tatsue.svg',
+    ],
+    uncertain: ['coat.reg (JBIS 403; ja.wiki and en.netkeiba agree)', 'coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bitLifter', 'gear.bandages', 'silks.desc', 'silks.colors'],
+  },
+  {
+    id: 'blast-onepiece', en: 'Blast Onepiece', jp: 'ブラストワンピース', born: 2015, sex: 'male', // 牡, born 2 Apr 2015 (ja.wiki), ハービンジャー x ツルマルワンピース (by キングカメハメハ), bred by ノーザンファーム, trained by 大竹正博 (Miho). Raced as an entire (「牡3」 in the 2018 Arima); retired Jan 2022 to be a riding horse at Northern Horse Park (the ja.wiki infobox now reads 牡→せん)
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: 'Registered 鹿毛 per the ja.wiki infobox; the JRA 2018 Arima Kinen result page gives 「牡3・鹿毛」. JBIS was not read. Photos: in the 2018 Arima post parade and a 2024 Northern Horse Park photo he is a bright, warm red bay; in the low sun of the 2018 Mainichi Hai a deeper brown bay. Black lower legs, mane and tail.' },
+    face: { type: 'none', notes: 'photo: the 2018 Mainichi Hai head-on race photo and the 2018 Arima post-parade photo show a plain bay forehead and nose with no star, stripe or snip. A few white flecks on the forehead in a 2024 photo could be scattered white hairs or scars, too small to call a star. No text source.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: all four legs black to the hooves, with no white, in the 2018 Arima post parade, the 2018 Mainichi Hai race and a 2024 photo
+    conf: { head: 1.1 }, // ja.wiki: his shadow roll was for looks: 「巨漢で顔が大きい馬なので、見栄えを良くするため」 (a huge horse with a big face)
+    style: { primary: 'sashi', secondary: 'senko', why: 'en.netkeiba passing order, first call / field: Mainichi Hai 2/10 (2-2, the win), Derby 8/18 (8-5-5-4), Niigata Kinen 11/13 (11-11, the win), Kikuka 12/18 (12-11-10-9), Arima 2018 6/16 (6-6-7-4, the win), Osaka Hai 2019 11/14, Sapporo Kinen 2019 9/14 (9-9-8-6, the win), AJCC 2020 4/12 (4-4-5-3, the win), Takarazuka 2020 5/18, Tenno Sho (Autumn) 2020 8/12. ja.wiki on the Arima: 「道中は6～7番手の外を追走。4角地点から一気に仕掛けられ」; Niigata Kinen: 「後方待機から直線では大外」. Usually mid-pack with a long run from the far turn.' },
+    size: { weightKg: [520, 550], typicalKg: 534, withersCm: null, girthCm: null, cannonCm: null, build: 'heavy', notes: 'Race-day 馬体重 from en.netkeiba (debut, Mainichi Hai and Arima 2018 match the ja.wiki table): 520 at his debut (the lightest), 532 (+10) Derby, 534 (+4) in the 2018 Arima win (also on the JRA result page), 536 Sapporo Kinen 2019, 546 AJCC 2020, 550 (+8) Tenno Sho (Autumn) 2020 (the heaviest). ja.wiki: 「巨漢」; his legs turned in at birth (「出生時より脚が内向しており」). No measurements were found.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: '#2fa84f', bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: null, notes: 'ja.wiki: 「本馬はレースに出走する際、緑色のシャドーロールを装着している」, worn 「見栄えを良くするため」 rather than to stop shying. Signature race, the 2018 Arima Kinen (Commons post-parade and race photos, JRA photos 1-4): a thick bright-green sheepskin shadow roll and no menko, blinkers or leg bandages; ears bare. Brown leather bridle with a ring snaffle. In the 2018 Derby paddock he also wore a black mesh menko, not seen in a race photo.' },
+    silks: { owner: '(有)シルクレーシング (Silk Racing, a racehorse-owning club)', desc: '水色、赤玉霰、袖赤一本輪', colors: ['#00bfff', '#e60033'] }, // ja.wiki シルクレーシング: 「勝負服の柄は「水色、赤玉霰、袖赤一本輪」」; hexes from Commons Owner_Silk_Racing.svg
+    saddleNumber: 8, // 2018 有馬記念 (Nakayama, 23 Dec 2018, under 池添謙一, 3rd favourite): 4枠8番 of 16, won by a neck from Rey de Oro (ja.wiki, en.netkeiba, the JRA result page and the "8 ブラストワンピース" saddle cloth in the Commons and JRA photos)
+    career: 'Arima Kinen 2018 (his only GI, as a 3yo, beating Rey de Oro by a neck). Also won the Mainichi Hai 2018 (GIII), Niigata Kinen 2018 (GIII), Sapporo Kinen 2019 (GII) and American Jockey Club Cup 2020 (GII). 4th in the 2018 Kikuka Sho and 11th in the 2019 Arc. Pulled up with atrial fibrillation in the 2020 Arima. 18 starts, 7 wins.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/ブラストワンピース',
+      'https://en.netkeiba.com/db/horse/result/2015104882/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/arima2018.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/photo/2018-1.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/photo/2018-4.jpg',
+      'https://ja.wikipedia.org/wiki/シルクレーシング',
+      'https://commons.wikimedia.org/wiki/File:Owner_Silk_Racing.svg',
+      'https://commons.wikimedia.org/wiki/Category:Blast_Onepiece',
+      'https://commons.wikimedia.org/wiki/File:Blast_Onepiece_(Arina_Kinenn).jpg',
+      'https://commons.wikimedia.org/wiki/File:Blast_Onepiece(Arima).jpg',
+      'https://commons.wikimedia.org/wiki/File:Blast_Onepiece(JPN)_IMG_1038-1_20180324.jpg',
+    ],
+    uncertain: ['coat.reg (JBIS not read)', 'coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'conf.head (magnitude)', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.shadowRoll (hex from photos)', 'gear.bridle', 'gear.bitLifter', 'silks.colors'],
+  },
+  {
+    id: 'lucky-lilac', en: 'Lucky Lilac', jp: 'ラッキーライラック', born: 2015, sex: 'female', // 牝, born 3 Apr 2015 (JBIS), オルフェーヴル x ライラックスアンドレース (by Flower Alley; dam won the US G1 Ashland S), bred by ノーザンファーム (安平), trained by 松永幹夫 (Ritto). From Orfevre's first crop. Retired 4 Jan 2021 to be a broodmare at Northern Farm
+    coat: { reg: '栗毛', key: 'kuri', greyness: null, tone: 0, mane: null, notes: 'Registered 栗毛 (JBIS profile; the JRA 2020 Osaka Hai result page gives 「牝5・栗毛」; the ja.wiki infobox agrees). Photos (Commons 2017 JF paddock and presentation, 2018 Tulip Sho, 2019 EQII; JRA 2020 Osaka Hai and 2020 EQII photos): a bright, glossy mid red chestnut with a self-coloured chestnut mane and tail (the tail a shade lighter at the ends), and chestnut pasterns over dark grey hooves.' },
+    face: { type: 'none', notes: 'photo: in every race, paddock and presentation photo her forehead and nose bridge are under her hood. Below the hood the lower nose and muzzle are plain chestnut with no snip. In the 2017 JF presentation close-up a pale fleck shows under the mesh on the forehead: either a small star or stripe, or glare on the hood\'s tan seam. No text source names a marking.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: she always raced and paraded in four white bandages; the pasterns below them are chestnut on all four legs, over dark grey hooves
+    style: { primary: 'senko', secondary: 'sashi', why: 'netkeiba 通過, first call / field: debut 5/18, Artemis 4/15, JF 2017 8/18 (8-8, the win), Tulip 3/10 (the win), Oka Sho 3/17, Oaks 4/17 (4-5-4-5), Shuka 6/17, Nakayama Kinen 2019 2/11, Victoria Mile 5/18, EQII 2019 7/18 (7-8-8-8, the win, on the inside), Nakayama Kinen 2020 3/9, Osaka Hai 2020 3/12 (3-3-3-5, the win), Takarazuka 5/18, Sapporo Kinen 2/12, EQII 2020 12/18 (12-12-11-3, the win, with a long run round the outside), Arima 9/16. JRA Osaka Hai report「内の3番手で静かに機をうかがっていた」; EQII 2020「後方に構える…3コーナー過ぎで…グイグイと進出」.' },
+    size: { weightKg: [480, 524], typicalKg: 520, withersCm: null, girthCm: null, cannonCm: null, build: 'tall', notes: 'Race-day 馬体重 (netkeiba; same as the ja.wiki 競走成績 table): 480 at her debut (the lightest), 484 (JF 2017 win), 494 (Tulip win), 518 (EQII 2019 win), 520 (+2, Osaka Hai 2020 win, also on the JRA result page), 524 in the 2020 Takarazuka and Sapporo Kinen (the heaviest), 522 (EQII 2020 win and the Arima). No measurements found; build from photos and weight only: a big, long-legged, deep-bodied filly, heavy for a mare at 520 kg.' },
+    gear: { hood: true, hoodColors: { main: '#8a3b2b', trim: '#b07040', ears: '#b8754f' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1714', pompom: null, bandages: { fore: '#f2f0ea', hind: '#f2f0ea' }, notes: 'photo: she raced in the same menko from the 2017 JF to her 2020 wins: a rust-red, roughly coat-coloured mesh hood with tan seams and edging round the eye holes and lower edge, and smooth tan ear covers, so it is easy to miss on a chestnut. No blinkers or shadow roll. A black bridle and noseband with a ring snaffle and black reins. White bandages on all four legs, each with two red stripes round the top (not drawn), in every race and presentation photo from 2017 to 2020.' },
+    silks: { owner: '(有)サンデーレーシング (Sunday Racing)', desc: '黒、赤十字襷、袖黄縦縞', colors: ['#111111', '#d22630', '#f5c800'] },
+    saddleNumber: 5, // 2020 大阪杯 (Hanshin, 5 Apr 2020, behind closed doors, under M. Demuro): 5枠5番 of 12, beating Chrono Genesis by a neck (JRA result page, netkeiba, ja.wiki, and the "5" saddle cloth in JRA photo 2). Alternatives: 2017 阪神JF = 11, 2019 エリザベス女王杯 = 2, 2020 エリザベス女王杯 = 18
+    career: 'Hanshin Juvenile Fillies 2017, Queen Elizabeth II Cup 2019 and 2020, and Osaka Hai 2020 (the first filly or mare to win it since it became a GI): 4 GI wins. Also won the Artemis S 2017 and Tulip Sho 2018, unbeaten in her first 4 starts. 2nd in the Oka Sho 2018 (to Almond Eye) and the Hong Kong Vase 2019. JRA Best 2yo Filly 2017. 19 starts, 7 wins.',
+    sources: [
+      'https://www.jbis.or.jp/horse/0001208248/',
+      'https://ja.wikipedia.org/wiki/ラッキーライラック',
+      'https://db.netkeiba.com/horse/result/2015105046/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/osaka/result/osaka2020.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/osaka/result/photo/2020-2.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/eliza2019.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/eliza2020.html',
+      'https://ja.wikipedia.org/wiki/サンデーレーシング',
+      'https://commons.wikimedia.org/wiki/Category:Lucky_Lilac_(horse)',
+      'https://commons.wikimedia.org/wiki/File:Lucky-Lilac_(JPN)_IMG_6405-1_20171210.jpg',
+      'https://commons.wikimedia.org/wiki/File:Lucky_Lilac_Tulip_syo_2018(IMG1).jpg',
+      'https://commons.wikimedia.org/wiki/File:Lucky_Lilac_Queen_Elizabeth_II_Cup_2019(IMG2).jpg',
+    ],
+    uncertain: ['coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hoodColors', 'gear.bridle', 'gear.bitLifter', 'silks.colors'],
+  },
+  {
+    id: 'chrono-genesis', en: 'Chrono Genesis', jp: 'クロノジェネシス', born: 2016, sex: 'female', // 牝, born 6 Mar 2016 (ja.wiki infobox, en.netkeiba), バゴ x クロノロジスト, bred by ノーザンファーム, owner (有)サンデーレーシング, trained by 斉藤崇史 (Ritto). Ridden by 北村友一 up to the 2021 Dubai SC, then by C. Lemaire and O. Murphy
+    coat: { reg: '芦毛', key: 'ashige', greyness: 0.2, tone: 0, mane: null, tail: '#5c5e60', notes: 'Registered 芦毛: the ja.wiki infobox gives 「色 = 芦毛」 citing JBIS, and en.netkeiba gives "Gray Mare". ja.wiki: 「芦毛の馬として史上3頭目の有馬記念制覇」. Photos show she stayed a very dark iron grey throughout her career: almost black-grey in the 2019 Shuka Sho and the rain-soaked 2020 Kyoto Kinen; nearly black in the 2020 Takarazuka Kinen (the signature race, run in rain), the tail a dark grey only slightly paler than the body. Later (Dec 2020 Arima, 2021 Takarazuka) a dark iron grey with a paler grey face, faint flecks on the barrel and a silvery mid-grey tail (about #9a9c9e). The mane stays near-black. greyness is set for June 2020; about 0.3 suits 2021.' },
+    face: { type: 'star', notes: 'photo only: a small, slightly irregular white star in the middle of the forehead between the eyes (Commons 2019 Shuka Sho presentation IMG4 and 2020 Kyoto Kinen presentation photos, JRA 2020 Takarazuka photo 2). No stripe runs down the nose; the muzzle is a paler grey with no distinct snip. No text source names a marking.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: all four legs dark grey/black down to dark hooves, unbandaged, from both sides
+    style: { primary: 'senko', secondary: 'sashi', why: 'netkeiba 通過 (db and en pages agree), first call / field: debut 4/16, Ivy S 4/10, Hanshin JF 17/18, Queen C 6/9, Oka Sho 8/18, Oaks 4/18 (4-4-4-5), Shuka Sho 6/18 (6-7-5-5, the win), EQ 5/18, Kyoto Kinen 2020 3/9 (3-3-3-3), Osaka Hai 2020 3/12, Takarazuka 2020 7/18 (7-8-7-1, the win), Tenno Sho (Autumn) 2020 8/12, Arima 2020 12/16 (12-12-3-3, the win, a mid-race move), Takarazuka 2021 4/13 (4-4-3-4, the win), Arima 2021 7/16. ja.wiki: Takarazuka 2020 「好位に付けた各馬の後ろを追走…3コーナーにかけて外目から進出」; Takarazuka 2021 「好スタートから好位につけ」.' },
+    size: { weightKg: [432, 478], typicalKg: 464, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Race-day 馬体重 (ja.wiki 競走成績 table, matching db/en.netkeiba): 440 at her debut, 432 (Oaks, her lightest), 452 (+20, Shuka Sho win), 460 (Kyoto Kinen 2020), 464 (+10, Takarazuka 2020 win), 474 (+10, Arima 2020 win), 478 (Takarazuka 2021 win and Arima 2021, her heaviest). She filled out by about 45 kg over her career. No measurements were found.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1714', reins: '#e2742a', pompom: null, bandages: null, notes: 'photo: she raced bare-headed in every photo: no menko, blinkers or shadow roll, ears bare. A black bridle with a plain black noseband; the reins have bright orange rubber grips. Seen in the Commons 2019 Shuka Sho, 2020 Kyoto Kinen and 2021 Takarazuka photos and JRA photos of the 2020 Takarazuka and Arima. Legs unbandaged, no tail ribbon.' },
+    silks: { owner: '(有)サンデーレーシング (Sunday Racing)', desc: '黒、赤十字襷、袖黄縦縞', colors: ['#111111', '#d8301e', '#f2c800'] },
+    saddleNumber: 16, // 2020 宝塚記念 (Hanshin, 28 Jun 2020, 稍重 after rain): 8枠16番 of 18 under 北村友一, won by 6 lengths from Kiseki (ja.wiki, netkeiba, the JRA result page, and "16 クロノジェネシス" on the saddle cloth in JRA photos). Alternatives: Shuka Sho 2019 = 5, Arima Kinen 2020 = 9, Takarazuka Kinen 2021 = 7
+    career: 'Shuka Sho 2019, Takarazuka Kinen 2020 (by 6 lengths on 稍重) and 2021, and Arima Kinen 2020: three Grand Prix wins in a row. Also won the Queen Cup 2019 (GIII) and Kyoto Kinen 2020 (GII). 2nd in the Hanshin JF 2018, Osaka Hai 2020 and Dubai Sheema Classic 2021, 7th in the 2021 Arc. ja.wiki calls her 「当時の現役競走馬中屈指の道悪巧者」. 17 starts, 8 wins.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/クロノジェネシス',
+      'https://db.netkeiba.com/horse/result/2016104750/',
+      'https://en.netkeiba.com/db/horse/result/2016104750/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/takara/result/takara2020.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/takara/result/photo/2020-1.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/takara/result/photo/2020-2.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/photo/2020-2.jpg',
+      'https://ja.wikipedia.org/wiki/サンデーレーシング',
+      'https://commons.wikimedia.org/wiki/Category:Chrono_Genesis',
+      'https://commons.wikimedia.org/wiki/File:Chrono_Genesis_Shukasho_2019(IMG4).jpg',
+      'https://commons.wikimedia.org/wiki/File:Chrono_Genesis_Kyoto_kinen_2020(IMG2).jpg',
+      'https://commons.wikimedia.org/wiki/File:Chrono_Genesis_Takarazuka_Kinen_2021(IMG1).jpg',
+    ],
+    uncertain: ['coat.reg (JBIS not read directly)', 'coat.greyness', 'coat.tail', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.reins', 'gear.bitLifter', 'silks.colors'],
+  },
+  {
+    id: 'gran-alegria', en: 'Gran Alegria', jp: 'グランアレグリア', born: 2016, sex: 'female', // 牝, born 24 Jan 2016 (JBIS), ディープインパクト x タピッツフライ (by Tapit), bred by ノーザンファーム (安平), trained by 藤沢和雄 (Miho), owned by (有)サンデーレーシング. Ridden by C. ルメール, except the 2020 Takamatsunomiya Kinen and Yasuda Kinen (池添謙一)
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: -0.2, mane: null, notes: 'Registered 鹿毛 (JBIS; the JRA 2020 Yasuda Kinen result page gives 「牝4・鹿毛」, and ja.wiki agrees). Photos: in sun (JRA 2020 Yasuda photo 4, Commons 2019 Oka Sho) a rich red-brown bay, warm and reddish on the head and shoulder, darker over the neck, back and flanks; under cloud (Commons 2021 Victoria Mile, 2018 debut) a deep dark brown. Black mane, tail and lower legs.' },
+    face: { type: 'star', notes: 'photo: JRA 2020 Yasuda Kinen photo 4 (three-quarter head close-up) shows a small, irregular, elongated white star on the forehead just above eye level, slightly off-centre, with no stripe down the nose. The side views (2019 Oka Sho, 2021 VM) show no white down the face. No text source.' },
+    legs: { LF: 'none', RF: 'none', LH: 'coronet', RH: 'coronet' }, // photo: in JRA 2020 Yasuda photo 4 both hind coronets show a narrow white band over pale, striped hooves (RH the fuller band); both fores black down to dark hooves. Unbandaged
+    style: { primary: 'sashi', secondary: 'senko', why: 'netkeiba 通過, first call / field. Early on, close up: debut 3/15, Saudi Arabia RC 2/8, Asahi Hai FS 2/15, Oka Sho 3/18 (3-1, the win), NHK Mile 4/18. From late 2019, mid-pack or further back: Hanshin C 8/18, Takamatsunomiya 13/18, Yasuda 2020 8/14 (8-7, the win), Sprinters 15/16 (15-15, the win), Mile CS 2020 5/17, Osaka Hai 5/13, VM 2021 9/18 (9-10, the win), Yasuda 2021 11/14, Tenno Sho (Autumn) 2/16, Mile CS 2021 12/16 (12-8, the win). ja.wiki: VM 「道中中団を追走」, Yasuda 2020 「中団からレースを進め」, Sprinters 「位置取りが後方…強烈な末脚」.' },
+    size: { weightKg: [458, 506], typicalKg: 500, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Race-day 馬体重 from netkeiba, matching the ja.wiki table: 458 at her debut (the lightest), 476 (Oka Sho win), 486 (Takamatsunomiya), 492 (+6, Yasuda 2020 win), 504 (+12, Sprinters win), 502 (Mile CS 2020 win), 498 (VM 2021 win), 506 (+2, Mile CS 2021, her final race and heaviest). No measurements were found.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1714', pompom: null, bandages: null, notes: 'photo: in the 2020 Yasuda Kinen (JRA photos 1-4) she raced bare-headed: no menko, blinkers or shadow roll, ears bare. Black bridle with a ring snaffle and a crossed (figure-eight) noseband with a small black sheepskin pad where the straps cross (not drawn). Black reins with black rubber grips. No leg bandages and no tail ribbon. The same in the 2018 debut, 2019 Oka Sho and 2021 Victoria Mile photos.' },
+    silks: { owner: '(有)サンデーレーシング (Sunday Racing, the Northern Farm group club)', desc: '黒、赤十字襷、袖黄縦縞', colors: ['#141414', '#e0301e', '#f4c51a'] },
+    saddleNumber: 11, // 2020 安田記念 (Tokyo, 7 Jun 2020): 7枠11番 of 14 under 池添謙一, beating Almond Eye by 2 1/2 lengths (netkeiba, the ja.wiki table, the JRA result page and the "11 グランアレグリア" saddle cloth in the JRA photos). Alternatives: Oka Sho 2019 = 8, Sprinters S 2020 = 10, Mile CS 2020 = 4, Victoria Mile 2021 = 6, Mile CS 2021 = 12
+    career: 'Oka Sho 2019 (race record 1:32.7), Yasuda Kinen 2020 (beating Almond Eye), Sprinters S 2020, Mile CS 2020 and 2021, and Victoria Mile 2021 (by 4 lengths): 6 GI wins. Also won the Saudi Arabia RC 2018 (GIII) and Hanshin C 2019 (GII). JRA Best 3yo Filly 2019 and Best Sprinter/Miler 2020 and 2021. 15 starts, 9 wins.',
+    sources: [
+      'https://www.jbis.or.jp/horse/0001220947/',
+      'https://ja.wikipedia.org/wiki/グランアレグリア',
+      'https://db.netkeiba.com/horse/result/2016104532/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/yasuda/result/yasuda2020.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/yasuda/result/photo/2020-4.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/yasuda/result/photo/2020-2.jpg',
+      'https://ja.wikipedia.org/wiki/サンデーレーシング',
+      'https://commons.wikimedia.org/wiki/Category:Gran_Alegria',
+      'https://commons.wikimedia.org/wiki/File:Gran_Alegria_Victoria_Mile_2021.jpg',
+      'https://commons.wikimedia.org/wiki/File:Gran_Alegria_Ouka_Syo_2019.jpg',
+      'https://commons.wikimedia.org/wiki/File:Gran_Alegria_Maiden_2018.jpg',
+    ],
+    uncertain: ['coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bitLifter', 'silks.colors', 'saddleNumber (choice of signature race)'],
+  },
+  // ---- Batch 19 (2026-10): #148–152, foaled 2016–21 ----
+  {
+    id: 'marche-lorraine', en: 'Marche Lorraine', jp: 'マルシュロレーヌ', born: 2016, sex: 'female', // 牝, born 4 Feb 2016 (ja.wiki, en.netkeiba), オルフェーヴル ('orfevre') x ヴィートマルシェ (by フレンチデピュティ), bred by ノーザンファーム (Abira), trained by 矢作芳人 (Ritto). Retired after the 2022 Saudi Cup
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0.1, mane: null, notes: 'Registered 鹿毛 per the ja.wiki infobox; en.netkeiba says "Bay". JBIS returned 403. In the Commons photo (2021 Heian S paddock, full resolution) she is a bright, warm reddish-golden bay, legs black from the knees and hocks down, black mane and tail. In the Del Mar sun (2021 BC Distaff, photos on the JRA page) a deeper red-bay.' },
+    face: { type: 'blaze', notes: 'photo: below the hood a white band runs down the front of the nose to just above the nostrils (2021 Heian S paddock near-side profile; the BC Distaff winner\'s-circle photo reads broad and white on the lower front of the face). The forehead is always under the menko, so the top of the marking is not seen; stripe vs blaze is a guess. No text source.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: at Del Mar all visible lower legs are bay/black with dark hooves and no bandages; in the Heian S paddock the pasterns below the bandages are black over dark hooves
+    style: { primary: 'sashi', secondary: null, why: 'en.netkeiba 通過, first call / field, dirt graded races: Ladies\' Prelude 2020 7/16 (7-7-6-5, the win), JBC Ladies\' Classic 2020 7/15, TCK Jo-o Hai 2021 7/9 (7-8-6-5, the win), Empress Hai 2021 7/11 (7-6-4-3, the win), Heian S 2021 9/16, Teio Sho 2021 7/13, Breeders\' Gold Cup 2021 3/8 (3-3-2-2, the win). BC Distaff: ja.wiki 「レース序盤は後方に位置し、捲るようにして4コーナーで先頭に立つ」; en.wiki "in the rear of the pack in the early stages".' },
+    size: { weightKg: [446, 474], typicalKg: 470, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Race-day 馬体重 from en.netkeiba: 446 at her debut (the lightest), 474 (+14, Hakata S 2020, the heaviest), 461 (Ladies\' Prelude win), 468 (TCK Jo-o Hai win), 457 (Empress Hai win), 470 (Teio Sho), 470 (Breeders\' Gold Cup win, her last weighed start). The BC Distaff and Saudi Cup were not weighed. No measurements were found.' },
+    gear: { hood: true, hoodColors: { main: '#f2f0ea', trim: '#d8262e', ears: '#d8262e' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#d8262e', pompom: null, bandages: null, notes: 'Signature race, 2021 BC Distaff (photos on the JRA race-report page, 480 px): a white menko with red edging round the eye holes and a red crown; one ear cover red and the other apparently white (the engine takes one colour, so red). Red bridle, noseband and reins. No blinker cups or shadow roll; legs unbandaged. In the 2021 Heian S paddock she wore the reverse colours (a red menko with white piping) and bandages (white with red bands, one pink).' },
+    silks: { owner: '(有)キャロットファーム (Carrot Farm, the Northern Farm-linked owners\' club)', desc: '緑、白二本輪、白袖赤一本輪', colors: ['#1f9e4f', '#ffffff', '#d8262e'] }, // ja.wiki キャロットファーム; matches the netkeiba colours gif and Murphy's silks in the BC photos
+    saddleNumber: 10, // 2021 Breeders' Cup Distaff (Del Mar, 6 Nov 2021, dirt 9 f): program number 10 from post 10 of 11, under Oisin Murphy, won by a nose from Dunbar Road (ja.wiki 馬番10, en.wiki post 10, en.netkeiba, and the "10 MARCHE LORRAINE" saddle cloth in the finish and winner's-circle photos). Alternative: 2021 Heian S = 11
+    career: 'Breeders\' Cup Distaff 2021 at Del Mar (G1, from the back, by a nose from Dunbar Road): the first win by a Japan-trained horse in a dirt G1 outside Japan. Also won the Ladies\' Prelude 2020 (JpnII), TCK Jo-o Hai 2021 (JpnIII), Empress Hai 2021 (JpnII) and Breeders\' Gold Cup 2021 (JpnIII). 3rd in the JBC Ladies\' Classic 2020 and the Heian S 2021. 22 starts, 9 wins.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/マルシュロレーヌ',
+      'https://en.wikipedia.org/wiki/Marche_Lorraine_(horse)',
+      'https://en.netkeiba.com/db/horse/result/2016104426/',
+      'https://en.netkeiba.com/db/horse/2016104426/',
+      'https://rcdnv2.netkeiba.com/img/db/colours/486800.gif',
+      'https://ja.wikipedia.org/wiki/キャロットファーム',
+      'https://jra.jp/keiba/overseas/race/2021bc/distaff/kaiko.html',
+      'https://jra.jp/keiba/overseas/race/2021bc/distaff/img/pic_kaiko1.jpg',
+      'https://jra.jp/keiba/overseas/race/2021bc/distaff/img/pic_kaiko2.jpg',
+      'https://commons.wikimedia.org/wiki/File:Marche_Lorraine_Heihan_Stakes_2021.jpg',
+    ],
+    uncertain: ['coat.reg (JBIS not read)', 'coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hoodColors (BC photos only 480 px; one ear cover white)', 'gear.bridle', 'gear.blinkers', 'gear.bitLifter', 'gear.bandages (none seen at Del Mar; bandaged at the Heian S)', 'silks.colors'],
+  },
+  {
+    id: 'daring-tact', en: 'Daring Tact', jp: 'デアリングタクト', born: 2017, sex: 'female', // 牝, born 15 Apr 2017 (ja.wiki, en.netkeiba), エピファネイア ('epiphaneia') x デアリングバード (by キングカメハメハ); granddam デアリングハート ('daring-heart'). Bred by 長谷川牧場, trained by 杉山晴紀 (Ritto). Ridden by 松山弘平 in 12 of her 13 starts
+    coat: { reg: '青鹿毛', key: 'aokage', greyness: null, tone: 0, mane: null, notes: 'ja.wiki infobox: 青鹿毛; the JRA 2020 Shuka Sho result page gives 「牝3・青鹿毛」; en.netkeiba says "Dark Bay". JBIS returned 403. Photos: in sun (2020 Oaks, 2020 Shuka Sho finish) a very dark brown with brown showing on the flank, quarters and muzzle; under cloud (2022 Victoria Mile) almost black. Black mane, tail and legs.' },
+    face: { type: 'none', notes: 'photo: in the 2020 Oka Sho, Oaks and Shuka Sho race photos (JRA) she raced bare-headed, and no white shows on the forehead, nose or muzzle, including the head-on Shuka Sho photo 3. The JRA photos are only 330 px wide, so a small star cannot be ruled out. No text source names a marking.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: in the 2020 crown-race photos (JRA) all four legs are dark down to dark hooves and unbandaged
+    style: { primary: 'sashi', secondary: 'oikomi', why: 'en.netkeiba passing order, first call / field: debut 3/11, Elfin S 9/12, Oka Sho 13/18 (13-12, the win), Oaks 11/18 (11-12-12-13, the win, last 3F 33.1), Shuka Sho 13/18 (13-13-8-5, the win, after a slow start), JC 2020 7/15, Kinko Sho 6/10, Victoria Mile 2022 6/18, Takarazuka 2022 10/17, EQ 2022 8/18, JC 2022 12/18. ja.wiki on the Oka Sho: 「直線を向くと、一番外から一気に差し切り」.' },
+    size: { weightKg: [464, 486], typicalKg: 466, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Race-day 馬体重 (en.netkeiba): 464 at her debut (her lightest), 466 (±0) in both the Oka Sho (also on the JRA result page) and the Oaks, 480 (+14) in the Shuka Sho, 474 in the JC 2020, 486 (+22) on her return in the 2022 Victoria Mile and in the 2022 EQ (her heaviest). ja.wiki: 「小柄な馬であったという」 as a youngster. No measurements were found.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1714', pompom: null, bandages: null, notes: 'Signature race (2020 Shuka Sho): per ja.wiki she was very worked up from the paddock, so 「メンコを装着し、発走前にメンコをはずした」. The JRA race photos show her bare-headed (no menko, blinkers or shadow roll, ears bare) with a black bridle, noseband and reins and no leg wraps; the 2020 Oka Sho and Oaks photos show the same. In the 2022 Victoria Mile canter she wore a black menko and white leg wraps with two black bands; not known whether she raced in them.' },
+    silks: { owner: '(株)ノルマンディーサラブレッドレーシング (Normandy Thoroughbred Racing; 代表 岡田将一)', desc: '水色、白山形二本輪、袖白縦縞', colors: ['#6cc8e8', '#ffffff'] }, // ja.wiki ノルマンディーサラブレッドレーシング and Commons Owner_Normandy_Thoroughbred_Racing.svg
+    saddleNumber: 13, // 2020 秋華賞 (Kyoto, 18 Oct 2020): 7枠13番 of 18 under 松山弘平, 480 kg, completing the first unbeaten Fillies' Triple Crown (en.netkeiba, ja.wiki, the JRA result page and the "13" saddle cloth in the JRA photos). Alternatives: 2020 桜花賞 = 9, 2020 優駿牝馬 = 4
+    career: 'Oka Sho, Yushun Himba (Oaks) and Shuka Sho 2020: the first unbeaten Fillies\' Triple Crown in JRA history. Also won the Elfin S (L) 2020. 3rd in the 2020 Japan Cup, 2nd in the 2021 Kinko Sho, 3rd in the 2021 QEII Cup (Sha Tin) and the 2022 Takarazuka Kinen. A right-fore suspensory injury kept her out for a year, and a recurrence ended her career. 13 starts, 5 wins.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/デアリングタクト',
+      'https://en.netkeiba.com/db/horse/2017100720/',
+      'https://en.netkeiba.com/db/horse/result/2017100720/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/ouka2020.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/shuka2020.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2020-1.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2020-3.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2020-2.jpg',
+      'https://commons.wikimedia.org/wiki/File:Daring_Tact_Victoria_Mile_2022.jpg',
+      'https://ja.wikipedia.org/wiki/ノルマンディーサラブレッドレーシング',
+      'https://commons.wikimedia.org/wiki/File:Owner_Normandy_Thoroughbred_Racing.svg',
+    ],
+    uncertain: ['coat.reg (JBIS 403; en.netkeiba says "Dark Bay")', 'coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bitLifter', 'silks.colors'],
+  },
+  {
+    id: 'efforia', en: 'Efforia', jp: 'エフフォーリア', born: 2018, sex: 'male', // 牡, born 10 Mar 2018 (ja.wiki infobox), エピファネイア ('epiphaneia') x ケイティーズハート, bred by ノーザンファーム, owned by (有)キャロットファーム, trained by 鹿戸雄一 (Miho), regular jockey 横山武史. Retired 16 Feb 2023 to 社台スタリオンステーション
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0.2, mane: null, notes: 'Registered 鹿毛 (ja.wiki infobox; en.netkeiba says "Bay Horse"). JBIS returned 403. Photos (Commons 2021 Satsuki Sho race and presentation, 2021 Derby paddock; JRA 2021 Tenno Sho (Autumn) and Arima Kinen photos): a bright, clear, warm reddish bay that looks golden in sun and a little deeper under cloud. Black lower legs, black mane and tail.' },
+    face: { type: 'none', notes: 'photo: no white on the forehead, nose or muzzle in the profile views (Commons Derby paddock, both sides, and the Satsuki race and presentation photos). A tiny star cannot be ruled out because there is no clear head-on close-up. No text source.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'pastern' }, // photo: one hind white from the coronet to the lower pastern over a pale hoof; RH from both-side Derby paddock photos and the Satsuki presentation photo
+    style: { primary: 'senko', secondary: 'sashi', why: 'netkeiba 通過, first call / field: debut 3/7 (3-3-2-2), Hyakunichiso Tokubetsu 4/8, Kyodo Tsushin Hai 2/12 (2-4-3), Satsuki 3/16 (3-4-4-4, the win), Derby 3/17 (3-4-9-9, 2nd), Tenno Sho (Autumn) 2021 6/16 (6-6-6, the win), Arima 2021 9/16 (9-9-8-5, the win), Osaka Hai 2022 9/16, Takarazuka 2022 9/17, Arima 2022 5/16, Kyoto Kinen 2023 2/13. ja.wiki: Satsuki 「道中好位でレースを進めると内から抜け出し」, Tenno Sho 「道中は中団やや前目の位置に控え」.' },
+    size: { weightKg: [504, 532], typicalKg: 514, withersCm: null, girthCm: null, cannonCm: null, build: 'rangy', notes: 'Race-day 馬体重 from netkeiba: 516 at his debut, 504 (-10) in the Satsuki win (his lightest), 510 (Derby), 514 (+4) in the Tenno Sho (Autumn) win, 516 (+2) in the Arima 2021 win (also on the JRA result page), 532 (+12, Arima 2022, his heaviest). ja.wiki gives only yearling club-offer figures: 「体高158.0cm、胸囲176.5cm、管囲20.8cm、馬体重489kg」 (left out of the cm fields). ja.wiki (club catalogue): 「脚長で胴伸びの良い馬体」, hence rangy.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: '#1a1714', bitLifter: false, bridle: '#1a1714', reins: '#d8742e', pompom: null, bandages: null, notes: 'photo: in the 2021 Satsuki Sho race (Commons) and the JRA 2021 Tenno Sho (Autumn) and Arima Kinen photos he raced bare-headed, with no menko or blinkers and bare ears. A black leather bridle with a ring snaffle and a black sheepskin noseband (a black shadow roll), clearest in the 2021 Derby paddock photos. The reins are black near the bit, with orange rubber grips over the neck. No leg bandages in any race photo.' },
+    silks: { owner: '(有)キャロットファーム (Carrot Farm, the club behind キャロットクラブ)', desc: '緑、白二本輪、白袖赤一本輪', colors: ['#1e8c4e', '#ffffff', '#e0262e'] }, // ja.wiki キャロットファーム: 「緑、白二本輪、白袖赤一本輪」 (same as 'epiphaneia'); deeper green in the 2021 Derby paddock close-up
+    saddleNumber: 5, // 2021 天皇賞(秋) (Tokyo, 31 Oct 2021): 3枠5番 of 16 under 横山武史, won in 1:57.9 as a 3yo (JRA result page, netkeiba, ja.wiki, and the "5" saddle cloth in JRA photos 1 and 4). Alternatives: 2021 皐月賞 = 7, 2021 有馬記念 = 10
+    career: 'Satsuki Sho 2021, Tenno Sho (Autumn) 2021 (as a 3yo) and Arima Kinen 2021: 3 GI wins. Also won the Kyodo Tsushin Hai 2021 (GIII). 2nd in the 2021 Tokyo Yushun, beaten by 0.0 s. Unplaced in 2022. Pulled up in the 2023 Kyoto Kinen (run at Hanshin) with atrial fibrillation (心房細動) and retired to stud. 11 starts, 6 wins.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/エフフォーリア',
+      'https://db.netkeiba.com/horse/result/2018105027/',
+      'https://en.netkeiba.com/db/horse/result/2018105027/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/akiten/result/akiten2021.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/akiten/result/photo/2021-1.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/akiten/result/photo/2021-4.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/arima2021.html',
+      'https://ja.wikipedia.org/wiki/キャロットファーム',
+      'https://commons.wikimedia.org/wiki/File:Owner_Carrot_Farm.svg',
+      'https://commons.wikimedia.org/wiki/Category:Efforia',
+      'https://commons.wikimedia.org/wiki/File:Efforia_Satsuki_Sho_2021(IMG1).jpg',
+      'https://commons.wikimedia.org/wiki/File:Efforia_Satsuki_Sho_2021(IMG2).jpg',
+      'https://commons.wikimedia.org/wiki/File:11R_Tokyo_Yushun_(Japanese_Derby)_(Grade_1,_3yo)_Turf_2400m_2021_at_tokyo_racecourse_(51211963252).jpg',
+      'https://commons.wikimedia.org/wiki/File:11R_Tokyo_Yushun_(Japanese_Derby)_(Grade_1,_3yo)_Turf_2400m_2021_at_tokyo_racecourse_(51211964037).jpg',
+    ],
+    uncertain: ['coat.reg (JBIS 403, from ja.wiki/netkeiba)', 'coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm (only a yearling figure, 158.0)', 'size.girthCm (only a yearling figure, 176.5)', 'size.cannonCm (only a yearling figure, 20.8)', 'gear.shadowRoll', 'gear.bridle', 'gear.reins', 'gear.bitLifter', 'silks.colors'],
+  },
+  {
+    id: 'titleholder', en: 'Titleholder', jp: 'タイトルホルダー', born: 2018, sex: 'male', // 牡, born 10 Feb 2018 (ja.wiki infobox), ドゥラメンテ ('duramente') x メーヴェ, bred by 岡田スタッド, trained by 栗田徹. Ridden by 戸崎圭太 at 2, 横山武史 / 田辺裕信 at 3 (Kikuka Sho under 横山武史), then 横山和生 from the 2021 Arima Kinen to his retirement
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: -0.5, mane: null, notes: 'Registered 鹿毛 (ja.wiki infobox 「色 = 鹿毛」; the JRA 2021 Kikuka Sho result page gives 牡3・鹿毛; en.netkeiba says "bay"). JBIS returned 403. Photos (Commons 2021 Kikuka, 2022 Tenno Sho (Spring) and Takarazuka Kinen, 2023 retirement ceremony): a very dark bay that looks almost black on the neck, back and quarters, with brown showing on the flank, elbow, cheeks and around the eyes and muzzle. Black legs, mane and tail.' },
+    face: { type: 'none', notes: 'photo: in races and at the presentations his black hood covers the forehead and nose bridge, so a star or stripe cannot be ruled out. The uncovered muzzle is dark brown with no snip (Commons Tenno Sho 2022 IMG2/IMG3, Takarazuka 2022 IMG2, 2023 retirement close-up). No text source names a marking.' },
+    legs: { LF: 'none', RF: 'none', LH: 'coronet', RH: 'none' }, // photo: the fores are always under white bandages; one hind has a thin white coronet over a pale, horn-coloured hoof and the other hind is dark (near-side views); judged LH from which leg overlaps the other
+    style: { primary: 'nige', secondary: 'senko', why: 'en.netkeiba passing order, first call / field: debut 1/14 (1-1-1-1), Tokyo Sports Hai 1/10, Hopeful 2/15, Yayoi 1/10 (1-1-1-1, the win), Satsuki 2/16 (2-2-1-1), Derby 2/17, St Lite 2/14, Kikuka 1/18 (1-1-1-1, the win), Arima 2021 2/16, Nikkei 2022 1/15 (1-1-1-1), Tenno Sho (Spring) 2022 1/18 (1-1-1-1, the win), Takarazuka 2022 2/17 (2-2-2-2, the win behind the pace-setting Panthalassa), Arima 2022 1/16, AOC 2023 1/15, JC 2023 2/18, Arima 2023 1/16 (1-1-1-1, 3rd). ja.wiki: 「単騎の逃げに持ち込んだ」.' },
+    size: { weightKg: [462, 478], typicalKg: 474, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Race-day 馬体重 (en.netkeiba, matching the ja.wiki 競走成績 table): 472 at his debut, a low of 462 in the 2021 Satsuki Sho, 464 (-2) in the Kikuka Sho win (also on the JRA result page), 474 in the 2022 Tenno Sho (Spring) win, 476 in the 2022 Takarazuka win, 478 in the 2023 Nikkei Sho (the heaviest), 474 in his final race (2023 Arima). ja.wiki: 「姉のメロディーレーンと違って馬格の心配もない」. No measurements were found.' },
+    gear: { hood: true, hoodColors: { main: '#111111', trim: '#111111', ears: '#111111' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1714', pompom: null, bandages: { fore: '#f2f0ea', hind: null }, notes: 'photo: in the signature race (2022 Tenno Sho (Spring): Commons race photo IMG1, presentation photos IMG2 and IMG3) he wore a plain black menko over the forehead and down the nose bridge to the noseband, with open eye holes and no coloured trim, and a small round gold crest by the ear (not drawn). The ears look covered in black (hard to confirm on a near-black horse). Black bridle and reins, a gold-studded browband (not drawn). White bandages with two navy stripes at the top on both forelegs; the hinds bare. No shadow roll in the Tenno Sho; a thin white noseband sheepskin appears in 2022-23 presentation photos. The same hood and bandages in the 2021 Kikuka Sho and the 2022 Takarazuka Kinen.' },
+    silks: { owner: '山田弘 (Hiroshi Yamada; no 冠名)', desc: '緑、黒袖、黄鋸歯形', colors: ['#1a9a4a', '#111111', '#f2d200'] }, // ja.wiki 山田弘 (馬主): 「勝負服の柄は緑，黒袖，黄鋸歯形」; photos: a bright green body, a yellow sawtooth yoke, black sleeves
+    saddleNumber: 16, // 2022 天皇賞（春） (Hanshin, 1 May 2022): 8枠16番 of 18 under 横山和生, led all the way (1-1-1-1) (ja.wiki table, en.netkeiba, and the "16 タイトルホルダー" saddle cloth in Commons IMG1). Alternatives: 2021 菊花賞 = 3 (his first GI), 2022 宝塚記念 = 6
+    career: 'Kikuka Sho 2021 (from the front, under 横山武史), Tenno Sho (Spring) 2022 and Takarazuka Kinen 2022 (both under 横山和生): 3 GI wins. Also won the Yayoi Sho Deep Impact Kinen 2021 and the Nikkei Sho 2022 and 2023 (GII). 2nd in the 2021 Satsuki Sho and the 2023 All Comers, 11th in the 2022 Arc, 3rd in his final race, the 2023 Arima Kinen. Pulled up in the 2023 Tenno Sho (Spring). 19 starts, 7 wins. Son of Duramente.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/タイトルホルダー',
+      'https://en.netkeiba.com/db/horse/result/2018103559/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/kikka/result/kikka2021.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/kikka/result/photo/2021-1.jpg',
+      'https://ja.wikipedia.org/wiki/山田弘_(馬主)',
+      'https://commons.wikimedia.org/wiki/Category:Titleholder_(horse)',
+      'https://commons.wikimedia.org/wiki/File:Titleholder_Tenno_Sho(Spring)_2022(IMG1).JPG',
+      'https://commons.wikimedia.org/wiki/File:Titleholder_Tenno_Sho(Spring)_2022(IMG2).jpg',
+      'https://commons.wikimedia.org/wiki/File:Titleholder_Tenno_Sho(Spring)_2022(IMG3).jpg',
+      'https://commons.wikimedia.org/wiki/File:Titleholder_Takarazuka_Kinen_2022(IMG2).jpg',
+      'https://commons.wikimedia.org/wiki/File:Titleholder_Kikuka_Sho_2021(IMG2).jpg',
+      'https://commons.wikimedia.org/wiki/File:20231224タイトルホルダー引退式.jpg',
+    ],
+    uncertain: ['coat.reg (JBIS not read)', 'coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hoodColors.ears', 'gear.shadowRoll', 'gear.blinkers', 'gear.bridle', 'gear.bitLifter', 'silks.desc (word order)', 'silks.colors'],
+  },
+  {
+    id: 'forever-young', en: 'Forever Young', jp: 'フォーエバーヤング', born: 2021, sex: 'male', // 牡, born 24 Feb 2021 (ja.wiki, en.netkeiba), リアルスティール x フォエヴァーダーリング (by Congrats), bred by ノーザンファーム, trained by 矢作芳人 (Ritto), ridden by 坂井瑠星 in all 16 starts. Still in training as of Oct 2026
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0.2, mane: null, notes: 'Registered 鹿毛 (ja.wiki infobox); en.netkeiba says "Bay Horse". JBIS returned 403. Photos: in sun a bright, warm red-bay with a glossy coat (Commons 2023 Kyoto debut paddock, 2025 BC Classic JRA photos 4-5); the same red-bay under the lights at Ohi (2024 JDC). Black mane and tail, black lower legs.' },
+    face: { type: 'none', notes: 'photo: no white on the forehead, nose bridge or muzzle (Commons 2023 Kyoto paddock off-side profile, JRA 2025 BC Classic photos 3 and 4). A few white hairs under the forelock cannot be ruled out at this resolution. In Japanese races the forehead is under his hood. No text source.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: black lower legs and dark-grey hooves on all four (Commons 2023 Kyoto paddock, JRA 2025 BC Classic photo 1, unbandaged)
+    style: { primary: 'senko', secondary: null, why: 'netkeiba 通過, first call / field, Japanese races: debut 4/14, Zen-Nippon Nisai Yushun 2/12 (2-2-1-1), Japan Dirt Classic 2024 2/15 (2-2-2-2), Tokyo Daishoten 2024 2/10 (2-2-2-2), Nippon TV Hai 2025 5/10 (5-5-4-3). Overseas (en.wiki): Saudi Derby and UAE Derby "behind the leaders"; Saudi Cup 2025 "raced close to the leaders"; BC Classic 2025 "tracked closely in second" then led after the mile; DWC 2026 "raced in second". Held up only in the 2024 Kentucky Derby, after a slow start.' },
+    size: { weightKg: [524, 551], typicalKg: 551, withersCm: null, girthCm: null, cannonCm: null, build: 'heavy', notes: 'Race-day 馬体重 (en.netkeiba, Japanese races only; his overseas starts were not weighed): 526 at his debut, 524 (Nov 2023, the lightest), 533 (JDC 2024), 543 (Tokyo Daishoten 2024), 551 (Nippon TV Hai, 1 Oct 2025, the heaviest, one month before the BC Classic win). ja.wiki quotes 矢作 calling his frame「『これ以上の馬はありえない』というほど究極の馬体」. No measurements were found.' },
+    gear: { hood: false, hoodColors: { main: '#dc2430', trim: '#dc2430', ears: '#dc2430', pattern: 'centre', accent: '#f2f0ea' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#d61f35', pompom: null, bandages: null, notes: 'Signature race, 2025 BC Classic (JRA photos 1-5): bare-headed, with no hood, blinkers or shadow roll, and ears bare. A red bridle and noseband piped in white, red reins, no leg bandages. His mane was plaited with red/white ties in Japan (not drawn). hoodColors record his Japanese-race メンコ (2024 JDC and Tokyo Daishoten): red with red ear covers and eye rims and a white panel down the front of the face (the centre pattern approximates it), plus a round stable emblem. In Japan he also raced in red bandages with two white bands on all four legs.' },
+    silks: { owner: '藤田晋 (Susumu Fujita, founder of CyberAgent)', desc: '海老、袖白二本輪', colors: ['#9b2440', '#ffffff'] }, // ja.wiki 藤田晋: 「海老、袖白二本輪」, 「大好きなワイン色にちなんで」; the hex from the BC Classic photos (the Commons SVG uses #a73836)
+    saddleNumber: 5, // 2025 Breeders' Cup Classic (Del Mar, 1 Nov 2025, 2000 m dirt): program number 5 from post 5, won by 1/2 length from Sierra Leone, the first Japanese-trained winner (the JRA result page 馬番5, en.wiki, and the "5 FOREVER YOUNG" saddle cloth in the JRA photos). Alternatives: JDC 2024 = 1, Tokyo Daishoten 2024 = 4, Saudi Cup 2025 = 5
+    career: 'Wins: Zen-Nippon Nisai Yushun 2023, Saudi Derby 2024, UAE Derby 2024, Japan Dirt Classic 2024, Tokyo Daishoten 2024, Saudi Cup 2025 and 2026, Nippon TV Hai 2025, Breeders\' Cup Classic 2025 (the first Japanese-trained winner) and Jockey Club Gold Cup 2026. 3rd in the 2024 Kentucky Derby, the 2024 BC Classic and the 2025 Dubai World Cup; 2nd in the 2026 Dubai World Cup. JRA Horse of the Year 2025 and Eclipse champion older dirt male 2025. 16 starts, 12 wins.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/フォーエバーヤング_(競走馬)',
+      'https://en.wikipedia.org/wiki/Forever_Young_(horse)',
+      'https://en.netkeiba.com/db/horse/2021105727/',
+      'https://en.netkeiba.com/db/horse/result/2021105727/',
+      'https://jra.jp/keiba/overseas/race/2025bc/classic/kaiko.html',
+      'https://jra.jp/keiba/overseas/race/2025bc/classic/img/pic_kaiko1.jpg',
+      'https://jra.jp/keiba/overseas/race/2025bc/classic/img/pic_kaiko4.jpg',
+      'https://en.wikipedia.org/wiki/2025_Breeders%27_Cup_Classic',
+      'https://ja.wikipedia.org/wiki/藤田晋',
+      'https://commons.wikimedia.org/wiki/File:Owner_Fujita_Susumu.svg',
+      'https://commons.wikimedia.org/wiki/Category:Forever_Young_(horse)',
+      'https://commons.wikimedia.org/wiki/File:ForeverYoung-20231014-kyotorc.jpg',
+      'https://commons.wikimedia.org/wiki/File:フォーエバーヤング_東京大賞典優勝時.jpg',
+      'https://commons.wikimedia.org/wiki/File:Forever_Young_2024_Japan_Dirt_Classic.jpg',
+    ],
+    uncertain: ['coat.reg (JBIS 403)', 'coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'size.typicalKg (prep-race weight; not weighed abroad)', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hoodColors (the centre pattern approximates the white face panel)', 'gear.bridle', 'gear.bitLifter', 'gear.bandages', 'silks.colors'],
+  },
 ];
