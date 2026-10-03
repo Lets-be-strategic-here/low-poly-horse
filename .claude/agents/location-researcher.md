@@ -27,6 +27,9 @@ Decide:
   for night racing (e.g. Oi "Twinkle")
 - `turf.color` (season of that race: green vs winter-dormant yellow-green), `dirt.color` (sand tone),
   `rails.color`, widths in metres
+- `saddleCloth`: the saddle-cloth colours of that signature race (JRA G1 紫紺 '#3a2a96' + white text is the default;
+  the classics Oka Sho / Satsuki Sho / Oaks / Kikuka Sho use yellow text '#f5c800'; the Derby is white with black text
+  and gold edging `edge`; NAR tracks differ — check ja.wikipedia ゼッケン (競馬))
 - `stand`: name, approx length (m), floors, depth (m), colours as hex (body, roof, glass, seats); describe
   the roof shape in `signature` if it is distinctive
 - `infield`: only the types listed under Output; everything else goes in `signature` + `uncertain`

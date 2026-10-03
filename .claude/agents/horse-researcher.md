@@ -53,6 +53,7 @@ Rules learned from earlier runs:
   `bitLifter` (ハミ吊り) booleans; `bridle` hex (leather brown '#3a2a20' if unknown, '#f2f0ea' for white);
   `pompom` hex if it wore a poll pompom; `bandages` { fore, hind } hex if it raced bandaged. `notes` for when/which race.
 - **silks**: real owner's 勝負服 — owner name, description in words, colours as hex.
+- **saddleNumber**: its horse number (馬番) in its signature win, from that race's result page (shown on the saddle cloth).
 
 ## Output — exactly this shape, nothing else before or after except one line of caveats if needed
 ```js
@@ -65,6 +66,7 @@ Rules learned from earlier runs:
   size: { weightKg: [470, 486], typicalKg: 476, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: '' },
   gear: { hood: true, hoodColors: { main: '#f2f0ea', trim: '#d22630', ears: '#d22630' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: null, notes: '' },
   silks: { owner: '', desc: '', colors: ['#000000'] },
+  saddleNumber: 7, // 馬番 in its signature win (null if not found)
   career: 'one line: key G1 wins with years',
   sources: ['https://…'],
   uncertain: ['face.type', 'legs.LF'], // dotted paths of every value you could not confirm

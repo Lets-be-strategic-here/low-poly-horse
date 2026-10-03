@@ -155,7 +155,7 @@
   <label class="speed"><span>Speed</span><input id="speed" type="range" min="0.25" max="2" step="0.05" value="1" title="Playback speed"><output id="speedOut">1.00&times;</output></label>
   <div class="sep"></div>
   <div class="seg" role="group" aria-label="Gait">
-    <button data-gait="walk">Walk</button><button data-gait="gallop">Gallop</button><button data-gait="race" title="Racing gallop, about 16 m/s">Race</button>
+    <button data-gait="walk">Walk</button><button data-gait="trot" title="Working trot, about 3.6 m/s">Trot</button><button data-gait="canter" title="Working canter, about 5 m/s">Canter</button><button data-gait="gallop">Gallop</button><button data-gait="race" title="Racing gallop, about 16 m/s">Race</button>
   </div>
   <div class="sep"></div>
   <div class="seg" role="group" aria-label="Camera view">
@@ -201,6 +201,22 @@ const GAITS = {
     land: { RH: 0.0, LH: 0.09, RF: 0.27, LF: 0.37 },
     fore: { xc: 0.62, lift: 0.5, rise: 0.25, fall: 0.55, flex: 125 * DEG, flexPeak: 0.3, flexEnd: 0.8, sag: 17 * DEG, scapSwing: 18 * DEG },
     hind: { xc: -0.55, lift: 0.36, rise: 0.3, fall: 0.6, flex: 70 * DEG, flexPeak: 0.38, flexEnd: 0.86, sag: 15 * DEG, hockSag: 12 * DEG, hockOpen: -8 * DEG, hockPush: 40 * DEG },
+  },
+  // working trot (~3.6 m/s): two-beat, the diagonal pairs (LF+RH, RF+LH) land together, a short suspension
+  // between them; the head stays steady
+  trot: {
+    label: 'Trot', T: 0.72, stride: 2.6, duty: 0.4, body: 'trot', dust: true, curl: 0.8,
+    land: { LF: 0.0, RH: 0.0, RF: 0.5, LH: 0.5 },
+    fore: { xc: 0.68, lift: 0.22, rise: 0.3, fall: 0.6, flex: 88 * DEG, flexPeak: 0.4, flexEnd: 0.85, sag: 12 * DEG, scapSwing: 8 * DEG },
+    hind: { xc: -0.5, lift: 0.18, rise: 0.3, fall: 0.6, flex: 52 * DEG, flexPeak: 0.42, flexEnd: 0.88, sag: 10 * DEG, hockSag: 8 * DEG, hockOpen: -4 * DEG },
+  },
+  // working canter (~5 m/s): three-beat, left lead: RH -> (LH + RF together) -> LF (lead) -> suspension;
+  // the body rocks like a rocking horse (forehand up as the hind legs land)
+  canter: {
+    label: 'Canter', T: 0.6, stride: 3.0, duty: 0.38, body: 'canter', dust: true, curl: 0.9, leads: true,
+    land: { RH: 0.0, LH: 0.27, RF: 0.27, LF: 0.5 },
+    fore: { xc: 0.64, lift: 0.28, rise: 0.3, fall: 0.55, flex: 100 * DEG, flexPeak: 0.36, flexEnd: 0.82, sag: 13 * DEG, scapSwing: 9 * DEG },
+    hind: { xc: -0.52, lift: 0.22, rise: 0.33, fall: 0.58, flex: 52 * DEG, flexPeak: 0.4, flexEnd: 0.88, sag: 11 * DEG, hockSag: 10 * DEG, hockOpen: -5 * DEG },
   },
   // four-beat lateral walk: LH -> LF -> RH -> RF, evenly spaced; the hind print lands just past the fore print
   walk: {
@@ -264,7 +280,7 @@ function horsePalette(coat = {}) {
     // dapples are strongest on a mid grey and fade out as the horse goes iron-dark or white;
     // a young grey's head whitens first, while its lower legs stay dark the longest
     p.dapple = clamp(coat.dapple ?? 3.2 * g * (1 - g), 0, 1);
-    p.headLift = 0.09 * (1 - g);
+    p.headLift = coat.headLift ?? 0.09 * (1 - g); // some greys (Biwa Hayahide) had a face far paler than the body
   }
   if (coat.coatHex) p.coat = c(hex(coat.coatHex));
   if (p.grey != null || coat.coatHex) {
@@ -565,6 +581,19 @@ function faceMarked(type, c, n) {
    ===================================================================== */
 // Size from a profile: uniform scale from the height at the withers (the model is 163 cm), else a
 // gentle guess from race weight; `bulk` widens trunk, neck and upper limbs for heavier horses.
+// Saddle cloth (ゼッケン) artwork: background, a big number and an optional small label, on a canvas.
+function saddleClothTexture(S) {
+  const cv = document.createElement('canvas'); cv.width = 512; cv.height = 256;
+  const g = cv.getContext('2d');
+  g.fillStyle = S.cloth ?? '#f4f4f0'; g.fillRect(0, 0, 512, 256);
+  if (S.edge) { g.strokeStyle = S.edge; g.lineWidth = 12; g.strokeRect(6, 6, 500, 244); }
+  g.fillStyle = S.ink ?? '#141414'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  if (S.number != null) { g.font = '700 132px system-ui, sans-serif'; g.fillText(String(S.number), 256, 100); }
+  if (S.label) { g.font = '600 38px system-ui, sans-serif'; g.fillText(S.label, 256, S.number != null ? 208 : 150); }
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
+  return t;
+}
+
 const REF_WITHERS = 163, REF_KG = 475;
 function buildFactors(size = {}) {
   const kg = size.typicalKg ?? (size.weightKg ? (size.weightKg[0] + size.weightKg[1]) / 2 : null);
@@ -668,6 +697,59 @@ function buildHorse(look = {}, seed = 1337) {
   root.add(body);
   root.updateMatrixWorld(true);
   body.bind(new THREE.Skeleton(bones));
+
+  /* ----- race tack on the back (racecourses only): saddle cloth with the number, saddle, girth. Skinned
+     to the body's own skeleton with the trunk's weights, so it stays glued to the back as it flexes ----- */
+  if (look.saddle) {
+    const S = look.saddle, trunkWeights = [[-0.55, 1], [-0.12, 0], [0.1, 0], [0.45, 2]];
+    const rowAt = (x) => { // trunk [top, bot, w, wu, wd] at x (interpolated, with this horse's bulk and belly)
+      let i = 1; while (i < TRUNK.length - 1 && TRUNK[i][0] < x) i++;
+      const a = TRUNK[i - 1], b = TRUNK[i], t = clamp((x - a[0]) / (b[0] - a[0]), 0, 1), r = [1, 2, 3, 4, 5].map((j) => lerp(a[j], b[j], t));
+      r[1] -= belly * smoothstep(0.75, 0.2, Math.abs(x + 0.05)); r[2] *= bulk;
+      return r;
+    };
+    const shell = (x0, x1, n, grow) => loft(Array.from({ length: n + 1 }, (_, i) => {
+      const x = lerp(x0, x1, i / n), [top, bot, w, wu, wd] = rowAt(x), t = top + grow, b = bot - grow, ww = w + grow;
+      return ringAt(V(x, (t + b) / 2), X_AXIS, Y_AXIS, PROF.trunk, { up: (t - b) / 2, down: (t - b) / 2, w: ww, wUp: ww * wu, wDown: ww * wd });
+    }));
+    const cut = (geo, fn) => { // keep the faces fn accepts (centroid), as a non-indexed geometry
+      const src = geo.toNonIndexed().attributes.position.array, out = [];
+      for (let i = 0; i < src.length; i += 9) if (fn((src[i] + src[i + 3] + src[i + 6]) / 3, (src[i + 1] + src[i + 4] + src[i + 7]) / 3, (src[i + 2] + src[i + 5] + src[i + 8]) / 3)) out.push(...src.slice(i, i + 9));
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(out, 3)); return g;
+    };
+    const skinned = (geo, material) => {
+      skinWeights(geo, trunkWeights, (p) => p.x);
+      const m = new THREE.SkinnedMesh(geo, material);
+      m.castShadow = m.receiveShadow = true; m.frustumCulled = false;
+      root.add(m); root.updateMatrixWorld(true); m.bind(body.skeleton);
+      return m;
+    };
+    // saddle cloth: hangs from the spine about a third of the way down the barrel; the number reads
+    // front-to-back on both sides (u flips on the near side)
+    // JRA cloth: ~70 cm long and ~51 cm down each side, front edge at the withers, hanging to ~45% of the barrel
+    const C0 = -0.22, C1 = 0.45, hem = (x) => lerp(rowAt(x)[0], rowAt(x)[1], 0.45);
+    const cloth = cut(shell(C0, C1, 8, 0.014), (x, y) => y > hem(x));
+    const pos = cloth.attributes.position, uv = new Float32Array(pos.count * 2);
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i), u = (x - C0) / (C1 - C0);
+      uv[i * 2] = z >= 0 ? u : 1 - u;
+      uv[i * 2 + 1] = clamp((y - hem(x)) / (rowAt(x)[0] - hem(x)), 0, 1);
+    }
+    cloth.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+    cloth.computeVertexNormals();
+    skinned(cloth, new THREE.MeshStandardMaterial({ map: saddleClothTexture(S), flatShading: true, roughness: 0.85 })).name = 'saddle-cloth';
+    // racing saddle (a small flat pad) and the white girth + overgirth behind the elbows
+    const top = (x) => rowAt(x)[0];
+    // on the front third of the cloth: a dark under-pad rim, the small black racing saddle, a cream girth with a
+    // black elastic overgirth over the saddle, both just behind the elbow; with no rider the irons are run up
+    const pad = paint(cut(shell(0.02, 0.42, 5, 0.03), (x, y) => y > top(x) - 0.06), flat(hex(S.pad ?? '#3a3a3a'), rnd, 0.04));
+    const saddle = paint(cut(shell(0.06, 0.4, 5, 0.05), (x, y) => y > top(x) - 0.035), flat(hex(S.saddle ?? '#151515'), rnd, 0.04));
+    const girth = paint(cut(shell(0.355, 0.39, 1, 0.022), () => true), flat(hex(S.girth ?? '#ede8da'), rnd, 0.03));
+    const over = paint(cut(shell(0.3, 0.325, 1, 0.056), () => true), flat(hex(S.overgirth ?? '#111111'), rnd, 0.03));
+    const irons = [-1, 1].map((sd) => { const [t, , w] = rowAt(0.36); return paint(new THREE.BoxGeometry(0.06, 0.05, 0.012).toNonIndexed().translate(0.36, t - 0.07, sd * (w * 0.62 + 0.03)), flat(hex('#c8ccd0'), rnd, 0.04)); });
+    irons.forEach((g) => g.deleteAttribute('uv'));
+    skinned(merge([pad, saddle, girth, over, ...irons]), mat).name = 'saddle';
+  }
 
   /* ----- head: wedge loft with jowls, face marking, muzzle; eyes, nostrils, ears, forelock ----- */
   const headM = new THREE.Matrix4().makeRotationZ(HEAD_TILT).setPosition(POLL);
@@ -1086,6 +1168,57 @@ const BODY = {
       seg.rotation.y = m * (0.025 + 0.012 * i) * Math.sin(TAU * (g - 0.3 - lag));
     });
   },
+  // trot: two small bounces per stride (lowest as each diagonal pair takes the weight), a level back,
+  // a steady head, a gently swinging tail
+  trot(rig, g, p, o) {
+    const { spine, hips, chest, neck1, neck2, head } = rig;
+    spine.position.set(0, spine.userData.rest.y - 0.03 + 0.022 * cyc(g, 2, 0.32), 0.006 * Math.sin(TAU * (g - 0.1)));
+    spine.rotation.z = 0.6 * DEG * cyc(g, 2, 0.3);
+    spine.rotation.x = 1.2 * DEG * Math.sin(TAU * (g - 0.2));
+    hips.rotation.z = 1.5 * DEG * cyc(g, 2, 0.35);
+    chest.rotation.z = -1 * DEG * cyc(g, 2, 0.3);
+    neck1.rotation.z = -2 * DEG + 1.2 * DEG * cyc(g, 2, 0.36);
+    neck2.rotation.z = 0.8 * DEG * cyc(g, 2, 0.4);
+    head.rotation.z = 2 * DEG - 1.4 * DEG * cyc(g, 2, 0.42);
+    idleEars(rig, p, o, -0.05);
+    for (const m of rig.mane) {
+      m.mesh.rotation.z = m.amp * (0.08 + 0.06 * cyc(g, 2, 0.1 * m.i));
+      m.mesh.rotation.x = m.amp * 0.05 * cyc(g, 2, 0.13 * m.i + 0.5);
+    }
+    rig.tail.forEach((seg, i) => {
+      const lag = 0.07 * i;
+      seg.rotation.z = (i ? 0.02 : 0.45) + 0.03 * cyc(g, 2, 0.2 + lag);
+      seg.rotation.y = (0.03 + 0.015 * i) * Math.sin(TAU * (g - 0.3 - lag));
+    });
+  },
+  // canter: one bound per stride with a rocking pitch (haunches down and forehand up as the hinds land,
+  // then the forehand drops onto the leading fore); the head nods once per stride
+  canter(rig, g, p, o) {
+    const m = rig.gait.lead === 'R' ? -1 : 1;
+    const { spine, hips, chest, neck1, neck2, head } = rig;
+    spine.position.set(0, spine.userData.rest.y - 0.03 + 0.035 * cyc(g, 1, 0.82), 0);
+    spine.rotation.z = 2.5 * DEG * cyc(g, 1, 0.02); // forehand up as the trailing hind lands, level for the diagonal pair, down onto the lead
+    spine.rotation.x = m * 1.2 * DEG * Math.sin(TAU * (g - 0.2));
+    const gather = cyc(g, 1, 0.95);
+    hips.rotation.z = 3 * DEG * gather;
+    chest.rotation.z = -1.5 * DEG * gather;
+    neck1.rotation.z = -1 * DEG + 4 * DEG * cyc(g, 1, 0.62);
+    neck2.rotation.z = 2.5 * DEG * cyc(g, 1, 0.68);
+    head.rotation.z = -4 * DEG * cyc(g, 1, 0.72);
+    for (const e of rig.ears) {
+      e.mesh.rotation.z = -0.02 + 0.06 * cyc(g, 1, 0.2 + e.side * 0.1);
+      e.mesh.rotation.x = 0.04 * cyc(g, 1, 0.3 + e.side * 0.2);
+    }
+    for (const mn of rig.mane) {
+      mn.mesh.rotation.z = mn.amp * (0.14 + 0.12 * cyc(g, 1, 0.08 * mn.i) + 0.04 * cyc(g, 2, 0.15 * mn.i));
+      mn.mesh.rotation.x = mn.amp * 0.08 * cyc(g, 1, 0.12 * mn.i + 0.5);
+    }
+    rig.tail.forEach((seg, i) => {
+      const lag = 0.08 * i;
+      seg.rotation.z = (i ? 0.0 : 0.3) + (0.04 + 0.01 * i) * cyc(g, 1, 0.1 + lag);
+      seg.rotation.y = m * (0.03 + 0.012 * i) * Math.sin(TAU * (g - 0.3 - lag));
+    });
+  },
   walk(rig, g, p, o) {
     const { spine, hips, chest, neck1, neck2, head } = rig;
     // two small dips per stride; the trunk sways over whichever side is bearing weight
@@ -1112,16 +1245,17 @@ const BODY = {
   },
   graze(rig, g, p, o) {
     const { spine, hips, chest, neck1, neck2, head } = rig;
-    // head down in the grass, cropping (small nods), breathing, the odd tail swish and ear flick
-    spine.position.set(0, spine.userData.rest.y - 0.08 + 0.004 * cyc(p, perLoopCycles(4), o), 0);
+    // head down with the muzzle in the grass (measured: ~8 cm above the ground), cropping (small nods),
+    // breathing, the odd tail swish and ear flick; the forehand sinks and the poll flexes to reach
+    spine.position.set(0, spine.userData.rest.y - 0.12 + 0.004 * cyc(p, perLoopCycles(4), o), 0);
     spine.rotation.set(0, 0, -3 * DEG);
     hips.rotation.z = 0;
-    chest.rotation.z = -6 * DEG;
-    neck1.rotation.z = -60 * DEG + 1.5 * DEG * cyc(p, perLoopCycles(7), o);
-    neck2.rotation.z = -10 * DEG;
-    head.rotation.z = 30 * DEG + 4 * DEG * Math.max(0, cyc(p, perLoopCycles(0.8), o * 3)) ** 2; // cropping
+    chest.rotation.z = -12 * DEG;
+    neck1.rotation.z = -68 * DEG + 1.5 * DEG * cyc(p, perLoopCycles(7), o);
+    neck2.rotation.z = -6 * DEG;
+    head.rotation.z = 55 * DEG + 4 * DEG * Math.max(0, cyc(p, perLoopCycles(0.8), o * 3)) ** 2; // cropping
     idleEars(rig, p, o, -0.02);
-    for (const m of rig.mane) { m.mesh.rotation.z = 0; m.mesh.rotation.x = 0; }
+    for (const m of rig.mane) { m.mesh.rotation.z = -0.35 * m.amp; m.mesh.rotation.x = 1.05 * m.amp; } // falls to one side
     const swish = Math.max(0, cyc(p, perLoopCycles(9), o + 0.3)) ** 4, wag = perLoopCycles(0.7);
     rig.tail.forEach((seg, i) => {
       seg.rotation.z = i ? 0.06 : 1.0;
@@ -1424,7 +1558,7 @@ const GROUND = {
   },
   // racetrack: striped turf, dirt course inside, infield lawn and ponds, apron in front of the stands
   track(loc, S) {
-    const T = trackLayout(loc), k = TAU / W;
+    const T = trackLayout(loc), k = TAU / W, night = !!loc.time?.night;
     // the horse's own course: turf, or the sand of a dirt-only track (harrowed in faint bands)
     const turf = colorOf(T.dirtOnly ? loc.dirt?.color ?? '#c9bea6' : loc.turf?.color ?? '#5f8f3a'), turfB = turf.clone().offsetHSL(0, T.dirtOnly ? 0 : 0.02, T.dirtOnly ? 0.02 : 0.035);
     const dirt = colorOf(loc.dirt?.color ?? '#b9a58a'), verge = colorOf(loc.verge ?? '#6b8f45');
@@ -1445,6 +1579,13 @@ const GROUND = {
         return smoothstep(Math.abs(T.bOuter) + 30, 640, Math.abs(zs)) * 10 * (0.5 + 0.5 * Math.sin(k * harm(130) * x + zs * 0.013));
       },
       color(x, z, rnd) {
+        const c = trackColor(x, z, rnd), zs = z * S;
+        // under floodlights the courses glow and the infield and surroundings fall off into the dark
+        return night && (zs < T.inner - 8 && zs > T.bInner + 8 || zs > T.standFront + 10) ? c.multiplyScalar(0.5) : c;
+      },
+    };
+    function trackColor(x, z, rnd) {
+      {
         const zs = z * S;
         if (zs > T.outer) return zs < T.standFront ? apron.clone() : outside.clone().lerp(apron, rnd() * 0.5);
         if (zs >= T.inner) return turfAt(x, zs, rnd);
@@ -1459,8 +1600,8 @@ const GROUND = {
         if (zs > T.bInner) return verge.clone();
         if (zs >= T.bOuter) return turfAt(x, zs, rnd);
         return outside.clone().lerp(lawn, rnd() * 0.4);
-      },
-    };
+      }
+    }
   },
 };
 
@@ -1736,7 +1877,7 @@ const PROP_BUILDERS = {
     for (const f of loc.infield ?? []) {
       if (f.type === 'jumps') jumpSet(k, f, T);
       // trees on the near bank: between the inner dirt rail and the water (never out on the courses)
-      const bankIn = -(f.distM - 4), bankOut = Math.max(bankIn, T.dIn - 4);
+      const bankIn = -(f.distM - 4), bankOut = Math.max(bankIn, Math.min(T.dIn - 4, -0.4 * f.distM)); // never right behind the rail
       if (f.type === 'pond') treeSet(k, 8, (r) => S * (bankIn + r() * (bankOut - bankIn)), ['#4f7a3c', '#5f8a45'], { autumn: 0.15, conifer: 0.2, size: [0.7, 0.4] });
     }
   },
@@ -1902,6 +2043,15 @@ const state = { horse: HORSE_LIST[0], custom: {}, loc: LOC_LIST[0], gait: 'gallo
 let rig = null, world = null, extras = [], wireOn = false;
 let loopPhase = 0, playing = true, speed = 1;
 
+// Race-day tack on a racecourse: the saddle cloth (white with a black number, as in JRA races) over a black
+// saddle and white girth. `saddleNumber` (the horse's number in its signature race) is optional data.
+// Cloth colours follow the location's signature race (`loc.saddleCloth`): JRA G1 = 紫紺 with white text, the
+// classics = 紫紺 with yellow, the Derby = white with black and gold edging; ordinary races white with black.
+function saddleFor(h, loc) {
+  const c = { cloth: '#3a2a96', ink: '#ffffff', ...(loc.saddleCloth ?? {}) };
+  return { ...c, number: h.saddleNumber ?? null, label: h.jp };
+}
+
 // A roster horse with the viewer's overrides on top, as a buildHorse() look.
 function currentLook() {
   const h = state.horse, c = state.custom;
@@ -1914,6 +2064,7 @@ function currentLook() {
     tailLen: c.tailLen ?? h.tailLen ?? 1,
     gear: c.gearOff ? null : h.gear ?? null,
     racehorse: !!h.silks, // racehorses get a bridle unless their gear says otherwise
+    saddle: !c.gearOff && h.silks && state.loc?.builder === 'track' ? saddleFor(h, state.loc) : null,
   };
 }
 
@@ -1925,7 +2076,7 @@ function disposeTree(root) {
     if (o.isInstancedMesh) o.dispose();
     if (o.isSkinnedMesh) o.skeleton.dispose();
   });
-  mats.forEach((m) => m.dispose());
+  mats.forEach((m) => { m.map?.dispose(); m.dispose(); }); // the saddle cloth has its own canvas texture
 }
 
 function rebuildHorse() {
@@ -2012,6 +2163,8 @@ function setLocation(id) {
   dust.on = loc.dust !== null;
   dust.setColor(loc.dust ?? PAL.dust);
   state.lead = loc.lead ?? 'L';
+  // the saddle and cloth only appear on racecourses: rebuild the hero if that changes
+  if (rig && !!rig.root.getObjectByName('saddle') !== !!currentLook().saddle) rebuildHorse();
   spawnExtras();
   setGait(loc.gait ?? 'gallop');
   syncTitle();

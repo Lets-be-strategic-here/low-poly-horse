@@ -3,6 +3,7 @@
    builder: 'country' | 'pasture' | 'track'; hand: course direction ('left' puts the grandstand on the
    camera's side as seen from the stands, 'right' mirrors it); W: metres before the scenery repeats.
    time: sun/sky/fog; extras: background horses ('companion' walks beside the hero, 'grazer' stands in a field).
+   saddleCloth (tracks): the cloth of the signature race; default JRA G1 = 紫紺 #3a2a96 with white text.
    Racetrack facts come from the JRA course pages and Japanese Wikipedia (sources listed per entry). */
 window.LOCATIONS = [
   {
@@ -128,6 +129,7 @@ window.LOCATIONS = [
     turf: { color: '#62903f', widthM: 30 }, dirt: { color: '#c0b294', widthM: 25 }, rails: { color: '#f6f6f2' },
     lawn: '#6e9a47', verge: '#679245', water: '#5f8590', leaf: ['#5d7c43', '#6d8a4a', '#b9a04a', '#c08240'], autumn: 0.2, dust: '#7b6c4b',
     infieldTrees: 0, // the infield is nearly all lake
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // classic (Kikuka Sho): 紫紺 with yellow text
     stand: { name: 'Goal Side Stand (2023)', lengthM: 255, floors: 7, depthM: 38, colors: { body: '#e7e6e2', roof: '#ecebe7', glass: '#41698c', seats: '#dcdcd8' } },
     infield: [{ type: 'pond', xFrac: 0, sizeM: [550, 100], distM: 80, notes: 'The flood-control lake (a remnant of Ogura-ike) fills almost the whole infield; longer than W, so it reads as one continuous lake. Benten island with its shrine sits near the middle.' }],
     backdrop: {
@@ -167,6 +169,7 @@ window.LOCATIONS = [
     turf: { color: '#5f9a3c', widthM: 27 }, dirt: { color: '#a8a194', widthM: 24 }, rails: { color: '#f4f4f0' },
     lawn: '#a3a467', verge: '#8e9c57', leaf: ['#7c9a52', '#6f8f4a', '#86a258'], autumn: 0, dust: '#7d7158',
     blossom: ['#f4d4dc', '#eec3cf', '#f7e0e6'], infieldTrees: 28, // cherry trees ring the course and line the infield
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // classic (Oka Sho): 紫紺 with yellow text
     stand: { name: 'Grandstand (east and west wings, 1991)', lengthM: 280, floors: 7, depthM: 35, colors: { body: '#c4c8c9', roof: '#d3d6d8', glass: '#4f6b70', seats: '#5d6b7d' } },
     infield: [{ type: 'jumps', count: 4, depthM: 140, notes: 'Steeplechase course inside the dirt (1366.7 m loop plus a diagonal).' }],
     backdrop: {
@@ -249,6 +252,7 @@ window.LOCATIONS = [
     rails: { color: '#f4f4f0' },
     lawn: '#3f6a31', apron: '#5fa391', // the teal-coated apron in front of the stands; the infield is lit less than the track
     leaf: ['#3f6436', '#4d7340', '#5a7d45'], autumn: 0, dust: '#bdb5a5',
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // TCK graded race: 紫紺 with yellow text
     stand: { name: 'L-WING (2003) and G-FRONT (2015)', lengthM: 330, floors: 7, depthM: 40, colors: { body: '#e3e5e6', roof: '#eceeef', glass: '#5d7a87', seats: '#e07a3c' } },
     infield: [], infieldTrees: 3, // hedges and a few trees, not a park
     backdrop: {
@@ -280,12 +284,98 @@ window.LOCATIONS = [
     sources: ['https://ja.wikipedia.org/wiki/大井競馬場', 'https://www.oddspark.com/keiba/racetrack/33/course.html', 'https://keibajo.jp/oi/top.html', 'https://ja.wikipedia.org/wiki/帝王賞', 'https://ja.wikipedia.org/wiki/ジャパンダートクラシック', 'https://ja.wikipedia.org/wiki/東京大賞典', 'https://ja.wikipedia.org/wiki/ナイター競走', 'https://commons.wikimedia.org/wiki/File:大井競馬場.jpg'],
     uncertain: ['time.post (20:10 assumed)', 'sky / light values (chosen for an urban night)', 'dirt.color (dusk photo)', 'stand size and colours', 'floodlights (count, height, colour from photos; no published spec)', 'backdrop.landmarks[0] (28.48 × 8.0 m from an old install list; position unknown)', 'skyline bearings and heights (OSM)', 'the Tokyo Daishoten is run at a day/dusk meeting, not under lights', 'needs new kits: the monorail with a lit train, the L-WING roof, the left-handed course (2021)'],
   },
+  {
+    id: 'kawasaki', en: 'Kawasaki Racecourse (night)', jp: '川崎競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
+    hand: 'left', surface: 'dirt', lead: 'R', W: 400, seed: 2037,
+    dirtOnly: true, // one 25 m dirt course, no turf
+    // Kawasaki Kinen (JpnI, 2100 m): moved to early April in 2024 and run under lights since (post ~20:10)
+    time: {
+      month: 4, post: '20:10', sunElevDeg: -24, sunAzimDeg: 60, fogNear: 140, fogFar: 460, exposure: 1.15, night: true,
+      sky: { top: '#070b1c', mid: '#121a34', horizon: '#4a3a48', sun: '#2a2540' }, // navy sky, warm industrial glow low down
+      hemiSky: '#262f48', hemiGround: '#2b2822', hemiIntensity: 0.4,
+    },
+    floodlights: { count: 8, heightM: 25, color: '#f3f1e8', intensity: 1.0, poleColor: '#b8bcc0' },
+    dirt: { color: '#b09a7e', widthM: 25 }, // warm grey-tan Aomori sand (since 2011)
+    rails: { color: '#f4f4f0' },
+    lawn: '#55573a', apron: '#9a9c98', leaf: ['#3f6436', '#4d7340', '#5a7d45'], autumn: 0, dust: '#a8957c',
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // assumed as at Oi (per-track NAR conventions unchecked)
+    stand: { name: 'No.1 (1983) and No.2 (1997, renewed 2016) stands', lengthM: 185, floors: 5, depthM: 40, colors: { body: '#e6e7e8', roof: '#eef0f1', glass: '#4a5a66', seats: '#d46a3a' } },
+    infield: [], infieldTrees: 2, // lawn plaza, betting halls and a car park
+    backdrop: {
+      ranges: [],
+      landmarks: [
+        { type: 'screen', bearingDeg: -22, distM: 300, wM: 72, hM: 16, liftM: 3 },        // Kawasaki Dream Vision (72 × 16 m, a 2010 Guinness record)
+        { type: 'skyline', fromDeg: -40, toDeg: 35, distM: 520, heightM: [8, 36] },       // Fujimi flats and shops beyond the back straight
+        { type: 'skyline', fromDeg: 35, toDeg: 70, distM: 520, heightM: [15, 50] },       // downtown Kawasaki-ku
+        { type: 'skyline', fromDeg: 70, toDeg: 115, distM: 520, heightM: [30, 110] },     // Kawasaki Station high-rises
+        { type: 'skyline', fromDeg: -115, toDeg: -45, distM: 520, heightM: [10, 45] },    // Keihin coastal factory belt
+        { type: 'skyline', fromDeg: -160, toDeg: -135, distM: 520, heightM: [60, 100] },  // Minatocho riverside towers behind the stands
+      ],
+      clouds: 3,
+    },
+    facts: {
+      turfCircM: null, dirtCircM: 1200, turfStraightM: null, dirtStraightM: 300, elevationM: 0,
+      straightProfile: [[300, 0], [0, 0]],
+      races: [
+        { name: 'Kawasaki Kinen', jp: '川崎記念', surface: 'dirt', distM: 2100, month: 4 },
+        { name: 'Zen-Nippon Nisai Yushun', jp: '全日本2歳優駿', surface: 'dirt', distM: 1600, month: 12 },
+        { name: 'JBC Classic (host years)', jp: 'JBCクラシック', surface: 'dirt', distM: 2100, month: 11 },
+        { name: 'JBC Sprint (host years)', jp: 'JBCスプリント', surface: 'dirt', distM: 1400, month: 11 },
+        { name: 'JBC Ladies’ Classic (host years)', jp: 'JBCレディスクラシック', surface: 'dirt', distM: 1600, month: 11 },
+      ],
+    },
+    signature: 'Sparking Night: a tight, flat 1,200 m left-handed sand oval with a 300 m straight, the 72 m Kawasaki Dream Vision across the infield, and the city’s lights all round.',
+    sources: ['https://ja.wikipedia.org/wiki/川崎競馬場', 'https://en.wikipedia.org/wiki/Kawasaki_Racecourse', 'https://www.oddspark.com/keiba/racetrack/34/course.html', 'https://ja.wikipedia.org/wiki/川崎記念', 'https://nar.netkeiba.com/race/result.html?race_id=202545040911', 'https://en.wikipedia.org/wiki/List_of_largest_video_screens'],
+    uncertain: ['time (computed sun; stand orientation from the aerial)', 'sky / light values', 'floodlights (from photos)', 'dirt.color', 'lawn (dormant in April)', 'stand size and colours', 'backdrop.landmarks[0] (size sourced; really ~190 m away)', 'skyline bearings and heights', 'JBC distances (2012/2016)', 'needs new kits: the infield car park and halls, lamps along the stand roofs'],
+  },
+  {
+    id: 'funabashi', en: 'Funabashi Racecourse (night)', jp: '船橋競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
+    hand: 'left', surface: 'dirt', lead: 'R', W: 400, seed: 2038,
+    dirtOnly: true, // one dirt oval, no turf
+    // Kashiwa Kinen (JpnI, 1600 m), early May, "Heartbeat Nighter" post ~20:05
+    time: {
+      month: 5, post: '20:05', sunElevDeg: -18, sunAzimDeg: 54, fogNear: 150, fogFar: 480, exposure: 1.15, night: true,
+      sky: { top: '#060b1c', mid: '#121a33', horizon: '#4a3a4c', sun: '#2a2540' }, // full night, bayside city glow
+      hemiSky: '#25304a', hemiGround: '#2c2a24', hemiIntensity: 0.4,
+    },
+    floodlights: { count: 12, heightM: 25, color: '#f3f5f7', intensity: 1.0, poleColor: '#b9bdc1' },
+    dirt: { color: '#b2a898', widthM: 25 }, // grey sand
+    rails: { color: '#f4f4f0' },
+    lawn: '#466e35', apron: '#7f837f', leaf: ['#3e5f37', '#4f7540', '#5f8447'], autumn: 0, dust: '#a99f90',
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // assumed as at Oi (per-track NAR conventions unchecked)
+    stand: { name: 'New stand (A 2022, B 2024)', lengthM: 140, floors: 5, depthM: 35, colors: { body: '#e4e5e3', roof: '#e9eaea', glass: '#424850', seats: '#9b93bf' } },
+    infield: [{ type: 'pond', xFrac: 0.8, sizeM: [55, 90], distM: 125, notes: 'Reedy pond and wetland at the 1st–2nd-corner end of the infield.' }],
+    infieldTrees: 6,
+    backdrop: {
+      ranges: [],
+      landmarks: [
+        { type: 'screen', bearingDeg: -10, distM: 300, wM: 17.5, hM: 9.2, liftM: 2 },      // infield vision (2017)
+        { type: 'skyline', fromDeg: -35, toDeg: 75, distM: 520, heightM: [6, 16] },       // stable rows, Keiyo Line and expressway viaducts
+        { type: 'skyline', fromDeg: 35, toDeg: 70, distM: 560, heightM: [20, 60] },       // Minami-Funabashi towers, IKEA, LaLa arena
+        { type: 'skyline', fromDeg: 75, toDeg: 115, distM: 500, heightM: [12, 30] },      // LaLaport TOKYO-BAY
+        { type: 'skyline', fromDeg: -120, toDeg: -75, distM: 520, heightM: [10, 20] },    // public-housing flats; Yatsu tidal flat beyond
+        { type: 'skyline', fromDeg: 135, toDeg: 170, distM: 540, heightM: [20, 80] },     // central Funabashi behind the stands
+      ],
+      clouds: 2,
+    },
+    facts: {
+      turfCircM: null, dirtCircM: 1400, turfStraightM: null, dirtStraightM: 308, elevationM: 0,
+      straightProfile: [[308, 0], [0, 0]],
+      races: [
+        { name: 'Kashiwa Kinen', jp: 'かしわ記念', surface: 'dirt', distM: 1600, month: 5 },
+        { name: 'JBC Classic (host years)', jp: 'JBCクラシック', surface: 'dirt', distM: 1800, month: 11 },
+        { name: 'JBC Sprint (host years)', jp: 'JBCスプリント', surface: 'dirt', distM: 1000, month: 11 },
+        { name: 'JBC Ladies’ Classic (host years)', jp: 'JBCレディスクラシック', surface: 'dirt', distM: 1800, month: 11 },
+      ],
+    },
+    signature: 'Heartbeat Nighter: a flat, grey-sand, left-handed oval with banked spiral turns and a short 308 m straight, floodlight masts on both sides, the 2022–24 stand of white slabs and dark glass, and LaLaport TOKYO-BAY next door.',
+    sources: ['https://ja.wikipedia.org/wiki/船橋競馬場', 'https://en.wikipedia.org/wiki/Funabashi_Racecourse', 'https://ja.wikipedia.org/wiki/かしわ記念', 'https://nar.netkeiba.com/race/result.html?race_id=202543050511', 'https://ja.wikipedia.org/wiki/ナイター競走', 'https://commons.wikimedia.org/wiki/File:Funabashi_Racecourse_Aerial_view.jpg'],
+    uncertain: ['time (computed sun; stand orientation from a 1989 aerial)', 'sky / light values', 'floodlights (from photos)', 'dirt.color', 'apron / lawn / leaf', 'stand size and colours', 'backdrop.landmarks[0] (size estimated; really ~60–80 m away)', 'skyline bearings and heights', 'infield pond size and position', 'needs new kits: the slab-and-glass stand, yellow-lit rails, the infield mini-oval'],
+  },
 ];
 
 // Every other venue on the roadmap, shown as "soon" in the picker (order = build order).
 window.LOCATION_QUEUE = [
-  { id: 'kawasaki', en: 'Kawasaki Racecourse', group: 'NAR JpnI' },
-  { id: 'funabashi', en: 'Funabashi Racecourse', group: 'NAR JpnI' },
   { id: 'urawa', en: 'Urawa Racecourse', group: 'NAR JpnI' },
   { id: 'morioka', en: 'Morioka Racecourse', group: 'NAR JpnI' },
   { id: 'kanazawa', en: 'Kanazawa Racecourse (JBC years)', group: 'NAR JpnI' },
