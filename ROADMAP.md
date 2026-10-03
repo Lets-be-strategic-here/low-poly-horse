@@ -1,0 +1,155 @@
+# Roadmap
+
+Where the low-poly horse goes next, in build order. Each **batch** adds the next horses in generation
+order, a location or two, and one engine item. Horses come from the official character list at
+<https://umamusume.jp/character/>; every entry models the **real racehorse** behind a character.
+
+## Status after batch 1 (October 2026)
+
+| Area | Done |
+|---|---|
+| Engine | Horse profiles drive the whole model: coat, markings, size and hair length. A gait table holds the gallop (left or right lead), a new **walk** and a standing **graze** pose. Stride counts are recomputed for each horse and location, so the loop stays seamless and planted hooves have 0.00 mm slip (measured). Includes a location system, background horses, the side panel and the URL hash. |
+| Colour | All 8 JBIS registry coats (鹿毛 … 白毛), a greyness slider for 芦毛, pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. |
+| Parts | Mane and tail length, height (uniform scale) and weight (bulk of trunk, neck and upper limbs). |
+| Horses | 11 of 152, roster #1–#11, from Byerley Turk (c.1680) to Sirius Symboli (1982). |
+| Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), **Tokyo** and **Nakayama** (JRA G1). |
+| Research | Two reusable agent templates in `.claude/agents/`. A smoke test ran each once; batch-2 drafts are in `research/drafts/`. |
+
+## Order of work
+
+Each batch runs in this order:
+1. Research (agents in parallel).
+2. Engine item.
+3. Data entry.
+4. Visual check.
+5. Commit.
+
+Engine items are placed before the first horse that needs them.
+
+| Batch | Horses (roster #, generation) | Locations | Engine item |
+|---|---|---|---|
+| ✅ 1 | #1–11 · c.1680–1982 · Byerley Turk, Darley Arabian, Godolphin Barb, Saint Lite, Speed Symboli, Haiseiko, Maruzensky, Katsuragi Ace, Mr. C.B., Symboli Rudolf, Sirius Symboli | Hidaka, Countryside, Tokyo, Nakayama | Profiles, gaits, locations, UI |
+| 2 | #12–19 · 1983–85 · Mejiro Ramonu, Gold City, Inari One, Tamamo Cross, Bamboo Memory, Mejiro Ardan, Oguri Cap, Sakura Chiyono O | Kyoto (big infield pond + Benten island), Hanshin (cherry trees, Rokko mountains) | **Grey coats**: dapple pattern, darker heads and legs on young greys (Oguri Cap, Tamamo Cross) |
+| 3 | #20–27 · 1985–87 · Super Creek … Mejiro Palmer | Chukyo (Pegasus and Twin Hat stands) | **Race-speed gallop** (see Anatomy 1) |
+| 4 | #28–35 · 1987–89 · Mejiro Ryan … Mihono Bourbon | Oi (night racing: floodlights, white sand, dirt-only layout) | **Gear rendering** from `gear`: hood/メンコ, blinkers, bit-lifter, bridle and reins |
+| 5 | #36–43 · 1989–90 · Nishino Flower … Sakura Chitose O | Kawakami → see NAR list: Kawasaki (72 m screen), Funabashi | Shadow roll (needed for Narita Brian in B6), saddle and saddle cloth |
+| 6 | #44–51 · 1990–92 · Winning Ticket … Fuji Kiseki | Urawa, Morioka (Mt Iwate, NAR's only turf course) | Trot and canter gaits |
+| 7 | #52–59 · 1992–94 · Genuine … Matikanefukukitaru | Kanazawa (tiled-roof screen), Saga (both JpnI only in JBC years) | Head shape, ear and crest parameters (conformation) |
+| 8 | #60–67 · 1994–95 · Mejiro Bright … Grass Wonder | Racecourse paddock (walking the parade ring) | Path mode (curved walking paths) |
+| 9 | #68–75 · 1995–96 · King Halo … Meisho Doto | Beach at dawn | Sand builder, splash and dust variants |
+| 10 | #76–83 · 1996–98 · Narita Top Road … Calstone Light O | Training-centre hill gallop (坂路) | Sloped straights (also needed for real hills) |
+| 11 | #84–91 · 1998–99 · Dantsu Flame … Symboli Kris S | Snowy Hokkaido field | **Rigid-skin merge** (one draw call per horse; see Performance) |
+| 12 | #92–99 · 1999–2002 · Tanino Gimlet … Cesario | — | **Jockey in the owner's silks** (勝負服, already in `silks`) |
+| 13–19 | #100–152 · 2002–2021 · Daring Heart … Forever Young (8 per batch; the exact split is in `data/roster.js`) | Seasonal variants of existing tracks | **Race mode** (below), then polish |
+
+Before every batch, re-read the official list. New characters are added over time, and they slot into the roster by foaling year.
+
+## Locations
+
+### JRA G1 courses (5): build all
+| Venue | Hand | Straight (turf/dirt) | Signature | Status |
+|---|---|---|---|---|
+| Tokyo 東京 | L | 525.9 / 501.6 m | Fuji View Stand, Mt Fuji, 66 m Turf Vision | ✅ |
+| Nakayama 中山 | R | 310 / 308 m | 2.2 m final hill, steeplechase hedge and brush jumps | ✅ |
+| Kyoto 京都 | R | 403.7 (outer) / 329.1 m | Infield lake with Benten island, 淀の坂 at the 3rd corner | B2 (draft ready) |
+| Hanshin 阪神 | R | 473.6 (outer) / 352.7 m | Cherry blossom for the Oka Sho, final hill, Rokko mountains | B2 |
+| Chukyo 中京 | L | 412.5 / 410.7 m | Pegasus and Twin Hat stands, hill at the start of the straight | B3 |
+
+### NAR JpnI venues (7)
+- Run JpnI races every year:
+  - Oi 大井: night "Twinkle" racing on white sand.
+  - Kawasaki 川崎
+  - Funabashi 船橋
+  - Urawa 浦和: JpnI since the 2024 dirt reform.
+  - Morioka 盛岡
+- JpnI only in JBC host years: Kanazawa 金沢 and Saga 佐賀.
+- The track builder needs a **dirt-only layout** and night lighting before Oi.
+
+### Strolling and generic locations
+| Location | Status |
+|---|---|
+| Hidaka stud farm | ✅ |
+| Countryside trail | ✅ |
+| Racecourse paddock | Planned |
+| Beach | Planned |
+| Training-centre hill | Planned |
+| Snowy field | Planned |
+
+Each strolling location gets 1–3 **background horses**: generic coats, either walking beside the hero or grazing in a field.
+
+## Anatomical accuracy (ordered by visual payoff)
+1. **Race-speed gallop.** Today's gallop has 2.6 m strides at 0.42 s, about 6 m/s, which is a canter pace. A racing Thoroughbred runs about 16–17 m/s:
+   - stride 6.5–7.5 m, about 2.3 strides/s;
+   - duty factor about 0.2–0.25 per limb;
+   - longer suspension;
+   - more scapular swing and more lumbosacral flexion.
+
+   The legs need more reach (lower body, about 18° scapular swing). Race tracks switch to this gait.
+2. **Lead changes.** The lead is already set per location (the outside lead on the home straight). Animate flying changes in race mode.
+3. **Trot and canter**, plus blended transitions between gaits.
+4. **Conformation parameters** per horse:
+   - neck length and crest (Godolphin's high crest);
+   - head profile (straight, dished, Roman);
+   - ear size;
+   - croup slope;
+   - pastern angle.
+5. **Hooves.** Front hooves rounder and larger than hind; aluminium racing plates.
+6. **Muscle landmarks**: shoulder, forearm, gaskin, point of hip, point of buttock. Use the girth and cannon measurements when the data has them (Haiseiko: 188 cm chest, 21.5 cm cannon).
+7. **Breathing locked to the stride** at the gallop (1:1 nostril flare and flank).
+8. **Neck skinning.** Add a neck bone or spread the weights; the grazing pose pinches the throat.
+9. Eye detail (brow, sclera); chestnuts and ergots.
+
+**Validation:**
+- Compare frames side by side with Muybridge's photo sequences.
+- Proportion checks: body length ≈ height at the withers, leg length ≈ body depth.
+- The slip and reach test below.
+
+## Colour customization (next)
+- Dapple, roan and age-greying patterns.
+- Flaxen mane toggle.
+- Lighter muzzle and flank (soft-tan) for 青鹿毛.
+- Share a customized horse through the URL hash; today the hash stores the horse, location and gait, not the overrides.
+- `recolor()` without rebuilding the geometry.
+
+## Part customization (next, in order)
+1. Gear already recorded in the data:
+   - hood (メンコ): Haiseiko, Katsuragi Ace;
+   - shadow roll: Narita Brian, B6;
+   - blinkers;
+   - bit-lifter (ハミ吊り): Mr. C.B.;
+   - pompom: Maruzensky.
+2. Bridle, reins, saddle, saddle cloth with a race number, leg bandages.
+3. Mane styles (pulled, long, braided), forelock, tail set.
+4. Jockey wearing the owner's silks (勝負服).
+
+## Race mode (later)
+- A field of horses whose positions follow their real running styles (逃げ 先行 差し 追込, already in the data).
+- Real course geometry: turns, plus elevation from `facts.straightProfile`.
+- Gate start and lead changes.
+- Prerequisite: the rigid-skin merge.
+
+## Performance
+- **Rigid-skin merge.** Each horse is 58 meshes, about 112 draw calls with shadows. Merge them into one SkinnedMesh per horse, and let grazer copies share one skeleton. Required before race mode or larger herds.
+- Props are already static instanced strips that only slide each frame, so they cost no per-frame CPU.
+
+## Research workflow (one agent per horse / per location)
+- **Agent templates:**
+  - `.claude/agents/horse-researcher.md` returns one `HORSES` entry.
+  - `.claude/agents/location-researcher.md` returns one `LOCATIONS` entry.
+  - Both run on Sonnet. In the smoke tests a horse took about 1 minute and a track about 35 seconds.
+- **Per batch:**
+  1. Read the official list again and take the next 8 names from `data/roster.js`.
+  2. Start 8 horse-researcher agents and 1–2 location-researcher agents **in one message**. The prompt is just the subject:
+     - `Mejiro Ramonu / メジロラモーヌ / 1983`
+     - `track: Kyoto Racecourse / 京都競馬場`
+  3. Review each result's `uncertain` list, then paste the entries into `data/horses.js` / `data/locations.js`.
+  4. Take a screenshot of each new entry and run the checks below.
+- If a session doesn't list the custom agent types (they load at start-up), use a general-purpose agent with `Read .claude/agents/<name>.md and follow it. <subject>`.
+- **Blender is not part of this pipeline;** the scene is procedural Three.js. If Blender is ever used (for example, reference renders), configure it for **GPU only**: Cycles device = GPU (OptiX/CUDA/HIP) with the CPU devices unticked.
+
+## Checks for every batch
+- **No slip and no IK clamping.** In the console, for each leg `id`, step `__horse.setPhase(p)` through the loop. During stance, `__horse.toeWorld(id).x + p * W` must stay constant (measured 0.00 mm at walk and gallop for scale 0.93–1.05) and `toeWorld(id).y` must stay ≈ 0.
+- **Seamless loop.** `__horse.strides` is a whole number for every horse, gait and location.
+- **Console** is clean.
+- **Phone width.** At 375 px there's no horizontal scroll.
+- **Visual.** A side and a 3/4 screenshot of each new horse and location.
