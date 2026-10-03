@@ -554,11 +554,64 @@ window.LOCATIONS = [
     sources: ['https://ja.wikipedia.org/wiki/佐賀競馬場', 'https://www.sagakeiba.net/raceinfo/course/', 'https://www.sagakeiba.net/guide/', 'https://www.oddspark.com/keiba/racetrack/61/course.html', 'https://ja.wikipedia.org/wiki/JBCクラシック', 'https://nar.netkeiba.com/race/result.html?race_id=202455110411', 'https://nar.netkeiba.com/race/result.html?race_id=202455110410', 'https://nar.netkeiba.com/race/result.html?race_id=202455110409', 'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)', 'https://ja.wikipedia.org/wiki/ナイター競走', 'https://www.openstreetmap.org/way/850680074', 'https://commons.wikimedia.org/wiki/File:Saga_Racecourse_Aerial_photograph.1987.jpg', 'https://commons.wikimedia.org/wiki/File:Saga_Racecourse._20080815.jpg', 'https://commons.wikimedia.org/wiki/File:Vaincre_Tateyama_in_Saga_Race_Cource.jpg', 'https://commons.wikimedia.org/wiki/File:UMATENAデビューステージにて(2024年4月28日).jpg', 'https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php'],
     uncertain: ['time (sun computed for 18:30, 4 Nov 2024; stand bearing 32.5°/122.5° from the OSM/GSI footprint)', 'sky / light values', 'floodlights (count and height from a 2024 photo; no published spec)', 'dirt.color (photos)', 'dirt.widthM (19.2–24 m; 24 used)', 'lawn / leaf / apron', 'stand (length and depth from the footprint; floors, colours and seats from photos; build year unknown)', 'backdrop.ranges (ranges are rings, so the Sefuri peaks that stand NNW behind the stands also show over the ESE ridge; the Minō range 20+ km ESE is hidden by the ridge and left out)', 'backdrop.landmarks[0] (screen size and bearing estimated from a photo; really ~100 m away in the infield)', 'Kyushu Shinkansen (~2.2 km ESE, behind the ridge) and Nagasaki Expressway (~2 km N, behind the stands) not drawn', 'saddleCloth (the 2024 JBC Ladies’ Classic used pink text for horse and race names)', 'needs new kits: red-brick stand, infield playground, pergola and clipped hedges'],
   },
+  {
+    id: 'paddock', en: 'Tokyo Racecourse paddock', jp: '東京競馬場 パドック', group: 'Strolling', builder: 'paddock', gait: 'walk', seed: 2050,
+    // Path mode: the horse walks round the parade ring with the rest of the Derby field, in number order (馬番順).
+    // Centre line of the beige walking lane, fitted to the GSI aerial at 0.485 m/px: the lane runs 76.9 × 22.8 m centre to centre and
+    // its outer edge measures 83 × 25 m, long axis E–W. The real ends are flatter than semicircles (more like a rounded rectangle).
+    // Horses walk counter-clockwise with the handler on the inside; the near-side runners walk west to east (+X) past the south terraces.
+    path: { shape: 'stadium', straightM: 54, radiusM: 11.4, laneWidthM: 3, dir: 'ccw' },
+    // Derby post 15:40 (2025); the field parades about 15:00–15:10. Sun computed for 1 Jun 15:05 JST at 35.666N 139.483E:
+    // elevation 43.7°, azimuth 267° (W), i.e. from the direction the near-side horses come from.
+    time: {
+      month: 5, post: '15:40', sunElevDeg: 43, sunAzimDeg: -87, fogNear: 60, fogFar: 260, exposure: 1.0,
+      sky: { top: '#5a8ed6', mid: '#a0c3ea', horizon: '#d8e5ec', sun: '#fff6e2' }, sunColor: '#fff2da', sunIntensity: 3.0,
+      hemiSky: '#dce8f4', hemiGround: '#8e8660', hemiIntensity: 1.25,
+    },
+    // Bands from the lawn outward: teal rubber apron ~3 m, the salmon-beige lane ~2.5–3 m (4–5 m at the ends), a teal strip ~1.2 m,
+    // a flower strip (Derby day: red salvia, marigolds, begonias, blue spikes), a two-tier clipped box hedge ~0.9 m, then the rail
+    ground: { lane: '#d0a580', edging: '#5e9a87', centre: '#71894c', outer: '#cbc1b2', bed: '#6b5a44', innerApronM: 3, outerStripM: 1.2, flowersM: 0.6 },
+    flowers: ['#d8263a', '#d8263a', '#f29a1c', '#f2c81e', '#e8648c', '#5a6ad0'],
+    hedge: { side: 'outer', heightM: 0.9, tiers: 2, color: '#4f5c2a' },
+    rail: { color: '#5a4c3e', top: '#8a6a48', heightM: 1.1, gapM: 3.0, drape: '#a3233a' }, // bronze-brown slatted metal fence, wood-look top rail; crimson drapes on Derby day
+    centre: {
+      trees: 0, flowerBeds: 0, discs: 18, discColor: '#8fcab4', logo: '#4d6e3a',
+      features: ['18 numbered pale-teal discs (white numbers) in two rows of 9 along the long sides of the lawn: the とまれ / mounting spots',
+        'a darker-green logo panel with white lettering in the middle of the lawn', 'jockeys walk out in a line across the lawn from the west end to their horses'],
+    },
+    // South (stand) side: shallow light-stone steps with darker nosing bands, about 13.5 m from the rail to the edge of the Fuji View
+    // Stand's 2F deck, which overhangs the back rows. span: the terraces line the near straight and run a little into both bends.
+    terraces: {
+      rows: 8, stepM: 1.4, riseM: 0.25, distM: 1.0, span: [-8, 62],
+      colors: { step: '#cdc3b4', nosing: '#8e8a84', crowd: ['#f1efe9', '#262a33', '#8d939c', '#c8b89e', '#5b7da6', '#d9d4c8', '#3d4a5c'] },
+      roof: { depthM: 4, heightM: 5.3, color: '#b8a588', fascia: '#b83a50' }, // 2F deck: warm-beige soffit, crimson fascia on Derby day
+    },
+    // Paddock Vision (also the odds board): a grey aluminium frame 29.5 × 13 m on two beige stone plinths, 14.9 m tall overall; the LED
+    // face is about 23 × 11 m, wrapped in a red-and-gold 日本ダービー frame on Derby day. Its centre is 7.6 m west and 27.5 m north of the ring centre.
+    screen: { wM: 23, hM: 11, liftM: 3, bearingDeg: -15, distM: 28, frameM: 1.4, frameColor: '#b4b5bb', plinth: '#d1c8b9', wrap: '#b02a3a' },
+    buildings: [
+      { name: 'Fuji View Stand, rear face: 2F deck plus three balcony tiers over the paddock', bearingDeg: 180, distM: 34, wM: 300, hM: 34, color: '#c4bdb1', glass: '#7d98ab' },
+      { name: 'West-end deck over the horses’ entrance passage', bearingDeg: -90, distM: 48, wM: 30, hM: 5.5, color: '#cec7bb' },
+      { name: 'Two-storey block NW of the ring (OSM, 11.1 m)', bearingDeg: -65, distM: 67, wM: 20, hM: 11, color: '#e6e4de' },
+      { name: 'JRA stone monolith, NE corner', bearingDeg: 65, distM: 45, wM: 6, hM: 3.5, color: '#cfc6b6' },
+    ],
+    trees: { count: 22, heightM: [12, 24], conifer: 0.6, leaf: ['#3a5440', '#4a6548', '#5d7f40', '#6f8f4a'] }, // huge deodar cedars (ヒマラヤスギ) and broadleaves behind the screen and at the ends
+    lawn: '#6f9047', dust: null,
+    saddleCloth: { cloth: '#f4f4f0', ink: '#141414', edge: '#c9a227' }, // Derby day: white cloth, black text, gold edging (ja.wikipedia ゼッケン)
+    runners: 18,
+    backdrop: { ranges: [], clouds: 6 },
+    facts: {
+      ringLengthM: 180, built: null,
+      notes: 'Outer edge of the beige lane is 83 × 25 m and the lawn is about 64 × 14.5 m. Spectators line the south terraces, the west end, a narrow standing strip under the screen on the north side, and the east-end plaza. The Paddock Vision doubles as the odds board; the Tokinominoru (トキノミノル) statue and the Yasuda Isaemon (安田伊左衛門) bust are meeting spots in the paddock. 2025 Derby: 1 June, post 15:40, 18 runners.',
+    },
+    signature: 'A long, flat-ended oval with a salmon-beige lane between teal rubber bands round a bright lawn of numbered discs; across the ring the Paddock Vision (Derby-red 日本ダービー wrap) stands among huge deodar cedars, and the Fuji View Stand’s deck rises over the stone terraces opposite.',
+    sources: ['https://www.openstreetmap.org/way/1426167544', 'https://www.openstreetmap.org/way/1540198726', 'https://www.openstreetmap.org/way/1540198727', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/18/232640/103240.jpg', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/18/232641/103240.jpg', 'https://ja.wikipedia.org/wiki/東京競馬場', 'https://ja.wikipedia.org/wiki/東京優駿', 'https://db.netkeiba.com/race/202505021211/', 'https://commons.wikimedia.org/wiki/Category:Racecourse_saddling_paddocks_in_Tokyo_Racecourse', 'https://commons.wikimedia.org/wiki/File:無人_(48555723597).jpg', 'https://commons.wikimedia.org/wiki/File:短軸側から_(47935906562).jpg', 'https://commons.wikimedia.org/wiki/File:Japanese_derby_day_日本ダービーデー_(52106904801).jpg', 'https://commons.wikimedia.org/wiki/File:Japanese_derby_day_日本ダービーデー_(52107191564).jpg', 'https://commons.wikimedia.org/wiki/File:February_stakes_paddock_-_フェブラリーステークス_パドック_(46208106935).jpg', 'https://commons.wikimedia.org/wiki/File:Paddock_at_Japan_cup_パドック、ジャパンカップ_2019_(49122339546).jpg'],
+    uncertain: ['path (a stadium fitted to a 0.49 m/px aerial: the real ends are flatter and the long sides bulge about 1 m)', 'path.laneWidthM (2.4 m on the straights, 4–5 m at the ends)', 'path.dir (ccw worked out from horse headings in two photos)', 'ground / rail / terraces colours (from phone photos)', 'rail.heightM, rail.gapM', 'terraces rows / step / rise / dist (only the ~13.5 m total depth is measured)', 'terraces.roof (the crimson fascia may be Derby-day bunting)', 'screen size and lift (from the OSM height, the footprint and one 2019 photo)', 'buildings (stand height and distance not sourced; the stand is drawn as one flat block)', 'trees (count, heights and species by eye)', 'saddleCloth (the Derby cloth colours from the ゼッケン article; the hero keeps the number of its own signature win)', 'runners are generic coats', 'needs kits: the deck balconies of the Fuji View Stand, the lawn numbers and logo lettering, the statue and bust, jockeys and handlers'],
+  },
 ];
 
 // Every other venue on the roadmap, shown as "soon" in the picker (order = build order).
 window.LOCATION_QUEUE = [
-  { id: 'paddock', en: 'Racecourse paddock', group: 'Strolling' },
   { id: 'beach', en: 'Beach at dawn', group: 'Strolling' },
   { id: 'hill-gallops', en: 'Training-centre hill gallop (坂路)', group: 'Strolling' },
 ];

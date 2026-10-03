@@ -44,6 +44,15 @@ birch lane) and describe the typical look: fence type and colour, ground cover a
 buildings, trees, horizon, season and light. Fill `time`, `ground`, `fence`, `backdrop` and a few
 background horses in `extras`; say in `uncertain` if the place needs a new builder (e.g. sand for a beach).
 
+## Paddock (`builder: 'paddock'`, path mode)
+A parade ring the horse walks round with the rest of the field. Fit the walking lane's centre line as a stadium
+(`path` { straightM, radiusM, laneWidthM, dir: 'ccw' | 'cw' seen from above }) from OpenStreetMap or the GSI aerial
+(https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg), then describe the bands from the lawn outward
+(`ground` colours and widths), `hedge`, `rail`, `centre` (mounting discs, logo), `terraces` (rows, step, rise, `span` along
+the path, `roof`), the paddock `screen`, `buildings` (bearing from the ring centre: 0 = the far straight, + = the direction
+the near-side horses walk), `trees`, `runners` and the race's `saddleCloth`. Copy the shape of the 'paddock' entry in
+data/locations.js.
+
 ## Output — exactly this shape (it is what index.html reads), nothing else but one line of caveats
 Bearings: 0 = straight across the infield as seen from the stands, + = toward the direction the horses run
 past the stands. `distM` for infield features is measured from the horse's lane by the inner rail.

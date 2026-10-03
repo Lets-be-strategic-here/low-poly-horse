@@ -248,7 +248,7 @@ function makeGait(key, s = 1, W = 65, lead = 'L') {
   if (base.stand) return { ...base, key, land, lead, strides: 1, stride: 0, stanceLen: 0, period: base.T * 20 };
   const strides = Math.max(1, Math.round(W / (base.stride * s)));
   const stride = W / strides / s;                       // horse units (the rig is scaled by s)
-  return { ...base, key, land, lead, strides, stride, stanceLen: stride * base.duty, period: strides * base.T };
+  return { ...base, key, land, lead, strides, stride, scale: s, stanceLen: stride * base.duty, period: strides * base.T };
 }
 
 /* =====================================================================
@@ -1031,6 +1031,24 @@ function plantedFetlock(toeX, tip, a) {
   return [cx - PASTERN * Math.sin(a), cy + PASTERN * Math.cos(a)];
 }
 
+// Path mode (G.path, e.g. a paddock's parade ring): the horse walks a curve, so a planted toe is fixed in the
+// ring, not in a frame sliding straight back. Toe in horse space (horse units) for a toe that landed `back`
+// horse units of travel ago at (x0, zL): out to the ring through the frame at touchdown, back through the
+// frame now. On a straight this is exactly (x0 - back, zL).
+function pathToe(G, zL, x0, back, sNow = G.pathS ?? 0) {
+  const sc = G.scale ?? 1, a = G.path.at(sNow - back * sc), b = G.path.at(sNow);
+  const lx = x0 * sc, lz = zL * sc, ca = Math.cos(a.phi), sa = Math.sin(a.phi);
+  const dx = a.x + lx * ca + lz * sa - b.x, dz = a.z - lx * sa + lz * ca - b.z, cb = Math.cos(b.phi), sb = Math.sin(b.phi);
+  return [(dx * cb - dz * sb) / sc, (dx * sb + dz * cb) / sc];
+}
+
+// The limb swings sideways as one plane about its top joint (solveLeg), so the hoof hangs below the fetlock in
+// that tilted plane: to put the toe at toeZ on the ground, aim the fetlock at the same plane's z at its height.
+function abductedZ(L, toeZ, fy) {
+  const top = L.fore ? FORE.sc[1] : HIND.hip[1];
+  return L.z + ((toeZ - L.z) * (top - fy)) / top;
+}
+
 // Fetlock target (horse space), plus pastern/hoof orientation and knee/hock flexion for gait phase g.
 function footPath(L, g, G) {
   const A = L.fore ? FORE : HIND, P = L.fore ? G.fore : G.hind;
@@ -1047,11 +1065,13 @@ function footPath(L, g, G) {
     const sp = u / DUTY, load = Math.sin(Math.PI * sp) ** 2;
     const tip = BREAKOVER * smoothstep(BREAKOVER_START, 1, sp);
     const a = A.pastern + P.sag * load - tip;
-    const [fx, fy] = plantedFetlock(toeDown - STRIDE * u, tip, a);
+    let toeX = toeDown - STRIDE * u, toeZ;
+    if (G.path) [toeX, toeZ] = pathToe(G, L.z, toeDown, STRIDE * u);
+    const [fx, fy] = plantedFetlock(toeX, tip, a), fz = toeZ === undefined ? undefined : abductedZ(L, toeZ, fy);
     // hind push-off: the hock opens past its rest angle late in the stance (hockPush), lengthening the
     // leg so the hoof can stay planted far behind the hip at speed
     const push = L.fore ? 0 : (P.hockPush ?? 0) * smoothstep(0.45, 1, sp);
-    return { u, fx, fy, pastern: a, tip, flex: L.fore ? 0 : P.hockSag * load - push, curl: 0 };
+    return { u, fx, fy, fz, pastern: a, tip, flex: L.fore ? 0 : P.hockSag * load - push, curl: 0 };
   }
   // Swing: C1 Hermite (velocity-matched to the stance) forward, lifted by a smooth bump. The
   // breakover offset at lift-off fades out early in the swing, so the path is continuous.
@@ -1064,6 +1084,12 @@ function footPath(L, g, G) {
   const fy = fy0 + P.lift * smoothstep(0, P.rise, s) * (1 - smoothstep(P.fall, 1, s)) + (by - fy0) * fade;
   const flex = P.flex * hump(s, 0, P.flexPeak, P.flexEnd) - (L.fore ? 0 : (P.hockPush ?? 0) * (1 - smoothstep(0, 0.22, s))); // push-off unwinds early in the swing
   const curl = G.curl * smoothstep(0, 0.28, s) * (1 - smoothstep(0.62, 0.96, s));
+  let fz;
+  if (G.path) { // on a curve the toe lifts off a little away from its straight-line spot: ease back during the swing
+    const [lx, lz] = pathToe(G, L.z, toeDown, STANCE_LEN, (G.pathS ?? 0) - STRIDE * (u - DUTY) * (G.scale ?? 1)), k = 1 - smoothstep(0, 0.7, s);
+    fz = abductedZ(L, L.z + (lz - L.z) * k, fy);
+    return { u, fx: fx + (lx - toeUp) * k, fy, fz, pastern: A.pastern - BREAKOVER * fade, tip: BREAKOVER * fade, flex, curl };
+  }
   return { u, fx, fy, pastern: A.pastern - BREAKOVER * fade, tip: BREAKOVER * fade, flex, curl };
 }
 
@@ -1084,7 +1110,7 @@ function solveLeg(rig, L, g) {
   // body pitch relative to the horse's own root (which may be moved, turned or scaled)
   const e = _rel.multiplyMatrices(rig.rootInv, L.root.matrixWorld).elements, pitch = Math.atan2(e[1], e[0]);
   // target: horse space -> world (through the root) -> the limb root's rest-space frame
-  _t.set(f.fx, f.fy, L.z);
+  _t.set(f.fx, f.fy, f.fz ?? L.z);
   rig.root.localToWorld(_t);
   L.root.worldToLocal(_t).add(L.root.userData.rest);
   // the body rolls a little, which tilts the limb plane: abduct the limb about its top joint so the
@@ -1315,13 +1341,37 @@ function pose(rig, g, p = 0) {
    S = -1 mirrors a right-handed track so the horse still runs +X.
    ===================================================================== */
 let W = 65, COPIES = 3;                                 // scenery period (m) and copies drawn, set per location
+let PATH = null;                                       // path mode: the strip is bent round a closed walking path
+
+// A closed walking path (path mode): a stadium of two straights joined by semicircles, of length W. The
+// scenery strip is authored straight (x along the path, z across it, like every other location) and bent round
+// the path: map(x, z) gives the point z metres to the right of the path at arc length x, the heading there
+// (phi: rotation about +Y, 0 = +X) and how much the strip is stretched there (> 1 on the outside of a bend).
+// dir 'ccw' (seen from above) keeps the inside of the ring on the horse's left; 'cw' mirrors it (S = -1).
+function makePath(spec, S) {
+  const Ls = spec.straightM ?? 30, R = spec.radiusM ?? 16, half = Math.PI * R, L = 2 * Ls + 2 * half;
+  const at = (s) => {
+    s = ((s % L) + L) % L;
+    let x, z, phi, k = 0;
+    if (s < Ls) { x = -Ls / 2 + s; z = R; phi = 0; }
+    else if (s < Ls + half) { const a = (s - Ls) / R; x = Ls / 2 + R * Math.sin(a); z = R * Math.cos(a); phi = a; k = 1 / R; }
+    else if (s < 2 * Ls + half) { x = Ls / 2 - (s - Ls - half); z = -R; phi = Math.PI; }
+    else { const a = (s - 2 * Ls - half) / R; x = -Ls / 2 - R * Math.sin(a); z = -R * Math.cos(a); phi = Math.PI + a; k = 1 / R; }
+    return { x, z: z * S, phi: phi * S, k };
+  };
+  const map = (x, z) => {
+    const p = at(x);
+    return { x: p.x + z * Math.sin(p.phi), z: p.z + z * Math.cos(p.phi), phi: p.phi, stretch: Math.max(0.05, 1 + S * p.k * z) };
+  };
+  return { L, Ls, R, S, at, map };
+}
 const wrapCentered = (x) => x - W * Math.floor((x + W / 2) / W);
 const harm = (len) => Math.max(1, Math.round(W / len)); // integer harmonic of W closest to a wavelength (m)
 const perLoop = (per100m) => Math.round((per100m * W) / 100); // prop count for a given density
 const colorOf = (v) => new THREE.Color(hex(v));
 const pick = (arr, rnd) => arr[Math.floor(rnd() * arr.length)];
 const noUV = (g) => { g.deleteAttribute('uv'); return g; };
-const _m = new THREE.Matrix4(), _p = V(0, 0), _s = V(1, 1, 1), WHITE_C = new THREE.Color(1, 1, 1);
+const _m = new THREE.Matrix4(), _p = V(0, 0), _s = V(1, 1, 1), _q = new THREE.Quaternion(), WHITE_C = new THREE.Color(1, 1, 1);
 
 function buildSky(sunDir, sky) {
   const geo = new THREE.SphereGeometry(600, 32, 20);
@@ -1496,8 +1546,8 @@ function buildGround(spec) {
     }
   }
   const pos = [], col = [];
-  const vtx = (i, j) => [i * dx, h(i, j), Z[j]];
-  for (let i = 0; i < nx * (COPIES + 1); i++) { // one spare period so the strip always covers the view while scrolling
+  const vtx = PATH ? (i, j) => { const m = PATH.map(i * dx, Z[j]); return [m.x, h(i, j), m.z]; } : (i, j) => [i * dx, h(i, j), Z[j]];
+  for (let i = 0; i < nx * (PATH ? 1 : COPIES + 1); i++) { // one spare period so the strip always covers the view while scrolling (a bent strip closes on itself)
     for (let j = 0; j < Z.length - 1; j++) {
       const p00 = vtx(i, j), p10 = vtx(i + 1, j), p01 = vtx(i, j + 1), p11 = vtx(i + 1, j + 1);
       const tris = diagA(i, j) ? [[p00, p01, p10], [p10, p01, p11]] : [[p00, p01, p11], [p00, p11, p10]];
@@ -1534,6 +1584,17 @@ function trackLayout(loc) {
   const standFront = outer + 14;
   const rails = dirtOnly ? [inner, outer, bInner, bOuter] : [inner, outer, dOut, dIn, bInner, bdOut, bdIn, bOuter];
   return { dirtOnly, innerTurf, mainDirt, turfW, dirtW, D, inner, outer, dOut, dIn, bInner, bdOut, bdIn, bOuter, standFront, rails };
+}
+
+// Paddock (parade ring) cross-section in the stand frame, like a racetrack's: zs = metres from the centre line
+// of the walking lane, + outward (the rail, the spectators, the terraces), - inward (the centre lawn).
+function paddockLayout(loc) {
+  const P = loc.path ?? {}, rail = loc.rail ?? {}, T = loc.terraces ?? {}, G = loc.ground ?? {};
+  const hw = (P.laneWidthM ?? 4) / 2, apron = G.innerApronM ?? 0.35, strip = G.outerStripM ?? 0, flowers = G.flowersM ?? 0;
+  const railZ = hw + (rail.gapM ?? 0.6), t0 = railZ + (T.distM ?? 2.5), rows = T.rows ?? 0, step = T.stepM ?? 0.8, rise = T.riseM ?? 0.4;
+  // terraces may stand along part of the ring only: span = [from, to] metres along the path from the start of the near straight
+  const span = T.span ?? null, inSpan = (x) => !span || (wrap01((x - span[0]) / W) * W <= span[1] - span[0]);
+  return { hw, apron, strip, flowers, bed: hw + strip + flowers, railZ, t0, rows, step, rise, tEnd: t0 + rows * step, span, inSpan, inner: -(P.radiusM ?? 16) * 0.55 };
 }
 
 const GROUND = {
@@ -1583,6 +1644,31 @@ const GROUND = {
         if (az < 0.8) return path.clone().lerp(g, 0.2 + rnd() * 0.3);
         if (az < 1.7) return rnd() < 0.5 ? path.clone().lerp(g, 0.65) : g;
         return g;
+      },
+    };
+  },
+  // paddock: the walking lane round a mown centre lawn, a rail, paving and terraces for the crowd; bent round
+  // the ring by path mode (the strip stops at `inner`, and buildPathCentre fills the middle of the lawn)
+  paddock(loc, S) {
+    const Y = paddockLayout(loc), g = loc.ground ?? {};
+    const lane = colorOf(g.lane ?? '#a08a68'), edging = colorOf(g.edging ?? '#cfc8b8'), lawn = colorOf(g.centre ?? '#5f8f3e'), soil = colorOf(g.bed ?? '#6b5a44');
+    const outer = colorOf(g.outer ?? '#a9a69e'), step = colorOf(loc.terraces?.colors?.step ?? '#bdb8ad'), grass = colorOf(loc.lawn ?? '#6f9047');
+    const zs = [-Y.hw - Y.apron, -Y.hw, -Y.hw / 2, 0, Y.hw / 2, Y.hw, Y.hw + Y.strip, Y.bed, Y.railZ + 0.4, Y.t0, Y.tEnd];
+    for (let z = -Y.hw - Y.apron - 1.6; z > Y.inner + 0.5; z -= 2.2) zs.push(z);
+    zs.push(Y.inner, ...[4, 10, 20, 35, 60, 100, 160, 260].map((d) => Y.tEnd + d));
+    return {
+      dx: 1.2, Z: [...new Set(zs.map((z) => z * S))].sort((a, b) => a - b), seed: 31, jit: 0.03,
+      height: () => 0,
+      color(x, z, rnd) {
+        const zs = z * S;
+        if (zs > Y.tEnd + 25) return grass.clone().lerp(outer, rnd() * 0.3);
+        if (zs >= Y.t0 && zs <= Y.tEnd && Y.rows && Y.inSpan(x)) return step.clone();
+        if (zs > Y.railZ + 0.4) return outer.clone().offsetHSL(0, 0, (rnd() - 0.5) * 0.03);
+        if (zs > Y.hw + Y.strip) return soil.clone().offsetHSL(0, 0, (rnd() - 0.5) * 0.04); // flower bed and hedge
+        if (zs > Y.hw) return edging.clone();
+        if (zs >= -Y.hw) return lane.clone().offsetHSL(0, 0, (Math.abs(zs) < Y.hw / 2 ? -0.025 : 0) + (rnd() - 0.5) * 0.03); // the walked line is darker
+        if (zs >= -Y.hw - Y.apron) return edging.clone();
+        return lawn.clone().offsetHSL(0, 0, Math.floor(x / 3) % 2 ? 0.02 : -0.01); // mowing stripes
       },
     };
   },
@@ -1645,13 +1731,22 @@ function makeKit(loc, heightAt, S) {
   const addSet = (geo, material, items) => {
     if (!items.length) return;
     // laid out once over COPIES+1 periods (like the ground); each frame only the mesh offset moves
-    const mesh = new THREE.InstancedMesh(geo, material, items.length * (COPIES + 1));
+    const reps = PATH ? 1 : COPIES + 1;
+    const mesh = new THREE.InstancedMesh(geo, material, items.length * reps);
     items.forEach((it, i) => {
-      for (let c = 0; c <= COPIES; c++) {
-        _p.set(it.x + c * W, it.y, it.z);
-        _s.set((it.sx ?? 1) * it.s, it.s, it.s);
-        mesh.setMatrixAt(i * (COPIES + 1) + c, _m.compose(_p, it.q, _s));
-        mesh.setColorAt(i * (COPIES + 1) + c, it.color ?? WHITE_C);
+      for (let c = 0; c < reps; c++) {
+        if (PATH && !it.world) { // bent round the walking path: follow its heading, stretch along it on the outside of bends
+          const m = PATH.map(it.x, it.z);
+          _p.set(m.x, it.y, m.z);
+          _q.setFromAxisAngle(Y_AXIS, m.phi).multiply(it.q);
+          _s.set((it.sx ?? 1) * it.s * (it.sx ? m.stretch : 1), it.s, it.s);
+          mesh.setMatrixAt(i * reps + c, _m.compose(_p, _q, _s));
+        } else {
+          _p.set(it.x + c * W, it.y, it.z);
+          _s.set((it.sx ?? 1) * it.s, it.s, it.s);
+          mesh.setMatrixAt(i * reps + c, _m.compose(_p, it.q, _s));
+        }
+        mesh.setColorAt(i * reps + c, it.color ?? WHITE_C);
       }
     });
     mesh.receiveShadow = true;
@@ -1726,7 +1821,7 @@ function flowerSet(k, count, zOf, colors) {
 
 // trees: round broadleaf + conifer; canopies take the instance colour, trunks stay bark-brown
 // `blossom`: canopy colours for flowering broadleaf trees (cherry); conifers keep their leaves.
-function treeSet(k, count, zOf, leaves, { conifer = 0.38, autumn = 0.22, size = [0.55, 0.55], blossom = null, bloom = 0.75 } = {}) {
+function treeSet(k, count, zOf, leaves, { conifer = 0.38, autumn = 0.22, size = [0.55, 0.55], blossom = null, bloom = 0.75, at = null } = {}) {
   const { rnd, item, colored, mat, addSet } = k;
   const trunkG = (h) => colored(jitter(new THREE.CylinderGeometry(0.1, 0.16, h, 5), 0.02, 310).translate(0, h / 2, 0), PAL.bark);
   const white = (geo) => colored(geo, 0xffffff, 0.08);
@@ -1741,7 +1836,8 @@ function treeSet(k, count, zOf, leaves, { conifer = 0.38, autumn = 0.22, size = 
   const broadItems = [], conItems = [];
   for (let i = 0; i < count; i++) {
     const leaf = rnd() < autumn ? PAL.autumn[i % 3] : leaves[i % leaves.length];
-    const it = item(rnd() * W, zOf(rnd), size[0] + rnd() * size[1], rnd() * TAU, 0.1, { color: colorOf(leaf) });
+    const [x, z, world] = at ? [...at(rnd), true] : [rnd() * W, zOf(rnd), false]; // `at`: a point in ring coordinates (path mode)
+    const it = item(x, z, size[0] + rnd() * size[1], rnd() * TAU, 0.1, { color: colorOf(leaf), world });
     const isConifer = rnd() < conifer;
     // index-based so a blossom list never shifts the random layout of the trees
     if (blossom && !isConifer && ((i * 7919) % 100) / 100 < bloom) it.color = colorOf(blossom[i % blossom.length]);
@@ -1854,6 +1950,127 @@ function floodlightSet(k, F, T) {
   addSet(lamps, lampMat, masts);
 }
 
+// Paddock terraces: one solid block per row of steps, rising away from the ring (bent round it in path mode).
+function terraceSet(k, Y, loc) {
+  const { S, rnd, item, colored, mat, addSet } = k, T = loc.terraces ?? {}, seg = 2.5;
+  const [x0, x1] = Y.span ?? [0, W], n = Math.max(1, Math.round((x1 - x0) / seg)), g = (x1 - x0) / n, at = (i) => x0 + i * g + g / 2;
+  const nosing = colored(new THREE.BoxGeometry(1, 0.05, 0.16), hex(T.colors?.nosing ?? '#8e8a84'), 0.02), noses = [];
+  for (let r = 0; r < Y.rows; r++) {
+    const h = (r + 1) * Y.rise, zr = Y.t0 + (r + 0.5) * Y.step;
+    const geo = colored(new THREE.BoxGeometry(1, h, Y.step + 0.02).translate(0, h / 2, 0), hex(T.colors?.step ?? '#bdb8ad'), 0.02);
+    addSet(geo, mat, Array.from({ length: n }, (_, i) => item(at(i), zr * S, 1, 0, 0, { sx: g * 1.04, color: new THREE.Color().setScalar(0.95 + rnd() * 0.06) })));
+    for (let i = 0; i < n; i++) noses.push(item(at(i), (zr - Y.step / 2 + 0.08) * S, 1, 0, -h, { sx: g * 1.04 }));
+  }
+  addSet(nosing, mat, noses);
+  if (T.roof) { // a deck or canopy over the back rows: soffit, a fascia band along its front edge, slim columns
+    const R = T.roof, d = R.depthM ?? 6, y = R.heightM ?? Y.rows * Y.rise + 3, zc = (Y.tEnd - d / 2 + 0.5) * S, zf = (Y.tEnd - d + 0.5) * S;
+    const roof = colored(new THREE.BoxGeometry(1, 0.5, d).translate(0, y + 0.25, 0), hex(R.color ?? '#e4e4e0'), 0.02);
+    const fascia = colored(new THREE.BoxGeometry(1, 0.9, 0.2).translate(0, y + 0.3, 0), hex(R.fascia ?? R.color ?? '#e4e4e0'), 0.03);
+    const col = colored(new THREE.BoxGeometry(0.3, y, 0.3).translate(0, y / 2, 0), hex(R.color ?? '#e4e4e0'), 0.02);
+    addSet(roof, mat, Array.from({ length: n }, (_, i) => item(at(i), zc, 1, 0, 0, { sx: g * 1.06 })));
+    addSet(fascia, mat, Array.from({ length: n }, (_, i) => item(at(i), zf, 1, 0, 0, { sx: g * 1.06 })));
+    addSet(col, mat, Array.from({ length: Math.ceil(n / 3) }, (_, i) => item(at(i * 3), (Y.tEnd - d + 1.2) * S, 1, 0, 0)));
+  }
+}
+
+// Spectators: a body in the instance colour, trousers, a face and hair; rows along the rail and one per terrace step.
+function crowdSet(k, Y, loc) {
+  const { S, rnd, item, mat, addSet } = k, colors = (loc.terraces?.colors?.crowd ?? ['#2b2d33', '#f2f0ea', '#3a4a6a', '#6a6f78', '#a33a3a', '#c9b48a', '#2f5a45']).map(colorOf);
+  const coat = paint(noUV(new THREE.CylinderGeometry(0.15, 0.17, 0.6, 5).translate(0, 1.1, 0)), flat(0xffffff, rnd, 0.04)); // takes the instance colour
+  const rest = merge([
+    paint(noUV(new THREE.CylinderGeometry(0.12, 0.1, 0.8, 4).translate(0, 0.4, 0)), flat(0x34343c, rnd, 0.06)),
+    paint(noUV(new THREE.IcosahedronGeometry(0.1, 0).translate(0, 1.52, 0)), flat(0xd8b493, rnd, 0.06)),
+    paint(noUV(new THREE.IcosahedronGeometry(0.105, 0).scale(1, 0.55, 1).translate(0, 1.6, -0.01)), flat(0x2a2420, rnd, 0.08)), // hair
+  ]);
+  const people = [];
+  const row = (zs, y, perM, gaps, span = null) => {
+    for (let x = 0; x < W; x += 1 / perM) {
+      if (rnd() < gaps || (span && !Y.inSpan(x))) continue;
+      people.push(item(x + (rnd() - 0.5) * 0.3, (zs + (rnd() - 0.5) * 0.25) * S, 0.92 + rnd() * 0.16, (S > 0 ? 0 : Math.PI) + (rnd() - 0.5) * 0.8, -y, { color: pick(colors, rnd) }));
+    }
+  };
+  row(Y.railZ + 0.5, 0, 1.5, 0.4);                         // pressed against the rail all round
+  row(Y.railZ + 1.2, 0, 1, 0.6);
+  for (let r = 0; r < Y.rows; r++) row(Y.t0 + (r + 0.5) * Y.step, (r + 1) * Y.rise, 1, 0.5 + 0.04 * r, true);
+  addSet(coat, mat, people);
+  addSet(rest, mat, people.map((it) => ({ ...it, color: new THREE.Color().setScalar(0.85 + rnd() * 0.25) })));
+}
+
+function ringSpot(S, bearingDeg, distM) {
+  const b = (bearingDeg ?? 0) * DEG, x = Math.sin(b) * distM, z = -S * Math.cos(b) * distM;
+  return { x, z, rotY: Math.atan2(-x, -z) };
+}
+
+function paddockProps(k, loc) {
+  const { S, rnd, item, colored, mat, addSet } = k, Y = paddockLayout(loc), P = PATH;
+  const rl = loc.rail ?? {}, railC = rl.color ?? '#f2f0ea', railH = rl.heightM ?? 1.1;
+  fenceLine(k, Y.railZ * S, { gap: 1.8, post: railC, rail: rl.top ?? railC, rails: [0.12, railH - 0.04], postH: railH, postR: 0.035, postSeg: 4, boardH: 0.07, boardD: 0.07, wobble: 0.002, tint: 0.04 });
+  if (rl.drape) fenceLine(k, (Y.railZ + 0.06) * S, { gap: 1.8, post: rl.drape, rail: rl.drape, rails: [railH * 0.55], postH: 0.02, postR: 0.01, boardH: railH * 0.7, boardD: 0.025, wobble: 0.004, tint: 0.08 });
+  const hd = loc.hedge; // a clipped box hedge: inside the lane round the lawn, or outside it in front of the rail
+  if (hd) {
+    const h = hd.heightM ?? 0.9, outer = hd.side === 'outer', z0 = outer ? Y.bed + 0.05 : -Y.hw - Y.apron - 0.6, z1 = outer ? Y.railZ - 0.15 : -Y.hw - Y.apron - 0.05;
+    const w = Math.max(0.3, z1 - z0), zc = ((z0 + z1) / 2) * S, c = hd.color ?? '#3f6a32';
+    fenceLine(k, zc, { gap: 2, post: c, rail: c, rails: [h * 0.3], postH: 0.04, postR: 0.01, boardH: h * 0.6, boardD: w, wobble: 0.01, tint: 0.12 });
+    if (hd.tiers === 2) fenceLine(k, zc + (outer ? 0.12 : -0.12) * S, { gap: 2, post: c, rail: c, rails: [h * 0.8], postH: 0.04, postR: 0.01, boardH: h * 0.4, boardD: w * 0.55, wobble: 0.01, tint: 0.12 });
+  }
+  if (Y.flowers) flowerSet(k, Math.round(W * Y.flowers * 9), (r) => S * (Y.hw + Y.strip + 0.1 + r() * (Y.flowers - 0.2)), loc.flowers ?? ['#d8263a', '#f29a1c', '#f2c81e', '#e8648c', '#5a6ad0']);
+  terraceSet(k, Y, loc);
+  crowdSet(k, Y, loc);
+  // trees round the ring, kept off the side the terraces face (ring coordinates, outside the rail and the crowd)
+  const tr = loc.trees ?? {}, hM = tr.heightM ?? [8, 14], leaf = tr.leaf ?? loc.leaf ?? PAL.leaf, sz = [hM[0] / 4.3, (hM[1] - hM[0]) / 4.3];
+  const span = Y.span, around = (r) => {
+    let x = r() * W;
+    if (span) x = span[1] + 8 + r() * (W - (span[1] - span[0]) - 16);
+    const m = P.map(x, S * (Y.railZ + 7 + r() * 26));
+    return [m.x, m.z];
+  };
+  treeSet(k, tr.count ?? 30, null, leaf, { autumn: 0, conifer: tr.conifer ?? 0.15, size: sz, at: around });
+  // centre lawn: numbered mounting discs along both long sides, a logo panel, trees and flower beds if any
+  const c = loc.centre ?? {}, lawnZ = P.R - Y.hw - Y.apron;
+  if (c.discs) {
+    const per = Math.ceil(c.discs / 2), disc = colored(new THREE.CylinderGeometry(0.55, 0.55, 0.05, 10), hex(c.discColor ?? '#8fcab4'), 0.03), discs = [];
+    const mark = colored(new THREE.BoxGeometry(0.34, 0.06, 0.22), 0xf4f4f0, 0.02), marks = [];
+    for (let i = 0; i < c.discs; i++) {
+      const side = i < per ? 1 : -1, j = i % per, x = -P.Ls / 2 + 4 + (j * (P.Ls - 8)) / Math.max(1, per - 1), z = side * (lawnZ - 1.1) * S;
+      discs.push({ ...item(x, z, 1, 0, -0.02), world: true });
+      marks.push({ ...item(x, z, 1, side > 0 ? 0 : Math.PI, -0.035), world: true }); // the white number, as a tile
+    }
+    addSet(disc, mat, discs); addSet(mark, mat, marks);
+  }
+  if (c.logo) addSet(colored(new THREE.BoxGeometry(Math.min(12, P.Ls * 0.25), 0.03, Math.min(4, lawnZ)), hex(c.logo), 0.02), mat, [{ ...item(0, 0, 1, 0, -0.01), world: true }]);
+  const centrePt = (r) => [(r() - 0.5) * P.Ls * 0.8, (r() - 0.5) * (lawnZ - 2) * 2];
+  if (c.trees) treeSet(k, c.trees, null, leaf, { autumn: 0, conifer: 0.1, size: [1.1, 0.6], at: centrePt });
+  if (c.flowerBeds) {
+    const beds = [], cols = ['#d8344a', '#f2d23c', '#f4f1e6', '#b49bd3', '#e87aa0'];
+    for (let b = 0; b < c.flowerBeds; b++) {
+      const [bx, bz] = centrePt(rnd);
+      for (let i = 0; i < 40; i++) beds.push({ ...item(bx + (rnd() - 0.5) * 3, bz + (rnd() - 0.5) * 1.2, 1 + rnd() * 0.5, rnd() * TAU, 0.12, { color: colorOf(cols[b % cols.length]) }), world: true });
+    }
+    addSet(new THREE.OctahedronGeometry(0.07, 0).translate(0, 0.22, 0), k.tintMat, beds);
+  }
+  // the paddock screen and the buildings round the ring, on the ring's own ground, facing its centre
+  const sc = loc.screen;
+  if (sc) {
+    const o = ringSpot(S, sc.bearingDeg, sc.distM ?? P.R + 30), w = sc.wM ?? 12, h = sc.hM ?? 7, lift = sc.liftM ?? 3, fw = sc.frameM ?? 1.2;
+    const frame = colored(new THREE.BoxGeometry(w + 2 * fw, h + 2 * fw, 0.8).translate(0, lift + h / 2, 0), hex(sc.frameColor ?? '#3a3d42'), 0.02);
+    const wrap = sc.wrap ? colored(new THREE.BoxGeometry(w + fw, h + fw, 0.82).translate(0, lift + h / 2, 0), hex(sc.wrap), 0.03) : null;
+    const legs = colored(merge([-1, 1].map((sd) => new THREE.BoxGeometry(Math.max(0.6, w * 0.12), lift, 1.2).translate(sd * w * 0.32, lift / 2, 0))), hex(sc.plinth ?? '#5a5e64'), 0.02);
+    const face = paint(noUV(new THREE.BoxGeometry(w, h, 0.1, 8, 4, 1).translate(0, lift + h / 2, 0.42)), () => shade(rnd() < 0.7 ? 0x2d6a9a : 0x7fb24a, rnd, 0.12));
+    const at = () => [{ ...item(o.x, o.z, 1, o.rotY, 0), world: true }];
+    addSet(frame, mat, at()); addSet(legs, mat, at());
+    if (wrap) addSet(wrap, mat, at());
+    addSet(face, new THREE.MeshBasicMaterial({ vertexColors: true }), at());
+  }
+  for (const bd of loc.buildings ?? []) {
+    const o = ringSpot(S, bd.bearingDeg, bd.distM ?? 80), w = bd.wM ?? 40, h = bd.hM ?? 15, d = bd.dM ?? Math.min(30, h + 4);
+    const geo = colored(new THREE.BoxGeometry(w, h, d).translate(0, h / 2, -d / 2), hex(bd.color ?? '#d9d6cf'), 0.03);
+    const bands = merge(Array.from({ length: Math.max(1, Math.floor(h / 5)) }, (_, f) => paint(noUV(new THREE.BoxGeometry(w * 0.96, 1.6, 0.3).translate(0, 3 + f * 5, 0.1)), flat(hex(bd.glass ?? '#6f8a9c'), rnd, 0.04))));
+    const at = () => [{ ...item(o.x, o.z, 1, o.rotY, 0), world: true }];
+    addSet(geo, mat, at());
+    if (h > 6) addSet(bands, mat, at());
+  }
+}
+
 function standSet(k, loc, T) {
   const { rnd, item, mat, addSet, S } = k;
   const st = { ...loc.stand, lengthM: Math.min(loc.stand.lengthM ?? 220, W - 60) };
@@ -1863,6 +2080,7 @@ function standSet(k, loc, T) {
 }
 
 const PROP_BUILDERS = {
+  paddock: paddockProps,
   country(k) {
     const { rnd } = k;
     fenceLine(k, -3.3, { gap: 2.7, post: PAL.post, rail: PAL.rail, rails: [0.52, 0.92], postH: 1.1 });
@@ -1930,25 +2148,50 @@ const DEFAULT_RANGES = [
   { r: 360, base: 0x9d9a90, h: [8, 24], step: 0.13, haze: 0.4 },
 ];
 
+// Path mode: the middle of the ring, inside the bent strip's inner edge (same samples, so no seam).
+function buildPathCentre(loc, S, dx) {
+  const Y = paddockLayout(loc), n = Math.round(W / dx), rnd = mulberry32(78), lawn = colorOf(loc.ground?.centre ?? '#5f8f3e');
+  const ring = (r) => Array.from({ length: n }, (_, i) => { const m = PATH.map((i / n) * W, Y.inner * S); return V(m.x * r, 0, m.z * r); });
+  const rings = [ring(0.34), ring(0.67), ring(1)], pos = [], col = [], O = V(0, 0, 0);
+  const tri = (a, b, c) => {
+    const up = (b.z - a.z) * (c.x - a.x) - (b.x - a.x) * (c.z - a.z) >= 0, cc = lawn.clone().offsetHSL(0, 0, (Math.floor(((a.x + b.x + c.x) / 3) / 3) % 2 ? 0.02 : -0.01) + (rnd() - 0.5) * 0.03);
+    for (const v of up ? [a, b, c] : [a, c, b]) { pos.push(v.x, v.y, v.z); col.push(cc.r, cc.g, cc.b); }
+  };
+  for (let i = 0; i < n; i++) {
+    const j = (i + 1) % n;
+    tri(O, rings[0][i], rings[0][j]);
+    for (let q = 0; q < 2; q++) { tri(rings[q][i], rings[q + 1][i], rings[q + 1][j]); tri(rings[q][i], rings[q + 1][j], rings[q][j]); }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+  geo.computeVertexNormals();
+  const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.95 }));
+  mesh.receiveShadow = true;
+  return mesh;
+}
+
 function buildWorld(loc) {
-  const S = loc.hand === 'right' ? -1 : 1, t = loc.time ?? {};
-  W = loc.W ?? 65;
+  const S = loc.hand === 'right' || loc.path?.dir === 'cw' ? -1 : 1, t = loc.time ?? {};
+  PATH = loc.path ? makePath(loc.path, S) : null; // path mode: the scenery is bent round a closed walking path
+  W = PATH ? PATH.L : loc.W ?? 65;
   const fogFar = t.fogFar ?? 92, reach = fogFar + (loc.stand ? Math.min(loc.stand.lengthM ?? 220, W - 60) / 2 : 12);
   COPIES = 1;
-  while ((COPIES * W) / 2 < reach) COPIES += 2; // odd, so the strip and the wrap agree; its edge stays in the fog
+  while (!PATH && (COPIES * W) / 2 < reach) COPIES += 2; // odd, so the strip and the wrap agree; its edge stays in the fog
   // at night the key light is the floodlights: high and from the stand side (the sun itself is below the horizon)
   const night = !!t.night, sunDir = sunDirOf(night ? { sunElevDeg: loc.floodlights?.elevDeg ?? 52, sunAzimDeg: loc.floodlights?.azimDeg ?? 12 } : t, S);
   const sky = { ...DEFAULT_SKY, ...(t.sky ?? {}) };
-  const ground = buildGround(GROUND[loc.builder](loc, S));
+  const gspec = GROUND[loc.builder](loc, S), ground = buildGround(gspec);
   const kit = makeKit(loc, ground.heightAt, S);
   PROP_BUILDERS[loc.builder](kit, loc);
   const group = new THREE.Group();
   group.add(ground.mesh);
+  if (PATH) group.add(buildPathCentre(loc, S, gspec.dx));
   kit.sets.forEach((s) => group.add(s.mesh));
   const back = loc.backdrop ?? {};
   const statics = new THREE.Group();
   statics.add(buildSky(night ? V(0, -1, 0) : sunDir, sky), buildBackdrop(sunDir, { horizon: sky.horizon, ranges: back.ranges ?? DEFAULT_RANGES, landmarks: back.landmarks, clouds: back.clouds, seed: back.seed, night }, S));
-  return { loc, S, group, statics, ground, props: kit.sets, sunDir, sky, night, fog: [t.fogNear ?? 24, fogFar] };
+  return { loc, S, group, statics, ground, props: kit.sets, sunDir, sky, night, fog: [t.fogNear ?? 24, fogFar], path: PATH };
 }
 
 // Dust kicked up at each hoof strike; a pure function of gait phase (one puff per hoof per stride).
@@ -2101,7 +2344,7 @@ function currentLook() {
     gear: c.gearOff ? null : h.gear ?? null,
     conf: { ...confFor(h), ...(c.conf ?? {}) },
     racehorse: !!h.silks, // racehorses get a bridle unless their gear says otherwise
-    saddle: !c.gearOff && h.silks && state.loc?.builder === 'track' ? saddleFor(h, state.loc) : null,
+    saddle: !c.gearOff && h.silks && (state.loc?.builder === 'track' || state.loc?.builder === 'paddock') ? saddleFor(h, state.loc) : null,
   };
 }
 
@@ -2127,11 +2370,12 @@ function rebuildHorse() {
 // Gait of the hero (and the companions walking with it); the loop length follows the hero.
 function setGait(key) {
   state.gait = GAITS[key] && !GAITS[key].stand ? key : 'gallop';
+  const gaitFor = (r) => Object.assign(makeGait(state.gait, r.scale, W, state.lead), world?.path ? { path: world.path } : {});
   if (rig) {
-    rig.gait = makeGait(state.gait, rig.scale, W, state.lead);
+    rig.gait = gaitFor(rig);
     loopPeriod = rig.gait.period;
   }
-  for (const ex of extras) if (ex.mode === 'companion') ex.rigs[0].gait = makeGait(state.gait, ex.rigs[0].scale, W, state.lead);
+  for (const ex of extras) if (ex.mode === 'companion' || ex.mode === 'parade') ex.rigs[0].gait = gaitFor(ex.rigs[0]);
   syncBar();
   writeHash();
 }
@@ -2147,10 +2391,28 @@ function blobShadow() {
 
 // Background horses (generic coats). Companions walk beside the hero at its speed, so they never need
 // wrapping; grazers stand on the scrolling ground and are drawn once per scenery copy, like the props.
-function spawnExtras() {
-  for (const ex of extras) for (const r of ex.rigs) { scene.remove(r.root); disposeTree(r.root); }
+function clearExtras() {
+  for (const ex of extras) for (const r of ex.rigs) { r.root.parent?.remove(r.root); disposeTree(r.root); }
   extras = [];
+}
+function spawnExtras() {
+  clearExtras();
   const rnd = mulberry32(4242);
+  if (world.path && state.loc.runners) {
+    // the rest of the field walks the ring in number order (馬番順), evenly spaced: the horse ahead carries the
+    // next number down. Generic coats; the location's saddle cloth with the number only.
+    const N = clamp(state.loc.runners, 2, 18), gap = W / N, mine = state.horse.saddleNumber ?? 1, cloth = saddleFor(state.horse, state.loc);
+    for (let j = 1; j < N; j++) {
+      const look = { ...genericLook(rnd), racehorse: true, saddle: { ...cloth, number: ((mine - 1 - j) % N + N) % N + 1, label: '' } };
+      const r = buildHorse(look, 700 + j * 13);
+      r.phaseOffset = rnd();
+      r.root.traverse((o) => { o.castShadow = false; }); // outside the shadow map: a soft blob instead
+      r.root.add(blobShadow());
+      r.materials.forEach((m) => { m.wireframe = wireOn; });
+      world.group.add(r.root);
+      extras.push({ mode: 'parade', ahead: j * gap, rigs: [r], phase: rnd() });
+    }
+  }
   (state.loc.extras ?? []).forEach((spec, n) => {
     const look = genericLook(rnd), seed = 900 + n * 17, phaseOffset = rnd(), grazer = spec.mode === 'grazer';
     const rigs = [];
@@ -2178,6 +2440,7 @@ function spawnExtras() {
 
 function setLocation(id) {
   const loc = LOC_LIST.find((l) => l.id === id) ?? LOC_LIST[0];
+  clearExtras();
   if (world) { scene.remove(world.group, world.statics); disposeTree(world.group); disposeTree(world.statics); }
   state.loc = loc;
   world = buildWorld(loc);
@@ -2213,21 +2476,44 @@ function setHorse(id) {
   state.horse = HORSE_LIST.find((h) => h.id === id) ?? HORSE_LIST[0];
   state.custom = {};
   rebuildHorse();
+  if (world?.path) { spawnExtras(); setGait(state.gait); } // the field renumbers round the hero
   syncTitle();
   syncPanel();
   setView(currentView);
 }
 
+// Path mode: the hero stays at the origin facing +X, so the ring is moved and turned the other way under it;
+// the far scenery and the sun turn with the ring (shadows and shading follow the horse round the bends).
+function placeOnPath(s) {
+  const f = world.path.at(s), c = Math.cos(f.phi), sn = Math.sin(f.phi), turn = (v) => V(v.x * c - v.z * sn, v.y, v.x * sn + v.z * c);
+  world.group.rotation.y = -f.phi;
+  world.group.position.set(-(f.x * c - f.z * sn), 0, -(f.x * sn + f.z * c));
+  world.group.updateMatrix();
+  world.group.matrixWorld.copy(world.group.matrix);
+  world.statics.rotation.y = -f.phi;
+  const d = world.sunDir;
+  sun.position.copy(turn(d)).multiplyScalar(14);
+  fill.position.copy(turn(V(-d.x, Math.max(0.35, d.y), -d.z))).multiplyScalar(14);
+}
+
 function applyPhase(p) {
-  const g = wrap01(p * rig.gait.strides);
+  const g = wrap01(p * rig.gait.strides), scroll = p * W;
+  if (world.path) { placeOnPath(scroll); rig.gait.pathS = scroll; }
   pose(rig, g, p);
-  const scroll = p * W;
-  world.ground.mesh.position.x = -(COPIES / 2) * W - scroll;
-  updateProps(world.props, scroll);
+  if (!world.path) {
+    world.ground.mesh.position.x = -(COPIES / 2) * W - scroll;
+    updateProps(world.props, scroll);
+  }
   updateDust(dust, g, rig);
   for (const ex of extras) {
     ex.rigs.forEach((r, c) => {
       if (ex.mode === 'grazer') r.root.position.x = wrapCentered(ex.x - W / 2 - scroll) + (c - (COPIES - 1) / 2) * W;
+      if (ex.mode === 'parade') { // walking the ring ahead of the hero, on the ring's own ground
+        const s = scroll + ex.ahead, f = world.path.at(s);
+        r.root.position.set(f.x, 0, f.z);
+        r.root.rotation.y = f.phi;
+        r.gait.pathS = s;
+      }
       pose(r, wrap01(p * r.gait.strides + ex.phase), p);
     });
   }
@@ -2242,7 +2528,7 @@ function setView(name) {
   controls.enableDamping = false;
   controls.update(); // flush any pending damped motion
   const k = rig?.scale ?? 1, target = V(v.tx * k, TARGET_Y * k, 0), dir = V(...v.dir);
-  dir.z *= world?.S ?? 1;
+  dir.z *= world ? (world.path ? -world.S : world.S) : 1; // in a paddock the camera stands on the centre lawn, looking out at the crowd
   camera.position.copy(target).addScaledVector(dir.normalize(), fitDistance(v));
   controls.target.copy(target);
   controls.update();
