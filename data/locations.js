@@ -608,11 +608,34 @@ window.LOCATIONS = [
     sources: ['https://www.openstreetmap.org/way/1426167544', 'https://www.openstreetmap.org/way/1540198726', 'https://www.openstreetmap.org/way/1540198727', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/18/232640/103240.jpg', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/18/232641/103240.jpg', 'https://ja.wikipedia.org/wiki/東京競馬場', 'https://ja.wikipedia.org/wiki/東京優駿', 'https://db.netkeiba.com/race/202505021211/', 'https://commons.wikimedia.org/wiki/Category:Racecourse_saddling_paddocks_in_Tokyo_Racecourse', 'https://commons.wikimedia.org/wiki/File:無人_(48555723597).jpg', 'https://commons.wikimedia.org/wiki/File:短軸側から_(47935906562).jpg', 'https://commons.wikimedia.org/wiki/File:Japanese_derby_day_日本ダービーデー_(52106904801).jpg', 'https://commons.wikimedia.org/wiki/File:Japanese_derby_day_日本ダービーデー_(52107191564).jpg', 'https://commons.wikimedia.org/wiki/File:February_stakes_paddock_-_フェブラリーステークス_パドック_(46208106935).jpg', 'https://commons.wikimedia.org/wiki/File:Paddock_at_Japan_cup_パドック、ジャパンカップ_2019_(49122339546).jpg'],
     uncertain: ['path (a stadium fitted to a 0.49 m/px aerial: the real ends are flatter and the long sides bulge about 1 m)', 'path.laneWidthM (2.4 m on the straights, 4–5 m at the ends)', 'path.dir (ccw worked out from horse headings in two photos)', 'ground / rail / terraces colours (from phone photos)', 'rail.heightM, rail.gapM', 'terraces rows / step / rise / dist (only the ~13.5 m total depth is measured)', 'terraces.roof (the crimson fascia may be Derby-day bunting)', 'screen size and lift (from the OSM height, the footprint and one 2019 photo)', 'buildings (stand height and distance not sourced; the stand is drawn as one flat block)', 'trees (count, heights and species by eye)', 'saddleCloth (the Derby cloth colours from the ゼッケン article; the hero keeps the number of its own signature win)', 'runners are generic coats', 'needs kits: the deck balconies of the Fuji View Stand, the lawn numbers and logo lettering, the statue and bust, jockeys and handlers'],
   },
+  {
+    id: 'beach', en: 'Beach at dawn', jp: '夜明けの浜辺', group: 'Strolling', builder: 'beach', gait: 'canter', W: 120, seed: 2060,
+    reference: 'Kujukuri-hama (九十九里浜), Chiba: a 66 km Pacific sand arc from 刑部岬 to 太東崎, as seen near Kujukuri town / Toyoumi (不動堂海岸). Riding: 九十九里浜一宮乗馬センター at the south end (Ichinomiya).',
+    // 23 Sep, ~05:55 JST: the sun is 4° up, rising out of the sea. The shoreline bears ~40°, so the beach faces ~130° (SE).
+    // The camera is on the land side looking out to sea, +X = SW: the sun (az 93°) stands 36° left of straight out to sea,
+    // inside the default three-quarter view, so the horse is backlit against the sunrise.
+    time: {
+      month: 9, sunElevDeg: 4, sunAzimDeg: -144, fogNear: 70, fogFar: 380, exposure: 1.2, fillIntensity: 0.9, // exposure and fill raised: the horse is backlit
+      sky: { top: '#647b9e', mid: '#bfc3c6', horizon: '#f3b574', sun: '#ffd890' }, // sampled from a Toyoumi sunrise photo: orange band at the horizon, grey-blue above
+      sunColor: '#ffb27a', sunIntensity: 1.8, hemiSky: '#b3bccc', hemiGround: '#8e806a', hemiIntensity: 1.35,
+    },
+    sea: { side: 'far', waterlineZ: -6, color: '#66737f', deep: '#4f5c6a', foam: '#e9e6df', waveM: 0.4 }, // a wide surf zone: 3–4 breaker lines ~20–120 m out
+    sand: { wet: '#67625a', dry: '#a69e8c', print: '#8d949c', wetWidthM: 14 }, // prints: water standing in them catches the sky // flat (遠浅) grey-beige fine sand; the horse canters on the firm wet strip
+    dunes: { side: 'near', distM: 45, heightM: [2, 5], grass: '#87894f' }, // a low foredune with コウボウムギ / ハマヒルガオ / ハマナス
+    pines: { count: 36, distM: 75, leaf: ['#2e4630', '#37523a', '#405c3e'] }, // the クロマツ coastal forest (防風林) behind the dune
+    props: { driftwood: 3, rocks: 0, tetrapods: 0 },
+    prints: true, // hoof prints in the wet sand behind the horse
+    backdrop: { ranges: [], landmarks: [], clouds: 4 }, // open sea horizon; the Kujukuri plain behind is flat, and the pines hide the inland hills
+    dust: '#9a9282', // damp sand thrown up from the firm strip by the water
+    extras: [{ mode: 'companion', x: -5, z: -2.5 }], // guided beach rides go out in small groups
+    signature: 'Kujukuri at first light: a dead-flat grey-beige sand arc facing the Pacific, the sun lifting straight out of the sea through an orange haze band, long lines of surf, a mirror of wet sand, and a low grassy dune backed by a dark belt of Japanese black pines.',
+    sources: ['https://ja.wikipedia.org/wiki/九十九里浜', 'https://ja.wikipedia.org/wiki/一宮町', 'https://ja.wikipedia.org/wiki/浦河町', 'https://ja.wikipedia.org/wiki/うらかわ優駿ビレッジAERU', 'https://commons.wikimedia.org/wiki/File:Toyoumi_beach_new_year.jpg', 'https://commons.wikimedia.org/wiki/File:First_sunrise_at_Kujukuri_Beach,_Japan.jpg', 'https://commons.wikimedia.org/wiki/File:蓮沼海浜公園付近（九十九里浜、山武市）_-_panoramio.jpg', 'https://commons.wikimedia.org/wiki/File:Sirasato_beach_2022.jpg', 'https://commons.wikimedia.org/wiki/File:Kujukuri_beach_and_around_2.jpg', 'https://commons.wikimedia.org/wiki/File:Kujukuri_Beach.jpg'],
+    uncertain: ['time (sun computed for 23 Sep at 35.53°N 140.46°E; the ~40° shoreline bearing from the GPS tags of two Commons photos, ±10°; 4° chosen so the sun stays in the three-quarter view)', 'sky / light (sampled from a clear 1 Jan 2018 sunrise photo; September air is hazier)', 'sand colours (the photos are exposed for the sky; dry sand scaled up about 1.5×)', 'sand.wetWidthM, sea.waterlineZ, sea.waveM (estimates)', 'sea colours (dawn photo samples, darkened for the far sea)', 'dunes.distM / heightM (not sourced)', 'pines (the black-pine coastal forest is sourced; count, distance and colours are guesses)', 'props.driftwood (count guessed; no rocks on this sand coast)', 'backdrop: the headlands at the ends of the arc (~30 km) and the 九十九里ビーチタワー are not drawn', 'extras (a companion for a group ride is plausible, not verified)', 'needs kits: a sun-glitter path on the sea and wet sand, a drawn sun disc'],
+  },
 ];
 
 // Every other venue on the roadmap, shown as "soon" in the picker (order = build order).
 window.LOCATION_QUEUE = [
-  { id: 'beach', en: 'Beach at dawn', group: 'Strolling' },
   { id: 'hill-gallops', en: 'Training-centre hill gallop (坂路)', group: 'Strolling' },
 ];
 
