@@ -4,11 +4,12 @@ Where the low-poly horse goes next, in build order. Each **batch** adds the next
 order, a location or two, and one engine item. Horses come from the official character list at
 <https://umamusume.jp/character/>; every entry models the **real racehorse** behind a character.
 
-## Status after batch 5 (October 2026)
+## Status after batch 6 (October 2026)
 
 | Area | Done |
 |---|---|
 | Engine | Horse profiles drive the whole model: coat, markings, size and hair length. A gait table holds the gallop (left or right lead), a new **walk** and a standing **graze** pose. Stride counts are recomputed for each horse and location, so the loop stays seamless and planted hooves have 0.00 mm slip (measured). Includes a location system, background horses, the side panel and the URL hash. |
+| Conformation (B6, ahead of B7) | Per-horse `conf` { neck, crest, head }: the neck stretches along its own axis (bones, mane, poll and head follow), the crest rises in the middle of the neck, the head scales about the poll with everything mounted on it. A gentle default comes from `size.build`. Every horse's neck is now 10% longer (`NECK_BASE`), closer to a real Thoroughbred's. Neck, Crest and Head sliders in the panel. |
 | Race tack (B5) | On racecourses: a **saddle cloth** (ゼッケン) in the colours of the location's signature race (`saddleCloth`: JRA G1 紫紺 with white text, the classics with yellow text, NAR graded races as at Oi) with the horse's katakana name and its number in its signature win (`saddleNumber`), over a black racing saddle on a dark pad, a cream girth and black overgirth, irons run up. Cloth and saddle are skinned to the body's own skeleton, so they stay glued to the back. |
 | Trot and canter (B5, ahead of B6) | A two-beat diagonal **trot** (2.6 m strides at 0.72 s, diagonal pairs landing together, a steady head) and a three-beat **canter** with a lead (3.0 m at 0.6 s, the diagonal pair together, a rocking pitch). Both measured at 0.00 mm stance slip. |
 | Grazing (B5) | The grazing pose now reaches the grass (muzzle ~8 cm off the ground, measured) and the mane falls to one side. |
@@ -18,7 +19,7 @@ order, a location or two, and one engine item. Horses come from the official cha
 | Forelimbs (B2) | Deeper, broader brisket so the elbow and forearm tuck into the chest instead of hanging off a rounded barrel; a broad flat shoulder blade, a triceps mass and a muscular forearm top; at the gallop the forefoot flips up into a hook behind the knee (deeper fetlock curl, higher fore lift). |
 | Colour | All 8 JBIS registry coats (鹿毛 … 白毛), pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. **Greys (B2):** greyness slider with a slow-greying curve, **dapples** (cellular noise painted on 16× subdivided coplanar faces, strongest at mid grey, with their own slider), lighter faces and dark lower legs on young greys, and a separate `coat.tail` colour. |
 | Parts | Mane and tail length, height (uniform scale) and weight (bulk of trunk, neck and upper limbs). |
-| Horses | 43 of 152, roster #1–#43, from Byerley Turk (c.1680) to Sakura Chitose O (1990). |
+| Horses | 51 of 152, roster #1–#51, from Byerley Turk (c.1680) to Fuji Kiseki (1992). 46 carry their verified number (馬番) in their signature win. |
 | Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), and the JRA G1 courses **Tokyo**, **Nakayama**, **Kyoto** (infield lake), **Hanshin** (cherry blossom: `blossom` colours flowering broadleaf trees only) and **Chukyo** (B3). |
 | Research | Two reusable agent templates in `.claude/agents/`, run for every horse and track since batch 2 (8–10 agents in parallel, about 3–9 minutes each). |
 
@@ -40,7 +41,7 @@ Engine items are placed before the first horse that needs them.
 | ✅ 3 | #20–27 · 1985–87 · Super Creek, Yaeno Muteki, Daiichi Ruby, Daitaku Helios, Ikuno Dictus, Ines Fujin, Mejiro McQueen, Mejiro Palmer | Chukyo (Pegasus and Twin Hat stands) | **Race-speed gallop** (see Anatomy 1) |
 | ✅ 4 | #28–35 · 1987–89 · Mejiro Ryan, K.S.Miracle, Nice Nature, Tokai Teio, Twin Turbo, Yamanin Zephyr, Matikanetannhauser, Mihono Bourbon | Oi (night racing: floodlights, white sand, dirt-only layout) | **Gear rendering** from `gear`: hood/メンコ, blinkers, bit-lifter, bridle (reins wait for the jockey, B12) |
 | ✅ 5 | #36–43 · 1989–90 · Nishino Flower, Rice Shower, Sakura Bakushin O, Biwa Hayahide, Narita Taishin, North Flight, Royce and Royce, Sakura Chitose O | Kawasaki (72 m screen), Funabashi (both at night) | Saddle and saddle cloth (the shadow roll came with B4's gear) |
-| 6 | #44–51 · 1990–92 · Winning Ticket … Fuji Kiseki | Urawa, Morioka (Mt Iwate, NAR's only turf course) | Trot and canter gaits |
+| ✅ 6 | #44–51 · 1990–92 · Winning Ticket, Yukino Bijin, Biko Pegasus, Hishi Amazon, Narita Brian, Sakura Laurel, Samson Big, Fuji Kiseki | Urawa, Morioka (Mt Iwate, NAR's only turf course) | Trot and canter gaits (done in B5); conformation started early |
 | 7 | #52–59 · 1992–94 · Genuine … Matikanefukukitaru | Kanazawa (tiled-roof screen), Saga (both JpnI only in JBC years) | Head shape, ear and crest parameters (conformation) |
 | 8 | #60–67 · 1994–95 · Mejiro Bright … Grass Wonder | Racecourse paddock (walking the parade ring) | Path mode (curved walking paths) |
 | 9 | #68–75 · 1995–96 · King Halo … Meisho Doto | Beach at dawn | Sand builder, splash and dust variants |
@@ -67,8 +68,8 @@ Before every batch, re-read the official list. New characters are added over tim
   - ✅ Oi 大井: night "Twinkle" racing on white sand (B4).
   - ✅ Kawasaki 川崎 (B5, at night)
   - ✅ Funabashi 船橋 (B5, at night)
-  - Urawa 浦和: JpnI since the 2024 dirt reform.
-  - Morioka 盛岡
+  - ✅ Urawa 浦和: JpnI since the 2024 dirt reform (B6, at twilight).
+  - ✅ Morioka 盛岡 (B6, at night): the dirt course is outside the turf course (`innerTurf`).
 - JpnI only in JBC host years: Kanazawa 金沢 and Saga 佐賀.
 - The track builder needs a **dirt-only layout** and night lighting before Oi.
 
@@ -94,7 +95,7 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
    The legs need more reach (lower body, about 18° scapular swing). Race tracks switch to this gait.
 2. **Lead changes.** The lead is already set per location (the outside lead on the home straight). Animate flying changes in race mode.
 3. ~~Trot and canter~~ (done in B5); blended transitions between gaits are still to do.
-4. **Conformation parameters** per horse:
+4. **Conformation parameters** per horse (neck length, crest and head size done in B6; the rest to do):
    - neck length and crest (Godolphin's high crest);
    - head profile (straight, dished, Roman);
    - ear size;
@@ -249,6 +250,17 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Royce and Royce.** Face hidden by his hood; silks from a small image.
 - [ ] **Sakura Chitose O.** 黒鹿毛 (netkeiba) or 鹿毛 (Wikipedia)? JBIS would settle it.
 
+### Horses (batch 6)
+- [ ] **Winning Ticket.** Face and legs from one race photo and two stud photos.
+- [ ] **Yukino Bijin.** Blaze shape and three white socks from photos; signature race for the cloth is the 1993 Oaks (2nd).
+- [ ] **Biko Pegasus.** No white seen anywhere; bridle colour from photos.
+- [ ] **Hishi Amazon.** Blue shade of the silks (the Commons image uses pure blue).
+- [ ] **Narita Brian.** Face shape (星額刺毛鼻梁鼻白) as drawn is approximate.
+- [ ] **Sakura Laurel.** Hind white heights (fetlock or pastern) from photos.
+- [ ] **Samson Big.** No photo of the Kisaragi Sho itself; gear inferred from 1993–94 paddock shots.
+- [ ] **Fuji Kiseki.** RH white from low-res photos.
+- [ ] **Saint Lite.** His 1941 Derby number is not recorded anywhere (netkeiba shows 0), so his cloth shows only his name.
+
 ### Locations
 - [ ] **Tokyo.** Stand colours, Mt Fuji's bearing, and the infield pond's position.
 - [ ] **Nakayama.** Stand colours and length; the backdrop.
@@ -257,6 +269,8 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Kawasaki / Funabashi.** Floodlight and screen details from photos; stand orientation read from aerials; the NAR saddle-cloth convention is assumed to match Oi's.
 - [ ] **Oi.** Floodlight count, height and colour (no published spec); the screen's real size and position; skyline bearings; needs kits for the lit Tokyo Monorail, the L-WING roof and the left-handed course.
 - [ ] **Chukyo.** Course widths (secondary source); stand size and colours; only the 2.0 m climb 340–240 m out is sourced in the straight's profile; needs kits for the Pegasus membrane-fin roof and Twin Hat.
+- [ ] **Urawa.** The sun is raised from 1.5° to 8° for readable shading; floodlights and stand size from photos; skyline bearings; needs kits for the topiary and the dark slab stand roof.
+- [ ] **Morioka.** Mt Iwate really stands behind the stand (bearing ~178°) and is moved across the infield as artistic licence; floodlight count, height and colour are not published; the screen's size and the pond are read from the aerial; needs kits for the V-shaped glass atrium, the pale inner ring and the forest behind the back straight.
 
 ### Source access (affects every batch)
 - JBIS (jbis.or.jp) returns 403 to WebFetch. Read it through Playwright.

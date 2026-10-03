@@ -6,7 +6,9 @@
              tochikuri 栃栗毛 liver chestnut | ashige 芦毛 grey (greyness 0-1) | shiroge 白毛 white
    coat.mane / coat.tail: hex overrides (flaxen, a grey's lighter tail); coat.dapple 0-1 overrides the
              dapple strength a grey gets from its greyness (strongest at mid grey)
-   legs: none | coronet | pastern | fetlock | sock | stocking      style: nige | senko | sashi | oikomi */
+   legs: none | coronet | pastern | fetlock | sock | stocking      style: nige | senko | sashi | oikomi
+   conf: conformation multipliers { neck, crest, head } (1 = average; size.build gives a gentle default)
+   saddleNumber: the horse's number (馬番) in its signature win, shown on the saddle cloth */
 window.HORSES = [
   // ---- Batch 1 (2026-10): the founding sires, then the earliest racehorses on the roster ----
   {
@@ -29,6 +31,7 @@ window.HORSES = [
     legs: { LF: 'pastern', RF: 'none', LH: 'fetlock', RH: 'fetlock' },
     style: { primary: null, why: 'Never raced.' },
     size: { weightKg: null, typicalKg: null, withersCm: 152, build: 'average', notes: 'About 15 hands (Darley’s letter); refined, high-withered, long neck, small head.' },
+    conf: { neck: 1.05, head: 0.93 }, // described as long-necked with a small head
     gear: { shadowRoll: false, blinkers: false, hood: false, bridle: null, notes: '' },
     silks: null,
     career: 'Foundation sire of the Eclipse sire line; about 95% of modern Thoroughbreds descend from him in the male line.',
@@ -42,6 +45,7 @@ window.HORSES = [
     legs: { LF: 'none', RF: 'none', LH: 'coronet', RH: 'pastern' },
     style: { primary: null, why: 'Never raced.' },
     size: { weightKg: null, typicalKg: null, withersCm: 146, build: 'compact', notes: 'Stud book: 14.1½ hands. Very high arched crest, short back, powerful quarters, high-set tail.' },
+    conf: { crest: 1.45, neck: 0.96, head: 0.94 }, // stud book / Osmer: a very high arched crest, short back, small head
     gear: { shadowRoll: false, blinkers: false, hood: false, bridle: null, notes: 'Portrayed with his companion cat Grimalkin.' },
     silks: null,
     career: 'Foundation sire of the Matchem sire line; registered in the General Stud Book as a Barb.',
@@ -70,6 +74,7 @@ window.HORSES = [
     size: { weightKg: [436, 465], typicalKg: 450, withersCm: null, build: 'rangy', notes: '436 kg at the 1966 Derby; mid-460s at his peak (weakly sourced). Long-legged, long-backed stayer.' },
     gear: { shadowRoll: false, blinkers: false, hood: false, bridle: '#e8e4da', notes: 'Light-coloured bridle.' },
     silks: { owner: '和田共弘', desc: '緑、白襷 (green, white sash)', colors: ['#00843d', '#ffffff'] },
+    saddleNumber: 9, // 1969 Arima Kinen (race-result page)
     career: 'Tenno Sho (Spring) 1967, Takarazuka Kinen 1970, Arima Kinen 1969 and 1970; ran in the 1969 King George VI and the Arc.',
     sources: ['https://ja.wikipedia.org/wiki/スピードシンボリ', 'https://en.wikipedia.org/wiki/Speed_Symboli', 'https://www.jra.go.jp/gallery/dendo/horse17/'],
     uncertain: ['face.type', 'legs.LF', 'legs.LH', 'legs.RH', 'size.weightKg[1]', 'silks (red sleeve hoop?)'],
@@ -81,8 +86,10 @@ window.HORSES = [
     legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'pastern' },
     style: { primary: 'senko', why: 'Ridden prominently by Masuzawa in all 16 JRA starts.' },
     size: { weightKg: [500, 516], typicalKg: 510, withersCm: 171, girthCm: 188, cannonCm: 21.5, build: 'heavy', notes: 'Measured 1974. A "heavy tank": thick neck, deep chest.' },
+    conf: { crest: 1.2 }, // a thick, deep neck: the 「重戦車」
     gear: { shadowRoll: false, blinkers: false, hood: true, hoodColors: { main: '#f4f2ec', trim: '#f4f2ec', ears: '#f4f2ec' }, bitLifter: true, bridle: '#f2f0ea', notes: 'White hood (メンコ) over ears and face; bit-lifter from 1973; white bridle.' },
     silks: { owner: 'ホースマンクラブ', desc: 'White, purple sleeves', colors: ['#ffffff', '#6a2c91'] },
+    saddleNumber: 7, // 1973 Satsuki Sho (race-result page)
     career: 'Unbeaten in 6 at Oi, then the 1973 Satsuki Sho and 1974 Takarazuka Kinen: the national idol horse of the 1970s.',
     sources: ['https://ja.wikipedia.org/wiki/ハイセイコー', 'https://en.wikipedia.org/wiki/Haiseiko', 'https://www.jra.go.jp/gallery/dendo/horse11/'],
     uncertain: ['size.weightKg', 'silks (registry wording not found)'],
@@ -96,6 +103,7 @@ window.HORSES = [
     size: { weightKg: [496, 520], typicalKg: 505, withersCm: null, build: 'heavy', notes: 'Low centre of gravity, Nijinsky type; forelegs toe out.' },
     gear: { shadowRoll: false, blinkers: false, hood: false, pompom: '#f08a24', bridle: '#5a3a24', notes: 'Orange pompom at the poll, yellow reins.' },
     silks: { owner: '橋本善吉', desc: '赤、黄袖 (red, yellow sleeves)', colors: ['#d2202f', '#f5c400'] },
+    saddleNumber: 6, // 1976 Asahi Hai Sansai Stakes (race-result page)
     career: 'Unbeaten in 8 starts; 1976 Asahi Hai Sansai Stakes in record time. Barred from the classics as a 持込馬 (foaled from an imported in-foal mare).',
     sources: ['https://ja.wikipedia.org/wiki/マルゼンスキー', 'https://www.jbis.or.jp/horse/0000069360/', 'https://www.jra.go.jp/gallery/dendo/horse19/'],
     uncertain: ['size.weightKg (Japanese Wikipedia only)'],
@@ -109,6 +117,7 @@ window.HORSES = [
     size: { weightKg: [472, 508], typicalKg: 508, withersCm: null, build: 'rangy', notes: '508 kg in the Japan Cup. Long-legged and lanky.' },
     gear: { shadowRoll: false, blinkers: false, hood: true, hoodColors: { main: '#f4f2ec', trim: '#f4f2ec', ears: '#f4f2ec' }, notes: 'White hood with thick ear padding in the 1984 Japan Cup; reins ~30 cm longer than normal.' },
     silks: { owner: '野出一三', desc: '水色、桃襷、桃袖 (light blue, pink sash, pink sleeves)', colors: ['#7ec8e3', '#f4a6c0'] },
+    saddleNumber: 10, // 1984 Japan Cup (race-result page)
     career: '1984 Takarazuka Kinen; 1984 Japan Cup, the first Japanese-trained winner, beating Symboli Rudolf and Mr. C.B.',
     sources: ['https://ja.wikipedia.org/wiki/カツラギエース', 'https://en.wikipedia.org/wiki/Katsuragi_Ace', 'https://www.jbis.or.jp/horse/0000124927/'],
     uncertain: ['legs.LH', 'legs.RH'],
@@ -122,6 +131,7 @@ window.HORSES = [
     size: { weightKg: [454, 472], typicalKg: 462, withersCm: null, build: 'compact', notes: 'Small and slender (all 15 race weights from keibabook).' },
     gear: { shadowRoll: false, blinkers: false, hood: false, bitLifter: true, bridle: '#f2f0ea', notes: 'White three-strap bit-lifter (ハミ吊り) down the face; white bridle; yellow reins.' },
     silks: { owner: '千明牧場', desc: '緑、黄山形一本輪、白袖 (green, one yellow chevron hoop, white sleeves)', colors: ['#00843d', '#f5c400', '#ffffff'] },
+    saddleNumber: 9, // 1983 Kikuka Sho (race-result page)
     career: '1983 Triple Crown (Satsuki Sho, Tokyo Yushun, Kikuka Sho); 1984 Tenno Sho (Autumn).',
     sources: ['https://ja.wikipedia.org/wiki/ミスターシービー', 'https://www.jbis.or.jp/horse/0000130523/', 'https://www.jra.go.jp/gallery/dendo/horse13/'],
     uncertain: ['legs.LH (side inferred from photos)'],
@@ -135,6 +145,7 @@ window.HORSES = [
     size: { weightKg: [470, 492], typicalKg: 480, withersCm: null, build: 'average', notes: 'Medium-sized, balanced.' },
     gear: { shadowRoll: false, blinkers: false, hood: false, bridle: '#f2f0ea', notes: 'White bridle and noseband (1984).' },
     silks: { owner: 'シンボリ牧場', desc: '緑、白襷、袖赤一本輪 (green, white sash, red hoop on the sleeves)', colors: ['#00843d', '#ffffff', '#d2202f'] },
+    saddleNumber: 10, // 1984 Tokyo Yushun (race-result page)
     career: 'Unbeaten 1984 Triple Crown; seven G1 wins including the 1985 Japan Cup and two Arima Kinen.',
     sources: ['https://ja.wikipedia.org/wiki/シンボリルドルフ', 'https://www.jra.go.jp/gallery/dendo/horse14/'],
     uncertain: ['legs.LH height'],
@@ -148,6 +159,7 @@ window.HORSES = [
     size: { weightKg: [498, 526], typicalKg: 510, withersCm: null, build: 'average', notes: '' },
     gear: { shadowRoll: false, blinkers: false, hood: false, notes: '' },
     silks: { owner: '和田共弘 (シンボリ牧場)', desc: '緑、白襷 (green, white sash; the red sleeve hoop is unclear in photos)', colors: ['#00843d', '#ffffff'] },
+    saddleNumber: 16, // 1985 Tokyo Yushun (race-result page)
     career: '1985 Tokyo Yushun (Japanese Derby); then 14 starts in Europe without a win.',
     sources: ['https://ja.wikipedia.org/wiki/シリウスシンボリ', 'https://en.wikipedia.org/wiki/Sirius_Symboli'],
     uncertain: ['legs.RH (medium confidence)', 'face.type shape', 'silks.owner (ja vs en Wikipedia)', 'silks'],
@@ -162,6 +174,7 @@ window.HORSES = [
     size: { weightKg: [450, 466], typicalKg: 456, withersCm: null, build: 'average', notes: 'All 12 race weights known (454 Oka Sho, 456 Oaks, 464 Queen Elizabeth II Cup). Her lad noted a big belly.' },
     gear: { shadowRoll: false, blinkers: false, hood: false, notes: 'Nothing visible in the 1986 Queen Elizabeth II Cup photo.' },
     silks: { owner: 'メジロ牧場', desc: '白、緑一本輪、袖緑縦縞 (white, one green hoop, white sleeves with green stripes)', colors: ['#ffffff', '#3eb370'] },
+    saddleNumber: 13, // 1986 Oka Sho (race-result page)
     career: '1986 Oka Sho, Yushun Himba and Queen Elizabeth II Cup: Japan’s first fillies’ Triple Crown. 12 starts, 9 wins.',
     sources: ['https://ja.wikipedia.org/wiki/メジロラモーヌ', 'https://db.netkeiba.com/horse/result/1983103914/', 'https://www.jra.go.jp/gallery/dendo/horse15/', 'https://ja.wikipedia.org/wiki/メジロ牧場'],
     uncertain: ['face.type (photo)', 'legs (photos mostly show her left side)', 'gear'],
@@ -175,6 +188,7 @@ window.HORSES = [
     size: { weightKg: [476, 506], typicalKg: 486, withersCm: null, build: 'average', notes: '486 kg in the Hanshin 3yo S and the Kikuka Sho; 494–506 as an older horse. Called 好馬体, and the most handsome horse of his day.' },
     gear: { shadowRoll: false, blinkers: false, hood: true, hoodColors: { main: '#f2c81e', trim: '#f2c81e', ears: '#f2c81e' }, notes: 'Bright yellow メンコ with ear covers (one photo).' },
     silks: { owner: '友駿ホースクラブ', desc: '青、赤袖、白三本輪 (blue, red sleeves with three white hoops)', colors: ['#1f4e9e', '#d22630', '#ffffff'] },
+    saddleNumber: 2, // 1986 Hanshin Sansai Stakes (race-result page)
     career: '1986 Hanshin Sansai Stakes; 2nd in the 1987 Satsuki Sho and Kikuka Sho. 20 starts, 3 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ゴールドシチー', 'https://en.wikipedia.org/wiki/Gold_City_(horse)', 'https://en.netkeiba.com/db/horse/result/1984105823/', 'https://ja.wikipedia.org/wiki/友駿ホースクラブ'],
     uncertain: ['coat.reg (JBIS 403; ja.wikipedia + netkeiba)', 'face width', 'legs heights (one small photo)', 'gear'],
@@ -188,6 +202,7 @@ window.HORSES = [
     size: { weightKg: [441, 456], typicalKg: 450, withersCm: null, build: 'compact', notes: '448–452 kg at his big wins. "小柄だが精悍でバランスが良い": small but sharp and well balanced.' },
     gear: { shadowRoll: false, blinkers: false, hood: true, hoodColors: { main: '#f392d6', trim: '#6633bb', ears: '#6633bb' }, notes: 'Pink メンコ with purple ears matching the silks (1989 JRA photos); the eye pieces may be blinker cups.' },
     silks: { owner: '保手浜弘規', desc: '桃、紫袖、紫鋸歯形 (pink, purple sleeves, purple sawtooth yoke)', colors: ['#f392d6', '#6633bb'] },
+    saddleNumber: 15, // 1989 Arima Kinen (race-result page)
     career: 'Oi (NAR) to the JRA: 1988 Tokyo Daishoten, then 1989 Tenno Sho (Spring), Takarazuka Kinen and Arima Kinen; 1989 Horse of the Year.',
     sources: ['https://ja.wikipedia.org/wiki/イナリワン', 'https://db.netkeiba.com/horse/result/1984106229/', 'https://www.famitsu.com/news/202206/10264361.html', 'https://jra-van.jp/fun/memorial/1984106229.html', 'https://meiba.jp/horses/view/1984106229'],
     uncertain: ['face.type', 'legs.LH (one magazine line: "左後脚の先のみ白かった")', 'coat.tone', 'gear.blinkers', 'silks.colors'],
@@ -201,6 +216,7 @@ window.HORSES = [
     size: { weightKg: [440, 456], typicalKg: 448, withersCm: null, build: 'rangy', notes: '448/444/452 kg at his three G1 wins. "脚の長さだけが目立つ華奢で小柄な馬体": small, slight, long-legged.' },
     gear: { shadowRoll: false, blinkers: false, hood: true, hoodColors: { main: '#1f3fae', trim: '#d22630', ears: '#d22630' }, notes: 'Royal-blue メンコ with red trim and red ear covers in his 1988 races.' },
     silks: { owner: 'タマモ', desc: '水色、赤二本輪、赤袖 (light blue, two red hoops, red sleeves)', colors: ['#6cc4e8', '#d8232a'] },
+    saddleNumber: 9, // 1988 Tenno Sho (Autumn) (race-result page)
     career: '1988 Tenno Sho (Spring), Takarazuka Kinen and Tenno Sho (Autumn) in an 8-race winning streak; 2nd in the 1988 Japan Cup and Arima Kinen. 18 starts, 9 wins.',
     sources: ['https://ja.wikipedia.org/wiki/タマモクロス', 'https://en.netkeiba.com/db/horse/result/1984101673/', 'https://en.netkeiba.com/library/detail.html?no=275', 'https://ja.wikipedia.org/wiki/タマモ'],
     uncertain: ['coat.greyness', 'coat.mane / coat.tail (read from photos)', 'face.type (hidden by the hood / grey)', 'legs', 'gear.shadowRoll'],
@@ -214,6 +230,7 @@ window.HORSES = [
     size: { weightKg: [486, 504], typicalKg: 494, withersCm: null, build: 'average', notes: '494 (Yasuda), 496 (Swan S), 498 (Takamatsunomiya), 494 (Sprinters): a "power-packed sprinter".' },
     gear: { shadowRoll: false, blinkers: false, hood: true, hoodColors: { main: '#d4a72c', trim: '#f2f0ea', ears: '#f2f0ea' }, bandages: { fore: '#f2f0ea' }, notes: 'Mustard-yellow メンコ with white ear covers (1989 Yasuda Kinen); white bandages on the fore cannons.' },
     silks: { owner: '竹田辰一', desc: 'Black, two white hoops, white sleeves', colors: ['#111111', '#ffffff'] },
+    saddleNumber: 14, // 1989 Yasuda Kinen (race-result page)
     career: '1989 Yasuda Kinen and 1990 Sprinters Stakes (Japanese record); best sprinter 1989–90; beaten a nose by Oguri Cap in the 1989 Mile CS. 39 starts, 8 wins.',
     sources: ['https://ja.wikipedia.org/wiki/バンブーメモリー', 'https://db.netkeiba.com/horse/result/1985104122/', 'https://jra-van.jp/fun/memorial/1985104122.html', 'https://uma-furusato.com/search_horse/0000179605.html'],
     uncertain: ['face.type', 'legs heights (two small photos)', 'gear (one photo)', 'silks.desc (read from an image)'],
@@ -227,6 +244,7 @@ window.HORSES = [
     size: { weightKg: [496, 520], typicalKg: 504, withersCm: null, build: 'heavy', notes: '504 kg winning the 1989 Takamatsunomiya Hai; 520 at the 1990 Arima. A twin with a fragile constitution.' },
     gear: { shadowRoll: false, blinkers: false, hood: false, browband: '#b0303a', notes: 'Ordinary bridle, red/blue browband (one photo).' },
     silks: { owner: 'メジロ牧場', desc: '白、緑一本輪、袖緑縦縞 (white, one green hoop, white sleeves with green stripes)', colors: ['#ffffff', '#3eb370'] },
+    saddleNumber: 8, // 1989 Takamatsunomiya Hai (race-result page)
     career: '1989 Takamatsunomiya Hai; 2nd in the 1988 Tokyo Yushun and the 1990 Tenno Sho (Autumn, by a head). 14 starts, 4 wins.',
     sources: ['https://ja.wikipedia.org/wiki/メジロアルダン', 'https://db.netkeiba.com/horse/1985103406/', 'https://jra-van.jp/fun/memorial/1985103406.html'],
     uncertain: ['face.type', 'legs (one photo, left side)', 'gear'],
@@ -240,6 +258,7 @@ window.HORSES = [
     size: { weightKg: [450, 500], typicalKg: 494, withersCm: null, build: 'average', notes: '492 (Arima 88), 496 (Mile CS 89, Yasuda 90), 494 (Arima 90). Low centre of gravity, ground-hugging power stride.' },
     gear: { shadowRoll: false, blinkers: false, hood: false, bridle: '#f2f0ea', notes: 'White bridle and plain white noseband in every 1988–90 race photo.' },
     silks: { owner: '佐橋五十雄 → 近藤俊典 (same design)', desc: '青、黄菱山形、赤袖 (blue, yellow diamond chevron, red sleeves)', colors: ['#1f3fa8', '#f2d21b', '#e0301e'] },
+    saddleNumber: 8, // 1990 Arima Kinen (race-result page)
     career: 'From Kasamatsu to the JRA: Arima Kinen 1988 and 1990, Mile Championship 1989, Yasuda Kinen 1990; Horse of the Year 1990. 32 starts, 22 wins.',
     sources: ['https://ja.wikipedia.org/wiki/オグリキャップ', 'https://en.netkeiba.com/db/horse/result/1985102167/', 'https://www.jra.go.jp/gallery/dendo/horse21/', 'https://ja.wikipedia.org/wiki/佐橋五十雄'],
     uncertain: ['coat.greyness', 'coat.mane', 'face.type', 'legs'],
@@ -253,6 +272,7 @@ window.HORSES = [
     size: { weightKg: [456, 476], typicalKg: 464, withersCm: null, build: 'average', notes: '464 kg winning the Derby: "決して大柄ではないが、筋肉質でスマート", thin-skinned like his sire Maruzensky.' },
     gear: { shadowRoll: false, blinkers: false, hood: true, hoodColors: { main: '#f4f2ec', trim: '#f4f2ec', ears: '#f4f2ec' }, notes: 'White メンコ from the 1987 Asahi Hai on; a thick white noseband in the 1988 Derby photo may be a shadow roll.' },
     silks: { owner: 'さくらコマース', desc: '桃、白一本輪、桃袖 (pink, one white hoop, pink sleeves)', colors: ['#f4a3bf', '#ffffff'] },
+    saddleNumber: 5, // 1988 Tokyo Yushun (race-result page)
     career: '1987 Asahi Hai Sansai Stakes, 1988 Yayoi Sho and 1988 Tokyo Yushun (Japanese Derby). 10 starts, 5 wins.',
     sources: ['https://ja.wikipedia.org/wiki/サクラチヨノオー', 'https://uma-furusato.com/search_horse/0000176226.html', 'https://www.famitsu.com/news/202201/20248388.html', 'https://ja.wikipedia.org/wiki/さくらコマース'],
     uncertain: ['face.type', 'legs', 'gear.shadowRoll', 'silks.colors'],
@@ -267,6 +287,7 @@ window.HORSES = [
     size: { weightKg: [436, 474], typicalKg: 460, withersCm: null, build: 'average', notes: '456–464 kg at her graded wins; "しなやか" (supple). 51 starts: the "iron lady".' },
     gear: { shadowRoll: false, blinkers: false, hood: true, hoodColors: { main: '#f2f0ea', trim: '#f2c81e', ears: '#f2c81e' }, notes: 'White メンコ with yellow trim around the eyes, sometimes yellow ear covers (photos).' },
     silks: { owner: '勝野憲明', desc: '緑、白縦縞、袖赤一本輪 (green with white vertical stripes, red hoop on the sleeves)', colors: ['#1f9e6e', '#ffffff', '#d7262e'] },
+    saddleNumber: 1, // 1992 Kokura Kinen (race-result page)
     career: '1991 Keihan Hai; 1992 Kinko Sho, Kokura Kinen and Sankei Sho All Comers; 2nd in the 1993 Yasuda Kinen and Takarazuka Kinen. 51 starts, 9 wins.',
     sources: ['https://ja.wikipedia.org/wiki/イクノディクタス', 'https://en.netkeiba.com/db/horse/result/1987104784/', 'https://news.netkeiba.com/?pid=column_view&cid=42510', 'https://jra-van.jp/fun/memorial/1987104784.html', 'https://meiba.jp/horses/view/1987104784'],
     uncertain: ['legs (one low-resolution photo)', 'face (snip?)', 'gear', 'silks (read from an image)'],
@@ -280,6 +301,7 @@ window.HORSES = [
     size: { weightKg: [480, 504], typicalKg: 488, withersCm: null, build: 'tall', notes: '484 (Kikuka), 482 and 490 (Tenno Sho Spring 91/92), 494 (Takarazuka 93). Long-legged frame.' },
     gear: { shadowRoll: false, blinkers: false, hood: false, notes: 'Plain bridle in the 1990, 1991 and 1993 photos.' },
     silks: { owner: 'メジロ商事 (メジロ牧場)', desc: '白、緑一本輪、袖緑縦縞 (white, one green hoop, white sleeves with green stripes)', colors: ['#ffffff', '#3eb370'] },
+    saddleNumber: 15, // 1991 Tenno Sho (Spring) (race-result page)
     career: '1990 Kikuka Sho; Tenno Sho (Spring) 1991 and 1992; 1993 Takarazuka Kinen; first past the post in the 1991 Tenno Sho (Autumn) but placed last. 21 starts, 12 wins.',
     sources: ['https://ja.wikipedia.org/wiki/メジロマックイーン', 'https://en.netkeiba.com/db/horse/result/1987107235/', 'https://www.jra.go.jp/gallery/dendo/horse22/', 'https://www.jra.go.jp/gallery/3minmeiba/horse41/'],
     uncertain: ['coat.greyness / dapple / mane / tail (photos)', 'face.type', 'legs', 'size.build'],
@@ -293,6 +315,7 @@ window.HORSES = [
     size: { weightKg: [456, 478], typicalKg: 472, withersCm: null, build: 'average', notes: '472 kg at both Mile Championship wins; "馬格はふつう（やや小柄）".' },
     gear: { shadowRoll: false, blinkers: false, hood: true, hoodColors: { main: '#1f4fa8', trim: '#f2f0ea', ears: '#f2f0ea' }, notes: 'Blue メンコ with white ear covers and white-trimmed eye holes; a crossed (figure-eight) noseband to stop him getting his tongue over the bit.' },
     silks: { owner: '中村雅一', desc: '青、黄一文字 (blue, one yellow band across the chest, blue sleeves)', colors: ['#1f4fa8', '#f2d21b'] },
+    saddleNumber: 18, // 1992 Mile Championship (race-result page)
     career: 'Mile Championship 1991 and 1992; 1992 Mainichi Okan, 1991 Takamatsunomiya Hai, Milers Cup 1991 and 1992. 35 starts, 10 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ダイタクヘリオス', 'https://db.netkeiba.com/horse/result/1987102798/', 'https://en.netkeiba.com/db/horse/1987102798/', 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Daitaku_Helios.jpg', 'https://www.famitsu.com/news/202301/20290035.html'],
     uncertain: ['face.type', 'legs (no photo shows the lower legs clearly)', 'gear.blinkers (eye pieces?)', 'silks.colors'],
@@ -306,6 +329,7 @@ window.HORSES = [
     size: { weightKg: [454, 476], typicalKg: 464, withersCm: null, build: 'average', notes: '468 kg (Yasuda Kinen), 460 (Sprinters S). Congenital asymmetry: her right fore hoof was small and almost round.' },
     gear: { shadowRoll: false, blinkers: false, hood: false, notes: 'Plain bridle in the 1991 Yasuda Kinen photo.' },
     silks: { owner: '辻本春雄', desc: '黄、赤一本輪、紫袖 (yellow, one red hoop, purple sleeves)', colors: ['#f5d800', '#d42a2a', '#6a3d9a'] },
+    saddleNumber: 4, // 1991 Yasuda Kinen (race-result page)
     career: '1991 Yasuda Kinen and Sprinters Stakes; best older filly 1991. 18 starts, 6 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ダイイチルビー', 'https://en.netkeiba.com/db/horse/1987100260/', 'https://jra-van.jp/fun/memorial/img/horses/l_1987100260.jpg'],
     uncertain: ['face.type', 'legs', 'gear (one photo)', 'silks (from a silks image; owner kanji 春雄/晴雄)'],
@@ -319,6 +343,7 @@ window.HORSES = [
     size: { weightKg: [438, 482], typicalKg: 472, withersCm: null, build: 'average', notes: '470 kg (Takarazuka 92), 474 (Arima 92); "馬格は標準サイズ", said to have had the thickest cannon bone of his crop.' },
     gear: { shadowRoll: false, blinkers: false, hood: false, notes: 'Plain bridle in the race photo; a white メンコ with a green band and ear covers in a paddock shot.' },
     silks: { owner: 'メジロ牧場', desc: '白、緑一本輪、袖緑縦縞 (white, one green hoop, white sleeves with green stripes)', colors: ['#ffffff', '#3eb370'] },
+    saddleNumber: 3, // 1992 Arima Kinen (race-result page)
     career: '1992 Takarazuka Kinen and Arima Kinen (both from the front), 1993 Hanshin Daishoten. 38 starts, 9 wins (including a jump race).',
     sources: ['https://ja.wikipedia.org/wiki/メジロパーマー', 'https://en.netkeiba.com/db/horse/result/1987105372/', 'https://jra-van.jp/fun/memorial/1987105372.html', 'https://www.famitsu.com/news/202205/20261943.html', 'https://en.wikipedia.org/wiki/Mejiro_Palmer'],
     uncertain: ['face.type (photos)', 'legs (LH white confirmed in text; heights and RH are judgement calls)', 'gear.hood'],
@@ -332,6 +357,7 @@ window.HORSES = [
     size: { weightKg: [486, 508], typicalKg: 496, withersCm: null, build: 'heavy', notes: '496 kg at both G1 wins; big as a foal, "筋骨隆々" (heavily muscled).' },
     gear: { shadowRoll: false, blinkers: false, hood: false, notes: 'Plain bridle in the 1988 and 1990 race photos.' },
     silks: { owner: '富士 (冠名 ヤエノ)', desc: '白、赤一本輪、黄袖青一本輪 (white, one red hoop, yellow sleeves with a blue hoop)', colors: ['#ffffff', '#e60012', '#ffe100', '#1f5fc8'] },
+    saddleNumber: 7, // 1990 Tenno Sho (Autumn) (race-result page)
     career: '1988 Satsuki Sho; 1990 Tenno Sho (Autumn) in record time, beating Mejiro Ardan by a head. 23 starts, 8 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ヤエノムテキ', 'https://en.netkeiba.com/db/horse/1985104215/', 'https://jra-van.jp/fun/memorial/1985104215.html', 'https://umafiles.com/1981-1985/yaeno-muteki.html', 'https://uma-furusato.com/search_horse/0000179698.html'],
     uncertain: ['face.type (one continuous marking)', 'legs heights (photos; hinds look a little higher)', 'gear', 'silks.colors (from a silks image)'],
@@ -345,6 +371,7 @@ window.HORSES = [
     size: { weightKg: [504, 518], typicalKg: 514, withersCm: null, build: 'heavy', notes: 'Big, with strong hindquarters (トモ充実) but a weak forehand (前駆が貧しく).' },
     gear: { shadowRoll: false, blinkers: false, hood: true, hoodColors: { main: '#f4a7c9', trim: '#1a9c3c', ears: '#1a9c3c' }, notes: 'Always hooded: pink メンコ with green trim and ears, "AF" on the front (1990 Satsuki Sho, Derby); white with red-orange trim at the 1989 Asahi Hai.' },
     silks: { owner: '小林正明', desc: '桃、緑十字襷 (pink with green cross-sashes)', colors: ['#f4a7c9', '#1a9c3c'] },
+    saddleNumber: 12, // 1990 Tokyo Yushun (race-result page)
     career: '1989 Asahi Hai Sansai Stakes; 1990 Tokyo Yushun (Japanese Derby) in record time; 2nd in the 1990 Satsuki Sho. 8 starts, 4 wins.',
     sources: ['https://ja.wikipedia.org/wiki/アイネスフウジン', 'https://en.netkeiba.com/db/horse/result/1987100579/', 'https://p.keibabook.co.jp/db/uma/0082280', 'https://www.yushunweb.jp/story/story74/2578/', 'https://www.famitsu.com/news/202205/10260805.html', 'https://en.wikipedia.org/wiki/Ines_Fujin'],
     uncertain: ['face.type (hidden by the hood)', 'legs (LF coronet from photo angles)', 'gear.blinkers', 'silks.colors'],
@@ -356,8 +383,10 @@ window.HORSES = [
     legs: { LF: 'none', RF: 'none', LH: 'pastern', RH: 'none' },
     style: { primary: 'senko', secondary: 'sashi', why: 'From late 1989 2nd–3rd at the first corner (Tenno Sho Autumn 3/14, Arima 89 2/16, Tenno Sho Spring 90 3/16); in 1988 mid-pack then closing (Kikuka Sho 8/18, through on the inside).' },
     size: { weightKg: [498, 524], typicalKg: 520, withersCm: null, build: 'tall', notes: '504 kg (Kikuka Sho 88), 520 (Tenno Sho Autumn 89 and Spring 90), 524 at the 1989 Japan Cup: 大柄, a big, tall frame.' },
+    conf: { head: 1.08 }, // known for a notably big head
     gear: { shadowRoll: false, blinkers: false, hood: false, bridle: '#e8e4da', notes: 'White/light bridle; nothing else in the 1988 and 1989 photos.' },
     silks: { owner: '木倉誠', desc: '鼠、青襷、青袖 (grey, blue sash, blue sleeves)', colors: ['#a9adb2', '#1f5fd0'] },
+    saddleNumber: 14, // 1989 Tenno Sho (Autumn) (race-result page)
     career: '1988 Kikuka Sho, 1989 Tenno Sho (Autumn), 1990 Tenno Sho (Spring), all under Yutaka Take; 2nd by a nose in the 1989 Arima Kinen. 16 starts, 8 wins.',
     sources: ['https://ja.wikipedia.org/wiki/スーパークリーク', 'https://en.netkeiba.com/db/horse/result/1985104409/', 'https://jra-van.jp/fun/memorial/1985104409.html', 'https://upload.wikimedia.org/wikipedia/commons/5/53/SuperCreek1996.jpg', 'https://www.yushunweb.jp/story/story68/2557/', 'https://en.wikipedia.org/wiki/Super_Creek'],
     uncertain: ['face.type (photos)', 'legs (one white hind pastern; which hind is a guess)', 'gear', 'silks.colors (from a silks image)'],
@@ -372,6 +401,7 @@ window.HORSES = [
     size: { weightKg: [464, 482], typicalKg: 466, withersCm: null, build: 'average', notes: 'A steady 466 kg in the Opal S, Swan S and Mile CS.' },
     gear: { hood: true, hoodColors: { main: '#1f3fae', trim: '#1f3fae', ears: '#f0c43a' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1f3fae', notes: 'Royal-blue メンコ with yellow/gold ear covers, blue bridle and reins, gold-studded browband (1991 Swan S photos).' },
     silks: { owner: '高田喜嘉', desc: 'Blue, yellow sash, black sleeves with one yellow hoop', colors: ['#1d65fc', '#feed1b', '#2b2b2b'] },
+    saddleNumber: 7, // 1991 Swan Stakes (race-result page)
     career: '1991 Swan Stakes in national-record time; 3rd in the 1991 Mile Championship; broke down fatally in the 1991 Sprinters Stakes. 10 starts, 5 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ケイエスミラクル', 'https://en.netkeiba.com/db/horse/result/1988107943/', 'https://dir.netkeiba.com/keibamatome/detail.html?no=2664', 'https://umamusu.wiki/IRL:K.S.Miracle'],
     uncertain: ['coat.tone', 'face.type (hidden by the hood)', 'legs', 'gear (one race, two photos)', 'silks (from a wiki icon and photos)'],
@@ -385,6 +415,7 @@ window.HORSES = [
     size: { weightKg: [490, 512], typicalKg: 494, withersCm: null, build: 'heavy', notes: '「坂路の申し子」: hill training made him heavily muscled, with very thick hindquarters (分厚いトモ), a massive shoulder and forearm. 494 kg in the Derby, 512 in the Kikuka Sho.' },
     gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#f2f0ea', notes: 'No hood: a white headstall and cheekpieces, white browband with a dark pattern, brown leather noseband (1992 Derby and parade photos).' },
     silks: { owner: 'ミホノインターナショナル', desc: '桃、黄銭形散、桃袖 (pink with scattered yellow coin rings, pink sleeves)', colors: ['#f07fc0', '#f5d300'] },
+    saddleNumber: 15, // 1992 Tokyo Yushun (race-result page)
     career: 'Unbeaten through the 1991 Asahi Hai Sansai Stakes, 1992 Satsuki Sho and Tokyo Yushun (Japanese Derby); 2nd to Rice Shower in the 1992 Kikuka Sho. Horse of the Year 1992. 8 starts, 7 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ミホノブルボン', 'https://en.netkeiba.com/db/horse/result/1989103049/', 'https://jra-van.jp/fun/memorial/1989103049.html', 'https://umafiles.com/1989/mihono-bourbon.html', 'https://en.wikipedia.org/wiki/Mihono_Bourbon'],
     uncertain: ['legs.RH height (registry 右後一白, height from a 300px photo)', 'gear (two photos)', 'silks.colors'],
@@ -398,6 +429,7 @@ window.HORSES = [
     size: { weightKg: [446, 470], typicalKg: 458, withersCm: null, build: 'compact', notes: '454–460 kg at his big wins. "胴が詰まり、前後躯が発達した短距離馬に特有の馬体": short-coupled, powerful at both ends.' },
     gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#2a211c', bandages: { fore: '#2a5cc0', hind: '#2a5cc0' }, notes: 'Plain dark bridle, no hood; royal-blue leg bandages with white stripes on all four legs in the 1993 Yasuda Kinen (bare legs in 1992).' },
     silks: { owner: '土井宏二 → 土井肇 (Yamanin)', desc: '水色、袖赤三本輪 (light blue, three red hoops on the sleeves)', colors: ['#5ec8e5', '#d7263d'] },
+    saddleNumber: 8, // 1993 Tenno Sho (Autumn) (race-result page)
     career: 'Yasuda Kinen 1992 and 1993, Tenno Sho (Autumn) 1993; 2nd in the Sprinters Stakes 1992 and 1993. 20 starts, 8 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ヤマニンゼファー', 'https://en.netkeiba.com/db/horse/result/1988101069/', 'https://ja.wikipedia.org/wiki/土井宏二', 'https://meiba.jp/horses/view/1988101069'],
     uncertain: ['face.type (photos)', 'legs.RF (one white fore foot; could be LF)', 'gear.bandages (1993 Yasuda only)'],
@@ -411,6 +443,7 @@ window.HORSES = [
     size: { weightKg: [496, 524], typicalKg: 512, withersCm: null, build: 'tall', notes: '512 kg at the 1991 Takarazuka Kinen. "脚長で幅のある立派な馬体": long-legged and broad.' },
     gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1c1a19', browband: '#9fb0c8', notes: 'Black leather bridle, browband with silver and dark-blue beads, cream reins; ears bare (1991 Takarazuka Kinen photo).' },
     silks: { owner: 'メジロ牧場', desc: '白、緑一本輪、袖緑縦縞 (white, one green hoop, white sleeves with green stripes)', colors: ['#ffffff', '#3eb370'] },
+    saddleNumber: 1, // 1991 Takarazuka Kinen (race-result page)
     career: '1991 Takarazuka Kinen; 1990 Yayoi Sho and Kyoto Shimbun Hai; 2nd in the 1990 Tokyo Yushun and Arima Kinen. 19 starts, 7 wins.',
     sources: ['https://ja.wikipedia.org/wiki/メジロライアン', 'https://en.netkeiba.com/db/horse/result/1987105368/', 'https://jra-van.jp/fun/memorial/img/horses/l_1987105368.jpg'],
     uncertain: ['face.type (star or narrow stripe)', 'legs (one side-on photo; left and right may be swapped)', 'gear (one race photo)'],
@@ -424,6 +457,7 @@ window.HORSES = [
     size: { weightKg: [472, 506], typicalKg: 496, withersCm: null, build: 'tall', notes: '490–498 kg for his 1991 graded wins, 496 for the 1994 Takamatsunomiya Hai; long-legged and deep-bodied.' },
     gear: { hood: true, hoodColors: { main: '#009944', trim: '#d0103a', ears: '#d0103a' }, pompom: '#d0103a', blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#f2f0ea', notes: 'メンコ in his racing colours: green with red vertical stripes, red ear covers and eye trim, a red poll pompom, "Nice Nature" stitched in white; white bridle. He raced without it for the first time in the 1994 Takamatsunomiya Hai, his win.' },
     silks: { owner: '豊嶌正雄 → 豊嶌泰三', desc: '緑、赤縦縞、赤袖 (green with red vertical stripes, red sleeves)', colors: ['#009944', '#e60012'] },
+    saddleNumber: 12, // 1994 Takamatsunomiya Hai (race-result page)
     career: '1991 Kokura Kinen, Kyoto Shimbun Hai and Naruo Kinen; 1994 Takamatsunomiya Hai; 3rd in the Arima Kinen three years running (1991–93). 41 starts, 7 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ナイスネイチャ', 'https://db.netkeiba.com/horse/result/1988104866/', 'https://jra-van.jp/fun/memorial/1988104866.html', 'https://commons.wikimedia.org/wiki/File:Owner_Toyoshima_Masao.svg', 'https://en.wikipedia.org/wiki/Nice_Nature'],
     uncertain: ['coat.tone', 'face.type', 'legs', 'gear.hood colours (a 1995 paddock photo)'],
@@ -437,6 +471,7 @@ window.HORSES = [
     size: { weightKg: [456, 480], typicalKg: 465, withersCm: null, build: 'average', notes: '456–474 kg at his four G1 wins. Extremely supple with springy hind pasterns: the famous "Teio step".' },
     gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#2a211c', browband: '#d22630', notes: 'Plain dark bridle with a red-and-white striped beaded browband; white reins (light blue in the 1993 Arima); mane plaited with white yarn in the 1991 Satsuki Sho.' },
     silks: { owner: '内村正則', desc: '白、青山形一本輪、桃袖 (white, one blue zigzag hoop, pink sleeves)', colors: ['#ffffff', '#1e4fb4', '#f29bc0'] },
+    saddleNumber: 4, // 1993 Arima Kinen (race-result page)
     career: '1991 Satsuki Sho and Tokyo Yushun (unbeaten), 1992 Japan Cup, 1993 Arima Kinen after a year off. Horse of the Year 1991. 12 starts, 9 wins.',
     sources: ['https://ja.wikipedia.org/wiki/トウカイテイオー', 'https://en.netkeiba.com/db/horse/result/1988101025/', 'https://www.jra.go.jp/gallery/dendo/horse23/', 'https://ja.wikipedia.org/wiki/内村正則'],
     uncertain: ['face shape (photos)', 'legs.RF (weakest call)', 'gear (four race photos)', 'silks.colors'],
@@ -450,6 +485,7 @@ window.HORSES = [
     size: { weightKg: [466, 496], typicalKg: 488, withersCm: null, build: 'average', notes: '482–494 kg at his graded wins; a lean type ("食べても肥えることがなかった").' },
     gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#5a3a24', notes: 'Plain brown leather bridle, cavesson noseband, ring snaffle (one race photo).' },
     silks: { owner: '細川益男', desc: '赤、青二本輪、青袖赤二本輪 (red, two blue hoops, blue sleeves with two red hoops)', colors: ['#e2342b', '#1f4fb4'] },
+    saddleNumber: 2, // 1995 Takamatsunomiya Hai (race-result page)
     career: '1993 Diamond S and Meguro Kinen, 1994 AJCC, 1995 Takamatsunomiya Hai; 3rd in the 1992 Kikuka Sho and 4th in four G1s. 32 starts, 8 wins.',
     sources: ['https://ja.wikipedia.org/wiki/マチカネタンホイザ', 'https://en.netkeiba.com/db/horse/result/1989103489/', 'https://ja.wikipedia.org/wiki/細川益男', 'https://jra-van.jp/fun/memorial/1989103489.html'],
     uncertain: ['face.type', 'legs.RH (one 2012 photo; which hind is inferred)', 'gear (one photo)', 'silks.colors'],
@@ -463,6 +499,7 @@ window.HORSES = [
     size: { weightKg: [406, 438], typicalKg: 414, withersCm: null, build: 'compact', notes: '"食が細く非常に小柄な馬だった": a light eater and very small; 412 kg in the Tanabata Sho, 416 in the All Comer.' },
     gear: { hood: true, hoodColors: { main: '#2f62c8', trim: '#2f62c8', ears: '#f2f0ea' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#2a211c', browband: '#f2f0ea', notes: 'Royal-blue メンコ with white ear covers ringed in green, white beaded browband, yellow reins (1993); an all-white hood with white ear covers in 1991. Plain eye holes, no blinker cups.' },
     silks: { owner: '黒岩晴男', desc: '青、白袖緑二本輪 (blue, white sleeves with two green hoops)', colors: ['#2350b8', '#ffffff', '#1f9a3e'] },
+    saddleNumber: 11, // 1993 Sankei Sho All Comers (race-result page)
     career: '1991 Radio Tampa Sho, 1993 Tanabata Sho and Sankei Sho All Comer (by 5 lengths from Rice Shower); led the 1993 Tenno Sho (Autumn) by a distance before fading. 35 starts, 6 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ツインターボ_(競走馬)', 'https://db.netkeiba.com/horse/result/1988106332/', 'https://jra-van.jp/fun/memorial/1988106332.html', 'https://www.nikkansports.com/keiba/news/202109220000435.html', 'https://umato.jp/story/suzukitadashi/5780/'],
     uncertain: ['face.type (hidden by the hood)', 'legs', 'gear.blinkers (none seen in 1991–93; 1994–96 unchecked)', 'silks.colors'],
@@ -477,6 +514,7 @@ window.HORSES = [
     size: { weightKg: [416, 446], typicalKg: 426, withersCm: null, build: 'compact', notes: '426 kg winning the Satsuki Sho: a small horse in the 420s.' },
     gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#f2f0ea', notes: 'White bridle and thin white noseband, purple/navy reins (1993 Satsuki Sho); white front bandages in a 1995 paddock photo (race use unknown).' },
     silks: { owner: '山路秀則', desc: '桃、紫山形一文字 (pink, one purple chevron band; the same colours as Narita Brian)', colors: ['#f19ec2', '#5e2a84'] },
+    saddleNumber: 14, // 1993 Satsuki Sho (race-result page)
     career: '1992 Radio Tampa Hai Sansai Stakes, 1993 Satsuki Sho, 1994 Meguro Kinen; 3rd in the 1993 Derby, 2nd to Biwa Hayahide in the 1994 Tenno Sho (Spring). 15 starts, 4 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ナリタタイシン', 'https://en.netkeiba.com/db/horse/1990102766/', 'https://ja.wikipedia.org/wiki/山路秀則', 'https://upload.wikimedia.org/wikipedia/commons/6/68/Naritataishin.JPG'],
     uncertain: ['face.type', 'legs.RH (which hind is unclear)', 'gear (two photos)', 'silks.colors'],
@@ -490,6 +528,7 @@ window.HORSES = [
     size: { weightKg: [420, 436], typicalKg: 424, withersCm: null, build: 'rangy', notes: '"脚ばかりヒョロッと長くて幅のない、バンビみたいな馬": all long legs and no width, like Bambi. 420 kg in the Oka Sho.' },
     gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#2f55c8', notes: 'A bright royal-blue bridle and blue reins in both photos (1991, 1992); no hood, blinkers or shadow roll.' },
     silks: { owner: '西山正行', desc: '黄、紫三本輪、白袖 (yellow, three purple hoops, white sleeves)', colors: ['#f5d800', '#6b2fa8', '#f2f0ea'] },
+    saddleNumber: 9, // 1992 Oka Sho (race-result page)
     career: '1991 Hanshin Sansai Himba Stakes, 1992 Oka Sho and Sprinters Stakes. 16 starts, 7 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ニシノフラワー', 'https://en.netkeiba.com/db/horse/1989107262/', 'https://jra-van.jp/fun/memorial/1989107262.html', 'https://ja.wikipedia.org/wiki/西山正行', 'https://en.wikipedia.org/wiki/Nishino_Flower'],
     uncertain: ['face.type', 'legs (left-side photos only)', 'gear (two photos)'],
@@ -503,6 +542,7 @@ window.HORSES = [
     size: { weightKg: [470, 482], typicalKg: 478, withersCm: null, build: 'average', notes: '470 kg (Yasuda Kinen), 478 (Mile CS); 好馬体.' },
     gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1f1a17', browband: '#c9ccd0', notes: 'Near-black bridle with a white/silver studded browband, red-and-yellow reins (1994 Yasuda Kinen); a bottle-green face cover reading "North Flight" in the paddock only.' },
     silks: { owner: '大北牧場', desc: 'えんじ、水色一本輪、えんじ袖 (maroon, one light-blue hoop, maroon sleeves)', colors: ['#a73836', '#00bfff'] },
+    saddleNumber: 5, // 1994 Yasuda Kinen (race-result page)
     career: '1994 Yasuda Kinen and Mile Championship; 2nd in the 1993 Queen Elizabeth II Cup. 11 starts, 8 wins (5 from 5 at a mile).',
     sources: ['https://ja.wikipedia.org/wiki/ノースフライト', 'https://en.netkeiba.com/db/horse/1990100908/', 'https://uma-furusato.com/search_horse/0000229403.html', 'https://commons.wikimedia.org/wiki/File:Owner_Taihoku_Farm.svg', 'https://en.wikipedia.org/wiki/North_Flight'],
     uncertain: ['face.type', 'legs', 'gear (one race photo)', 'silks.desc (from a silks image)'],
@@ -516,6 +556,7 @@ window.HORSES = [
     size: { weightKg: [456, 482], typicalKg: 470, withersCm: null, build: 'average', notes: '470 kg winning the 1995 Tenno Sho (Autumn); 見栄えの良い馬.' },
     gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', notes: 'Plain brown leather bridle, mane braided for the paddock (1995 Takarazuka Kinen photo).' },
     silks: { owner: 'さくらコマース', desc: '桃、白一本輪、桃袖 (pink, one white hoop, pink sleeves)', colors: ['#f4a3bf', '#ffffff'] },
+    saddleNumber: 1, // 1995 Tenno Sho (Autumn) (race-result page)
     career: '1995 Tenno Sho (Autumn), 1994 Nakayama Kinen, 1995 AJCC; best older male 1995. 21 starts, 9 wins.',
     sources: ['https://ja.wikipedia.org/wiki/サクラチトセオー', 'https://en.wikipedia.org/wiki/Sakura_Chitose_O', 'https://en.netkeiba.com/db/horse/1990108898/', 'https://commons.wikimedia.org/wiki/File:Sakurachitoseo.JPG'],
     uncertain: ['coat.reg (netkeiba 黒鹿毛, Wikipedia 鹿毛)', 'face.type', 'legs', 'gear (one paddock photo)'],
@@ -529,6 +570,7 @@ window.HORSES = [
     size: { weightKg: [482, 504], typicalKg: 502, withersCm: null, build: 'heavy', notes: '500 kg (Sprinters S 1993), 504 (1994): a big, powerful sprinter.' },
     gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#f2f0ea', pompom: '#f2f0ea', notes: 'White bridle with a ring bit and a white poll pompom (1994 Sprinters S); no hood.' },
     silks: { owner: 'さくらコマース', desc: '桃、白一本輪、桃袖 (pink, one white hoop, pink sleeves)', colors: ['#f4a3bf', '#ffffff'] },
+    saddleNumber: 8, // 1994 Sprinters Stakes (race-result page)
     career: 'Sprinters Stakes 1993 and 1994 (by 4 lengths), 1994 Swan Stakes; 2nd in the 1994 Mile Championship. 21 starts, 11 wins, all under Futoshi Kojima.',
     sources: ['https://ja.wikipedia.org/wiki/サクラバクシンオー', 'https://en.netkeiba.com/db/horse/result/1989108341/', 'https://jra-van.jp/fun/memorial/img/horses/l_1989108341.jpg', 'https://commons.wikimedia.org/wiki/File:Bakusin-o.jpg'],
     uncertain: ['legs (small photos; side read as left)', 'face.notes', 'gear.pompom'],
@@ -542,6 +584,7 @@ window.HORSES = [
     size: { weightKg: [482, 510], typicalKg: 500, withersCm: null, build: 'average', notes: '500 kg at both of his G1 3rds (1994 Tenno Sho Autumn, Japan Cup).' },
     gear: { hood: true, hoodColors: { main: '#8a5cc0', trim: '#2a1f3a', ears: '#8a5cc0' }, blinkers: false, shadowRoll: true, bitLifter: false, notes: 'A violet メンコ with matching ear covers and dark eye rims in every photo; a thick white sheepskin shadow roll (1996 Nikkei Sho).' },
     silks: { owner: 'テンジン', desc: 'Yellow, blue hoops, red sleeves (黄、青二本輪、赤袖)', colors: ['#f5d300', '#1f4fbf', '#d22630'] },
+    saddleNumber: 15, // 1994 Japan Cup (3rd) (race-result page)
     career: 'The "bronze collector": no graded win; 3rd in the 1994 Tenno Sho (Autumn) and Japan Cup, 2nd in the 1993 St Lite Kinen. 28 starts, 3 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ロイスアンドロイス', 'https://en.netkeiba.com/db/horse/1990104491/', 'https://db.netkeiba.com/horse/result/1990104491/'],
     uncertain: ['face.type (hidden by the hood)', 'legs', 'gear (paddock photos)', 'silks (from a small silks image)'],
@@ -555,6 +598,7 @@ window.HORSES = [
     size: { weightKg: [430, 452], typicalKg: 438, withersCm: null, build: 'compact', notes: '438 kg (Kikuka Sho), 430 (Tenno Sho 93), 442 (Tenno Sho 95): 「小柄ながら…体躯のバランスの良さ」.' },
     gear: { hood: false, hoodColors: { main: '#94c95a', trim: '#2fa040', ears: '#2fa040' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#2d4fb5', bandages: { hind: '#ece6d6' }, notes: 'Raced without a hood (a menko in the paddock only: lime green in 1993); blue bridle and reins and thin white tape on the hind fetlocks at the 1993 Tenno Sho (Spring); blue striped fore bandages in 1995.' },
     silks: { owner: '栗林英雄', desc: 'Blue, brown sash, red sleeves as seen in race photos (the registry text reads 青、赤襷、茶袖)', colors: ['#2f62c8', '#8b5a3c', '#c8302a'] },
+    saddleNumber: 8, // 1992 Kikuka Sho (race-result page)
     career: '1992 Kikuka Sho (record time, ending Mihono Bourbon’s Triple Crown bid); Tenno Sho (Spring) 1993 (ending Mejiro McQueen’s three-peat) and 1995; fatally injured in the 1995 Takarazuka Kinen. 25 starts, 6 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ライスシャワー', 'https://en.netkeiba.com/db/horse/1989107699/', 'https://db.netkeiba.com/owner/852005/', 'https://jra-van.jp/fun/memorial/1989107699.html', 'https://commons.wikimedia.org/wiki/File:Riceshower.JPG'],
     uncertain: ['coat.tone', 'face.type', 'legs', 'gear (varied by race; the 1993 set is used)', 'silks.colors (photos vs registry text)'],
@@ -566,10 +610,125 @@ window.HORSES = [
     legs: { LF: 'pastern', RF: 'none', LH: 'pastern', RH: 'none' },
     style: { primary: 'senko', why: '2nd–4th at the first corner almost every time: Kikuka 93 2-3-3-1/18, Tenno Sho Spring 94 2-2-2-2/11, Takarazuka 94 4-3-3-1/14; "道中は3番手を進み".' },
     size: { weightKg: [470, 488], typicalKg: 476, withersCm: null, build: 'average', notes: '480 kg (Kikuka Sho), 476 (Tenno Sho Spring), 474 (Takarazuka); a big head and a sound, balanced frame.' },
+    conf: { head: 1.12 }, // famously big head (「顔がデカイ」)
     gear: { hood: false, hoodColors: { main: '#c8202c', trim: '#f2f0ea', ears: '#f2f0ea' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1f1b19', browband: '#f2f0ea', notes: 'Bare-faced from the 1993 Kobe Shimbun Hai on (all three G1 wins): black bridle, white-beaded browband, red reins. Before that a red メンコ with white eye rings and ear covers (耳覆いのついた赤いメンコ, for noise).' },
     silks: { owner: 'ビワ', desc: 'Black, a broad pink chevron across the chest, black sleeves (from 1993–94 photos)', colors: ['#1a1a1a', '#f2a7c3'] },
+    saddleNumber: 7, // 1993 Kikuka Sho (race-result page)
     career: '1993 Kikuka Sho (record), 1994 Tenno Sho (Spring) and Takarazuka Kinen (record); 2nd in the 1993 Satsuki Sho, Derby and Arima Kinen. Narita Brian’s half-brother. 16 starts, 10 wins.',
     sources: ['https://ja.wikipedia.org/wiki/ビワハヤヒデ', 'https://en.netkeiba.com/db/horse/1990103355/', 'https://www.jra.go.jp/gallery/3minmeiba/horse4/index.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1990103355.jpg'],
     uncertain: ['coat greyness / dapple / mane / tail / headLift (photos)', 'face (possible snip)', 'legs (near-side photos; sides inferred)', 'gear.bridle', 'silks (photos; the current registry image differs)'],
+  },
+  // ---- Batch 6 (2026-10): #44–51, foaled 1990–92 ----
+  {
+    id: 'winning-ticket', en: 'Winning Ticket', jp: 'ウイニングチケット', born: 1990, sex: 'male',
+    coat: { reg: '黒鹿毛', key: 'kurokage', tone: 0, notes: 'Near-black body with a browner muzzle and flanks.' },
+    face: { type: 'none', notes: 'No white on forehead or nose in the 1993 Derby and later 3/4 photos.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    style: { primary: 'sashi', secondary: 'oikomi', why: 'Back early (Yayoi Sho 11/11, Satsuki 11/18, Derby 12/18 then 7th and 5th at the later corners), then closed: "中団または後方".' },
+    size: { weightKg: [446, 470], typicalKg: 458, withersCm: null, build: 'average', notes: '458 kg in the Derby; "細手の、決して見栄えはしない馬" (fine-boned and plain-looking).' },
+    gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1f1a17', notes: 'Black bridle, white reins, bare head and legs (1993 Derby finish photo).' },
+    silks: { owner: '太田美實', desc: '赤、水色一本輪、袖黄縦縞 (red, one light-blue hoop, red sleeves with yellow stripes)', colors: ['#d22630', '#2fa3d6', '#f5c400'] },
+    saddleNumber: 10, // 1993 Tokyo Yushun
+    career: '1993 Tokyo Yushun (Japanese Derby), Yayoi Sho and Kyoto Shimbun Hai; 3rd in the Kikuka Sho and Japan Cup. One of the "BNW" trio. 14 starts, 6 wins.',
+    sources: ['https://ja.wikipedia.org/wiki/ウイニングチケット', 'https://ja.wikipedia.org/wiki/太田美實', 'https://en.netkeiba.com/db/horse/1990102314/', 'https://commons.wikimedia.org/wiki/File:Winning_Ticket_2013.jpg'],
+    uncertain: ['face.type', 'legs', 'gear (one photo)', 'silks.colors'],
+  },
+  {
+    id: 'narita-brian', en: 'Narita Brian', jp: 'ナリタブライアン', born: 1991, sex: 'male',
+    coat: { reg: '黒鹿毛', key: 'kurokage', tone: -0.1, notes: 'Almost black in JRA race photos; brown only on the muzzle and flanks.' },
+    face: { type: 'star-snip', notes: '特徴 "星額刺毛鼻梁鼻白": a small star with scattered white hairs and a small white patch just above the nostrils.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    style: { primary: 'sashi', secondary: 'senko', why: 'Mid-division at the first corner (Satsuki 8/18, Derby 6/18, Kikuka 7/15), up to 2nd–4th by the 4th corner; closer to the pace in the 1994 Arima (4-2-2-1).' },
+    size: { weightKg: [448, 486], typicalKg: 470, withersCm: null, build: 'average', notes: 'Satsuki Sho 460, Derby 468, Kikuka Sho 470, Arima 94 476.' },
+    gear: { hood: false, blinkers: false, shadowRoll: '#f2f0ea', bitLifter: false, bridle: '#3a2a20', notes: 'His trademark thick white sheepskin shadow roll — 「シャドーロールの怪物」 (1993 Asahi Hai, 1994 Derby, 1994 Kikuka Sho photos); dark leather bridle, purple reins.' },
+    silks: { owner: '山路秀則', desc: '桃、紫山形一文字 (pink, a purple chevron band across the chest, pink sleeves)', colors: ['#e8579d', '#5a2a6e'] },
+    saddleNumber: 4, // 1994 Kikuka Sho (the Triple Crown clincher)
+    career: '1994 Triple Crown (Satsuki Sho, Tokyo Yushun, Kikuka Sho) and Arima Kinen; 1993 Asahi Hai Sansai Stakes; Hanshin Daishoten 1995 and 1996. Biwa Hayahide’s half-brother.',
+    sources: ['https://ja.wikipedia.org/wiki/ナリタブライアン', 'https://en.netkeiba.com/db/horse/result/1991108889/', 'https://www.jra.go.jp/gallery/dendo/horse24/', 'https://ja.wikipedia.org/wiki/山路秀則'],
+    uncertain: ['face.type (shape)', 'legs.LH / RH', 'gear.bridle', 'silks.colors'],
+  },
+  {
+    id: 'sakura-laurel', en: 'Sakura Laurel', jp: 'サクラローレル', born: 1991, sex: 'male',
+    coat: { reg: '栃栗毛', key: 'tochikuri', tone: 0, notes: 'Deep red-liver chestnut, mane and tail matching the body; very dark in winter race light.' },
+    face: { type: 'star', notes: 'Small star (小星) in the middle of the forehead (2000 photo).' },
+    legs: { LF: 'none', RF: 'none', LH: 'fetlock', RH: 'fetlock' },
+    style: { primary: 'sashi', why: 'Mid-pack to rear early in graded races (Nakayama Kinen 13/15, Tenno Sho Spring 96 9/16, Tenno Sho Autumn 12/17), moving up from the 3rd corner: 中団から差し切り.' },
+    size: { weightKg: [480, 502], typicalKg: 494, withersCm: null, build: 'average', notes: '484 kg (Tenno Sho Spring 96), 502 (Arima 96). "馬車でも引いていた方が似合うような体つき" to one observer, uniquely beautiful to another.' },
+    gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', noseband: '#e05a9a', browband: '#e05a9a', bandages: { fore: '#f28cb6' }, notes: 'Pink bandages on both forelegs; brown headstall with a pink noseband and browband, pink rein grips (1996 Arima, 1997 paddock photos).' },
+    silks: { owner: 'さくらコマース', desc: '桃、白一本輪、桃袖 (pink, one white hoop, pink sleeves)', colors: ['#f4a3bf', '#ffffff'] },
+    saddleNumber: 6, // 1996 Arima Kinen
+    career: '1996 Tenno Sho (Spring, beating Narita Brian) and Arima Kinen; 1996 Nakayama Kinen and All Comers. 22 starts, 9 wins.',
+    sources: ['https://ja.wikipedia.org/wiki/サクラローレル', 'https://en.netkeiba.com/db/horse/1991103498/', 'https://jra-van.jp/fun/memorial/img/horses/l_1991103498.jpg', 'https://commons.wikimedia.org/wiki/File:Sakura_Laurel.jpg'],
+    uncertain: ['face.type (photo)', 'legs heights (photos)', 'gear (two photos)'],
+  },
+  {
+    id: 'hishi-amazon', en: 'Hishi Amazon', jp: 'ヒシアマゾン', born: 1991, sex: 'female',
+    coat: { reg: '黒鹿毛', key: 'kurokage', tone: -0.1, notes: 'Almost black, a faint brown tinge at the muzzle and flanks (US-bred).' },
+    face: { type: 'none', notes: 'The whole head is dark in the 1994 and 1995 photos.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    style: { primary: 'oikomi', secondary: 'sashi', why: '驚異の追い込み: Queen Elizabeth II Cup 94 16-14-7-6/18, Kyoto Daishoten 95 13-13-11-11/13, JC 95 14-14-13-10/14 — from the back, round the outside.' },
+    size: { weightKg: [464, 500], typicalKg: 480, withersCm: null, build: 'average', notes: '470–480 kg at her 1993–95 peak (480 in the Queen Elizabeth II Cup).' },
+    gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', bandages: { fore: '#f2f0ea', hind: '#f2f0ea' }, notes: 'White bandages on all four legs with two blue stripes near the top; dark leather bridle; no hood (1994, 1995 photos).' },
+    silks: { owner: '阿部雅一郎 (ヒシ)', desc: '白、青二本輪、袖青二本輪 (white, two blue hoops, white sleeves with two blue hoops)', colors: ['#f5f5f2', '#1f40a0'] },
+    saddleNumber: 6, // 1994 Queen Elizabeth II Cup
+    career: '1993 Hanshin Sansai Himba Stakes, 1994 Queen Elizabeth II Cup (her sixth straight graded win); 2nd in the 1994 Arima Kinen and 1995 Japan Cup. 20 starts, 10 wins.',
+    sources: ['https://ja.wikipedia.org/wiki/ヒシアマゾン', 'https://en.netkeiba.com/db/horse/result/1991109852/', 'https://ja.wikipedia.org/wiki/阿部雅一郎', 'https://commons.wikimedia.org/wiki/File:HishiAmazon.JPG'],
+    uncertain: ['face.type', 'legs', 'gear.bridle', 'silks blue shade'],
+  },
+  {
+    id: 'samson-big', en: 'Samson Big', jp: 'サムソンビッグ', born: 1991, sex: 'male',
+    coat: { reg: '鹿毛', key: 'kage', tone: 0, notes: 'Bay with black mane, tail and lower legs (red bay to deeper bay in photos).' },
+    face: { type: 'none', notes: 'No white on the bare head in two 1993–94 paddock photos.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    style: { primary: 'senko', secondary: 'nige', why: 'Mostly 2nd–3rd at the first corner at 1800 m+ (Derby 3/18, Kikuka 3/15); made all in the Kisaragi Sho (1-1-1-1, "スローペースで逃げて") and led throughout in 6 of 8 jump races.' },
+    size: { weightKg: [408, 458], typicalKg: 418, withersCm: null, build: 'compact', notes: '418 kg in the Kisaragi Sho, 408 in the Satsuki Sho: a small, light colt despite the name.' },
+    gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', notes: 'Bare head, plain dark bridle, purple reins in 1993–94 paddock photos; later (1995–97 / jumps) a green-and-pink メンコ, a yellow crest cord and poll pompom, and white bandages.' },
+    silks: { owner: '田中由子', desc: '緑、桃縦縞、白袖桃二本輪 (green with pink stripes, white sleeves with two pink hoops)', colors: ['#13a06a', '#f08cb4', '#f2f0ea'] },
+    saddleNumber: 8, // 1994 Kisaragi Sho
+    career: '1994 Kisaragi Sho at 172/1, leading all the way; ran in all three 1994 classics behind Narita Brian; later won twice over jumps. 35 starts, 4 wins.',
+    sources: ['https://db.netkeiba.com/horse/result/1991104957/', 'https://en.netkeiba.com/db/horse/1991104957/', 'https://ja.wikipedia.org/wiki/サムソンビッグ', 'https://ja.wikipedia.org/wiki/田中由子_(実業家)', 'https://commons.wikimedia.org/wiki/File:Samson-big.jpg'],
+    uncertain: ['face.type', 'legs', 'gear (no photo of the Kisaragi Sho itself)'],
+  },
+  {
+    id: 'fuji-kiseki', en: 'Fuji Kiseki', jp: 'フジキセキ', born: 1992, sex: 'male',
+    coat: { reg: '青鹿毛', key: 'aokage', tone: 0, notes: 'Near-black with a slight brown sheen in sunlight.' },
+    face: { type: 'star', notes: 'A small irregular star, a little off-centre to the right, with a tiny extra fleck (photos).' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'pastern' },
+    style: { primary: 'senko', why: 'Up with the pace in all four starts (Asahi Hai 5-3-3/10, Yayoi Sho 2-2-2-1/10): "これまで同様先行策から素早く抜け出し".' },
+    size: { weightKg: [472, 508], typicalKg: 492, withersCm: null, build: 'heavy', notes: '492 kg winning the Asahi Hai, 508 in the Yayoi Sho: big for a 2–3yo.' },
+    gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1c1814', browband: '#c9ccd0', notes: 'Black leather bridle, pale/silver browband, loose-ring bit, green reins; no hood (1994 Asahi Hai, 1995 Yayoi Sho photos).' },
+    silks: { owner: '齊藤四方司', desc: '緑、黄縦縞、黒袖黄一本輪 (green with yellow stripes, black sleeves with one yellow hoop)', colors: ['#3eb370', '#ffff00', '#000000'] },
+    saddleNumber: 1, // 1994 Asahi Hai Sansai Stakes
+    career: 'Unbeaten in 4: the 1994 Asahi Hai Sansai Stakes and 1995 Yayoi Sho; retired with a tendon injury before the Satsuki Sho. Sunday Silence’s first G1 winner.',
+    sources: ['https://jra-van.jp/fun/memorial/1992109618.html', 'https://en.netkeiba.com/db/horse/1992109618/', 'https://ja.wikipedia.org/wiki/フジキセキ', 'https://upload.wikimedia.org/wikipedia/commons/1/13/Owner_Saito_Yomoji.svg'],
+    uncertain: ['face (photos)', 'legs.RH (low-res photos)', 'gear.bridle'],
+  },
+  {
+    id: 'yukino-bijin', en: 'Yukino Bijin', jp: 'ユキノビジン', born: 1990, sex: 'female',
+    coat: { reg: '栗毛', key: 'kuri', tone: 0.15, notes: 'Bright red-gold chestnut like her sire Sakura Yutaka O; mane and tail match or are a shade lighter (not flaxen). Raced with white ribbon-style plaits in her mane (純白のリボン風の編み込み).' },
+    face: { type: 'blaze', notes: 'Broad white on the forehead, narrowing down the nose, then widening again over the nose to the upper lip; it does not reach the eyes (photos).' },
+    legs: { LF: 'none', RF: 'sock', LH: 'sock', RH: 'sock' },
+    style: { primary: 'senko', why: 'Up front in her JRA races (Oka Sho 5/18, Oaks 3/18, Queen S 2/14, QE2 Cup 3/18): "優駿牝馬でも先行して".' },
+    size: { weightKg: [460, 468], typicalKg: 464, withersCm: null, build: 'average', notes: '460 kg in the Oka Sho, 464 in the Oaks.' },
+    gear: { hood: true, hoodColors: { main: '#f2f0ea', trim: '#f2f0ea', ears: '#f2f0ea' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', notes: 'All-white メンコ with white ear covers; mane plaited in knobs with pure-white ribbons; white reins (1993 G1 photo).' },
+    silks: { owner: '荒井幸勝', desc: 'Yellow and red vertical stripes, blue sleeves (黄・赤縦縞、青袖)', colors: ['#ffff00', '#b01040', '#1544ff'] },
+    saddleNumber: 9, // 1993 Yushun Himba (2nd to Vega)
+    career: 'From Iwate (NAR) to the JRA: 2nd to Vega in the 1993 Oka Sho and Yushun Himba; won the 1993 Queen Stakes. 10 starts, 6 wins.',
+    sources: ['https://ja.wikipedia.org/wiki/ユキノビジン', 'https://en.netkeiba.com/db/horse/1990103565/', 'https://cdnv2.netkeiba.com/img/db/colours/286009.gif', 'https://db.netkeiba.com/show_photo.php?horse_id=1990103565&no=5318&tmp=no'],
+    uncertain: ['face.type (photos)', 'legs (photos)', 'gear hood trim', 'silks.colors (icon)'],
+  },
+  {
+    id: 'biko-pegasus', en: 'Biko Pegasus', jp: 'ビコーペガサス', born: 1991, sex: 'male',
+    coat: { reg: '鹿毛', key: 'kage', tone: 0, notes: 'Reddish mid bay with black points (US-bred, by Danzig).' },
+    face: { type: 'none', notes: 'No white on the forehead or nose in race and later photos.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    style: { primary: 'oikomi', secondary: 'sashi', why: '"短距離戦での追い込みが特徴": usually 9th–16th early in graded sprints and miles (Sprinters 94 11/14, Mile CS 95 15/18).' },
+    size: { weightKg: [420, 442], typicalKg: 430, withersCm: null, build: 'compact', notes: '"最大でも442キロの小柄な馬体": small; bent forelegs were noted when he was bought.' },
+    gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#7a5230', notes: 'Bare head, tan leather bridle and noseband, ring bit (1994–95 Sprinters S photos).' },
+    silks: { owner: 'レジェンド', desc: '紫、白襷、白袖赤一本輪 (purple, white sash, white sleeves with one red hoop)', colors: ['#7d3fbf', '#f2f0ea', '#d42a2a'] },
+    saddleNumber: 12, // 1994 Sprinters Stakes (2nd to Sakura Bakushin O)
+    career: '1994 Keisei Hai and 1995 Centaur Stakes; 2nd in the Sprinters Stakes 1994 and 1995 — three G1 seconds in all. 27 starts, 4 wins.',
+    sources: ['https://ja.wikipedia.org/wiki/ビコーペガサス', 'https://en.netkeiba.com/db/horse/result/1991109886/', 'https://en.netkeiba.com/db/race/199406050610/', 'https://commons.wikimedia.org/wiki/File:Biko-pegasasu.jpg', 'https://en.wikipedia.org/wiki/Biko_Pegasus'],
+    uncertain: ['face.type', 'legs', 'gear.bridle', 'silks.colors'],
   },
 ];

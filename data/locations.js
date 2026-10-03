@@ -372,12 +372,104 @@ window.LOCATIONS = [
     sources: ['https://ja.wikipedia.org/wiki/船橋競馬場', 'https://en.wikipedia.org/wiki/Funabashi_Racecourse', 'https://ja.wikipedia.org/wiki/かしわ記念', 'https://nar.netkeiba.com/race/result.html?race_id=202543050511', 'https://ja.wikipedia.org/wiki/ナイター競走', 'https://commons.wikimedia.org/wiki/File:Funabashi_Racecourse_Aerial_view.jpg'],
     uncertain: ['time (computed sun; stand orientation from a 1989 aerial)', 'sky / light values', 'floodlights (from photos)', 'dirt.color', 'apron / lawn / leaf', 'stand size and colours', 'backdrop.landmarks[0] (size estimated; really ~60–80 m away)', 'skyline bearings and heights', 'infield pond size and position', 'needs new kits: the slab-and-glass stand, yellow-lit rails, the infield mini-oval'],
   },
+  {
+    id: 'urawa', en: 'Urawa Racecourse (twilight)', jp: '浦和競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
+    hand: 'left', surface: 'dirt', lead: 'R', W: 400, seed: 2039,
+    dirtOnly: true, // one dirt oval, no turf (24 m on the home straight)
+    // Sakitama Hai (JpnI since 2024, 1400 m), late June, post 18:50: sunset (sun ~1.5° up over the 4th corner, raised to 8° for
+    // readable shading); the floodlights (2023) are on but the low sun is still the key light
+    time: {
+      month: 6, post: '18:50', sunElevDeg: 8, sunAzimDeg: -71, fogNear: 140, fogFar: 440, exposure: 1.05,
+      sky: { top: '#5476a8', mid: '#a6b4cc', horizon: '#f0c6a0', sun: '#ffb35c' }, // early-summer sunset
+      sunColor: '#ffb46e', sunIntensity: 1.9, hemiSky: '#b9c3d8', hemiGround: '#6e6248', hemiIntensity: 1.0,
+    },
+    floodlights: { count: 22, heightM: 20, color: '#f4f6f8', intensity: 1.0, poleColor: '#b8bcc0' }, // slim lamp poles ~35 m apart
+    dirt: { color: '#b5a088', widthM: 24 }, // light beige-grey sand
+    rails: { color: '#f4f4f0' },
+    lawn: '#62903f', apron: '#a3a29c', leaf: ['#3f6436', '#4d7340', '#5a7d45'], autumn: 0, dust: '#a8957c',
+    saddleCloth: { cloth: '#3a2a96', ink: '#ffffff' }, // Sakitama Hai: 紫紺 with white text (ゼッケン (競馬))
+    stand: { name: 'No.3 and No.2 stands (2019)', lengthM: 180, floors: 5, depthM: 30, colors: { body: '#cfd3d8', roof: '#45474d', glass: '#46637d', seats: '#3a7f96' } },
+    infield: [{ type: 'pond', xFrac: 0.25, sizeM: [45, 25], distM: 40, notes: 'The retention basin in the infield memorial park (浦和記念公園).' }],
+    infieldTrees: 8, // park lawn with clipped shrubs, hedges and small trees
+    backdrop: {
+      ranges: [], // Kanto plain: houses all round
+      landmarks: [
+        { type: 'screen', bearingDeg: -12, distM: 300, wM: 22, hM: 10, liftM: 3 },        // infield big monitor / odds board
+        { type: 'skyline', fromDeg: -50, toDeg: 50, distM: 520, heightM: [6, 14] },      // two-storey houses beyond the back straight
+        { type: 'skyline', fromDeg: 5, toDeg: 30, distM: 540, heightM: [18, 42] },       // mid-rise flats
+        { type: 'skyline', fromDeg: 55, toDeg: 115, distM: 520, heightM: [6, 14] },      // houses past the 1st corner
+        { type: 'skyline', fromDeg: -100, toDeg: -75, distM: 560, heightM: [10, 22] },   // Saitama-Shintoshin towers
+        { type: 'skyline', fromDeg: -150, toDeg: -120, distM: 520, heightM: [15, 40] },  // Urawa Station area, behind the stands
+        { type: 'skyline', fromDeg: 125, toDeg: 160, distM: 520, heightM: [12, 30] },    // Minami-Urawa Station area
+      ],
+      clouds: 5,
+    },
+    facts: {
+      turfCircM: null, dirtCircM: 1200, turfStraightM: null, dirtStraightM: 220, elevationM: 0,
+      straightProfile: [[220, 0], [0, 0]],
+      races: [
+        { name: 'Sakitama Hai', jp: 'さきたま杯', surface: 'dirt', distM: 1400, month: 6 },
+        { name: 'JBC Classic (2019)', jp: 'JBCクラシック', surface: 'dirt', distM: 2000, month: 11 },
+        { name: 'JBC Sprint (2019)', jp: 'JBCスプリント', surface: 'dirt', distM: null, month: 11 },
+        { name: 'JBC Ladies’ Classic (2019)', jp: 'JBCレディスクラシック', surface: 'dirt', distM: null, month: 11 },
+      ],
+    },
+    signature: 'A tight, flat 1,200 m left-handed sand oval with a 220 m straight packed into Saitama housing; an infield memorial park of clipped shrubs and a pond; glass stands with dark slab roofs; twilight (薄暮) racing under new floodlights since 2023.',
+    sources: ['https://ja.wikipedia.org/wiki/浦和競馬場', 'https://en.wikipedia.org/wiki/Urawa_Racecourse', 'https://ja.wikipedia.org/wiki/さきたま杯', 'https://nar.netkeiba.com/race/result.html?race_id=202542062511', 'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)', 'https://commons.wikimedia.org/wiki/File:Urawa_Racecourse_Aerial_photograph.1989.jpg'],
+    uncertain: ['time (computed; sun raised from 1.5° to 8° for readable shading)', 'sky / light values', 'floodlights (from a photo)', 'dirt.color', 'lawn (June assumed)', 'stand size and colours', 'infield pond size and position', 'backdrop.landmarks (screen size estimated; really ~140 m away)', 'skyline bearings and heights', 'JBC 2019 Sprint / Ladies’ distances not fetched', 'needs new kits: topiary, the dark slab stand roof, the narrower back straight'],
+  },
+  {
+    id: 'morioka', en: 'Morioka Racecourse (night)', jp: '盛岡競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
+    hand: 'left', surface: 'dirt', lead: 'R', W: 400, seed: 2040,
+    // a 1600 m dirt oval with the 1400 m turf course INSIDE it (the only NAR track with turf): the horse runs on the outer dirt
+    innerTurf: true, // from the stands: apron, dirt (25 m), turf (25 m), then the infield
+    // Mile Championship Nambu Hai (JpnI, dirt 1600 m), mid-October (Sports Day), post 18:15 in both 2024 and 2025,
+    // run under the dirt course's floodlights (installed Sept 2018). Sun computed for 13 Oct 2025 18:15 at 39.69N 141.22E:
+    // elevation -15.4°, azimuth 272°. From the OSM track and GSI aerial, the stand faces ~135° (SE) and the home straight runs ~225° (SW).
+    time: {
+      month: 10, post: '18:15', sunElevDeg: -15, sunAzimDeg: 43, fogNear: 150, fogFar: 480, exposure: 1.15, night: true,
+      sky: { top: '#050a1a', mid: '#0f1830', horizon: '#1f2640', sun: '#2a2540' }, // rural night: dark forest across the infield, the city glow is behind the stands
+      hemiSky: '#232c45', hemiGround: '#26281f', hemiIntensity: 0.38,
+    },
+    floodlights: { count: 10, heightM: 30, color: '#f3f1e8', intensity: 1.0, poleColor: '#b8bcc0' }, // dirt course only
+    turf: { color: '#5f8f3e', widthM: 25 }, dirt: { color: '#b3a993', widthM: 25 }, rails: { color: '#f4f4f0' },
+    lawn: '#6a8f45', verge: '#6f9447', apron: '#bfa9a0', water: '#6f8c86', // apron: pinkish brick paving in front of the stand
+    leaf: ['#3f5f37', '#4e6d3e', '#8a7a3e', '#b0743a'], autumn: 0.2, dust: '#a59c88',
+    infieldTrees: 8,
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // Iwate Dirt Grade races: 紫紺 with yellow text (cloth reads "MCS南部杯")
+    stand: { name: 'Main stand with glass atrium (1996)', lengthM: 135, floors: 4, depthM: 45, colors: { body: '#d3d6d7', roof: '#a7abad', glass: '#4f6a76', seats: '#2f8a78' } },
+    infield: [{ type: 'pond', xFrac: 0.45, sizeM: [170, 55], distM: 110, notes: 'Long egg-shaped pond with a round feature (fountain?) in the middle of the infield, from the GSI aerial.' }],
+    backdrop: {
+      ranges: [
+        { r: 545, base: '#3f5a38', h: [8, 22], step: 0.12, haze: 0.4 },  // forested hillside right behind the back straight
+        { r: 585, base: '#6f7d96', h: [14, 32], step: 0.16, haze: 0.6 }, // Kitakami highlands to the E / SE
+      ],
+      landmarks: [
+        // Mt Iwate (2038 m, 25.8 km NW) really stands at bearing ~178, directly behind the stand, where the camera never looks.
+        // It is moved across the infield (artistic licence) so the track's best-known view is in the picture.
+        { type: 'fuji', bearingDeg: -28, distM: 575, heightM: 40 },
+        { type: 'screen', bearingDeg: 0, distM: 300, wM: 30, hM: 9, liftM: 3 },     // infield vision (renewed 2014), opposite the stand
+      ],
+      clouds: 3,
+    },
+    facts: {
+      turfCircM: 1400, dirtCircM: 1600, turfStraightM: 300, dirtStraightM: 300, elevationM: 4.4, // turf course: 4.6 m
+      straightProfile: [[300, 0], [160, -1.6], [0, -0.4]], // down off the 3rd–4th-corner hill, then a climb from ~150 m out
+      races: [
+        { name: 'Mile Championship Nambu Hai', jp: 'マイルチャンピオンシップ南部杯', surface: 'dirt', distM: 1600, month: 10 },
+        { name: 'JBC Classic (host years: 2002, 2014, 2022)', jp: 'JBCクラシック', surface: 'dirt', distM: 2000, month: 11 },
+        { name: 'JBC Sprint (host years)', jp: 'JBCスプリント', surface: 'dirt', distM: null, month: 11 },
+        { name: 'JBC Ladies’ Classic (host years)', jp: 'JBCレディスクラシック', surface: 'dirt', distM: null, month: 11 },
+      ],
+    },
+    signature: 'OROパーク: a big, hilly left-handed 1,600 m dirt oval with Japan’s only NAR turf course inside it, a 4.4 m hill over the 3rd–4th corner and a rise from ~150 m out on a 300 m straight. The 1996 stand is clad in silver aluminium, with angular cantilevered decks and a V-shaped glass atrium. Forest runs right behind the back straight, Mt Iwate stands to the NW, and the Nambu Hai is now run under floodlights.',
+    sources: ['https://ja.wikipedia.org/wiki/盛岡競馬場', 'https://www.oddspark.com/keiba/racetrack/11/course.html', 'https://en.wikipedia.org/wiki/Morioka_Racecourse', 'https://ja.wikipedia.org/wiki/マイルチャンピオンシップ南部杯', 'https://nar.netkeiba.com/race/result.html?race_id=202535101312', 'https://nar.netkeiba.com/race/result.html?race_id=202435101412', 'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)', 'https://ja.wikipedia.org/wiki/JBCクラシック', 'https://www.openstreetmap.org/way/566989957', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/16/58476/24883.jpg', 'https://commons.wikimedia.org/wiki/File:Morioka_racecourse_grandstand.JPG', 'https://commons.wikimedia.org/wiki/File:Morioka_Racecourse_2024.jpg', 'https://commons.wikimedia.org/wiki/File:11R_南部杯_トウホクビジン_(10287637683).jpg'],
+    uncertain: ['time.post (18:15 in 2024 and 2025; earlier years ran ~16:30 in daylight)', 'sky / light values', 'floodlights (count, height, colour: only “towers on the dirt course since Sept 2018” is sourced)', 'backdrop.landmarks[0]: Mt Iwate really stands at bearing ~178, behind the stand; it is moved to -28 (across the infield) as artistic licence. Its height is computed', 'backdrop.landmarks[1]: screen size and position are guessed. A ~55 m dark structure on the aerial, opposite the stand and ~65 m from the dirt rail, is probably the screen', 'backdrop.ranges (heights are guesses; Mt Hayachine lies ~123° (scene -13) but is probably hidden by the near hills)', 'stand.lengthM / depthM (from the aerial, ±15 m) and colours (2015 and 2024 photos)', 'infield[0] (pond reading, size and position from the aerial)', 'turf.color / lawn / leaf / autumn (October in Iwate)', 'facts.straightProfile (only the shape is sourced: the 3rd–4th-corner hill and a climb from ~150 m out; the heights are guesses)', 'JBC Sprint / Ladies’ Classic distances at Morioka (not fetched)', 'needs new kits: the V-shaped glass atrium and angular cantilevered stand decks; the pale inner ring (~20 m) inside the turf and a small loop at the NE end of the infield; the 芝スタンド grass bank near the 4th corner; the forest close behind the back straight'],
+  },
 ];
 
 // Every other venue on the roadmap, shown as "soon" in the picker (order = build order).
 window.LOCATION_QUEUE = [
-  { id: 'urawa', en: 'Urawa Racecourse', group: 'NAR JpnI' },
-  { id: 'morioka', en: 'Morioka Racecourse', group: 'NAR JpnI' },
   { id: 'kanazawa', en: 'Kanazawa Racecourse (JBC years)', group: 'NAR JpnI' },
   { id: 'saga', en: 'Saga Racecourse (JBC years)', group: 'NAR JpnI' },
   { id: 'paddock', en: 'Racecourse paddock', group: 'Strolling' },

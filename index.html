@@ -144,6 +144,9 @@
     <h2>Build &amp; hair</h2>
     <label class="row"><span>Height</span><input id="withers" type="range" min="150" max="176" step="1"><output id="withersOut"></output></label>
     <label class="row"><span>Weight</span><input id="weight" type="range" min="400" max="560" step="2"><output id="weightOut"></output></label>
+    <label class="row"><span>Neck</span><input id="confNeck" type="range" min="0.85" max="1.2" step="0.01"></label>
+    <label class="row"><span>Crest</span><input id="confCrest" type="range" min="0.6" max="1.6" step="0.05"></label>
+    <label class="row"><span>Head</span><input id="confHead" type="range" min="0.88" max="1.15" step="0.01"></label>
     <label class="row"><span>Mane</span><input id="maneLen" type="range" min="0.4" max="1.8" step="0.05"></label>
     <label class="row"><span>Tail</span><input id="tailLen" type="range" min="0.5" max="1.6" step="0.05"></label>
     <label class="row"><span>Gear</span><input id="gearOn" type="checkbox" checked> <small id="gearNote"></small></label>
@@ -511,6 +514,8 @@ const HEAD = [
   [0.63, 0.02, 0.085, 0.07],
 ];
 const POLL = V(1.12, 1.84), HEAD_TILT = -42 * DEG;
+// the authored neck is ~10% short of a real Thoroughbred's (poll to withers ~0.76 m at 163 cm); every horse gets this
+const NECK_BASE = 1.1;
 
 // Leg joints (x, y) in rest pose; coffin joint = top of the hoof; pastern = rest angle from vertical.
 // (Gait shaping lives in GAITS.)
@@ -635,15 +640,26 @@ function buildHorse(look = {}, seed = 1337) {
     return mesh;
   };
 
+  /* ----- conformation (look.conf): neck length along its own axis, crest height, head size ----- */
+  const conf = look.conf ?? {}, neckLen = NECK_BASE * (conf.neck ?? 1), crestH = conf.crest ?? 1, headSize = conf.head ?? 1;
+  const NB = V(0.55, 1.4), NDIR = POLL.clone().sub(NB).normalize();
+  const stretch = (p) => { const d = p.clone().sub(NB).dot(NDIR); return p.clone().addScaledVector(NDIR, d * (neckLen - 1)); };
+  const NECK_ROWS = NECK.map(([cx, cy, tx, ty, w], i, all) => {
+    const t = i / (all.length - 1), up = V(cx - tx, cy - ty).normalize(), lift = (crestH - 1) * 0.07 * Math.sin(Math.PI * Math.min(1, t * 1.15));
+    const c = stretch(V(cx, cy)).addScaledVector(up, lift), th = stretch(V(tx, ty));
+    return [c.x, c.y, th.x, th.y, w];
+  });
+  const POLL_H = stretch(POLL);
+
   /* ----- spine / neck / head bones ----- */
   const bones = [];
   const bone = (parent, pos, name) => { const b = joint(parent, pos, name, THREE.Bone); bones.push(b); return b; };
   const spine = bone(root, V(0, 1.22), 'spine');
   const hips = bone(spine, V(-0.3, 1.42), 'hindquarters');
   const chest = bone(spine, V(0.3, 1.3), 'chest');
-  const neck1 = bone(chest, V(0.56, 1.44), 'neck1');
-  const neck2 = bone(neck1, V(0.86, 1.64), 'neck2');
-  const head = bone(neck2, POLL.clone(), 'head');
+  const neck1 = bone(chest, stretch(V(0.56, 1.44)), 'neck1');
+  const neck2 = bone(neck1, stretch(V(0.86, 1.64)), 'neck2');
+  const head = bone(neck2, POLL_H.clone(), 'head');
   Object.assign(rig, { spine, hips, chest, neck1, neck2, head });
 
   /* ----- trunk + neck skin (one continuous faceted surface) ----- */
@@ -677,14 +693,14 @@ function buildHorse(look = {}, seed = 1337) {
   trunk = paint(trunk, coatColor(rnd, pal));
 
   const neckBulk = 1 + (bulk - 1) * 0.8;
-  const neckRings = NECK.map(([cx, cy, tx, ty, w0]) => {
+  const neckRings = NECK_ROWS.map(([cx, cy, tx, ty, w0]) => {
     const C = V(cx, cy), T = V(tx, ty), U = C.clone().sub(T), h = U.length() / 2, w = w0 * neckBulk;
     U.normalize();
     return ringAt(C.clone().add(T).multiplyScalar(0.5), V(U.y, -U.x), U, PROF.neck, { up: h, down: h, w, wUp: w * 0.5, wDown: w * 0.85 });
   });
-  const nA = V(0.57, 1.39), nB = V(1.14, 1.78), nAB = nB.clone().sub(nA);
+  const nA = V(0.57, 1.39), nB = stretch(V(1.14, 1.78)), nAB = nB.clone().sub(nA);
   // the root ring is capped inside the chest so no open edge shows when the neck swings
-  let neck = loft(neckRings, V(0.5, 1.3), V(1.19, 1.79));
+  let neck = loft(neckRings, V(0.5, 1.3), stretch(V(1.19, 1.79)));
   jitter(neck, 0.01, 12);
   neck = fine(neck, 2);
   skinWeights(neck, [[0, 2], [0.28, 3], [0.62, 4], [0.97, 5]], (p) => clamp(p.clone().sub(nA).dot(nAB) / nAB.lengthSq(), 0, 1));
@@ -697,6 +713,7 @@ function buildHorse(look = {}, seed = 1337) {
   root.add(body);
   root.updateMatrixWorld(true);
   body.bind(new THREE.Skeleton(bones));
+  head.scale.setScalar(headSize); // everything mounted on the head (eyes, ears, forelock, gear) follows
 
   /* ----- race tack on the back (racecourses only): saddle cloth with the number, saddle, girth. Skinned
      to the body's own skeleton with the trunk's weights, so it stays glued to the back as it flexes ----- */
@@ -752,7 +769,7 @@ function buildHorse(look = {}, seed = 1337) {
   }
 
   /* ----- head: wedge loft with jowls, face marking, muzzle; eyes, nostrils, ears, forelock ----- */
-  const headM = new THREE.Matrix4().makeRotationZ(HEAD_TILT).setPosition(POLL);
+  const headM = new THREE.Matrix4().makeRotationZ(HEAD_TILT).setPosition(POLL_H);
   // a ring between every pair of authored rings, so a star or stripe has faces small enough to read
   const headRows = HEAD.flatMap((r, i) => (i ? [HEAD[i - 1].map((v, j) => (v + r[j]) / 2), r] : [r]));
   const headRings = headRows.map(([x, top, bot, w]) =>
@@ -781,7 +798,7 @@ function buildHorse(look = {}, seed = 1337) {
     const ear = new THREE.Mesh(paint(earGeo, (c) => shade(c.y > 0.1 ? pal.points ?? pal.lo : pal.coat, rnd, 0.04)), mat);
     ear.castShadow = true;
     const mount = new THREE.Object3D();
-    mount.position.copy(V(0.02, 0.07, s * 0.05).applyMatrix4(headM)).sub(POLL);
+    mount.position.copy(V(0.02, 0.07, s * 0.05).applyMatrix4(headM)).sub(POLL_H);
     mount.rotation.set(s * 0.28, 0, HEAD_TILT + 58 * DEG);
     mount.add(ear);
     head.add(mount);
@@ -825,7 +842,7 @@ function buildHorse(look = {}, seed = 1337) {
       const rings = []; for (let x = -0.07; x <= 0.401; x += 0.035) rings.push(ringX(x, 0.011));
       const shell = keepFaces(loft(rings), (c) => c.y > -0.085 && !hole(c, 0.045));
       toHead(paint(shell, (c) => shade(hex(c.x > 0.36 || c.y < -0.06 || hole(c, 0.068) ? C.trim : C.main), rnd, 0.03)));
-      for (const e of rig.ears) { // ear covers ride on the animated ears
+      if (C.ears !== false) for (const e of rig.ears) { // ear covers ride on the animated ears (`ears: false`: a hood without them)
         const cover = new THREE.ConeGeometry(0.046, 0.16, 5, 1).translate(0, 0.074, 0).scale(0.7, 1, 1);
         e.mesh.add(new THREE.Mesh(paint(jitter(cover, 0.003, 90), flat(hex(C.ears), rnd, 0.03)), mat));
       }
@@ -861,7 +878,7 @@ function buildHorse(look = {}, seed = 1337) {
     const lock = new THREE.Mesh(paint(jitter(g, 0.006, 30 + i), flat(pal.mane, rnd)), mat);
     lock.castShadow = true;
     const mount = new THREE.Object3D();
-    mount.position.copy(V(0.0, 0.085, (i - 0.5) * 0.03).applyMatrix4(headM)).sub(POLL);
+    mount.position.copy(V(0.0, 0.085, (i - 0.5) * 0.03).applyMatrix4(headM)).sub(POLL_H);
     mount.rotation.set((i - 0.5) * 0.3, 0, HEAD_TILT - 72 * DEG);
     mount.add(lock);
     head.add(mount);
@@ -869,7 +886,7 @@ function buildHorse(look = {}, seed = 1337) {
   }
 
   /* ----- mane: blades along the crest, rigidly mounted on the nearest neck bone ----- */
-  const crest = NECK.map(([cx, cy, tx, ty]) => ({ p: V(cx, cy), up: V(cx - tx, cy - ty).normalize() }));
+  const crest = NECK_ROWS.map(([cx, cy, tx, ty]) => ({ p: V(cx, cy), up: V(cx - tx, cy - ty).normalize() }));
   const MANE_N = 16;
   for (let i = 0; i < MANE_N; i++) {
     const t = 0.35 + (i / (MANE_N - 1)) * (crest.length - 1.35);
@@ -1245,13 +1262,13 @@ const BODY = {
   },
   graze(rig, g, p, o) {
     const { spine, hips, chest, neck1, neck2, head } = rig;
-    // head down with the muzzle in the grass (measured: ~8 cm above the ground), cropping (small nods),
+    // head down with the muzzle in the grass (measured: 2–10 cm above the ground), cropping (small nods),
     // breathing, the odd tail swish and ear flick; the forehand sinks and the poll flexes to reach
     spine.position.set(0, spine.userData.rest.y - 0.12 + 0.004 * cyc(p, perLoopCycles(4), o), 0);
     spine.rotation.set(0, 0, -3 * DEG);
     hips.rotation.z = 0;
     chest.rotation.z = -12 * DEG;
-    neck1.rotation.z = -68 * DEG + 1.5 * DEG * cyc(p, perLoopCycles(7), o);
+    neck1.rotation.z = -65 * DEG + 1.5 * DEG * cyc(p, perLoopCycles(7), o);
     neck2.rotation.z = -6 * DEG;
     head.rotation.z = 55 * DEG + 4 * DEG * Math.max(0, cyc(p, perLoopCycles(0.8), o * 3)) ** 2; // cropping
     idleEars(rig, p, o, -0.02);
@@ -1494,16 +1511,19 @@ function buildGround(spec) {
 // at the turns' diameter, which follows from the circumference and the straight length.
 // A dirt-only course (NAR tracks such as Oi: `dirtOnly: true`) has one course: the horse's lane is dirt and
 // there is no inner course, so the infield starts at its inner rail.
+// `innerTurf` (Morioka): the dirt is the outer course the horse runs on and the turf course lies inside it.
+// Below, "turf" means the horse's own (outer) course and "dirt" the inner one, whatever their surfaces.
 function trackLayout(loc) {
-  const dirtOnly = !!loc.dirtOnly, f = loc.facts ?? {}, gap = 1.4, off = 2.6;
-  const turfW = dirtOnly ? loc.dirt?.widthM ?? 25 : loc.turf?.widthM ?? 30, dirtW = dirtOnly ? 0 : loc.dirt?.widthM ?? 25;
-  const circ = dirtOnly ? f.dirtCircM : f.turfCircM, straight = dirtOnly ? f.dirtStraightM : f.turfStraightM;
+  const dirtOnly = !!loc.dirtOnly, innerTurf = !!loc.innerTurf, f = loc.facts ?? {}, gap = 1.4, off = 2.6;
+  const mainDirt = dirtOnly || innerTurf;
+  const turfW = mainDirt ? loc.dirt?.widthM ?? 25 : loc.turf?.widthM ?? 30, dirtW = dirtOnly ? 0 : innerTurf ? loc.turf?.widthM ?? 25 : loc.dirt?.widthM ?? 25;
+  const circ = mainDirt ? f.dirtCircM : f.turfCircM, straight = mainDirt ? f.dirtStraightM : f.turfStraightM;
   const D = circ && straight ? clamp((circ - 2 * straight) / Math.PI, 220, 420) : 320;
   const inner = -off, outer = inner + turfW, dOut = dirtOnly ? inner : inner - gap, dIn = dOut - dirtW;
   const bInner = inner - D, bdOut = dirtOnly ? bInner : bInner + gap, bdIn = bdOut + dirtW, bOuter = bInner - turfW;
   const standFront = outer + 14;
   const rails = dirtOnly ? [inner, outer, bInner, bOuter] : [inner, outer, dOut, dIn, bInner, bdOut, bdIn, bOuter];
-  return { dirtOnly, turfW, dirtW, D, inner, outer, dOut, dIn, bInner, bdOut, bdIn, bOuter, standFront, rails };
+  return { dirtOnly, innerTurf, mainDirt, turfW, dirtW, D, inner, outer, dOut, dIn, bInner, bdOut, bdIn, bOuter, standFront, rails };
 }
 
 const GROUND = {
@@ -1560,8 +1580,8 @@ const GROUND = {
   track(loc, S) {
     const T = trackLayout(loc), k = TAU / W, night = !!loc.time?.night;
     // the horse's own course: turf, or the sand of a dirt-only track (harrowed in faint bands)
-    const turf = colorOf(T.dirtOnly ? loc.dirt?.color ?? '#c9bea6' : loc.turf?.color ?? '#5f8f3a'), turfB = turf.clone().offsetHSL(0, T.dirtOnly ? 0 : 0.02, T.dirtOnly ? 0.02 : 0.035);
-    const dirt = colorOf(loc.dirt?.color ?? '#b9a58a'), verge = colorOf(loc.verge ?? '#6b8f45');
+    const turf = colorOf(T.mainDirt ? loc.dirt?.color ?? '#c9bea6' : loc.turf?.color ?? '#5f8f3a'), turfB = turf.clone().offsetHSL(0, T.mainDirt ? 0 : 0.02, T.mainDirt ? 0.02 : 0.035);
+    const dirt = colorOf(T.innerTurf ? loc.turf?.color ?? '#5f8f3a' : loc.dirt?.color ?? '#b9a58a'), verge = colorOf(loc.verge ?? '#6b8f45');
     const lawn = colorOf(loc.lawn ?? '#6f9a46'), apron = colorOf(loc.apron ?? '#bdb9ae'), outside = colorOf(loc.outside ?? '#7d8a62');
     const water = colorOf(loc.water ?? '#4f7f97'), worn = turf.clone().lerp(dirt, 0.18);
     const ponds = (loc.infield ?? []).filter((f) => f.type === 'pond').map((p) => ({ x: (p.xFrac ?? 0.3) * W, ...p }));
@@ -2005,9 +2025,9 @@ controls.maxPolarAngle = Math.PI / 2 - 0.04; // stay above the ground
 // Camera presets: dir = direction from the target to the camera (z follows the location's grandstand
 // side); hw/hh = half extents (m, scaled with the horse) that must fit on screen; tx = target x (the
 // side views centre the whole horse, tail included). "far" looks across from the infield side.
-const TARGET_Y = 0.9;
+const TARGET_Y = 0.96; // a touch above mid-height: the longer neck (NECK_BASE) carries the head higher
 const VIEWS = {
-  side: { dir: [0, 0.08, 1], hw: 2.1, hh: 1.45, tx: -0.05 },
+  side: { dir: [0, 0.08, 1], hw: 2.15, hh: 1.5, tx: 0.0 },
   'three-quarter': { dir: [0.8, 0.2, 0.74], hw: 1.8, hh: 1.5, tx: 0.12 },
   front: { dir: [1, 0.16, 0.42], hw: 1.5, hh: 1.55, tx: 0.12 },
   far: { dir: [-0.12, 0.2, -1], hw: 2.1, hh: 1.45, tx: -0.05 }, // just high enough to clear the inner rails
@@ -2052,6 +2072,12 @@ function saddleFor(h, loc) {
   return { ...c, number: h.saddleNumber ?? null, label: h.jp };
 }
 
+// Conformation from the profile: explicit `conf` wins; otherwise a gentle default from `size.build`.
+const BUILD_CONF = { rangy: { neck: 1.04 }, tall: { neck: 1.03 }, compact: { neck: 0.97 }, heavy: { neck: 0.98, crest: 1.1 } };
+function confFor(h) {
+  return { ...(BUILD_CONF[h.size?.build] ?? {}), ...(h.conf ?? {}) };
+}
+
 // A roster horse with the viewer's overrides on top, as a buildHorse() look.
 function currentLook() {
   const h = state.horse, c = state.custom;
@@ -2063,6 +2089,7 @@ function currentLook() {
     maneLen: c.maneLen ?? h.maneLen ?? 1,
     tailLen: c.tailLen ?? h.tailLen ?? 1,
     gear: c.gearOff ? null : h.gear ?? null,
+    conf: { ...confFor(h), ...(c.conf ?? {}) },
     racehorse: !!h.silks, // racehorses get a bridle unless their gear says otherwise
     saddle: !c.gearOff && h.silks && state.loc?.builder === 'track' ? saddleFor(h, state.loc) : null,
   };
@@ -2352,6 +2379,9 @@ function buildPickers() {
   }
   $('withers').addEventListener('input', (e) => tweak((x) => { x.size = { ...x.size, withersCm: +e.target.value }; }));
   $('weight').addEventListener('input', (e) => tweak((x) => { x.size = { ...x.size, typicalKg: +e.target.value, weightKg: null }; }));
+  for (const [id, key] of [['confNeck', 'neck'], ['confCrest', 'crest'], ['confHead', 'head']]) {
+    $(id).addEventListener('input', (e) => tweak((x) => { x.conf = { ...x.conf, [key]: +e.target.value }; }));
+  }
   $('maneLen').addEventListener('input', (e) => tweak((x) => { x.maneLen = +e.target.value; }));
   $('tailLen').addEventListener('input', (e) => tweak((x) => { x.tailLen = +e.target.value; }));
   $('gearOn').addEventListener('change', (e) => tweak((x) => { x.gearOff = !e.target.checked; }));
@@ -2432,6 +2462,7 @@ function syncPanel(editing = null) {
   $('weight').value = Math.round(kg);
   $('weightOut').textContent = `${Math.round(kg)} kg`;
   $('maneLen').value = look.maneLen;
+  $('confNeck').value = look.conf.neck ?? 1; $('confCrest').value = look.conf.crest ?? 1; $('confHead').value = look.conf.head ?? 1;
   $('tailLen').value = look.tailLen;
 }
 
@@ -2466,7 +2497,7 @@ renderer.setAnimationLoop((ts) => {
 window.__horse = {
   get period() { return rig.gait.period; },
   get strides() { return rig.gait.strides; },
-  setPhase, resume, setView, setHorse, setLocation, setGait, toeWorld, gaits: GAITS,
+  setPhase, resume, setView, setHorse, setLocation, setGait, toeWorld, gaits: GAITS, rebuild: () => rebuildHorse(),
   renderer, scene, camera, controls,
   get horse() { return rig.root; }, get rig() { return rig; }, get world() { return world; }, get extras() { return extras; }, state,
 };
