@@ -7,7 +7,7 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 ## What's in it
 
 - **Procedural horse.** Built in code from low-segment primitives with vertex sculpting and flat shading. There are no model or texture files. A hierarchical rig covers the spine, neck, head, ears, four legs, a chained tail and a mane.
-- **Real horses.** 107 so far, from Byerley Turk (c.1680) to Furioso (2004). Each one sets:
+- **Real horses.** 115 so far, from Byerley Turk (c.1680) to Tosen Jordan (2006). Each one sets:
   - coat, using the JBIS registry colour (鹿毛, 黒鹿毛, 芦毛 …);
   - face and leg markings;
   - size: height at the withers and race weight;
@@ -23,6 +23,7 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
   - The Ritto training centre's hill gallop (坂路): an endless climb up the wood chips in a training saddle cloth.
   - A Hidaka stud farm, where the horse walks with a companion and other horses graze, and the same farm in February snow: horses in winter rugs, steaming breath, white mountains.
   - The original countryside trail.
+  - Seasonal variants of the courses: Hanshin in the rainy season for the Takarazuka Kinen, with rain that rakes past at racing speed, a grey sky over the Rokko hills, and clods flying off the soaked turf.
 - **Race mode.** On a racecourse, **Field** runs a race against the 17 roster horses foaled closest to yours, each in its own coat, gear and silks: out of an 18-stall starting gate, into running-style order (逃げ in front, 追込 at the back) along the inner rail, then fanning out across the home straight as the closers come, past the winning post, and round again. A line at the top right shows your horse's place and the leader, then the result.
 - **Gaits.**
   - Four-beat lateral walk.
@@ -55,7 +56,7 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 
 ## Status
 
-- **Batches 1–13 of 19 are done:** 107 of 152 horses (Byerley Turk to Furioso), plus 18 locations: Hidaka in summer and in snow, the countryside trail, a beach at dawn, the Ritto hill gallop, the Tokyo paddock, the Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses, Oi, Kawasaki and Funabashi at night, Urawa at twilight, Morioka at night, Kanazawa and Saga.
+- **Batches 1–14 of 19 are done:** 115 of 152 horses (Byerley Turk to Tosen Jordan), plus 19 locations: Hidaka in summer and in snow, the countryside trail, a beach at dawn, the Ritto hill gallop, the Tokyo paddock, the Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses, Oi, Kawasaki and Funabashi at night, Urawa at twilight, Morioka at night, Kanazawa and Saga, and Hanshin in the rain.
 - **Batch 2 added** dappled grey coats (Oguri Cap, Tamamo Cross), cherry blossom at Hanshin, Kyoto's infield lake, and a reworked chest and forelimbs.
 - **Batch 3 added** a racing gallop at about 16 m/s (7 m strides), the default on racecourses.
 - **Batch 4 added** racing gear (hoods/メンコ in each horse's colours, blinkers, shadow rolls, bit-lifters, bridles, pompoms, bandages) and night racing under floodlights at Oi.
@@ -68,7 +69,8 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 - **Batch 11 added** the snowy field: snow, winter rugs, breath in the cold, snow-capped roofs and mountains, and cloths draped with clean hems.
 - **Batch 12 added** the jockey: crouched in the owner's silks with the pattern and sleeves read from the JRA notation, a cap in the gate colour, and a work rider on the training hill.
 - **Batch 13 added** race mode: an 18-horse field of roster horses running to their real styles, a starting gate and a winning post; and front legs that keep to their real range of motion at speed.
-- **Batches 14–19 are next:** horses #108–152 (Vodka to Forever Young), seasonal variants of the tracks (rain first), and polish.
+- **Batch 14 added** rain and seasonal variants of the courses, starting with a wet Takarazuka Kinen at Hanshin.
+- **Batches 15–19 are next:** horses #116–152 (Transcend to Forever Young), more seasonal variants, and polish.
 - **Unconfirmed values:** a value the sources couldn't confirm is never presented as fact. Each one is flagged in the data's `uncertain` lists, shown on the horse's info card, and listed as a to-do in `ROADMAP.md`. Examples are which hind leg is white on Mr. C.B., and Saint Lite's silks.
 
 ## Run locally

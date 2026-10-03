@@ -4,6 +4,7 @@
    camera's side as seen from the stands, 'right' mirrors it); W: metres before the scenery repeats.
    time: sun/sky/fog; extras: background horses ('companion' walks beside the hero, 'grazer' stands in a field).
    saddleCloth (tracks): the cloth of the signature race; default JRA G1 = 紫紺 #3a2a96 with white text.
+   variantOf: a seasonal variant of another entry (its fields are merged over that entry's); rain: { intensity 0..1, slantDeg }.
    Racetrack facts come from the JRA course pages and Japanese Wikipedia (sources listed per entry). */
 window.LOCATIONS = [
   {
@@ -197,6 +198,66 @@ window.LOCATIONS = [
     signature: 'The Oka Sho under full cherry blossom, the long glass grandstand with its thin flat roof, the 473.6 m outer straight that dips and then climbs a 1.8 m hill, and the green Rokko hills close behind the back straight.',
     sources: ['https://www.jra.go.jp/facilities/race/hanshin/course/index.html', 'https://ja.wikipedia.org/wiki/阪神競馬場', 'https://en.wikipedia.org/wiki/Hanshin_Racecourse', 'https://ja.wikipedia.org/wiki/桜花賞', 'https://commons.wikimedia.org/wiki/File:Hanshin_Racecourse_Aerial_photograph_2012.jpg'],
     uncertain: ['stand.colors (c.2009 photo)', 'stand.lengthM / depthM (from the aerial)', 'time (computed sun)', 'backdrop.ranges (map geography)', 'backdrop.landmarks', 'infield[0] jump count', 'facts.straightProfile (±0.2 m, read off the JRA chart)', 'lawn / verge', 'needs a new kit: a cherry-tree row along the outer rail and the 1600 m start pocket'],
+  },
+  {
+    // Seasonal variant: Hanshin in the rainy season (梅雨) for the Takarazuka Kinen. `variantOf` takes the 'hanshin' entry
+    // (stand, course, backdrop, facts) and merges these fields over it.
+    id: 'hanshin-takarazuka', variantOf: 'hanshin', en: 'Hanshin Racecourse (Takarazuka Kinen, rain)', jp: '阪神競馬場（宝塚記念・雨）', group: 'JRA G1',
+    // Turf 2200 m on the INNER course (netkeiba: 芝2200m 右). Post time 15:40 in every running checked, 2015-2026. Since 2025 it is
+    // run in mid-June (2025-06-15, 2026-06-14) 「暑熱や梅雨の影響を鑑み」; before that the last Sunday of June.
+    // Sun computed for 14 Jun 15:40 JST at Hanshin: elevation 40.8°, true azimuth 272° (mapped through the base entry's bearing).
+    time: {
+      month: 6, post: '15:40', sunElevDeg: 41, sunAzimDeg: 77, fogNear: 60, fogFar: 280, exposure: 0.96,
+      sky: { top: '#7d858d', mid: '#9aa1a7', horizon: '#b4b8b9', sun: '#d6d7d2' }, // flat tsuyu overcast, a brighter grey patch where the sun is
+      sunColor: '#e4e7e6', sunIntensity: 0.8,                                     // soft, cool, almost shadowless key light
+      hemiSky: '#c6ccd1', hemiGround: '#4f5e3c', hemiIntensity: 1.65,             // the diffuse light does the work; wet green bounce from below
+    },
+    rain: { intensity: 0.6, slantDeg: 8 }, // steady tsuyu rain: fine, dense, near-vertical streaks in little wind; grey veils hide the Rokko range
+    // The 2026 running went off in rain (天候:雨) on 重. 2015-2026 (netkeiba results): 7 of 12 on 稍重 or softer, 2 on 重 (2024 at Kyoto, 2026), none on 不良.
+    going: { show: '重', softShare: '7 of the last 12 runnings (2015-2026) on 稍重 or softer; 2 on 重; none on 不良' },
+    // Summer noshiba (Zoysia) in full growth as the winter ryegrass overseed fades; deep green, soaked, under overcast light
+    // (sampled from the 14 Jun 2026 winner's-circle photo). The dirt is darkened for the wet (wet.darken 0.3 of the base '#a8a194').
+    turf: { color: '#4e8a34' }, dirt: { color: '#76716a' },
+    wet: { darken: 0.3, puddles: true }, // puddles would go on the dirt course and the apron (JRA turf drains): not drawn yet
+    lawn: '#6a8c45', verge: '#5c7d3d',
+    leaf: ['#3f6a35', '#4a7a3c', '#577f45'], blossom: null, // the infield cherries in dark summer leaf
+    dust: '#4b4535',                                        // the wet root zone flung up as dark clods
+    saddleCloth: { cloth: '#3a2a96', ink: '#ffffff' },      // the standard JRA G1 紫紺 with white text
+    backdrop: { clouds: 0 },                                // one low grey deck, no separate clouds
+    signature: 'Takarazuka Kinen in the rainy season: a low grey sky swallowing the Rokko hills, steady rain over deep-green summer noshiba, the dirt dark and shining, clods flying, and the purple G1 cloths soaked almost black.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/宝塚記念',
+      'https://en.wikipedia.org/wiki/Takarazuka_Kinen',
+      'https://race.netkeiba.com/top/race_list_sub.html?kaisai_date=20260614',
+      'https://race.netkeiba.com/race/result.html?race_id=202609030411',
+      'https://race.netkeiba.com/race/result.html?race_id=202509030411',
+      'https://race.netkeiba.com/race/result.html?race_id=202408040811',
+      'https://race.netkeiba.com/race/result.html?race_id=202309030811',
+      'https://race.netkeiba.com/race/result.html?race_id=202209030411',
+      'https://race.netkeiba.com/race/result.html?race_id=202109030411',
+      'https://race.netkeiba.com/race/result.html?race_id=202009030811',
+      'https://race.netkeiba.com/race/result.html?race_id=201909030811',
+      'https://race.netkeiba.com/race/result.html?race_id=201809030811',
+      'https://race.netkeiba.com/race/result.html?race_id=201709030811',
+      'https://race.netkeiba.com/race/result.html?race_id=201609030811',
+      'https://race.netkeiba.com/race/result.html?race_id=201509030811',
+      'https://ja.wikipedia.org/wiki/オーバーシード',
+      'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)',
+      'https://commons.wikimedia.org/wiki/File:Meisho_Tabaru-2026-06-14.jpg',
+      'https://commons.wikimedia.org/wiki/File:Zendan_Hayabusa-2026-6-14.jpg',
+      'https://commons.wikimedia.org/wiki/File:ブローザホーン_宝塚記念優勝時.jpg',
+    ],
+    uncertain: [
+      'time.sunElevDeg / sunAzimDeg (computed; the scene azimuth is mapped through the base entry, not re-derived from the aerial)',
+      'time.sky, fog, exposure, light colours and intensities (look values for tsuyu overcast, not measured)',
+      'rain.intensity / slantDeg (2026 was 天候:雨 on 重; how hard it rained was not measured)',
+      'turf grass (Hanshin-specific overseeding not confirmed; the summer noshiba / winter ryegrass split is from the general オーバーシード article)',
+      'turf.color, lawn, verge, leaf, dust (read off two June 2026 Hanshin photos and one 2024 Kyoto photo)',
+      'wet.darken and puddles (no photo of the dirt course or apron in rain)',
+      'umbrellas in the crowd (no photo found)',
+      'saddleCloth (no explicit source for the Takarazuka Kinen cloth; white ink as for non-classic G1s)',
+      'the race uses the INNER course, whose home straight is shorter than the base entry\'s outer straightProfile',
+    ],
   },
   {
     id: 'chukyo', en: 'Chukyo Racecourse', jp: '中京競馬場', group: 'JRA G1', builder: 'track', gait: 'race',

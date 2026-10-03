@@ -53,6 +53,12 @@ the path, `roof`), the paddock `screen`, `buildings` (bearing from the ring cent
 the near-side horses walk), `trees`, `runners` and the race's `saddleCloth`. Copy the shape of the 'paddock' entry in
 data/locations.js.
 
+## Seasonal variant (`variantOf`)
+A different season or race day at a course that is already in data/locations.js: return only the fields that change
+(`id`, `variantOf: '<base id>'`, `en`, `jp`, `time`, colours, `rain` { intensity 0..1, slantDeg }, `blossom: null` to drop
+the base's blossom, `saddleCloth`, `signature`, `sources`, `uncertain`). Objects merge key by key over the base entry;
+arrays and plain values replace. Copy the shape of the 'hanshin-takarazuka' entry.
+
 ## Output — exactly this shape (it is what index.html reads), nothing else but one line of caveats
 Bearings: 0 = straight across the infield as seen from the stands, + = toward the direction the horses run
 past the stands. `distM` for infield features is measured from the horse's lane by the inner rail.

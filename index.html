@@ -2692,6 +2692,47 @@ function buildSnowfall(loc) {
   };
 }
 
+// Rain (`rain` { intensity 0..1, slantDeg, color }): streaks in a box round the horse, a whole number of box lengths
+// per scenery period and of box heights per loop, so the loop stays seamless. Each streak is the path its drop sweeps
+// in a short exposure as seen from the camera, which rides with the horse: at a walk the rain falls nearly straight,
+// at racing speed it rakes back past the horse. Wind (`slantDeg`) blows it across the course.
+function buildRain(loc) {
+  const R = loc.rain;
+  if (!R?.intensity) return null;
+  const rnd = mulberry32(77), H = 12, Lx = W / Math.max(1, Math.round(W / 36)), Z = 18, N = Math.round(1700 * R.intensity), FALL = 8.5;
+  const pos = new Float32Array(4 * 3 * 3), geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const mat = new THREE.MeshBasicMaterial({ color: hex(R.color ?? '#cfd7de'), transparent: true, opacity: 0.2 + 0.2 * R.intensity, depthWrite: false, side: THREE.DoubleSide });
+  const mesh = new THREE.InstancedMesh(geo, mat, N * 6);
+  let i = 0;
+  for (let n = 0; n < N; n++) {
+    const x = rnd() * Lx, y = rnd() * H, z = (rnd() - 0.5) * 2 * Z, s = 0.7 + rnd() * 0.6;
+    for (let c = -1; c <= 1; c++) for (let v = 0; v < 2; v++) mesh.setMatrixAt(i++, _m.compose(_p.set(x + c * Lx, y + v * H, z), _q.identity(), _s.setScalar(s)));
+  }
+  mesh.frustumCulled = false;
+  let shape = null;
+  const sweep = (v) => { // two crossed thin quads along the drop's path over a 35 ms exposure
+    const t = 0.035, wind = Math.tan(((R.slantDeg ?? 0) * Math.PI) / 180) * FALL, d = [v * t, FALL * t, -wind * t];
+    const len = Math.hypot(d[0], d[1]), w = 0.0045, offs = [[0, 0, w], [(-d[1] / len) * w, (d[0] / len) * w, 0]];
+    let k = 0;
+    for (const o of offs) {
+      const a0 = [-o[0], -o[1], -o[2]], a1 = o, b0 = [d[0] - o[0], d[1] - o[1], d[2] - o[2]], b1 = [d[0] + o[0], d[1] + o[1], d[2] + o[2]];
+      for (const q of [a0, a1, b1, a0, b1, b0]) { pos.set(q, k); k += 3; }
+    }
+    geo.attributes.position.needsUpdate = true;
+    geo.computeBoundingSphere();
+  };
+  return {
+    group: mesh,
+    update(p, scroll) {
+      const v = W / loopPeriod; // the ground's speed past the horse
+      if (shape !== v) { shape = v; sweep(v); }
+      const n = Math.max(1, Math.round((loopPeriod * FALL) / H));
+      mesh.position.set(-(scroll - Math.floor(scroll / Lx) * Lx), -H * wrap01(n * p), 0);
+    },
+  };
+}
+
 // Breath in cold air: a puff from the nostrils at each exhale. At a canter or gallop horses breathe once per
 // stride (locomotor-respiratory coupling); at a walk or trot about every 2.5 s. Puffs hang in the air (they move
 // back with the ground), grow and fade.
@@ -2769,7 +2810,7 @@ function buildWorld(loc) {
   const group = new THREE.Group();
   group.add(ground.mesh);
   if (PATH) group.add(buildPathCentre(loc, S, gspec.dx));
-  const surf = loc.builder === 'beach' ? buildSurf(loc) : null, prints = loc.prints ? buildPrints(loc) : null, snowfall = buildSnowfall(loc), breath = loc.breath ? buildBreath() : null;
+  const surf = loc.builder === 'beach' ? buildSurf(loc) : null, prints = loc.prints ? buildPrints(loc) : null, snowfall = buildSnowfall(loc), breath = loc.breath ? buildBreath() : null, rain = PATH ? null : buildRain(loc);
   if (surf) group.add(surf.group);
   if (snowfall) group.add(snowfall.group);
   if (prints) group.add(prints.mesh);
@@ -2777,8 +2818,9 @@ function buildWorld(loc) {
   const back = loc.backdrop ?? {};
   const statics = new THREE.Group();
   if (breath) statics.add(breath.group); // puffs are placed in scene space each frame
+  if (rain) statics.add(rain.group);      // the rain box rides with the horse
   statics.add(buildSky(night ? V(0, -1, 0) : sunDir, sky), buildBackdrop(sunDir, { horizon: sky.horizon, ranges: back.ranges ?? DEFAULT_RANGES, landmarks: back.landmarks, clouds: back.clouds, seed: back.seed, night }, S));
-  return { loc, S, group, statics, ground, props: kit.sets, sunDir, sky, night, fog: [t.fogNear ?? 24, fogFar], path: PATH, surf, prints, snowfall, breath, terrain: TERRAIN };
+  return { loc, S, group, statics, ground, props: kit.sets, sunDir, sky, night, fog: [t.fogNear ?? 24, fogFar], path: PATH, surf, prints, snowfall, breath, rain, terrain: TERRAIN };
 }
 
 // Dust kicked up at each hoof strike; a pure function of gait phase (one puff per hoof per stride).
@@ -2901,7 +2943,17 @@ function fitDistance(v) {
 const ROSTER = (window.HORSES ?? []).filter((h) => h && h.id && h.coat).sort((a, b) => (a.born ?? 9999) - (b.born ?? 9999) || a.en.localeCompare(b.en));
 const STUDIO = { id: 'studio-bay', en: 'Studio bay', jp: '', studio: true, coat: { key: 'kage' }, face: { type: 'blaze' }, legs: { RH: 'sock' }, size: {} };
 const HORSE_LIST = [...ROSTER, STUDIO];
-const LOC_LIST = (window.LOCATIONS ?? []).filter((l) => l && l.id && GROUND[l.builder]);
+// A seasonal variant (`variantOf: 'hanshin'`) is the base entry with the variant's fields merged over it: objects merge
+// key by key, everything else (arrays, colours, null) replaces, so `blossom: null` drops the base's cherry blossom.
+const isPlain = (o) => o && typeof o === 'object' && !Array.isArray(o);
+const mergeDeep = (a, b) => {
+  if (!isPlain(a) || !isPlain(b)) return b === undefined ? a : b;
+  const o = { ...a };
+  for (const k of Object.keys(b)) o[k] = mergeDeep(a[k], b[k]);
+  return o;
+};
+const LOC_RAW = window.LOCATIONS ?? [];
+const LOC_LIST = LOC_RAW.map((l) => (l?.variantOf ? mergeDeep(LOC_RAW.find((b) => b.id === l.variantOf) ?? {}, l) : l)).filter((l) => l && l.id && GROUND[l.builder]);
 if (!LOC_LIST.length) LOC_LIST.push({ id: 'country', en: 'Countryside trail', builder: 'country', group: 'Strolling', gait: 'gallop', W: 65 });
 const STYLES = { nige: ['逃げ', 'Front-runner'], senko: ['先行', 'Stalker'], sashi: ['差し', 'Closer'], oikomi: ['追込', 'Deep closer'] };
 const MARKS = { none: 'None', star: 'Star', stripe: 'Stripe', 'star-stripe': 'Star + stripe', blaze: 'Blaze', 'wide-blaze': 'Wide blaze', bald: 'Bald face', snip: 'Snip', 'star-snip': 'Star + snip', 'star-stripe-snip': 'Star, stripe + snip' };
@@ -2962,6 +3014,8 @@ function parseSilks(silks) {
     const c = colourIn(seg), pat = patternIn(seg);
     if (i === 0 && c && !pat) { out.body = c.c; return; }
     if (pat) out.pattern = { ...pat, color: c ? c.c : (cols[1] ?? cols[0]).clone() };
+    // hoops named after the sleeves run across the sleeves too (「青、赤袖、白三本輪」)
+    if (pat && sleevesSet && pat.kind === 'hoops' && !out.sleevePattern) out.sleevePattern = { ...out.pattern, color: out.pattern.color.clone() };
   });
   if (!sleevesSet) out.sleeves = out.body.clone(); // no sleeve entry: the sleeves match the body
   return out;
@@ -3376,6 +3430,9 @@ function setLocation(id) {
     const Y = beachLayout(loc);
     dust.colors = { dust: loc.dust ?? loc.sand?.dry ?? PAL.dust, clods: loc.sand?.wet ?? '#8f7d63', splash: loc.sea?.foam ?? '#e8ecea' };
     dust.styleAt = (z) => (Y.toSea(z) > 0 || world.surf?.wet(z) ? 'splash' : Y.toSea(z) > -Y.wetW ? 'clods' : 'dust');
+  } else if (loc.rain?.intensity) {
+    dust.colors = { dust: loc.dust ?? PAL.dust, clods: loc.dust ?? '#4f5a34' };
+    dust.styleAt = () => 'clods';
   } else { dust.colors = null; dust.styleAt = null; }
   state.lead = loc.lead ?? 'L';
   // the saddle and cloth only appear on racecourses: rebuild the hero if that changes
@@ -3423,6 +3480,7 @@ function applyPhase(p) {
     if (T) for (const { mesh } of world.props) mesh.position.y = -y0;
     world.surf?.update(p, scroll);
     world.snowfall?.update(p, scroll);
+    world.rain?.update(p, scroll);
     world.prints?.update(p, rig, world.ground.heightAt, scroll);
   }
   updateDust(dust, g, rig);
