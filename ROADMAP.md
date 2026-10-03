@@ -1,13 +1,22 @@
 # Roadmap
 
+> **Status (3 Oct 2026).** Branch `worktree-anatomy-review-customization`, all work committed and pushed:
+> the build and running-style controls, `data/quirks.js` (318 verified quirks on 122 horses), batch 18/19 horses,
+> and the anatomy review. **Next is the owner's call:** tick fix options in
+> [research/anatomy-review/ANATOMY-TODO.md](research/anatomy-review/ANATOMY-TODO.md) (124 verified items: 13 high,
+> 45 medium, 66 low severity, plus 1 disputed); only the ticked fixes get implemented. Then merge the branch into `main`
+> (a PR or a merge), and research the three missing batch-18 horses if wanted.
+
 Where the low-poly horse goes next, in build order. Each **batch** adds the next horses in generation
 order, a location or two, and one engine item. Horses come from the official character list at
 <https://umamusume.jp/character/>; every entry models the **real racehorse** behind a character.
 
-## Status after batch 17 (October 2026)
+## Status after batch 19 (October 2026)
 
 | Area | Done |
 |---|---|
+| Build and running style (B18–19) | **16 build controls** (`conf`): the earlier neck, crest, head, profile and ears (ear size now 0.7–1.4), plus **ear set** (close/wide) and **ear tilt** (pricked … lop), **chest depth** and **chest width** (the forelegs stand wider on a broad chest), **barrel**, **hindquarters** (wider quarters, thicker thighs, hind legs set wider), **withers**, **tuck-up**, **bone** (cannons and fetlocks), **hooves** (bigger feet grow back from the toe, so the IK still pins the toe) and **tail set**. The barrel's cross-sections are built once per horse and shared with the saddle, rug and rider, so tack follows the body. **9 running-style controls** (`run`): **head carriage** (very low and stretched like Oguri Cap … high-headed), **neck action**, **stride** (pitch ピッチ走法 … stride ストライド走法: a longer stride at the same speed and the same stance length, so it is extra airtime and the hooves stay planted), **knee action**, **hind drive**, **low posture**, **roll**, **ears** and **tail at speed**. The style shows a little at the walk and fully at racing speed. Measured: stance slip 0.00 mm at walk, trot, canter, gallop and race with every control at its extremes. Researched quirks live in `data/quirks.js` (build default < quirks < the horse's own `conf` / `run` < the panel) and show on the horse card as **Known for**. |
+| Anatomy review (B18–19) | Eight critic agents (proportions, head and neck, trunk, forelimb, hindlimb, slow gaits, fast gaits, secondary motion and rider) reviewed the model from near-orthographic contact sheets and joint measurements; two skeptics checked every finding (is it true of real horses? is it really in the model?) and gap critics looked for what the first round missed. 265 agents in all. The result is a to-do list with fix options for the owner to choose from: **[research/anatomy-review/ANATOMY-TODO.md](research/anatomy-review/ANATOMY-TODO.md)**: 124 verified items (13 high, 45 medium, 66 low severity) and 1 disputed; the skeptics refuted none outright. Nothing in it has been fixed yet. |
 | Engine | Horse profiles drive the whole model: coat, markings, size and hair length. A gait table holds the gallop (left or right lead), a new **walk** and a standing **graze** pose. Stride counts are recomputed for each horse and location, so the loop stays seamless and planted hooves have 0.00 mm slip (measured). Includes a location system, background horses, the side panel and the URL hash. |
 | Hood patterns (B17) | A hood can carry a **pattern** over the crown in a second colour (`hoodColors.pattern`, `accent`): `stripes` running poll to nose, `hoops` round the head, `checks` (市松), a `centre` stripe, a `band` across the brow with bars round the eye holes, or an `x` across the face. Painted per face on the hood's own rows, like the silks. Eleven horses use one: Nice Nature, Durandal and Win Variation (stripes), Wonder Acute (stripes), Hishi Miracle (hoops), Furioso (checks), Kawakami Princess (centre), Air Messiah and Hokko Tarumae (band), Believe and Verxina (x). The fourth seasonal variant is **Nakayama for the Satsuki Sho** (`nakayama-satsuki`): a pale, hazy mid-April sky, fresh overseeded turf, cherries already in leaf, the classics' cloth with yellow numbers and a 0.8 crowd. Silks: hoops on the body now carry on round the sleeves when the notation names no sleeves (Kitasan Black's 「黒、茶三本輪」). |
 | Race-day crowds (B16) | Racecourses now have their **crowd** (`crowd` 0..1, 0.4 by default): people pressed two deep against the outer rail, scattered across the apron, and two rows to every terrace step of the stand, all along its length. Each figure is a jacket in one of a few clothing colours over dark trousers, and a head, about 32 triangles, drawn as two instanced meshes. Derby day is the full crowd (`crowd: 1`); the wet Takarazuka Kinen a thin one. A **tail ribbon** (`gear.tailRibbon`), the red bow tied in the top of a kicker's tail, is drawn for Gold Ship. The third seasonal variant is **Kyoto for the Tenno Sho (Spring)** (`kyoto-tenno-spring`): a high Golden Week sun, the overseeded turf at its freshest, new-leaf trees round the lake (no blossom, no autumn colour) and a 0.6 crowd. |
@@ -32,7 +41,7 @@ order, a location or two, and one engine item. Horses come from the official cha
 | Forelimbs (B2) | Deeper, broader brisket so the elbow and forearm tuck into the chest instead of hanging off a rounded barrel; a broad flat shoulder blade, a triceps mass and a muscular forearm top; at the gallop the forefoot flips up into a hook behind the knee (deeper fetlock curl, higher fore lift). |
 | Colour | All 8 JBIS registry coats (鹿毛 … 白毛), pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. **Greys (B2):** greyness slider with a slow-greying curve, **dapples** (cellular noise painted on 16× subdivided coplanar faces, strongest at mid grey, with their own slider), lighter faces and dark lower legs on young greys, and a separate `coat.tail` colour. |
 | Parts | Mane and tail length, height (uniform scale) and weight (bulk of trunk, neck and upper limbs). |
-| Horses | 139 of 152, roster #1–#139, from Byerley Turk (c.1680) to Vivlos (2013). 135 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
+| Horses | 149 of 152: roster #1–#152 except Almond Eye (#141), Curren Bouquetd'or (#145) and Loves Only You (#147), whose research was stopped; from Byerley Turk (c.1680) to Forever Young (2021). 135 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
 | Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), and the JRA G1 courses **Tokyo**, **Nakayama**, **Kyoto** (infield lake), **Hanshin** (cherry blossom: `blossom` colours flowering broadleaf trees only) and **Chukyo** (B3); the NAR tracks **Oi** (B4), **Kawasaki** and **Funabashi** (B5) at night, **Urawa** at twilight and **Morioka** at night with the turf course inside the dirt (`innerTurf`, B6), **Kanazawa** in low November sun and **Saga** at night (B7); the **Tokyo Racecourse paddock** on Derby day, walked in path mode with the rest of the field (B8); a **beach at dawn** modelled on Kujukuri, the sun rising out of the Pacific behind the horse (B9); the **Ritto hill gallop** (坂路), an endless climb up the wood chips (B10); a **snowy Hidaka farm** on a clear February morning (B11); **Hanshin in the rain** for the Takarazuka Kinen, the first seasonal variant (B14). |
 | Research | Two reusable agent templates in `.claude/agents/`, run for every horse and track since batch 2 (8–10 agents in parallel, about 3–9 minutes each). |
 
@@ -66,7 +75,9 @@ Engine items are placed before the first horse that needs them.
 | ✅ 15 | #116–123 · 2006–08 · Transcend, Wonder Acute, Curren Chan, Eishin Flash, Rose Kingdom, Rulership, Victoire Pisa, Orfevre | Tokyo on Derby day | Reins; the rider steadied at the irons |
 | ✅ 16 | #124–131 · 2008–10 · Win Variation, Fenomeno, Gentildonna, Gold Ship, Hokko Tarumae, Verxina, Copano Rickey, Epiphaneia | Kyoto for the Tenno Sho (Spring) | Race-day crowds on the apron and the stand; tail ribbons |
 | ✅ 17 | #132–139 · 2010–13 · Logotype, Sounds of Earth, Cheval Grand, Duramente, Kitasan Black, Satono Crown, Satono Diamond, Vivlos | Nakayama for the Satsuki Sho | Hood patterns (stripes, hoops, checks, centre, band, x) |
-| 18–19 | #140–152 · 2014–2021 · Kiseki … Forever Young (the exact split is in `data/roster.js`) | More seasonal variants of existing tracks | Polish |
+| ◐ 18 | #140–147 · 2014–16 · Kiseki, Blast Onepiece, Lucky Lilac, Chrono Genesis, Gran Alegria (Almond Eye, Curren Bouquetd'or, Loves Only You still to research) | (Oi for the Tokyo Daishoten: still to research) | Smooth gait changes; **build and running-style controls**; **anatomy review** (to-do list, no fixes yet) |
+| ✅ 19 | #148–152 · 2016–21 · Marche Lorraine, Daring Tact, Efforia, Titleholder, Forever Young | — | **Quirk research** over the whole roster (`data/quirks.js`) |
+| 20 | The three missing batch-18 horses; the owner's choices from the anatomy to-do list | Oi for the Tokyo Daishoten | Fixes chosen from ANATOMY-TODO.md |
 
 Before every batch, re-read the official list. New characters are added over time, and they slot into the roster by foaling year.
 
@@ -112,6 +123,12 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
 | Nakayama in spring, Satsuki Sho (B17) | ✅ |
 
 ## Anatomical accuracy (ordered by visual payoff)
+**The full, verified list is now [research/anatomy-review/ANATOMY-TODO.md](research/anatomy-review/ANATOMY-TODO.md)**: every
+finding with what the model does, what a real horse does (with references), where it lives in the code and 1–3 fix
+options to choose from. The reference material it was made from (contact sheets of every gait, joint measurements)
+is in `research/anatomy-review/`; re-render it after any anatomy change and run the review again. The older list below
+is kept for history.
+
 1. ✅ **Race-speed gallop** (B3; the old gallop stays as the "Gallop" button). The old gallop has 2.6 m strides at 0.42 s, about 6 m/s, which is a canter pace. A racing Thoroughbred runs about 16–17 m/s:
    - stride 6.5–7.5 m, about 2.3 strides/s;
    - duty factor about 0.2–0.25 per limb;
@@ -145,7 +162,17 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
 - Share a customized horse through the URL hash; today the hash stores the horse, location and gait, not the overrides.
 - `recolor()` without rebuilding the geometry.
 
-## Part customization (next, in order)
+## Part customization
+**Done in B18–19:** ear set and tilt, chest depth and width, barrel, hindquarters, withers, tuck-up, bone, hooves, tail
+set, and the nine running-style controls (see the status table). **Next**, in order:
+- Body and leg length (`bodyLength`, `legLength`): they move the leg roots, so the gait's stance centres must move
+  with them.
+- Croup slope and pastern angle (the IK reads the pastern angle, so it has to be per horse).
+- Quirks that fit no control yet: they are listed in `research/quirks/` under "candidates for new parameters"
+  (for example running with the tongue out, head tossing, drifting off a straight line).
+- Mane styles (pulled, long, braided) and forelock.
+
+The earlier plan, for history:
 1. ~~Gear~~ (done in B4). It was recorded in the data as:
    - hood (メンコ): Haiseiko, Katsuragi Ace;
    - shadow roll: Narita Brian, B6;
@@ -176,6 +203,10 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
   - `.claude/agents/horse-researcher.md` returns one `HORSES` entry.
   - `.claude/agents/location-researcher.md` returns one `LOCATIONS` entry.
   - Both run on Sonnet. In the smoke tests a horse took about 1 minute and a track about 35 seconds.
+- **Quirks** (since B19): the horse-researcher template now also returns documented build and running-style quirks as
+  `conf`, `run` and `knownFor` (every value with a source). For the whole roster at once, the **quirk-research
+  workflow** splits the 152 horses into 12 groups, one researcher each, then a skeptic re-reads every cited page; what
+  survives is written to `data/quirks.js`, with the evidence in `research/quirks/`.
 - **Per batch:**
   1. Read the official list again and take the next 8 names from `data/roster.js`.
   2. Start 8 horse-researcher agents and 1–2 location-researcher agents **in one message**. The prompt is just the subject:
@@ -402,6 +433,21 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Satono Crown.** A tiny pale fleck under the forelock may be a very small star; the sheepskin tufts on his noseband are not drawn.
 - [ ] **Satono Diamond.** The text says 流星 but the photos show only a diamond-shaped star.
 - [ ] **Vivlos.** The coronet/pastern split between the hinds is read from which leg overlaps the other; the white label on her hood is not drawn.
+
+### Horses (batch 18)
+- [ ] **Kiseki** (キセキ): coat.reg (JBIS 403; ja.wiki and en.netkeiba agree), coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.bridle, gear.bitLifter, gear.bandages, silks.desc, silks.colors.
+- [ ] **Blast Onepiece** (ブラストワンピース): coat.reg (JBIS not read), coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, conf.head (magnitude), style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.shadowRoll (hex from photos), gear.bridle, gear.bitLifter, silks.colors.
+- [ ] **Lucky Lilac** (ラッキーライラック): coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.hoodColors, gear.bridle, gear.bitLifter, silks.colors.
+- [ ] **Chrono Genesis** (クロノジェネシス): coat.reg (JBIS not read directly), coat.greyness, coat.tail, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.bridle, gear.reins, gear.bitLifter, silks.colors.
+- [ ] **Gran Alegria** (グランアレグリア): coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.bridle, gear.bitLifter, silks.colors, saddleNumber (choice of signature race).
+- [ ] **Almond Eye**, **Curren Bouquetd'or**, **Loves Only You**: not researched yet (their agents were stopped).
+
+### Horses (batch 19)
+- [ ] **Marche Lorraine** (マルシュロレーヌ): coat.reg (JBIS not read), coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.hoodColors (BC photos only 480 px; one ear cover white), gear.bridle, gear.blinkers, gear.bitLifter, gear.bandages (none seen at Del Mar; bandaged at the Heian S), silks.colors.
+- [ ] **Daring Tact** (デアリングタクト): coat.reg (JBIS 403; en.netkeiba says "Dark Bay"), coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.bridle, gear.bitLifter, silks.colors.
+- [ ] **Efforia** (エフフォーリア): coat.reg (JBIS 403, from ja.wiki/netkeiba), coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm (only a yearling figure, 158.0), size.girthCm (only a yearling figure, 176.5), size.cannonCm (only a yearling figure, 20.8), gear.shadowRoll, gear.bridle, gear.reins, gear.bitLifter, silks.colors.
+- [ ] **Titleholder** (タイトルホルダー): coat.reg (JBIS not read), coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.hoodColors.ears, gear.shadowRoll, gear.blinkers, gear.bridle, gear.bitLifter, silks.desc (word order), silks.colors.
+- [ ] **Forever Young** (フォーエバーヤング): coat.reg (JBIS 403), coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, size.typicalKg (prep-race weight; not weighed abroad), size.build, size.withersCm, size.girthCm, size.cannonCm, gear.hoodColors (the centre pattern approximates the white face panel), gear.bridle, gear.bitLifter, gear.bandages, silks.colors.
 
 ### Hood patterns
 - [ ] Not drawn: lettering (Ines Fujin's "AF", Nice Nature, Gold Ship, Copano Rickey), King Halo's polka dots, Haru Urara's Hello Kitty face, emblems (Dantsu Flame, Gentildonna, Curren Chan), Admire Groove's "RK" monogram, Twin Turbo's ringed ear covers, Wonder Acute's second (red) stripe colour. Paddock-only patterned hoods (Air Groove's band, Sweep Tosho's checks, Still in Love's cross) stay off because those horses raced bare-headed.
