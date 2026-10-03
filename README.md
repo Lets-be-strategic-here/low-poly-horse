@@ -15,7 +15,10 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
   - racing gear (hood with its pattern, blinkers, bit-lifter, bridle…), the owner's silks (worn by the jockey on racecourses, read from the JRA notation, with reins from the bit to the rider's hands), and its number in its signature win (on the saddle cloth).
 
   The values are researched and sourced; anything unconfirmed is listed in the horse's info card. The full build queue (152 horses) is in `data/roster.js`.
-- **Customization.** Coat presets and colour pickers, greyness and dapple sliders for greys, 10 face markings, white height per leg, height, weight, neck length, crest, head size, head profile (dished to Roman), ear size, mane and tail length, and a gear toggle.
+- **Customization.** Coat presets and colour pickers, greyness and dapple sliders for greys, 10 face markings, white height per leg, height, weight, mane and tail length, and a gear toggle.
+  - **Build:** neck, crest, head size, head profile (dished to Roman), ear size, set and tilt (pricked to lop), chest depth and width, barrel, hindquarters, withers, tuck-up, bone, hoof size and tail set.
+  - **Running style:** head carriage (Oguri Cap's famously low head to high-headed), neck action, stride vs pitch, knee action, hind drive, low posture, roll, and ears and tail at speed. It shows a little at the walk and fully at racing speed.
+  - Each roster horse starts from its own researched quirks (`data/quirks.js`), listed on its card under **Known for**.
 - **Locations.**
   - Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses; the NAR tracks Oi (white sand), Kawasaki (72 m screen), Funabashi, Morioka (turf inside the dirt) and Saga under floodlights, Urawa at twilight and Kanazawa in low November sun. On a racecourse the horse wears a saddle and a saddle cloth in that race's colours. They're built from JRA course data: left- or right-handed layout, turf and dirt courses, rails, grandstand, infield (steeplechase jumps, Tokyo's garden pond, Kyoto's lake), the big screen, Mt Fuji behind Tokyo, and Hanshin's cherry blossom.
   - The Tokyo Racecourse paddock on Derby day: the horse walks round the parade ring (path mode) with the rest of the field in number order, in front of the crowd.
@@ -51,6 +54,9 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 | `data/horses.js` | Horse presets, with sources and uncertainties |
 | `data/locations.js` | Locations: course facts, lighting, layout and landmarks |
 | `data/roster.js` | All 152 real horses on the official list, in generation order |
+| `data/quirks.js` | Researched build and running-style quirks per horse, with sources |
+| `research/anatomy-review/` | The anatomy to-do list (`ANATOMY-TODO.md`: verified findings with fix options to choose from), plus the contact sheets and joint measurements it was made from |
+| `research/quirks/` | The evidence behind `data/quirks.js` |
 | `ROADMAP.md` | The build order (anatomy, colour, parts, every JRA G1 and NAR JpnI course, race mode), ending in a to-do checklist of every unconfirmed value |
 | `research/batch1-open-questions.md` | Batch 1's open questions: the default used for each and where to check it |
 | `.claude/agents/` | Research-agent templates: one agent per horse or location |

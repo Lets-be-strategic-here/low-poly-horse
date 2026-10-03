@@ -50,9 +50,19 @@ Rules learned from earlier runs:
 - **size**: `weightKg` = [min, max] race-day 馬体重 over the career; `typicalKg` = weight at its biggest
   wins. `withersCm`, `girthCm`, `cannonCm` only if documented (else null). `build` one of
   `compact, average, tall, heavy, rangy`.
-- **conf** (optional): conformation only when a source or clear photos single it out: `neck`, `crest`, `head`,
-  `ears` multipliers (1 = average, e.g. a famously big head → head 1.1) and `profile` −1 dished … 0 straight … +1 Roman nose.
-  Omit the field when nothing is unusual.
+- **conf** (optional): build quirks, only when a source states them (or clear photos single them out). 1 or 0 = an
+  average Thoroughbred; omit every key that is unremarkable:
+  `neck` 0.85–1.2 · `crest` 0.6 thin … 1.6 heavy · `head` 0.88 small … 1.15 very big (顔がデカい) · `profile` −1 dished … +1
+  Roman · `ears` 0.7 very small … 1.4 very big · `earSet` −1 close-set … +1 wide-set · `earTilt` −1 pricked … +1 lop (垂れ耳) ·
+  `chestDepth` 0.9 … 1.12 (胸が深い) · `chestWidth` 0.9 … 1.15 (胸前が広い) · `barrel` 0.9 … 1.1 · `hindquarters` 0.9 … 1.15
+  (トモが発達) · `withers` −1 … +1 · `tuckUp` 0 … 1 (腹が巻き上がる) · `bone` 0.9 … 1.15 (管囲 ~20 cm = 1.0) · `hoof` 0.9 … 1.1 ·
+  `tailSet` −1 low … +1 high.
+- **run** (optional): running-style quirks from race footage descriptions, same rule: `headCarriage` −1 very low, neck
+  stretched (首を低く使う, e.g. Oguri Cap) … +1 high-headed · `neckPump` 0.5 … 1.5 · `stride` 0.88 pitch (ピッチ走法) … 1.12
+  stride (ストライド走法 / 大跳び) · `kneeAction` 0.7 daisy-cutting … 1.3 high knees · `hindDrive` 0.8 … 1.2 · `bodyLow` 0 … 1
+  (沈み込むフォーム) · `roll` 0.5 … 1.5 · `earsAtSpeed` −1 pricked … +1 pinned · `tailCarriage` −1 clamped … +1 high.
+- **knownFor** (optional): one entry per conf/run quirk you set, `{ text: 'what the source says (original phrase)', source:
+  'https://…' }` — shown on the horse's card. A quirk that fits none of the keys still goes here (it may become a new parameter).
 - **gear**: what it actually raced in (photos of its big races), drawn by the engine: `hood` (メンコ) with
   `hoodColors` { main, trim (eye-hole and edge trim), ears (ear covers, or false if the ears are bare) } as hex; `blinkers` / `shadowRoll` /
   `bitLifter` (ハミ吊り) booleans; `bridle` hex (leather brown '#3a2a20' if unknown, '#f2f0ea' for white);
@@ -74,6 +84,8 @@ Rules learned from earlier runs:
   gear: { hood: true, hoodColors: { main: '#f2f0ea', trim: '#d22630', ears: '#d22630' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: null, notes: '' },
   silks: { owner: '', desc: '', colors: ['#000000'] },
   saddleNumber: 7, // 馬番 in its signature win (null if not found)
+  conf: { head: 1.1 }, run: { headCarriage: -0.8 }, // only documented quirks (omit both when there are none)
+  knownFor: [{ text: 'a famously big head (「顔がデカい」)', source: 'https://…' }],
   career: 'one line: key G1 wins with years',
   sources: ['https://…'],
   uncertain: ['face.type', 'legs.LF'], // dotted paths of every value you could not confirm

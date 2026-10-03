@@ -4008,10 +4008,10 @@ function renderCard() {
   for (const [k, v] of rows) dl.append(el('dt', { textContent: k }), el('dd', { textContent: v }));
   if (h.style?.why) dl.children[7].title = h.style.why;
   card.append(dl);
-  const q = QUIRKS[h.id];
-  if (q?.notes?.length) {
+  const known = [...(QUIRKS[h.id]?.notes ?? []), ...(h.knownFor ?? [])];
+  if (known.length) {
     const p = el('p', { className: 'note' }, [el('strong', { textContent: 'Known for: ' })]);
-    q.notes.forEach((n, i) => {
+    known.forEach((n, i) => {
       p.append(i ? '; ' : '', n.text);
       if (n.source) {
         let host = n.source;
