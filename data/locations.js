@@ -679,6 +679,42 @@ window.LOCATIONS = [
     sources: ['https://www.jra.go.jp/facilities/tc/rittou/guide/', 'https://www.jra.go.jp/facilities/tc/rittou/guide/img/img_hill.png', 'https://www.jra.go.jp/facilities/tc/rittou/guide/img/pic_course_hanro.jpg', 'https://www.jra.go.jp/facilities/tc/rittou/guide/img/img_allmap.jpg', 'https://www.jra.go.jp/facilities/tc/rittou/intro/', 'https://ja.wikipedia.org/wiki/栗東トレーニングセンター', 'https://ja.wikipedia.org/wiki/インディチャンプ', 'https://ja.wikipedia.org/wiki/ドゥラエレーデ', 'https://ja.wikipedia.org/wiki/サイレンススズカ', 'https://www.openstreetmap.org/way/595273486', 'https://www.openstreetmap.org/way/1414517042', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/18/230113/103843.jpg', 'https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?lon=136.00552&lat=34.99306&outtype=JSON'],
     uncertain: ['time (22 Oct 07:00 chosen within the sourced autumn hours; sky colours invented for a clear morning)', 'course chip colours (two JRA photos and the aerial)', 'rail height and type (photos)', 'hedge heights (by eye; the camera-side hedge is drawn lower so it does not hide the legs)', 'woods (count, leaf, gap from the aerial and one photo)', 'timing boards every 200 m (inferred from the 800 m timed section); one gantry', 'lightPoles 0 (pre-dawn floodlighting not verified)', 'utility pole spacing (aerial shadows)', 'tower 15 m (4 floors in OSM)', 'saddleCloth (from the JRA table; assumes the hero is a G1 winner; stars not drawn)', 'backdrop (ranges are rings; Hira and Suzuka really sit only at -53..-68° and +32..+62°; the near 阿星山 hills straight up the course are not drawn)', 'companion position (plausible, not measured)', 'the slope sections are squeezed into one 300 m loop', 'needs kits: riders in coloured helmets and vests, the 坂路 stand at the top, the hedge on the bend'],
   },
+  {
+    id: 'snow-field', en: 'Snowy Hokkaido field', jp: '雪の牧場', group: 'Strolling', builder: 'snow', gait: 'walk', W: 130, seed: 2080,
+    // a clear February morning, ~08:00 JST, 42.2°N (Urakawa): horses just turned out after the morning feed. The Hidaka coast gets
+    // little snow (JMA: monthly maximum depth ~15–28 cm on the coast, deeper in the valleys), so the snow is fetlock-deep.
+    time: {
+      month: 2, sunElevDeg: 16, sunAzimDeg: -55, fogNear: 40, fogFar: 170, exposure: 0.92,
+      sky: { top: '#3f78c8', mid: '#93bbe6', horizon: '#dfe9f1', sun: '#fff4e2' },
+      sunColor: '#ffeedc', sunIntensity: 2.7, hemiSky: '#cddff2', hemiGround: '#c8d4e2', hemiIntensity: 1.15,
+    },
+    snow: { sunlit: '#f2f6fa', shade: '#a6c2e2', depthM: 0.25, tracks: '#9c8473', straw: '#b09c74', falling: 0 }, // trampled to mud and hay round the feeding spots
+    fence: { color: '#eef0ec', buriedM: 0.25 },
+    trees: { birch: 8, conifer: 14, coniferLeaf: '#2c4638', snowOnBranches: true }, // bare white birches; dark todomatsu firs
+    buildings: [
+      { type: 'barn', roof: '#a3402f', wall: '#ece6da', distM: 70 },
+      { type: 'barn', roof: '#3d6a58', wall: '#e3e0d8', distM: 110 },
+    ],
+    rug: { color: '#22305e', trim: '#c23a33', colors: ['#22305e', '#2e5a3a', '#6a2a2a', '#3a3f48'] }, // winter turnout rugs (馬着)
+    breath: true, // mean daily lows of -6 to -8 °C in January: the breath steams
+    backdrop: {
+      ranges: [
+        { r: 470, base: '#8d9cb8', h: [26, 62], step: 0.18, haze: 0.5, snowline: 30 }, // the Hidaka mountains, white above the forest
+        { r: 380, base: '#76807c', h: [10, 26], step: 0.12, haze: 0.38, snowline: 18 }, // foothills: bare woods and conifers over snow
+      ],
+      clouds: 3,
+    },
+    dust: '#eef2f6', // kicked-up snow
+    extras: [
+      { mode: 'companion', x: -3.6, z: -2.0 },
+      { mode: 'grazer', x: 20, z: -11, rotY: 0.7 }, // mares and yearlings nosing through to hay and grass
+      { mode: 'grazer', x: 24, z: -13.5, rotY: 1.1 },
+      { mode: 'grazer', x: 86, z: -18, rotY: 2.8 },
+    ],
+    signature: 'A clear February morning on a Hidaka farm: fetlock-deep snow trampled to mud and hay round the feeding spots, white board fences, long blue shadows, steaming breath, horses in winter rugs, and the Hidaka range white on the horizon.',
+    sources: ['https://www.data.jma.go.jp/obd/stats/etrn/view/nml_sfc_ym.php?prec_no=22&block_no=47426&year=&month=&day=&view=', 'https://www.data.jma.go.jp/obd/stats/etrn/view/nml_sfc_ym.php?prec_no=21&block_no=47424&year=&month=&day=&view=', 'https://ja.wikipedia.org/wiki/浦河町', 'https://ja.wikipedia.org/wiki/馬着', 'https://commons.wikimedia.org/wiki/File:マイネルキッツ_うらかわ優駿ビレッジAERUにて（2024年2月）.jpg', 'https://commons.wikimedia.org/wiki/File:Blue_Sky_And_White_World_(131608635).jpeg'],
+    uncertain: ['snow.depthM (a compromise between the coast and the valleys)', 'snow colours (sampled from a clear-day photo in Biei, brightened)', 'snow.tracks / straw (sampled from an Urakawa February photo)', 'snow.falling 0 (a clear day; snow falls on about 21 February days at Tomakomai, mostly light)', 'fence.color (the one Urakawa winter photo shows weathered grey boards; white kept to match the summer farm)', 'trees (counts and mix from general knowledge; larch windbreaks would need a kit; snow is often blown off the branches on this windy coast)', 'buildings (colours and distances not sourced)', 'rug (colours invented; whether turned-out horses wear 馬着 varies by farm, and the one February photo shows an unrugged horse)', 'time (sun computed for about 10 Feb, 08:00; azimuth staged for long blue shadows)', 'backdrop (ranges reused from the summer farm; winter Hidaka range not photo-checked)', 'extras positions are placeholders'],
+  },
 ];
 
 // Every other venue on the roadmap, shown as "soon" in the picker (order = build order).

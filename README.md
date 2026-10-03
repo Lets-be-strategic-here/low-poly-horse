@@ -7,7 +7,7 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 ## What's in it
 
 - **Procedural horse.** Built in code from low-segment primitives with vertex sculpting and flat shading. There are no model or texture files. A hierarchical rig covers the spine, neck, head, ears, four legs, a chained tail and a mane.
-- **Real horses.** 83 so far, from Byerley Turk (c.1680) to Calstone Light O (1998). Each one sets:
+- **Real horses.** 91 so far, from Byerley Turk (c.1680) to Symboli Kris S (1999). Each one sets:
   - coat, using the JBIS registry colour (鹿毛, 黒鹿毛, 芦毛 …);
   - face and leg markings;
   - size: height at the withers and race weight;
@@ -21,7 +21,7 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
   - The Tokyo Racecourse paddock on Derby day: the horse walks round the parade ring (path mode) with the rest of the field in number order, in front of the crowd.
   - A beach at dawn modelled on Kujukuri: the sun rises out of the sea behind the horse, waves rush up the wet sand and around the hooves, and hoof prints trail behind.
   - The Ritto training centre's hill gallop (坂路): an endless climb up the wood chips in a training saddle cloth.
-  - A Hidaka stud farm, where the horse walks with a companion and other horses graze.
+  - A Hidaka stud farm, where the horse walks with a companion and other horses graze, and the same farm in February snow: horses in winter rugs, steaming breath, white mountains.
   - The original countryside trail.
 - **Gaits.**
   - Four-beat lateral walk.
@@ -54,7 +54,7 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 
 ## Status
 
-- **Batches 1–10 of 19 are done:** 83 of 152 horses (Byerley Turk to Calstone Light O), plus 17 locations: Hidaka, the countryside trail, a beach at dawn, the Ritto hill gallop, the Tokyo paddock, the Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses, Oi, Kawasaki and Funabashi at night, Urawa at twilight, Morioka at night, Kanazawa and Saga.
+- **Batches 1–11 of 19 are done:** 91 of 152 horses (Byerley Turk to Symboli Kris S), plus 18 locations: Hidaka in summer and in snow, the countryside trail, a beach at dawn, the Ritto hill gallop, the Tokyo paddock, the Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses, Oi, Kawasaki and Funabashi at night, Urawa at twilight, Morioka at night, Kanazawa and Saga.
 - **Batch 2 added** dappled grey coats (Oguri Cap, Tamamo Cross), cherry blossom at Hanshin, Kyoto's infield lake, and a reworked chest and forelimbs.
 - **Batch 3 added** a racing gallop at about 16 m/s (7 m strides), the default on racecourses.
 - **Batch 4 added** racing gear (hoods/メンコ in each horse's colours, blinkers, shadow rolls, bit-lifters, bridles, pompoms, bandages) and night racing under floodlights at Oi.
@@ -64,7 +64,8 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 - **Batch 8 added** path mode: the horse walks a curved, closed path (the paddock's parade ring) with the scenery bent round it, hooves still planted through the bends, and the rest of the field walking in number order.
 - **Batch 9 added** the beach: moving surf, splashes, wet-sand clods and dust by surface, and hoof prints in the sand.
 - **Batch 10 added** sloped ground (an endless training hill, and the final hills of five racecourses), rounder fore hooves and racing plates, and one draw call per horse (rigid-skin merge).
-- **Batch 11 is next:** horses #84–91 (Dantsu Flame to Symboli Kris S) and a snowy Hokkaido field.
+- **Batch 11 added** the snowy field: snow, winter rugs, breath in the cold, snow-capped roofs and mountains, and cloths draped with clean hems.
+- **Batch 12 is next:** horses #92–99 (Tanino Gimlet to Cesario) and a jockey in the owner's silks.
 - **Unconfirmed values:** a value the sources couldn't confirm is never presented as fact. Each one is flagged in the data's `uncertain` lists, shown on the horse's info card, and listed as a to-do in `ROADMAP.md`. Examples are which hind leg is white on Mr. C.B., and Saint Lite's silks.
 
 ## Run locally

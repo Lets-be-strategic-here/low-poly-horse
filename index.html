@@ -735,6 +735,43 @@ function buildHorse(look = {}, seed = 1337) {
       const x = lerp(x0, x1, i / n), [top, bot, w, wu, wd] = rowAt(x), t = top + grow, b = bot - grow, ww = w + grow;
       return ringAt(V(x, (t + b) / 2), X_AXIS, Y_AXIS, PROF.trunk, { up: (t - b) / 2, down: (t - b) / 2, w: ww, wUp: ww * wu, wDown: ww * wd });
     }));
+    // A cloth draped over the barrel between heights yLo(x) and yHi(x) (default: over the top), with edges that run
+    // exactly along those heights: each cross-section of the trunk is walked down both sides from the top, clipped
+    // to the band and resampled to n points, and neighbouring sections are joined into strips. (Cutting whole faces
+    // of the trunk loft instead leaves a zig-zag hem.)
+    const drape = (x0, x1, nx, grow, yLo, yHi = () => Infinity, n = 10) => {
+      const sides = [[], []], pos = [];
+      for (let i = 0; i <= nx; i++) {
+        const x = lerp(x0, x1, i / nx), [top, bot, w, wu, wd] = rowAt(x), t = top + grow, b = bot - grow, ww = w + grow;
+        const ring = ringAt(V(x, (t + b) / 2), X_AXIS, Y_AXIS, PROF.trunk, { up: (t - b) / 2, down: (t - b) / 2, w: ww, wUp: ww * wu, wDown: ww * wd });
+        const half = ring.length / 2, lo = yLo(x), hi = yHi(x);
+        [1, -1].forEach((dir, si) => {
+          const path = [ring[0]];
+          for (let k = 1; k <= half; k++) path.push(ring[((dir * k) % ring.length + ring.length) % ring.length]);
+          const pts = []; // the part of the path with lo <= y <= hi, clipped exactly at both heights
+          for (let k = 0; k < path.length; k++) {
+            const a = path[k], bb = path[k + 1];
+            if (a.y <= hi && a.y >= lo) pts.push(a);
+            if (!bb) break;
+            for (const yc of [hi, lo]) if ((a.y - yc) * (bb.y - yc) < 0) pts.push(a.clone().lerp(bb, (a.y - yc) / (a.y - bb.y)));
+          }
+          // resample to n points by arc length
+          const L = [0]; for (let k = 1; k < pts.length; k++) L.push(L[k - 1] + pts[k].distanceTo(pts[k - 1]));
+          const out = [];
+          for (let q = 0; q < n; q++) {
+            const d = (q / (n - 1)) * L[L.length - 1]; let k = 1; while (k < L.length - 1 && L[k] < d) k++;
+            out.push(pts.length > 1 ? pts[k - 1].clone().lerp(pts[k], (d - L[k - 1]) / Math.max(1e-6, L[k] - L[k - 1])) : pts[0].clone());
+          }
+          sides[si].push(out);
+        });
+      }
+      const tri = (a, b, c) => { // outward from the barrel's axis
+        const m = a.clone().add(b).add(c).multiplyScalar(1 / 3), nrm = b.clone().sub(a).cross(c.clone().sub(a)), out = V(0, m.y - lerp(rowAt(m.x)[0], rowAt(m.x)[1], 0.5), m.z);
+        for (const v of nrm.dot(out) >= 0 ? [a, b, c] : [a, c, b]) pos.push(v.x, v.y, v.z);
+      };
+      for (const rows of sides) for (let i = 0; i < rows.length - 1; i++) for (let q = 0; q < n - 1; q++) { tri(rows[i][q], rows[i + 1][q], rows[i][q + 1]); tri(rows[i][q + 1], rows[i + 1][q], rows[i + 1][q + 1]); }
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); return g;
+    };
     const cut = (geo, fn) => { // keep the faces fn accepts (centroid), as a non-indexed geometry
       const src = geo.toNonIndexed().attributes.position.array, out = [];
       for (let i = 0; i < src.length; i += 9) if (fn((src[i] + src[i + 3] + src[i + 6]) / 3, (src[i + 1] + src[i + 4] + src[i + 7]) / 3, (src[i + 2] + src[i + 5] + src[i + 8]) / 3)) out.push(...src.slice(i, i + 9));
@@ -751,8 +788,8 @@ function buildHorse(look = {}, seed = 1337) {
       // winter turnout rug (馬着): from the withers to the croup, down over three quarters of the barrel, with a
       // contrasting binding along the hem and two dark belly straps (surcingles)
       const R = look.rug, X0 = -0.66, X1 = 0.5, hemR = (x) => lerp(rowAt(x)[0], rowAt(x)[1], 0.74);
-      const body = paint(cut(shell(X0, X1, 12, 0.03), (x, y) => y > hemR(x) + 0.06), flat(hex(R.color ?? '#2d3e6b'), rnd, 0.04));
-      const bind = paint(cut(shell(X0, X1, 12, 0.034), (x, y) => y <= hemR(x) + 0.06 && y > hemR(x) - 0.02), flat(hex(R.trim ?? '#c8b27a'), rnd, 0.03));
+      const body = paint(drape(X0, X1, 12, 0.03, (x) => hemR(x) + 0.05), flat(hex(R.color ?? '#2d3e6b'), rnd, 0.04));
+      const bind = paint(drape(X0, X1, 12, 0.034, hemR, (x) => hemR(x) + 0.055, 2), flat(hex(R.trim ?? '#c8b27a'), rnd, 0.03));
       const straps = [0.02, 0.2].map((x) => paint(cut(shell(x, x + 0.045, 1, 0.038), () => true), flat(hex(R.strap ?? '#1e1e22'), rnd, 0.03)));
       skinned(merge([body, bind, ...straps]), mat).name = 'rug';
     }
@@ -761,7 +798,7 @@ function buildHorse(look = {}, seed = 1337) {
     // front-to-back on both sides (u flips on the near side)
     // JRA cloth: ~70 cm long and ~51 cm down each side, front edge at the withers, hanging to ~45% of the barrel
     const C0 = -0.22, C1 = 0.45, hem = (x) => lerp(rowAt(x)[0], rowAt(x)[1], 0.45);
-    const cloth = cut(shell(C0, C1, 8, 0.014), (x, y) => y > hem(x));
+    const cloth = drape(C0, C1, 8, 0.014, hem);
     const pos = cloth.attributes.position, uv = new Float32Array(pos.count * 2);
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i), u = (x - C0) / (C1 - C0);
@@ -1549,6 +1586,11 @@ function buildBackdrop(sunDir, spec, S) {
       const P = at(p.a, R.r, p.h), F = at(p.a + (rnd() - 0.5) * 0.02, R.r - p.h * (1.2 + rnd()), -6);
       const L = at(sl.a, R.r, sl.h), Rt = at(sr.a, R.r, sr.h), Lb = at(sl.a, R.r, -40), Rb = at(sr.a, R.r, -40);
       face(L, P, F); face(P, Rt, F); face(Lb, L, F); face(F, Rt, Rb); face(Lb, F, Rb);
+      if (R.snowline != null && p.h > R.snowline) { // a snow cap above the snowline, drawn a hair in front of the slopes
+        const cut = (Q) => P.clone().lerp(Q, Q.y >= R.snowline ? 1 : Math.min(1, ((p.h - R.snowline) / (p.h - Q.y)) * (0.8 + 0.4 * rnd())));
+        const pull = (v) => v.clone().multiplyScalar(0.996), Pp = pull(P), Lc = pull(cut(L)), Rc = pull(cut(Rt)), Fc = pull(cut(F));
+        tri(Lc, Pp, Fc, R.snow ?? '#eef2f6', R.haze * 0.8); tri(Pp, Rc, Fc, R.snow ?? '#eef2f6', R.haze * 0.8);
+      }
     });
   }
   for (const L of spec.landmarks ?? []) LANDMARKS[L.type]?.(L, { bake, rnd, night: !!spec.night, at: (deg, d, y = 0) => bearingAt(deg, d, y, S) });
@@ -2078,12 +2120,15 @@ function haySet(k, groups, zOf) {
 }
 
 // farm buildings: a barn with a red gable roof and a silo, one set per period
-function farmSet(k, z, xFrac = 0.35) {
+function farmSet(k, z, xFrac = 0.35, { roof: roofC = 0xa3412e, wall = 0xe7dfcf, snow = null } = {}) {
   const { rnd, item, colored, mat, addSet } = k;
-  const roof = colored(new THREE.CylinderGeometry(7.4, 7.4, 16, 3, 1).rotateZ(Math.PI / 2).rotateX(Math.PI / 6).scale(1, 0.42, 1).translate(0, 7.3, 0), 0xa3412e, 0.04);
+  const prism = () => new THREE.CylinderGeometry(7.4, 7.4, 16, 3, 1).rotateZ(Math.PI / 2).rotateX(Math.PI / 6).scale(1, 0.42, 1);
+  const roof = colored(prism().translate(0, 7.3, 0), hex(roofC), 0.04);
+  const snowCap = snow ? [colored(prism().scale(0.97, 0.93, 0.9).translate(0, 7.62, 0), hex(snow), 0.02)] : []; // snow on the roof, the coloured eaves showing
   const barn = merge([
-    colored(new THREE.BoxGeometry(15, 5.2, 11).translate(0, 2.6, 0), 0xe7dfcf, 0.03),
+    colored(new THREE.BoxGeometry(15, 5.2, 11).translate(0, 2.6, 0), hex(wall), 0.03),
     roof,
+    ...snowCap,
     colored(new THREE.BoxGeometry(2.8, 3.2, 0.2).translate(-3.5, 1.6, 5.55), 0x7a3528, 0.03),
     colored(new THREE.CylinderGeometry(2.1, 2.1, 10, 8).translate(10, 5, -1), 0xd3cdbf, 0.03),
     colored(new THREE.ConeGeometry(2.4, 2.2, 8).translate(10, 11.1, -1), 0x6f7e86, 0.04),
@@ -2357,7 +2402,8 @@ function snowProps(k, loc) {
   const caps = colored(merge([new THREE.ConeGeometry(1.05, 0.9, 7).translate(0, 2.85, 0).toNonIndexed(), new THREE.ConeGeometry(0.75, 0.8, 7).translate(0, 4.0, 0).toNonIndexed()]), loc.snow?.sunlit ?? '#f4f6f8', 0.03);
   addSet(tree, mat, items);
   if (tr.snowOnBranches !== false) addSet(caps, mat, items.map((it) => ({ ...it, color: WHITE_C })));
-  farmSet(k, -68);
+  const blds = loc.buildings ?? [{ type: 'barn', distM: 68 }];
+  blds.forEach((b, i) => farmSet(k, -(b.distM ?? 68), 0.35 + i * 0.4, { roof: b.roof ?? '#a3412e', wall: b.wall ?? '#e7dfcf', snow: loc.snow?.sunlit ?? '#f2f6fa' }));
   tuftSet(k, perLoop(60), (r) => (r() < 0.5 ? -1 : 1) * (2 + 30 * r() ** 1.5), ['#a39463', '#8f8a5a'], '#c8b878'); // dry grass poking through
 }
 
