@@ -115,12 +115,90 @@ window.LOCATIONS = [
     sources: ['https://www.jra.go.jp/facilities/race/nakayama/course/index.html', 'https://ja.wikipedia.org/wiki/中山競馬場'],
     uncertain: ['stand.colors', 'stand.lengthM', 'backdrop'],
   },
+  {
+    id: 'kyoto', en: 'Kyoto Racecourse', jp: '京都競馬場', group: 'JRA G1', builder: 'track', gait: 'gallop',
+    hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2033,
+    // Kikuka Sho, late October (post 15:40): a low WSW sun toward the 4th corner, slightly behind the stand
+    // (stand faces ~145°, the straight runs ~55°, from the GSI aerial; elevation raised 16.7° -> 18° for readable shadows)
+    time: {
+      month: 10, post: '15:40', sunElevDeg: 18, sunAzimDeg: -83, fogNear: 140, fogFar: 420, exposure: 1.0,
+      sky: { top: '#6d9dd3', mid: '#b5cce4', horizon: '#ead8bf', sun: '#fff0d4' },
+      sunColor: '#ffe7c4', sunIntensity: 2.7, hemiSky: '#dde6f1', hemiGround: '#7b8650', hemiIntensity: 1.18,
+    },
+    turf: { color: '#62903f', widthM: 30 }, dirt: { color: '#c0b294', widthM: 25 }, rails: { color: '#f6f6f2' },
+    lawn: '#6e9a47', verge: '#679245', water: '#5f8590', leaf: ['#5d7c43', '#6d8a4a', '#b9a04a', '#c08240'], autumn: 0.2, dust: '#7b6c4b',
+    infieldTrees: 0, // the infield is nearly all lake
+    stand: { name: 'Goal Side Stand (2023)', lengthM: 255, floors: 7, depthM: 38, colors: { body: '#e7e6e2', roof: '#ecebe7', glass: '#41698c', seats: '#dcdcd8' } },
+    infield: [{ type: 'pond', xFrac: 0, sizeM: [550, 100], distM: 80, notes: 'The flood-control lake (a remnant of Ogura-ike) fills almost the whole infield; longer than W, so it reads as one continuous lake. Benten island with its shrine sits near the middle.' }],
+    backdrop: {
+      ranges: [
+        { r: 585, base: '#8d97b2', h: [6, 26], step: 0.16, haze: 0.62 }, // Uji / Daigo hills E–SE, Kyotanabe hills S
+        { r: 550, base: '#8a9784', h: [3, 8], step: 0.1, haze: 0.5 },    // Otokoyama and nearer low hills
+      ],
+      landmarks: [
+        { type: 'screen', bearingDeg: 0, distM: 300, wM: 64.0, hM: 10.8, liftM: 4 }, // Turf Vision (really on the lake's near shore)
+      ],
+      clouds: 5,
+    },
+    facts: {
+      turfCircM: 1894.3, dirtCircM: 1607.6, turfStraightM: 403.7, dirtStraightM: 329.1, elevationM: 4.3,
+      straightProfile: [[403.7, 0], [0, 0]],
+      races: [
+        { name: 'Tenno Sho (Spring)', jp: '天皇賞(春)', surface: 'turf', distM: 3200, month: 5 },
+        { name: 'Shuka Sho', jp: '秋華賞', surface: 'turf', distM: 2000, month: 10 },
+        { name: 'Kikuka Sho', jp: '菊花賞', surface: 'turf', distM: 3000, month: 10 },
+        { name: 'Queen Elizabeth II Cup', jp: 'エリザベス女王杯', surface: 'turf', distM: 2200, month: 11 },
+        { name: 'Mile Championship', jp: 'マイルチャンピオンシップ', surface: 'turf', distM: 1600, month: 11 },
+      ],
+    },
+    signature: 'A huge infield lake with wooded Benten island beyond a flat 403.7 m straight, the 4.3 m 淀の坂 hill on the far 3rd corner, and the 2023 Goal Side stand with its long blue glass band and thin cantilevered roof.',
+    sources: ['https://www.jra.go.jp/facilities/race/kyoto/course/index.html', 'https://ja.wikipedia.org/wiki/京都競馬場', 'https://en.wikipedia.org/wiki/Kyoto_Racecourse', 'https://www.obayashi.co.jp/thinking/detail/project78.html', 'https://commons.wikimedia.org/wiki/File:Kyoto_Racecourse_Aerial_photograph_2020_cropped.jpg'],
+    uncertain: ['stand.colors (2023 photos)', 'stand.floors (6 or 7)', 'stand.depthM (estimated)', 'time (computed sun)', 'infield[0] size and distance (±15 m from the aerial)', 'backdrop.ranges', 'backdrop.landmarks[0] (the screen is really much closer, on the shore)', 'facts.races[0].month (late April or early May)', 'needs new kits: Benten island, fountains, 淀の坂, the poplar wall along the back straight'],
+  },
+  {
+    id: 'hanshin', en: 'Hanshin Racecourse', jp: '阪神競馬場', group: 'JRA G1', builder: 'track', gait: 'gallop',
+    hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2034,
+    // Oka Sho, early-to-mid April (post 15:40): spring haze, Somei Yoshino in full bloom, overseeded turf bright green
+    time: {
+      month: 4, post: '15:40', sunElevDeg: 33, sunAzimDeg: 60, fogNear: 120, fogFar: 390, exposure: 1.02,
+      sky: { top: '#7aa6d6', mid: '#bdd2e6', horizon: '#e7e4da', sun: '#fff4e0' },
+      sunColor: '#fff1dc', sunIntensity: 2.8, hemiSky: '#e2eaf2', hemiGround: '#7f8752', hemiIntensity: 1.22,
+    },
+    turf: { color: '#5f9a3c', widthM: 27 }, dirt: { color: '#a8a194', widthM: 24 }, rails: { color: '#f4f4f0' },
+    lawn: '#a3a467', verge: '#8e9c57', leaf: ['#7c9a52', '#6f8f4a', '#86a258'], autumn: 0, dust: '#7d7158',
+    blossom: ['#f4d4dc', '#eec3cf', '#f7e0e6'], infieldTrees: 28, // cherry trees ring the course and line the infield
+    stand: { name: 'Grandstand (east and west wings, 1991)', lengthM: 280, floors: 7, depthM: 35, colors: { body: '#c4c8c9', roof: '#d3d6d8', glass: '#4f6b70', seats: '#5d6b7d' } },
+    infield: [{ type: 'jumps', count: 4, depthM: 140, notes: 'Steeplechase course inside the dirt (1366.7 m loop plus a diagonal).' }],
+    backdrop: {
+      ranges: [
+        { r: 590, base: '#76879a', h: [24, 50], step: 0.2, haze: 0.5 },  // the Rokko range to the west
+        { r: 555, base: '#6e8263', h: [8, 22], step: 0.13, haze: 0.42 }, // Takarazuka / Nishinomiya foothills
+      ],
+      landmarks: [
+        { type: 'screen', bearingDeg: -15, distM: 300, wM: 46.4, hM: 11.2, liftM: 4 }, // Turf Vision
+        { type: 'skyline', fromDeg: -50, toDeg: 50, distM: 520, heightM: [6, 20] },    // Nigawa / Takarazuka apartments
+      ],
+      clouds: 7,
+    },
+    facts: {
+      turfCircM: 2089, dirtCircM: 1517.6, turfStraightM: 473.6, dirtStraightM: 352.7, elevationM: 2.4,
+      straightProfile: [[473.6, 0], [200, -1.4], [80, 0.4], [0, 0.4]], // outer course: a gentle dip off the turn, then the 1.8 m hill 200–80 m out
+      races: [
+        { name: 'Osaka Hai', jp: '大阪杯', surface: 'turf', distM: 2000, month: 4 },
+        { name: 'Oka Sho (Japanese 1000 Guineas)', jp: '桜花賞', surface: 'turf', distM: 1600, month: 4 },
+        { name: 'Takarazuka Kinen', jp: '宝塚記念', surface: 'turf', distM: 2200, month: 6 },
+        { name: 'Hanshin Juvenile Fillies', jp: '阪神ジュベナイルフィリーズ', surface: 'turf', distM: 1600, month: 12 },
+        { name: 'Asahi Hai Futurity Stakes', jp: '朝日杯フューチュリティステークス', surface: 'turf', distM: 1600, month: 12 },
+      ],
+    },
+    signature: 'The Oka Sho under full cherry blossom, the long glass grandstand with its thin flat roof, the 473.6 m outer straight that dips and then climbs a 1.8 m hill, and the green Rokko hills close behind the back straight.',
+    sources: ['https://www.jra.go.jp/facilities/race/hanshin/course/index.html', 'https://ja.wikipedia.org/wiki/阪神競馬場', 'https://en.wikipedia.org/wiki/Hanshin_Racecourse', 'https://ja.wikipedia.org/wiki/桜花賞', 'https://commons.wikimedia.org/wiki/File:Hanshin_Racecourse_Aerial_photograph_2012.jpg'],
+    uncertain: ['stand.colors (c.2009 photo)', 'stand.lengthM / depthM (from the aerial)', 'time (computed sun)', 'backdrop.ranges (map geography)', 'backdrop.landmarks', 'infield[0] jump count', 'facts.straightProfile (±0.2 m, read off the JRA chart)', 'lawn / verge', 'needs a new kit: a cherry-tree row along the outer rail and the 1600 m start pocket'],
+  },
 ];
 
 // Every other venue on the roadmap, shown as "soon" in the picker (order = build order).
 window.LOCATION_QUEUE = [
-  { id: 'kyoto', en: 'Kyoto Racecourse', group: 'JRA G1' },
-  { id: 'hanshin', en: 'Hanshin Racecourse', group: 'JRA G1' },
   { id: 'chukyo', en: 'Chukyo Racecourse', group: 'JRA G1' },
   { id: 'oi', en: 'Oi Racecourse (night)', group: 'NAR JpnI' },
   { id: 'kawasaki', en: 'Kawasaki Racecourse', group: 'NAR JpnI' },

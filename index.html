@@ -123,6 +123,7 @@
     <h2>Coat &amp; markings</h2>
     <div class="swatches" id="coatSwatches" role="group" aria-label="Coat colour (JBIS registry colours)"></div>
     <label class="row" id="greyRow" hidden><span>Greyness</span><input id="greyness" type="range" min="0" max="1" step="0.05"></label>
+    <label class="row" id="dappleRow" hidden><span>Dapples</span><input id="dapple" type="range" min="0" max="1" step="0.05"></label>
     <div class="row3">
       <label><span>Coat</span><input id="cCoat" type="color"></label>
       <label><span>Mane &amp; tail</span><input id="cMane" type="color"></label>
@@ -184,7 +185,7 @@ const GAITS = {
   gallop: {
     label: 'Gallop', T: 0.42, stride: 2.6, duty: 0.35, body: 'gallop', dust: true, curl: 1,
     land: { RH: 0.0, LH: 0.1, RF: 0.3, LF: 0.41 },
-    fore: { xc: 0.76, lift: 0.34, rise: 0.3, fall: 0.5, flex: 115 * DEG, flexPeak: 0.32, flexEnd: 0.8, sag: 14 * DEG, scapSwing: 10 * DEG },
+    fore: { xc: 0.76, lift: 0.42, rise: 0.3, fall: 0.5, flex: 115 * DEG, flexPeak: 0.32, flexEnd: 0.8, sag: 14 * DEG, scapSwing: 10 * DEG },
     hind: { xc: -0.45, lift: 0.26, rise: 0.35, fall: 0.55, flex: 55 * DEG, flexPeak: 0.4, flexEnd: 0.88, sag: 12 * DEG, hockSag: 10 * DEG, hockOpen: -6 * DEG },
   },
   // four-beat lateral walk: LH -> LF -> RH -> RF, evenly spaced; the hind print lands just past the fore print
@@ -242,9 +243,14 @@ function horsePalette(coat = {}) {
     mane: c(base.mane), muzzle: c(base.muzzle), hoof: c(base.hoof), grey: base.grey ? (coat.greyness ?? 0.5) : null };
   if (p.grey != null) {
     const g = clamp(p.grey, 0, 1);
-    p.coat = c(0x4f4d4d).lerp(c(0xe6e3dd), g);
+    // greying is slow at first: 0.2 still reads as dark iron grey, 0.5 as a dappled mid grey
+    p.coat = c(0x4f4d4d).lerp(c(0xe6e3dd), g ** 1.35);
     p.points = c(0x2c2928).lerp(c(0xa9a49d), g * g);
     p.mane = c(0x302c2a).lerp(c(0xd9d4cc), g);
+    // dapples are strongest on a mid grey and fade out as the horse goes iron-dark or white;
+    // a young grey's head whitens first, while its lower legs stay dark the longest
+    p.dapple = clamp(coat.dapple ?? 3.2 * g * (1 - g), 0, 1);
+    p.headLift = 0.09 * (1 - g);
   }
   if (coat.coatHex) p.coat = c(hex(coat.coatHex));
   if (p.grey != null || coat.coatHex) {
@@ -256,8 +262,51 @@ function horsePalette(coat = {}) {
   if (coat.mane) p.mane = c(hex(coat.mane));
   if (coat.pointsHex) p.points = c(hex(coat.pointsHex));
   p.legs = p.points ?? p.lo.clone().offsetHSL(0, 0, -0.02); // lower-leg colour
-  p.mane2 = p.mane.clone().offsetHSL(0, 0, p.mane.getHSL({}).l > 0.5 ? -0.05 : 0.03);
+  const alt = (col) => col.clone().offsetHSL(0, 0, col.getHSL({}).l > 0.5 ? -0.05 : 0.03);
+  p.mane2 = alt(p.mane);
+  p.tail = coat.tail ? c(hex(coat.tail)) : p.mane.clone(); // a grey's tail often lightens before its mane
+  p.tail2 = alt(p.tail);
   return p;
+}
+
+// Dapples: soft light rings around jittered cell centres (3D cellular noise, cells ~0.16 m), sampled
+// at each face centroid. Returns the distance to the nearest centre in cell units (~0 centre .. ~1 edge).
+const DAPPLE_CELL = 0.16;
+const hash3 = (i, j, k, s) => {
+  let h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263) ^ Math.imul(k, 1440662683) ^ Math.imul(s, 2246822519);
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+};
+function dappleAt(p) {
+  const x = p.x / DAPPLE_CELL, y = p.y / DAPPLE_CELL, z = p.z / DAPPLE_CELL;
+  const ix = Math.floor(x), iy = Math.floor(y), iz = Math.floor(z);
+  let best = 9;
+  for (let i = ix - 1; i <= ix + 1; i++) for (let j = iy - 1; j <= iy + 1; j++) for (let k = iz - 1; k <= iz + 1; k++) {
+    const dx = i + 0.15 + 0.7 * hash3(i, j, k, 1) - x, dy = j + 0.15 + 0.7 * hash3(i, j, k, 2) - y, dz = k + 0.15 + 0.7 * hash3(i, j, k, 3) - z;
+    best = Math.min(best, dx * dx + dy * dy + dz * dz);
+  }
+  return Math.sqrt(best);
+}
+
+// Split every triangle into 4 coplanar ones, `levels` times. The faceted silhouette and shading stay the
+// same; only the colour resolution goes up (used to paint dapples finer than the low-poly facets).
+function subdivide(geo, levels = 1) {
+  let src = (geo.index ? geo.toNonIndexed() : geo).attributes.position.array;
+  for (let l = 0; l < levels; l++) {
+    const out = new Float32Array(src.length * 4);
+    let o = 0;
+    const put = (v) => { out[o++] = v[0]; out[o++] = v[1]; out[o++] = v[2]; };
+    for (let i = 0; i < src.length; i += 9) {
+      const a = [src[i], src[i + 1], src[i + 2]], b = [src[i + 3], src[i + 4], src[i + 5]], c = [src[i + 6], src[i + 7], src[i + 8]];
+      const mid = (u, v) => [(u[0] + v[0]) / 2, (u[1] + v[1]) / 2, (u[2] + v[2]) / 2];
+      const ab = mid(a, b), bc = mid(b, c), ca = mid(c, a);
+      for (const t of [[a, ab, ca], [ab, b, bc], [ca, bc, c], [ab, bc, ca]]) t.forEach(put);
+    }
+    src = out;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(src, 3));
+  return g;
 }
 
 const PAL = {
@@ -402,10 +451,14 @@ const TRUNK = [
   [0.0, 1.53, 0.855, 0.28, 0.82, 0.86],
   [0.18, 1.545, 0.83, 0.28, 0.76, 0.82],
   [0.34, 1.595, 0.835, 0.26, 0.58, 0.86],
-  [0.46, 1.625, 0.88, 0.235, 0.42, 0.86],
-  [0.58, 1.55, 0.965, 0.215, 0.5, 0.8],
-  [0.68, 1.42, 1.05, 0.18, 0.66, 0.72],
-  [0.76, 1.32, 1.12, 0.12, 0.8, 0.7],
+  // brisket: the chest floor stays deep and broad up to the forearms, then the breast rises steeply
+  // to the point of the shoulder, so the elbow and forearm tuck into the chest instead of hanging off
+  // a rounded barrel
+  [0.46, 1.625, 0.87, 0.24, 0.42, 0.9],
+  [0.58, 1.55, 0.9, 0.235, 0.5, 0.92],
+  [0.68, 1.42, 0.95, 0.215, 0.62, 0.92],
+  [0.76, 1.32, 1.02, 0.18, 0.76, 0.9],
+  [0.81, 1.26, 1.1, 0.12, 0.82, 0.86],
 ];
 // Neck loft: [crest x, crest y, throat x, throat y, half width]
 const NECK = [
@@ -439,26 +492,31 @@ const LEGS = [
   { id: 'RF', fore: true, side: 1 },
   { id: 'LF', fore: true, side: -1 },
 ];
-const CURL_PASTERN = -38 * DEG, CURL_HOOF = 6 * DEG;
+// Swing-phase fold of the fetlock (pastern toward the back of the cannon) and of the hoof: at the gallop
+// the forefoot flips up into a hook behind the knee instead of trailing the cannon as a straight rod.
+const CURL_PASTERN = -62 * DEG, CURL_HOOF = 14 * DEG;
 
 /* ---------- colour rules (pal = horsePalette(...)) ---------- */
-// Coat by facing (top lit, belly shaded); greys get irregular dapples that fade as the horse whitens.
-function coatColor(rnd, pal) {
+// Coat by facing (top lit, belly shaded). Greys get dapples: light rounds with a darker network between
+// them (see dappleAt), painted on subdivided faces so they are finer than the facets.
+function coatColor(rnd, pal, dappleAmt = pal.dapple ?? 0) {
   return (c, n) => {
     const col = (n.y > 0.55 ? pal.hi : n.y < -0.5 ? pal.lo : pal.coat).clone();
-    if (pal.grey != null && rnd() < 0.42) col.offsetHSL(0, 0, (0.05 + 0.06 * rnd()) * (1.1 - pal.grey));
-    return col.offsetHSL(0, 0, (rnd() - 0.5) * 0.05);
+    if (dappleAmt > 0) {
+      const ring = smoothstep(0.82, 0.42, dappleAt(c)); // 1 inside a dapple, 0 in the network
+      col.offsetHSL(0, 0, dappleAmt * (0.17 * ring - 0.085));
+    }
+    return col.offsetHSL(0, 0, (rnd() - 0.5) * (dappleAmt > 0 ? 0.014 : 0.05));
   };
 }
 const flat = (hex, rnd, amt = 0.04) => () => shade(hex, rnd, amt);
 // Colour along a segment a->b: coat above t0, the lower-leg colour below t1 (blended between).
 function pointsColor(a, b, t0, t1, rnd, pal, low = pal.legs) {
-  const ab = b.clone().sub(a), len2 = ab.lengthSq();
+  const ab = b.clone().sub(a), len2 = ab.lengthSq(), coat = coatColor(rnd, pal, (pal.dapple ?? 0) * 0.6);
   return (c, n) => {
     const t = c.clone().sub(a).dot(ab) / len2;
     const k = smoothstep(t0, t1, t);
-    const col = (n.y > 0.55 ? pal.hi : pal.coat).clone().lerp(new THREE.Color(low), k);
-    return col.offsetHSL(0, 0, (rnd() - 0.5) * 0.04);
+    return coat(c, n).lerp(new THREE.Color(low), k).offsetHSL(0, 0, (rnd() - 0.5) * 0.02);
   };
 }
 // White leg markings: faces below the marking's top (rest height, m) turn white, with a ragged edge.
@@ -567,8 +625,11 @@ function buildHorse(look = {}, seed = 1337) {
     return ringAt(V(x, (top + bot) / 2), X_AXIS, Y_AXIS, PROF.trunk, { up: (top - bot) / 2, down: (top - bot) / 2, w, wUp: w * wu, wDown: w * wd });
   });
   const t0 = TRUNK[0], tN = TRUNK[TRUNK.length - 1];
+  // dappled greys paint their dapples on 16x finer (coplanar) faces; everyone else keeps one colour per facet
+  const fine = (geo, levels) => (pal.dapple > 0 ? subdivide(geo, levels) : geo);
   let trunk = loft(trunkRings, V(t0[0] - 0.05, (t0[1] + t0[2]) / 2 - 0.02), V(tN[0] + 0.05, (tN[1] + tN[2]) / 2));
   jitter(trunk, 0.012, 11);
+  trunk = fine(trunk, 2);
   skinWeights(trunk, [[-0.55, 1], [-0.12, 0], [0.1, 0], [0.45, 2]], (p) => p.x);
   trunk = paint(trunk, coatColor(rnd, pal));
 
@@ -582,6 +643,7 @@ function buildHorse(look = {}, seed = 1337) {
   // the root ring is capped inside the chest so no open edge shows when the neck swings
   let neck = loft(neckRings, V(0.5, 1.3), V(1.19, 1.79));
   jitter(neck, 0.01, 12);
+  neck = fine(neck, 2);
   skinWeights(neck, [[0, 2], [0.28, 3], [0.62, 4], [0.97, 5]], (p) => clamp(p.clone().sub(nA).dot(nAB) / nAB.lengthSq(), 0, 1));
   neck = paint(neck, coatColor(rnd, pal));
 
@@ -601,7 +663,9 @@ function buildHorse(look = {}, seed = 1337) {
     ringAt(V(x, (top - bot) / 2), X_AXIS, Y_AXIS, PROF.head, { up: (top + bot) / 2, down: (top + bot) / 2, w, wUp: w * 0.78, wDown: w * 0.7 }));
   let headGeo = loft(headRings, V(-0.08, -0.02), V(0.66, -0.035));
   jitter(headGeo, 0.007, 13);
-  const headCoat = coatColor(rnd, pal);
+  // a young grey's face is already lighter than its body, with only faint dapples
+  const headPal = pal.headLift ? { ...pal, coat: pal.coat.clone().offsetHSL(0, 0, pal.headLift), hi: pal.hi.clone().offsetHSL(0, 0, pal.headLift), lo: pal.lo.clone().offsetHSL(0, 0, pal.headLift) } : pal;
+  const headCoat = coatColor(rnd, headPal, (pal.dapple ?? 0) * 0.25);
   headGeo = paint(headGeo, (c, n) => {
     if (faceMarked(faceType, c, n)) return shade(c.x > 0.57 ? 0xe9d3c8 : WHITE, rnd, 0.03); // pink skin under a white muzzle
     if (c.x > 0.55) return shade(pal.muzzle, rnd, 0.04);
@@ -676,21 +740,22 @@ function buildHorse(look = {}, seed = 1337) {
       return ringAt(tp.clone().addScaledVector(dir, t * TAIL_LEN[i]), dir, Y_AXIS, PROF.hair, { up: r, down: r, w: r * 0.62 });
     });
     const g = loft(rings, tp.clone().addScaledVector(dir, -0.07), end.clone().addScaledVector(dir, 0.05));
-    attach(seg, paint(jitter(g, 0.012, 50 + i), flat(i % 2 ? pal.mane : pal.mane2, rnd)));
+    attach(seg, paint(jitter(g, 0.012, 50 + i), flat(i % 2 ? pal.tail : pal.tail2, rnd)));
     rig.tail.push(seg);
     tp = end; tAng += 9 * DEG; tParent = seg;
   }
 
   /* ----- limbs ----- */
   // Tapered limb segment from joint a to joint b. sections: [t, front, back, halfWidth] (t along a->b).
-  const limb = (a, b, sections, colorFn, seed, k = 1, cap = 0.03) => {
+  const limb = (a, b, sections, colorFn, seed, k = 1, cap = 0.03, fineLv = 0) => {
     const T = b.clone().sub(a), L = T.length();
     T.normalize();
     const rings = sections.map(([t, fr, bk, w]) => ringAt(a.clone().addScaledVector(T, t * L), T, X_AXIS, PROF.limb, { up: fr * k, down: bk * k, w: w * k }));
     const first = sections[0][0] * L, last = sections[sections.length - 1][0] * L;
     const g = loft(rings, a.clone().addScaledVector(T, first - cap), a.clone().addScaledVector(T, last + cap));
-    return paint(jitter(g, 0.006, seed), colorFn);
+    return paint(fine(jitter(g, 0.006, seed), fineLv), colorFn);
   };
+  const UP = pal.dapple > 0 ? 1 : 0; // upper limbs carry the dapples too (less finely)
   const hoofGeo = (co, pale) => {
     const top = ringAt(V(co.x - 0.004, co.y + 0.012, co.z), V(0, -1, 0), X_AXIS, PROF.limb, { up: 0.04, down: 0.036, w: 0.042 });
     const sole = V(co.x + HOOF_TOE - 0.057, SOLE, co.z);
@@ -726,9 +791,15 @@ function buildHorse(look = {}, seed = 1337) {
       L.arm = joint(L.scap, sh, `${def.id}-humerus`);
       L.fa = joint(L.arm, el, `${def.id}-forearm`);
       L.can = joint(L.fa, kn, `${def.id}-cannon`);
-      attach(L.scap, limb(sc, sh, [[-0.08, 0.04, 0.05, 0.025], [0.35, 0.09, 0.09, 0.042], [0.85, 0.08, 0.07, 0.045], [1.08, 0.05, 0.05, 0.035]], coatColor(rnd, pal), 70, kUp));
-      attach(L.arm, limb(sh, el, [[-0.12, 0.05, 0.05, 0.05], [0.3, 0.07, 0.09, 0.06], [0.8, 0.06, 0.085, 0.058], [1.1, 0.035, 0.05, 0.04]], coatColor(rnd, pal), 71, kUp));
-      attach(L.fa, limb(el, kn, [[-0.08, 0.07, 0.078, 0.074], [0.12, 0.086, 0.075, 0.08], [0.5, 0.058, 0.052, 0.055], [0.88, 0.04, 0.04, 0.042], [1.0, 0.043, 0.04, 0.046]], wh(pointsColor(el, kn, 0.72, 0.97, rnd, pal)), 72, kMid));
+      // shoulder: a broad, flat blade lying in the chest wall (it reads as the shoulder slope, not a strap)
+      attach(L.scap, limb(sc, sh, [[-0.06, 0.05, 0.06, 0.022], [0.3, 0.12, 0.11, 0.036], [0.8, 0.1, 0.09, 0.04], [1.06, 0.06, 0.06, 0.034]], coatColor(rnd, pal), 70, kUp, 0.03, UP));
+      // arm: biceps in front, the big triceps mass behind, filling the triangle point of shoulder ->
+      // elbow -> chest; the elbow end stays thick so the forearm grows out of muscle, not out of a rod
+      const tri = el.clone().add(V(-0.04, 0.06, -def.side * 0.012));
+      attach(L.arm, limb(sh, el, [[-0.14, 0.06, 0.07, 0.058], [0.2, 0.085, 0.13, 0.075], [0.6, 0.075, 0.15, 0.078], [0.95, 0.06, 0.1, 0.07], [1.14, 0.04, 0.05, 0.05]], coatColor(rnd, pal), 71, kUp, 0.03, UP));
+      attach(L.arm, paint(jitter(new THREE.IcosahedronGeometry(0.075, 0).scale(1.25 * kUp, 1, 0.85 * kUp).translate(tri.x, tri.y, tri.z), 0.006, 75), coatColor(rnd, pal)));
+      // forearm: muscular and wide at the top (extensors in front), tapering hard to a flat knee
+      attach(L.fa, limb(el, kn, [[-0.1, 0.075, 0.085, 0.07], [0.1, 0.095, 0.08, 0.082], [0.42, 0.066, 0.055, 0.06], [0.82, 0.042, 0.04, 0.043], [1.0, 0.045, 0.04, 0.048]], wh(pointsColor(el, kn, 0.72, 0.97, rnd, pal)), 72, kMid, 0.03, UP));
       attach(L.can, limb(kn, fe, [[-0.06, 0.042, 0.038, 0.046], [0.06, 0.047, 0.042, 0.05], [0.2, 0.031, 0.04, 0.036], [0.55, 0.03, 0.041, 0.035], [0.8, 0.03, 0.042, 0.034], [1.0, 0.034, 0.045, 0.038]], wh(flat(pal.legs, rnd)), 73));
       Object.assign(L, lower(L, fe, co, top, 74));
       L.rest = { sc, sh, humerus: ang(sh, el), forearm: ang(el, kn), cannon: ang(kn, fe), pastern: ang(fe, co) };
@@ -741,8 +812,8 @@ function buildHorse(look = {}, seed = 1337) {
       L.tib = joint(L.fem, st, `${def.id}-tibia`);
       L.can = joint(L.tib, ho, `${def.id}-cannon`);
       const inward = V(0, 0, -def.side * 0.02);
-      attach(L.fem, limb(hip.clone().add(inward), st.clone().add(inward), [[-0.2, 0.08, 0.12, 0.09], [0.1, 0.11, 0.2, 0.11], [0.5, 0.11, 0.22, 0.11], [0.85, 0.09, 0.18, 0.1], [1.08, 0.05, 0.12, 0.07]], coatColor(rnd, pal), 80, kUp));
-      attach(L.tib, limb(st, ho, [[-0.12, 0.075, 0.11, 0.082], [0.12, 0.08, 0.17, 0.088], [0.45, 0.058, 0.125, 0.068], [0.8, 0.042, 0.06, 0.05], [1.0, 0.042, 0.045, 0.048]], wh(pointsColor(st, ho, 0.8, 1.02, rnd, pal)), 81, kMid));
+      attach(L.fem, limb(hip.clone().add(inward), st.clone().add(inward), [[-0.2, 0.08, 0.12, 0.09], [0.1, 0.11, 0.2, 0.11], [0.5, 0.11, 0.22, 0.11], [0.85, 0.09, 0.18, 0.1], [1.08, 0.05, 0.12, 0.07]], coatColor(rnd, pal), 80, kUp, 0.03, UP));
+      attach(L.tib, limb(st, ho, [[-0.12, 0.075, 0.11, 0.082], [0.12, 0.08, 0.17, 0.088], [0.45, 0.058, 0.125, 0.068], [0.8, 0.042, 0.06, 0.05], [1.0, 0.042, 0.045, 0.048]], wh(pointsColor(st, ho, 0.8, 1.02, rnd, pal)), 81, kMid, 0.03, UP));
       attach(L.can, limb(ho, fe, [[-0.12, 0.04, 0.05, 0.045], [-0.02, 0.045, 0.085, 0.05], [0.1, 0.038, 0.055, 0.045], [0.25, 0.031, 0.043, 0.036], [0.63, 0.03, 0.043, 0.035], [0.85, 0.03, 0.043, 0.034], [1.0, 0.034, 0.045, 0.038]], wh(flat(pal.legs, rnd)), 82));
       Object.assign(L, lower(L, fe, co, top, 84));
       L.hip = hip;
@@ -1357,7 +1428,8 @@ function flowerSet(k, count, zOf, colors) {
 }
 
 // trees: round broadleaf + conifer; canopies take the instance colour, trunks stay bark-brown
-function treeSet(k, count, zOf, leaves, { conifer = 0.38, autumn = 0.22, size = [0.55, 0.55] } = {}) {
+// `blossom`: canopy colours for flowering broadleaf trees (cherry); conifers keep their leaves.
+function treeSet(k, count, zOf, leaves, { conifer = 0.38, autumn = 0.22, size = [0.55, 0.55], blossom = null, bloom = 0.75 } = {}) {
   const { rnd, item, colored, mat, addSet } = k;
   const trunkG = (h) => colored(jitter(new THREE.CylinderGeometry(0.1, 0.16, h, 5), 0.02, 310).translate(0, h / 2, 0), PAL.bark);
   const white = (geo) => colored(geo, 0xffffff, 0.08);
@@ -1373,7 +1445,10 @@ function treeSet(k, count, zOf, leaves, { conifer = 0.38, autumn = 0.22, size = 
   for (let i = 0; i < count; i++) {
     const leaf = rnd() < autumn ? PAL.autumn[i % 3] : leaves[i % leaves.length];
     const it = item(rnd() * W, zOf(rnd), size[0] + rnd() * size[1], rnd() * TAU, 0.1, { color: colorOf(leaf) });
-    (rnd() < conifer ? conItems : broadItems).push(it);
+    const isConifer = rnd() < conifer;
+    // index-based so a blossom list never shifts the random layout of the trees
+    if (blossom && !isConifer && ((i * 7919) % 100) / 100 < bloom) it.color = colorOf(blossom[i % blossom.length]);
+    (isConifer ? conItems : broadItems).push(it);
   }
   const barkOf = (items) => items.map((it) => ({ ...it, color: new THREE.Color().setScalar(0.85 + rnd() * 0.3) }));
   addSet(trunkG(1.6), mat, barkOf(broadItems));
@@ -1504,12 +1579,15 @@ const PROP_BUILDERS = {
     if (loc.stand) standSet(k, loc, T);
     const infield = (r) => S * (T.dIn - 8 - r() * (T.D - T.turfW - T.dirtW - 30)); // somewhere between the two dirt courses
     tuftSet(k, perLoop(60), (r) => S * (T.dIn - 2 - r() * 60), ['#6f9a46', '#78a24c'], '#a6b660');
-    treeSet(k, perLoop(loc.infieldTrees ?? 14), infield, loc.leaf ?? PAL.leaf, { autumn: loc.autumn ?? 0.1, conifer: 0.3, size: [0.8, 0.7] });
-    treeSet(k, perLoop(40), (r) => S * (T.bOuter - 8 - r() * 70), loc.leaf ?? PAL.leaf, { autumn: loc.autumn ?? 0.1, conifer: 0.45, size: [1.1, 0.9] }); // beyond the back straight
-    treeSet(k, perLoop(12), (r) => S * (T.standFront + 70 + r() * 80), loc.leaf ?? PAL.leaf, { autumn: loc.autumn ?? 0.1, conifer: 0.3, size: [1, 0.6] }); // behind the stands
+    const blossom = loc.blossom ? [loc.blossom].flat() : null;
+    treeSet(k, perLoop(loc.infieldTrees ?? 14), infield, loc.leaf ?? PAL.leaf, { autumn: loc.autumn ?? 0.1, conifer: 0.3, size: [0.8, 0.7], blossom });
+    treeSet(k, perLoop(40), (r) => S * (T.bOuter - 8 - r() * 70), loc.leaf ?? PAL.leaf, { autumn: loc.autumn ?? 0.1, conifer: 0.45, size: [1.1, 0.9], blossom, bloom: 0.45 }); // beyond the back straight
+    treeSet(k, perLoop(12), (r) => S * (T.standFront + 70 + r() * 80), loc.leaf ?? PAL.leaf, { autumn: loc.autumn ?? 0.1, conifer: 0.3, size: [1, 0.6], blossom }); // behind the stands
     for (const f of loc.infield ?? []) {
       if (f.type === 'jumps') jumpSet(k, f, T);
-      if (f.type === 'pond') treeSet(k, 8, (r) => S * -(f.distM - 4 - r() * (f.sizeM[1] + 8)), ['#4f7a3c', '#5f8a45'], { autumn: 0.15, conifer: 0.2, size: [0.7, 0.4] });
+      // trees on the near bank: between the inner dirt rail and the water (never out on the courses)
+      const bankIn = -(f.distM - 4), bankOut = Math.max(bankIn, T.dIn - 4);
+      if (f.type === 'pond') treeSet(k, 8, (r) => S * (bankIn + r() * (bankOut - bankIn)), ['#4f7a3c', '#5f8a45'], { autumn: 0.15, conifer: 0.2, size: [0.7, 0.4] });
     }
   },
 };
@@ -1946,12 +2024,13 @@ function buildPickers() {
     const b = el('button', { type: 'button', title: `${c.jp} ${c.en}`, ariaLabel: `${c.en} (${c.jp})` });
     b.dataset.coat = key;
     b.style.background = toCss(c.grey ? 0xb8b5b0 : c.coat);
-    b.addEventListener('click', () => tweak((x) => { x.coat = { key, coatHex: null, mane: null, pointsHex: null }; }));
+    b.addEventListener('click', () => tweak((x) => { x.coat = { key, coatHex: null, mane: null, tail: null, pointsHex: null }; }));
     sw.append(b);
   }
   $('greyness').addEventListener('input', (e) => tweak((x) => { x.coat = { ...x.coat, greyness: +e.target.value }; }));
+  $('dapple').addEventListener('input', (e) => tweak((x) => { x.coat = { ...x.coat, dapple: +e.target.value }; }));
   $('cCoat').addEventListener('input', (e) => tweak((x) => { x.coat = { ...x.coat, coatHex: e.target.value }; }, 'cCoat'));
-  $('cMane').addEventListener('input', (e) => tweak((x) => { x.coat = { ...x.coat, mane: e.target.value }; }, 'cMane'));
+  $('cMane').addEventListener('input', (e) => tweak((x) => { x.coat = { ...x.coat, mane: e.target.value, tail: null }; }, 'cMane'));
   $('cLegs').addEventListener('input', (e) => tweak((x) => { x.coat = { ...x.coat, pointsHex: e.target.value }; }, 'cLegs'));
   const fs = $('faceSel');
   fs.append(...Object.entries(MARKS).map(([v, t]) => el('option', { value: v, textContent: t })));
@@ -2028,8 +2107,9 @@ function syncPanel(editing = null) {
   renderCard();
   $('resetLook').textContent = `Reset to ${state.horse.en}`;
   document.querySelectorAll('[data-coat]').forEach((b) => b.classList.toggle('on', b.dataset.coat === (look.coat.key ?? 'kage')));
-  $('greyRow').hidden = look.coat.key !== 'ashige';
+  $('greyRow').hidden = $('dappleRow').hidden = look.coat.key !== 'ashige';
   $('greyness').value = look.coat.greyness ?? 0.5;
+  $('dapple').value = pal.dapple ?? 0;
   for (const [id, col] of [['cCoat', pal.coat], ['cMane', pal.mane], ['cLegs', pal.legs]]) if (id !== editing) $(id).value = toCss(col);
   $('faceSel').value = MARKS[look.face] ? look.face : 'none';
   for (const id of ['LF', 'RF', 'LH', 'RH']) $(`leg${id}`).value = look.legs[id] ?? 'none';

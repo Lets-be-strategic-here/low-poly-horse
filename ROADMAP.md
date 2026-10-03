@@ -4,16 +4,17 @@ Where the low-poly horse goes next, in build order. Each **batch** adds the next
 order, a location or two, and one engine item. Horses come from the official character list at
 <https://umamusume.jp/character/>; every entry models the **real racehorse** behind a character.
 
-## Status after batch 1 (October 2026)
+## Status after batch 2 (October 2026)
 
 | Area | Done |
 |---|---|
 | Engine | Horse profiles drive the whole model: coat, markings, size and hair length. A gait table holds the gallop (left or right lead), a new **walk** and a standing **graze** pose. Stride counts are recomputed for each horse and location, so the loop stays seamless and planted hooves have 0.00 mm slip (measured). Includes a location system, background horses, the side panel and the URL hash. |
-| Colour | All 8 JBIS registry coats (鹿毛 … 白毛), a greyness slider for 芦毛, pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. |
+| Forelimbs (B2) | Deeper, broader brisket so the elbow and forearm tuck into the chest instead of hanging off a rounded barrel; a broad flat shoulder blade, a triceps mass and a muscular forearm top; at the gallop the forefoot flips up into a hook behind the knee (deeper fetlock curl, higher fore lift). |
+| Colour | All 8 JBIS registry coats (鹿毛 … 白毛), pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. **Greys (B2):** greyness slider with a slow-greying curve, **dapples** (cellular noise painted on 16× subdivided coplanar faces, strongest at mid grey, with their own slider), lighter faces and dark lower legs on young greys, and a separate `coat.tail` colour. |
 | Parts | Mane and tail length, height (uniform scale) and weight (bulk of trunk, neck and upper limbs). |
-| Horses | 11 of 152, roster #1–#11, from Byerley Turk (c.1680) to Sirius Symboli (1982). |
-| Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), **Tokyo** and **Nakayama** (JRA G1). |
-| Research | Two reusable agent templates in `.claude/agents/`. A smoke test ran each once; batch-2 drafts are in `research/drafts/`. |
+| Horses | 19 of 152, roster #1–#19, from Byerley Turk (c.1680) to Sakura Chiyono O (1985). |
+| Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), and the JRA G1 courses **Tokyo**, **Nakayama**, **Kyoto** (infield lake) and **Hanshin** (cherry blossom: `blossom` colours flowering broadleaf trees only). |
+| Research | Two reusable agent templates in `.claude/agents/`, run for every horse and track of batch 2 (8 + 2 agents in parallel, about 4–9 minutes each). |
 
 ## Order of work
 
@@ -29,7 +30,7 @@ Engine items are placed before the first horse that needs them.
 | Batch | Horses (roster #, generation) | Locations | Engine item |
 |---|---|---|---|
 | ✅ 1 | #1–11 · c.1680–1982 · Byerley Turk, Darley Arabian, Godolphin Barb, Saint Lite, Speed Symboli, Haiseiko, Maruzensky, Katsuragi Ace, Mr. C.B., Symboli Rudolf, Sirius Symboli | Hidaka, Countryside, Tokyo, Nakayama | Profiles, gaits, locations, UI |
-| 2 | #12–19 · 1983–85 · Mejiro Ramonu, Gold City, Inari One, Tamamo Cross, Bamboo Memory, Mejiro Ardan, Oguri Cap, Sakura Chiyono O | Kyoto (big infield pond + Benten island), Hanshin (cherry trees, Rokko mountains) | **Grey coats**: dapple pattern, darker heads and legs on young greys (Oguri Cap, Tamamo Cross) |
+| ✅ 2 | #12–19 · 1983–85 · Mejiro Ramonu, Gold City, Inari One, Tamamo Cross, Bamboo Memory, Mejiro Ardan, Oguri Cap, Sakura Chiyono O | Kyoto (big infield pond + Benten island), Hanshin (cherry trees, Rokko mountains) | **Grey coats**: dapple pattern, darker heads and legs on young greys (Oguri Cap, Tamamo Cross); forelimb and chest rework |
 | 3 | #20–27 · 1985–87 · Super Creek … Mejiro Palmer | Chukyo (Pegasus and Twin Hat stands) | **Race-speed gallop** (see Anatomy 1) |
 | 4 | #28–35 · 1987–89 · Mejiro Ryan … Mihono Bourbon | Oi (night racing: floodlights, white sand, dirt-only layout) | **Gear rendering** from `gear`: hood/メンコ, blinkers, bit-lifter, bridle and reins |
 | 5 | #36–43 · 1989–90 · Nishino Flower … Sakura Chitose O | Kawakami → see NAR list: Kawasaki (72 m screen), Funabashi | Shadow roll (needed for Narita Brian in B6), saddle and saddle cloth |
@@ -105,8 +106,8 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
 - The slip and reach test below.
 
 ## Colour customization (next)
-- Dapple, roan and age-greying patterns.
-- Flaxen mane toggle.
+- ~~Dapples~~ (done in B2); roan and flea-bitten (age-greying) patterns.
+- Flaxen mane toggle (today: a `coat.mane` hex, as on Gold City).
 - Lighter muzzle and flank (soft-tan) for 青鹿毛.
 - Share a customized horse through the URL hash; today the hash stores the horse, location and gait, not the overrides.
 - `recolor()` without rebuilding the geometry.
@@ -133,6 +134,7 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
 - Props are already static instanced strips that only slide each frame, so they cost no per-frame CPU.
 
 ## Research workflow (one agent per horse / per location)
+- **Run the agents without Playwright.** The browser is shared, so parallel agents navigate each other's pages; they read photos by calling WebFetch on the image URL instead.
 - **Agent templates:**
   - `.claude/agents/horse-researcher.md` returns one `HORSES` entry.
   - `.claude/agents/location-researcher.md` returns one `LOCATIONS` entry.
@@ -200,19 +202,22 @@ JBIS, a JRA 顕彰馬 page, a netkeiba or keibabook race table, or a dated photo
   - The registered owner: 和田共弘 or シンボリ牧場?
 - [ ] **Withers height (体高)** is undocumented for all of them except Saint Lite (166 cm) and Haiseiko (171 cm). The engine uses its default for the rest.
 
+### Horses (batch 2)
+JBIS returned 403 for every batch-2 horse, so the registry colours come from netkeiba and Japanese Wikipedia.
+- [ ] **Mejiro Ramonu.** Star-and-stripe shape, and the leg whites (LF pastern, LH sock) are read from photos that mostly show her left side.
+- [ ] **Gold City.** Stripe width; all four whites are set to fetlock height from one small photo (四白).
+- [ ] **Inari One.** The LH coronet white comes from one magazine line; face unseen front-on; do the hood's eye pieces include blinker cups?
+- [ ] **Tamamo Cross.** Greyness (0.35 in spring 1988 → 0.5 by the Arima); mane and tail colours from photos; is there a face marking under the hood?
+- [ ] **Bamboo Memory.** Blaze width and the four white heights come from two small photos; silks wording read from an image.
+- [ ] **Mejiro Ardan.** Star and both hind pasterns come from one race photo of his left side.
+- [ ] **Oguri Cap.** Greyness and mane colour from photos; no face marking visible under the grey.
+- [ ] **Sakura Chiyono O.** No face or leg markings found; was the thick white noseband in the Derby photo a shadow roll?
+
 ### Locations
 - [ ] **Tokyo.** Stand colours, Mt Fuji's bearing, and the infield pond's position.
 - [ ] **Nakayama.** Stand colours and length; the backdrop.
-
-### Batch-2 drafts (`research/drafts/batch2-drafts.js`)
-These need to be re-run with the hardened templates before they move into `data/`.
-- [ ] **Mejiro Ramonu.**
-  - Face: a large 流星?
-  - Legs, running style, weight and gear.
-  - Silks: "white, green hoop" is UNVERIFIED and from memory.
-- [ ] **Kyoto.**
-  - Time of day, turf colour, stand colours, infield and backdrop.
-  - The G1 list, which is from memory.
+- [ ] **Kyoto.** Stand colours and floors (6 or 7); the lake's size and distance (±15 m from the aerial); the big screen really stands on the lake's near shore; needs kits for Benten island, fountains, 淀の坂 and the poplar wall.
+- [ ] **Hanshin.** Stand colours and size; the straight's profile (±0.2 m); needs a cherry-tree row along the outer rail.
 
 ### Source access (affects every batch)
 - JBIS (jbis.or.jp) returns 403 to WebFetch. Read it through Playwright.
