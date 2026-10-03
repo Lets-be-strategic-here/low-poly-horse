@@ -43,8 +43,16 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 | `data/horses.js` | Horse presets, with sources and uncertainties |
 | `data/locations.js` | Locations: course facts, lighting, layout and landmarks |
 | `data/roster.js` | All 152 real horses on the official list, in generation order |
-| `ROADMAP.md` | The build order: anatomy, colour, parts, every JRA G1 and NAR JpnI course, race mode |
+| `ROADMAP.md` | The build order (anatomy, colour, parts, every JRA G1 and NAR JpnI course, race mode), ending in a to-do checklist of every unconfirmed value |
+| `research/batch1-open-questions.md` | Batch 1's open questions: the default used for each and where to check it |
+| `research/drafts/` | Unreviewed agent output for the next batch; the app doesn't load it |
 | `.claude/agents/` | Research-agent templates: one agent per horse or location |
+
+## Status
+
+- **Batch 1 of 19 is done:** 11 of 152 horses, plus 4 locations.
+- **Batch 2 is next.** It covers horses #12–19, Mejiro Ramonu to Sakura Chiyono O (foaled 1983–85), and adds the Kyoto and Hanshin racecourses. It also needs grey coats with dapples for Oguri Cap and Tamamo Cross.
+- **Unconfirmed values:** a value the sources couldn't confirm is never presented as fact. Each one is flagged in the data's `uncertain` lists, shown on the horse's info card, and listed as a to-do in `ROADMAP.md`. Examples are which hind leg is white on Mr. C.B., and Saint Lite's silks.
 
 ## Run locally
 
