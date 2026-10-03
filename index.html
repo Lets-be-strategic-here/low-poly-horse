@@ -151,7 +151,7 @@
   <label class="speed"><span>Speed</span><input id="speed" type="range" min="0.25" max="2" step="0.05" value="1" title="Playback speed"><output id="speedOut">1.00&times;</output></label>
   <div class="sep"></div>
   <div class="seg" role="group" aria-label="Gait">
-    <button data-gait="walk">Walk</button><button data-gait="gallop">Gallop</button>
+    <button data-gait="walk">Walk</button><button data-gait="gallop">Gallop</button><button data-gait="race" title="Racing gallop, about 16 m/s">Race</button>
   </div>
   <div class="sep"></div>
   <div class="seg" role="group" aria-label="Camera view">
@@ -183,10 +183,20 @@ const BREAKOVER_START = 0.62;       // stance fraction where the heel starts to 
 const GAITS = {
   // transverse gallop, left lead: RH -> LH -> RF -> LF(lead) -> suspension
   gallop: {
-    label: 'Gallop', T: 0.42, stride: 2.6, duty: 0.35, body: 'gallop', dust: true, curl: 1,
+    label: 'Gallop', T: 0.42, stride: 2.6, duty: 0.35, body: 'gallop', dust: true, curl: 1, leads: true,
     land: { RH: 0.0, LH: 0.1, RF: 0.3, LF: 0.41 },
     fore: { xc: 0.76, lift: 0.42, rise: 0.3, fall: 0.5, flex: 115 * DEG, flexPeak: 0.32, flexEnd: 0.8, sag: 14 * DEG, scapSwing: 10 * DEG },
     hind: { xc: -0.45, lift: 0.26, rise: 0.35, fall: 0.55, flex: 55 * DEG, flexPeak: 0.4, flexEnd: 0.88, sag: 12 * DEG, hockSag: 10 * DEG, hockOpen: -6 * DEG },
+  },
+  // racing gallop (~16 m/s): 7 m strides at ~2.3 strides/s, each hoof down for under a quarter of the
+  // stride, a long suspension after the leading fore lifts. The reach comes from a lower body, more
+  // scapular swing and lumbosacral flexion (BODY.race), so the stance can span ~1.6 m without the legs
+  // running out of length.
+  race: {
+    label: 'Race', T: 0.43, stride: 7.0, duty: 0.2, body: 'race', dust: true, curl: 1, leads: true,
+    land: { RH: 0.0, LH: 0.09, RF: 0.27, LF: 0.37 },
+    fore: { xc: 0.62, lift: 0.5, rise: 0.25, fall: 0.55, flex: 125 * DEG, flexPeak: 0.3, flexEnd: 0.8, sag: 17 * DEG, scapSwing: 18 * DEG },
+    hind: { xc: -0.55, lift: 0.36, rise: 0.3, fall: 0.6, flex: 70 * DEG, flexPeak: 0.38, flexEnd: 0.86, sag: 15 * DEG, hockSag: 12 * DEG, hockOpen: -8 * DEG, hockPush: 40 * DEG },
   },
   // four-beat lateral walk: LH -> LF -> RH -> RF, evenly spaced; the hind print lands just past the fore print
   walk: {
@@ -209,7 +219,7 @@ const RIGHT_LEAD = { RH: 'LH', LH: 'RH', RF: 'LF', LF: 'RF' };
 function makeGait(key, s = 1, W = 65, lead = 'L') {
   const base = GAITS[key] || GAITS.gallop;
   const land = { ...base.land };
-  if (key === 'gallop' && lead === 'R') for (const id in RIGHT_LEAD) land[id] = base.land[RIGHT_LEAD[id]];
+  if (base.leads && lead === 'R') for (const id in RIGHT_LEAD) land[id] = base.land[RIGHT_LEAD[id]];
   if (base.stand) return { ...base, key, land, lead, strides: 1, stride: 0, stanceLen: 0, period: base.T * 20 };
   const strides = Math.max(1, Math.round(W / (base.stride * s)));
   const stride = W / strides / s;                       // horse units (the rig is scaled by s)
@@ -854,7 +864,10 @@ function footPath(L, g, G) {
     const tip = BREAKOVER * smoothstep(BREAKOVER_START, 1, sp);
     const a = A.pastern + P.sag * load - tip;
     const [fx, fy] = plantedFetlock(toeDown - STRIDE * u, tip, a);
-    return { u, fx, fy, pastern: a, tip, flex: L.fore ? 0 : P.hockSag * load, curl: 0 };
+    // hind push-off: the hock opens past its rest angle late in the stance (hockPush), lengthening the
+    // leg so the hoof can stay planted far behind the hip at speed
+    const push = L.fore ? 0 : (P.hockPush ?? 0) * smoothstep(0.45, 1, sp);
+    return { u, fx, fy, pastern: a, tip, flex: L.fore ? 0 : P.hockSag * load - push, curl: 0 };
   }
   // Swing: C1 Hermite (velocity-matched to the stance) forward, lifted by a smooth bump. The
   // breakover offset at lift-off fades out early in the swing, so the path is continuous.
@@ -865,7 +878,7 @@ function footPath(L, g, G) {
   const fade = 1 - smoothstep(0, 0.3, s);
   const fx = hermite(fx0, fx0 + STANCE_LEN, -STRIDE * (1 - DUTY), s) + (bx - fx0) * fade;
   const fy = fy0 + P.lift * smoothstep(0, P.rise, s) * (1 - smoothstep(P.fall, 1, s)) + (by - fy0) * fade;
-  const flex = P.flex * hump(s, 0, P.flexPeak, P.flexEnd);
+  const flex = P.flex * hump(s, 0, P.flexPeak, P.flexEnd) - (L.fore ? 0 : (P.hockPush ?? 0) * (1 - smoothstep(0, 0.22, s))); // push-off unwinds early in the swing
   const curl = G.curl * smoothstep(0, 0.28, s) * (1 - smoothstep(0.62, 0.96, s));
   return { u, fx, fy, pastern: A.pastern - BREAKOVER * fade, tip: BREAKOVER * fade, flex, curl };
 }
@@ -968,6 +981,34 @@ const BODY = {
       const lag = 0.08 * i;
       seg.rotation.z = (0.045 + 0.012 * i) * cyc(g, 1, 0.05 + lag) + 0.025 * cyc(g, 2, 0.2 + lag);
       seg.rotation.y = m * (0.03 + 0.014 * i) * Math.sin(TAU * (g - 0.3 - lag));
+    });
+  },
+  // racing gallop: body carried lower and longer, a bigger bound, strong lumbosacral flexion as the
+  // hind legs reach under, neck stretched out and pumping with the stride; mane and tail stream back
+  race(rig, g) {
+    const m = rig.gait.lead === 'R' ? -1 : 1;
+    const { spine, hips, chest, neck1, neck2, head } = rig;
+    spine.position.set(0, spine.userData.rest.y - 0.085 + 0.05 * cyc(g, 1, 0.82), 0);
+    spine.rotation.z = 2.5 * DEG * cyc(g, 1, 0.8);
+    spine.rotation.x = m * 1.2 * DEG * Math.sin(TAU * (g - 0.2));
+    const gather = cyc(g, 1, 0.9);
+    hips.rotation.z = 2 * DEG + 9 * DEG * gather;
+    chest.rotation.z = -1 * DEG - 3 * DEG * gather;
+    neck1.rotation.z = -9 * DEG + 6 * DEG * cyc(g, 1, 0.86);
+    neck2.rotation.z = -4 * DEG + 4 * DEG * cyc(g, 1, 0.92);
+    head.rotation.z = 6 * DEG - 7 * DEG * cyc(g, 1, 0.97);
+    for (const e of rig.ears) {
+      e.mesh.rotation.z = 0.32 + 0.06 * cyc(g, 2, 0.15 + e.side * 0.1);
+      e.mesh.rotation.x = 0.04 * cyc(g, 1, 0.3 + e.side * 0.2);
+    }
+    for (const mn of rig.mane) {
+      mn.mesh.rotation.z = mn.amp * (0.42 + 0.14 * cyc(g, 2, 0.1 * mn.i) + 0.05 * cyc(g, 3, 0.17 * mn.i + 0.3));
+      mn.mesh.rotation.x = mn.amp * 0.1 * cyc(g, 2, 0.13 * mn.i + 0.5);
+    }
+    rig.tail.forEach((seg, i) => {
+      const lag = 0.08 * i;
+      seg.rotation.z = (i ? -0.05 : 0.12) + (0.04 + 0.01 * i) * cyc(g, 1, 0.05 + lag) + 0.025 * cyc(g, 2, 0.2 + lag);
+      seg.rotation.y = m * (0.025 + 0.012 * i) * Math.sin(TAU * (g - 0.3 - lag));
     });
   },
   walk(rig, g, p, o) {
@@ -2153,7 +2194,7 @@ renderer.setAnimationLoop((ts) => {
 window.__horse = {
   get period() { return rig.gait.period; },
   get strides() { return rig.gait.strides; },
-  setPhase, resume, setView, setHorse, setLocation, setGait, toeWorld,
+  setPhase, resume, setView, setHorse, setLocation, setGait, toeWorld, gaits: GAITS,
   renderer, scene, camera, controls,
   get horse() { return rig.root; }, get rig() { return rig; }, get world() { return world; }, get extras() { return extras; }, state,
 };

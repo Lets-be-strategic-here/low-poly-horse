@@ -35,7 +35,7 @@ window.LOCATIONS = [
     signature: 'The original scene: a sandy trail, a wooden fence and rolling autumn hills.',
   },
   {
-    id: 'tokyo', en: 'Tokyo Racecourse', jp: '東京競馬場', group: 'JRA G1', builder: 'track', gait: 'gallop',
+    id: 'tokyo', en: 'Tokyo Racecourse', jp: '東京競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
     hand: 'left', surface: 'turf', lead: 'R', W: 400, seed: 2031,
     // Japan Cup afternoon, late November (sun raised a little for readable shadows)
     time: {
@@ -79,7 +79,7 @@ window.LOCATIONS = [
     uncertain: ['stand.colors', 'backdrop.landmarks[0].bearingDeg', 'infield[0] position'],
   },
   {
-    id: 'nakayama', en: 'Nakayama Racecourse', jp: '中山競馬場', group: 'JRA G1', builder: 'track', gait: 'gallop',
+    id: 'nakayama', en: 'Nakayama Racecourse', jp: '中山競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
     hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2032,
     // Arima Kinen, late December: low golden winter sun, overseeded turf going yellow-green
     time: {
@@ -116,7 +116,7 @@ window.LOCATIONS = [
     uncertain: ['stand.colors', 'stand.lengthM', 'backdrop'],
   },
   {
-    id: 'kyoto', en: 'Kyoto Racecourse', jp: '京都競馬場', group: 'JRA G1', builder: 'track', gait: 'gallop',
+    id: 'kyoto', en: 'Kyoto Racecourse', jp: '京都競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
     hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2033,
     // Kikuka Sho, late October (post 15:40): a low WSW sun toward the 4th corner, slightly behind the stand
     // (stand faces ~145°, the straight runs ~55°, from the GSI aerial; elevation raised 16.7° -> 18° for readable shadows)
@@ -156,7 +156,7 @@ window.LOCATIONS = [
     uncertain: ['stand.colors (2023 photos)', 'stand.floors (6 or 7)', 'stand.depthM (estimated)', 'time (computed sun)', 'infield[0] size and distance (±15 m from the aerial)', 'backdrop.ranges', 'backdrop.landmarks[0] (the screen is really much closer, on the shore)', 'facts.races[0].month (late April or early May)', 'needs new kits: Benten island, fountains, 淀の坂, the poplar wall along the back straight'],
   },
   {
-    id: 'hanshin', en: 'Hanshin Racecourse', jp: '阪神競馬場', group: 'JRA G1', builder: 'track', gait: 'gallop',
+    id: 'hanshin', en: 'Hanshin Racecourse', jp: '阪神競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
     hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2034,
     // Oka Sho, early-to-mid April (post 15:40): spring haze, Somei Yoshino in full bloom, overseeded turf bright green
     time: {
