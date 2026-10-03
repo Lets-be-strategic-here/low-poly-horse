@@ -633,6 +633,7 @@ function buildHorse(look = {}, seed = 1337) {
   const mat = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.68, metalness: 0 });
   const eyeMat = new THREE.MeshStandardMaterial({ color: 0x120c0a, flatShading: true, roughness: 0.22 });
   const rig = { root, materials: [mat, eyeMat], legs: [], mane: [], tail: [], ears: [], scale, bulk, pal, rootInv: new THREE.Matrix4() };
+  const reinEnds = { hands: [], handNodes: [], bits: [] }; // rest-space ends of the reins, filled in by the jockey and the bridle
   root.scale.setScalar(scale);
 
   const restOf = (o) => o.userData.rest || V(0, 0);
@@ -841,6 +842,12 @@ function buildHorse(look = {}, seed = 1337) {
     const top = (x) => rowAt(x)[0], skin = 0xd8b493, P = J.silks ?? parseSilks(null);
     const T = top(0.2), Hp = V(0.16, T + 0.33, 0), Sh = V(0.56, T + 0.48, 0), Hd = V(0.71, T + 0.58, 0);
     const axis = Sh.clone().sub(Hp), len2 = axis.lengthSq();
+    // the rider hangs from a pivot at the irons: pose() turns it against the back's pitch, so the body stays quiet
+    // over a horse that rocks under it (a jockey's knees and ankles take up the motion); each arm swings from its
+    // shoulder so the hands follow the horse's mouth on a rein of constant length
+    rig.jockeyPivot = joint(spine, V(0.36, T - 0.13, 0), 'jockey-pivot');
+    rig.jockeyArms = [];
+    const bare = (g) => { if (g.attributes.uv) g.deleteAttribute('uv'); if (g.attributes.normal) g.deleteAttribute('normal'); return g; };
     const tube = (a, b, r0, r1, colorFn, seg = 5) => { // a tapered limb segment from a to b
       const dir = b.clone().sub(a), up = Math.abs(dir.clone().normalize().y) > 0.9 ? X_AXIS : Y_AXIS;
       const rings = [0, 0.5, 1].map((t) => ringAt(a.clone().addScaledVector(dir, t), dir, up, PROF.limb, { up: lerp(r0, r1, t), down: lerp(r0, r1, t), w: lerp(r0, r1, t) }));
@@ -901,17 +908,23 @@ function buildHorse(look = {}, seed = 1337) {
       // arms: shoulder -> elbow -> hand, in the sleeves
       const S0 = V(0.55, T + 0.45, sd * 0.17), E = V(0.6, T + 0.24, sd * 0.24), Hn = V(0.83, T + 0.23, sd * 0.08);
       const armFn = (a0, a1, A, B) => (c) => { const d = B.clone().sub(A), t = clamp(c.clone().sub(A).dot(d) / d.lengthSq(), 0, 1); return shade(sleeveColor(lerp(a0, a1, t), Math.atan2(c.y - lerp(A.y, B.y, t), (c.z - lerp(A.z, B.z, t)) * sd) / TAU).getHex(), rnd, 0.03); };
-      parts.push(tube(S0, E, 0.055, 0.045, armFn(0, 0.5, S0, E)));
-      parts.push(tube(E, Hn, 0.045, 0.038, armFn(0.5, 1, E, Hn)));
-      parts.push(paint(new THREE.IcosahedronGeometry(0.04, 0).scale(1.2, 0.9, 1).translate(Hn.x + 0.02, Hn.y, Hn.z), solid(J.training ? 0x2a2a2a : 0xf2f0ea)));
+      const arm = joint(rig.jockeyPivot, S0, `jockey-arm${sd}`), grip = V(Hn.x + 0.04, Hn.y - 0.005, Hn.z);
+      attach(arm, merge([
+        tube(S0, E, 0.055, 0.045, armFn(0, 0.5, S0, E)),
+        tube(E, Hn, 0.045, 0.038, armFn(0.5, 1, E, Hn)),
+        paint(new THREE.IcosahedronGeometry(0.04, 0).scale(1.2, 0.9, 1).translate(Hn.x + 0.02, Hn.y, Hn.z), solid(J.training ? 0x2a2a2a : 0xf2f0ea)),
+      ].map(bare)));
+      rig.jockeyArms.push({ node: arm, reach: grip.clone().sub(S0) });
+      reinEnds.hands.push(grip);
+      reinEnds.handNodes.push(arm);
       // legs: hip -> knee (white breeches) -> ankle (black boots), feet in the run-up irons
       const Hj = V(0.18, T + 0.3, sd * 0.1), K = V(0.44, T + 0.26, sd * 0.28), A = V(0.3, T - 0.12, sd * 0.31), Toe = V(0.42, T - 0.15, sd * 0.31);
       parts.push(tube(Hj, K, 0.075, 0.055, solid(J.training ? 0x3a3f48 : 0xf2f0ea)));
       parts.push(tube(K, A, 0.05, 0.04, solid(0x1a1a1a)));
       parts.push(tube(A, Toe, 0.04, 0.032, solid(0x1a1a1a)));
     }
-    const geo = merge(parts.map((g) => { if (g.attributes.uv) g.deleteAttribute('uv'); if (g.attributes.normal) g.deleteAttribute('normal'); return g; }));
-    attach(spine, geo).name = 'jockey';
+    const geo = merge(parts.map(bare));
+    attach(rig.jockeyPivot, geo).name = 'jockey';
   }
 
   /* ----- head: wedge loft with jowls, face marking, muzzle; eyes, nostrils, ears, forelock ----- */
@@ -953,7 +966,7 @@ function buildHorse(look = {}, seed = 1337) {
   }
   /* ----- racing gear (data/horses.js `gear`), authored in head space like the head itself ----- */
   const gear = look.gear;
-  if (gear) buildGear(gear);
+  if (gear || (look.racehorse && look.jockey)) buildGear(gear ?? {}); // a ridden horse always has a bridle (and reins)
   function buildGear(G) {
     const H0 = HEADP[0], HN = HEADP[HEADP.length - 1];
     const rowAt = (x) => { // [top, bot, w] of the head at x, interpolated between the rows (profile included)
@@ -1009,6 +1022,8 @@ function buildHorse(look = {}, seed = 1337) {
         const [, , w0] = rowAt(0.0), [, , w1] = rowAt(0.18), [, , w2] = rowAt(0.53);
         toHead(strap([V(-0.01, 0.0, s * (w0 + 0.01)), V(0.18, -0.035, s * (w1 * 0.95 + 0.012)), V(0.53, -0.072, s * (w2 * 0.85 + 0.008))], bridle));
         toHead(paint(new THREE.TorusGeometry(0.018, 0.005, 4, 8).translate(0.555, -0.075, s * 0.072).toNonIndexed(), flat(0xb9bcbf, rnd, 0.03))); // bit ring
+        reinEnds.bits.push(V(0.545, -0.085, s * 0.08).applyMatrix4(headM));
+        reinEnds.color = G.reins ?? bridle;
       }
     }
     if (G.bitLifter) { // ハミ吊り: a strap down the middle of the face that forks to the bit
@@ -1166,7 +1181,59 @@ function buildHorse(look = {}, seed = 1337) {
     rig.legs.push(L);
   }
   mergeRigid(rig, body);
+  if (reinEnds.hands.length === 2 && reinEnds.bits.length === 2) addReins(rig, head, reinEnds, restOf);
   return rig;
+}
+
+// Reins from the bit rings to the jockey's hands. Each end rides on its own node (a marker on the head, one on the
+// spine where the rider's hands are), and the strap between is skinned to both with the weight sliding along it, so
+// it stays taut between the two however the head nods against the rider. A light drape is built into the rest shape.
+function addReins(rig, head, ends, restOf) {
+  const root = rig.root, markers = [];
+  for (let k = 0; k < 2; k++) for (const [node, P] of [[head, ends.bits[k]], [ends.handNodes[k], ends.hands[k]]]) {
+    const m = new THREE.Object3D();
+    m.position.copy(P).sub(restOf(node));
+    node.add(m);
+    markers.push(m);
+  }
+  rig.reinBits = [markers[0], markers[2]];
+  root.updateMatrixWorld(true);
+  const rootInv = root.matrixWorld.clone().invert(), at = (m) => m.getWorldPosition(V(0, 0)).applyMatrix4(rootInv);
+  const pos = [], idx = [], wts = [], N = 10, w = 0.008, h = 0.0028, color = colorOf(ends.color ?? '#2a2018'), cols = [];
+  for (let k = 0; k < 2; k++) {
+    const A = at(markers[k * 2]), B = at(markers[k * 2 + 1]), ring = [];
+    for (let i = 0; i <= N; i++) {
+      const t = i / N, P = A.clone().lerp(B, t).add(V(0, -0.05 * 4 * t * (1 - t), 0));
+      const d = B.clone().sub(A).normalize(), side = d.clone().cross(Y_AXIS).normalize(), up = side.clone().cross(d).normalize();
+      ring.push({ P, side, up, wb: smoothstep(0.15, 0.85, t) });
+    }
+    for (let i = 0; i < N; i++) {
+      const r0 = ring[i], r1 = ring[i + 1];
+      const corner = (r, a, b) => r.P.clone().addScaledVector(r.side, a * w).addScaledVector(r.up, b * h);
+      for (const [a0, b0, a1, b1] of [[-1, 1, 1, 1], [1, 1, 1, -1], [1, -1, -1, -1], [-1, -1, -1, 1]]) { // the strap's four faces
+        const q = [[r0, a0, b0], [r0, a1, b1], [r1, a1, b1], [r0, a0, b0], [r1, a1, b1], [r1, a0, b0]];
+        for (const [r, a, b] of q) {
+          pos.push(...corner(r, a, b).toArray());
+          idx.push(k * 2, k * 2 + 1, 0, 0);
+          wts.push(1 - r.wb, r.wb, 0, 0);
+          cols.push(color.r, color.g, color.b);
+        }
+      }
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
+  geo.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(idx, 4));
+  geo.setAttribute('skinWeight', new THREE.Float32BufferAttribute(wts, 4));
+  geo.computeVertexNormals();
+  const reins = new THREE.SkinnedMesh(geo, rig.materials[0]);
+  reins.name = 'reins';
+  reins.castShadow = true;
+  reins.frustumCulled = false;
+  root.add(reins);
+  root.updateMatrixWorld(true);
+  reins.bind(new THREE.Skeleton(markers), reins.matrixWorld);
 }
 
 // Rigid-skin merge: one draw call per material per horse instead of ~60. Every rigid mesh (limbs, hooves, head,
@@ -1548,8 +1615,27 @@ function idleEars(rig, p, o, fwd) {
   }
 }
 
+const _jr = new THREE.Matrix4(), _bit = V(0, 0);
 function pose(rig, g, p = 0) {
   BODY[rig.gait.body](rig, g, p, rig.phaseOffset ?? 0);
+  if (rig.jockeyPivot) { // the rider keeps ~70% of the back's pitch out of the upper body
+    rig.root.updateMatrixWorld(true);
+    const e = _jr.copy(rig.root.matrixWorld).invert().multiply(rig.jockeyPivot.parent.matrixWorld).elements;
+    rig.jockeyPivot.rotation.z = -0.7 * Math.atan2(e[1], e[0]);
+    rig.jockeyPivot.updateMatrixWorld(true);
+  }
+  if (rig.reinBits) rig.jockeyArms.forEach((A, k) => { // the hands give and take with the horse's head
+    // The arm reaches along the rein after the bit as the head nods out and back about its average (a slow running
+    // mean, so a gait's own carriage of the head sets the rein's length), up to 6 cm; in a driving finish the
+    // hands push on top of that, once a stride.
+    A.rest ??= A.node.position.clone();
+    rig.reinBits[k].getWorldPosition(_bit);
+    rig.jockeyPivot.worldToLocal(_bit).sub(A.rest).sub(A.reach);
+    const d = _bit.length();
+    A.mean = A.mean === undefined ? d : A.mean + (d - A.mean) * 0.04;
+    const slide = clamp(d - A.mean, -0.06, 0.06) + (rig.push ?? 0) * 0.35 * Math.sin(TAU * g);
+    A.node.position.copy(A.rest).addScaledVector(_bit.normalize(), slide);
+  });
   rig.root.updateMatrixWorld(true);
   rig.rootInv.copy(rig.root.matrixWorld).invert();
   for (const L of rig.legs) solveLeg(rig, L, g);
@@ -2145,6 +2231,19 @@ function rockSet(k, count, zOf) {
   addSet(rockGeo, mat, rocks);
 }
 
+// Puddles on a soaked racecourse (`wet.puddles`): flat, glossy patches on the dirt course and the apron in front of the
+// stands, the colour of the grey sky they mirror. JRA turf drains, so none on the grass.
+function puddleSet(k, T, loc) {
+  const { rnd, item, S, addSet } = k, wetMat = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.18, metalness: 0.05 });
+  const disc = jitter(new THREE.CircleGeometry(1, 11).rotateX(-Math.PI / 2), 0.18, 61, (x, y, z) => x * x + z * z < 0.01);
+  for (let i = 0; i < disc.attributes.position.count; i++) disc.attributes.position.setY(i, 0); // ragged edge, flat water
+  const geo = paint(disc, flat(hex(loc.wet.color ?? loc.time?.sky?.horizon ?? '#9aa1a6'), rnd, 0.05));
+  const items = [], spot = (zs) => { const s = 0.35 + rnd() * 1.1; items.push(item(rnd() * W, S * zs, s, rnd() * 0.4 - 0.2, -0.012, { sx: 1.4 + rnd() * 1.8 })); };
+  if (T.dirtW) for (let i = 0; i < perLoop(24); i++) spot(T.dIn + 1.5 + rnd() * (T.dOut - T.dIn - 3));
+  for (let i = 0; i < perLoop(10); i++) spot(T.outer + 2 + rnd() * Math.max(1, T.standFront - T.outer - 5));
+  addSet(geo, wetMat, items);
+}
+
 // grass tufts (5 leaning blades), tinted per instance
 function tuftGeo(rnd) {
   const blades = [];
@@ -2560,6 +2659,7 @@ const PROP_BUILDERS = {
     for (const zs of T.rails) fenceLine(k, zs * S, { gap: 3, post: rail, rail, rails: [0.95], postH: 0.95, postR: 0.045, postSeg: 4, boardH: 0.11, boardD: 0.11, wobble: 0.004, tint: 0.05 });
     if (loc.stand) standSet(k, loc, T);
     if (loc.floodlights) floodlightSet(k, loc.floodlights, T);
+    if (loc.wet?.puddles) puddleSet(k, T, loc);
     const infield = (r) => S * (T.dIn - 8 - r() * (T.D - T.turfW - T.dirtW - 30)); // somewhere between the two dirt courses
     tuftSet(k, perLoop(60), (r) => S * (T.dIn - 2 - r() * 60), ['#6f9a46', '#78a24c'], '#a6b660');
     const blossom = loc.blossom ? [loc.blossom].flat() : null;
@@ -3032,6 +3132,7 @@ function confFor(h) {
 
 // A roster horse with the viewer's overrides on top, as a buildHorse() look.
 function currentLook() { return lookFor(state.horse, state.custom, state.loc); }
+const tackKey = () => { const l = currentLook(); return JSON.stringify([l.saddle, l.rug, l.jockey && { ...l.jockey, silks: undefined }]); };
 function lookFor(h, c = {}, loc = state.loc) {
   return {
     coat: { ...h.coat, ...c.coat },
@@ -3063,6 +3164,7 @@ function disposeTree(root) {
 function rebuildHorse() {
   if (rig) { scene.remove(rig.root); disposeTree(rig.root); }
   rig = buildHorse(currentLook());
+  rig.tackKey = tackKey();
   rig.materials.forEach((m) => { m.wireframe = wireOn; });
   scene.add(rig.root);
   setGait(state.gait);
@@ -3098,7 +3200,7 @@ function clearExtras() {
   racePlan = null;
   if (raceGate) { raceGate.visible = racePost.visible = false; }
   if (world && !world.path) world.group.position.z = 0; // the course slides back under the hero
-  if (rig) rig.root.rotation.y = 0;
+  if (rig) { rig.root.rotation.y = 0; rig.push = 0; }
   raceHud('');
 }
 function spawnExtras() {
@@ -3366,7 +3468,9 @@ function updateRace(p, scroll, under, y0) {
   if (raceT >= RACE.secs) { raceT %= RACE.secs; raceNo++; racePlan = planRace(racePlan, 101 + raceNo); }
   const t = raceT, now = raceLayout(t), soon = raceLayout(t + 0.05); // heading: into the drift over the next 0.05 s
   const heading = (i) => -Math.atan2(S * (soon.outs[i] - now.outs[i]), RACE.speed * 0.05 + soon.xs[i] - now.xs[i]);
-  const heroOut = inner + now.outs[0];
+  const heroOut = inner + now.outs[0], push = 0.22 * smoothstep(RACE.turnIn + 3, RACE.turnIn + 8, t) * (1 - smoothstep(RACE.post + 0.5, RACE.post + 3, t));
+  rig.push = push;
+  for (const e of racePlan) if (!e.hero) e.rig.push = push * (0.8 + 0.4 * ((e.number * 0.37) % 1));
   world.group.position.z = -S * heroOut;
   rig.root.rotation.y = heading(0);
   racePlan.forEach((e, i) => {
@@ -3435,8 +3539,8 @@ function setLocation(id) {
     dust.styleAt = () => 'clods';
   } else { dust.colors = null; dust.styleAt = null; }
   state.lead = loc.lead ?? 'L';
-  // the saddle and cloth only appear on racecourses: rebuild the hero if that changes
-  if (rig && (!!rig.root.getObjectByName('saddle') !== !!currentLook().saddle || !!rig.root.getObjectByName('rug') !== !!currentLook().rug || !!rig.root.getObjectByName('jockey') !== !!currentLook().jockey)) rebuildHorse();
+  // the saddle, cloth, rug and rider depend on the location (a Derby cloth, a training cloth, none at the farm): rebuild if they change
+  if (rig && rig.tackKey !== tackKey()) rebuildHorse();
   spawnExtras();
   setGait(loc.gait ?? 'gallop');
   syncTitle();
@@ -3770,6 +3874,7 @@ const init = readHash();
 state.horse = HORSE_LIST.find((h) => h.id === init.h) ?? HORSE_LIST[0];
 state.race = init.race;
 rig = buildHorse(currentLook()); // sized first: the world's stride count depends on the horse's scale
+rig.tackKey = tackKey();
 scene.add(rig.root);
 setLocation(LOC_LIST.find((l) => l.id === init.l)?.id ?? window.DEFAULT_LOCATION ?? LOC_LIST[0].id);
 if (init.g && GAITS[init.g]) setGait(init.g);

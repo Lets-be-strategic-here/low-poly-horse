@@ -1835,4 +1835,216 @@ window.HORSES = [
     ],
     uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bitLifter', 'silks.colors'],
   },
+  // ---- Batch 15 (2026-10): #116–123, foaled 2006–08 ----
+  {
+    id: 'transcend', en: 'Transcend', jp: 'トランセンド', born: 2006, sex: 'male', // 牡, born 9 Mar 2006, Wild Rush x シネマスコープ (by Tony Bin), bred by ノースヒルズマネジメント (Niikappu), trained by 安田隆行 (Ritto)
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: 'Registered 鹿毛 (JBIS profile, ja.wikipedia infobox). en.netkeiba says "Bay". Photos (Commons, 2010 Aldebaran S, 2010 Miyako S and 2011 Nambu Hai ceremonies): a bright red-brown bay with black mane, tail and lower legs.' },
+    face: { type: 'star-stripe', notes: 'Photo only: in the three-quarter view of the 2010 Aldebaran S ceremony photo (Transcend-horse.jpg) there is a clear white star on the forehead. From it a narrow stripe runs down the nasal bone, broken where the noseband crosses, and ends just above the nostrils. A thin white line also shows down the front of the face in the 2010 Japan Cup Dirt finish photo. No text source.' },
+    legs: { LF: 'none', RF: 'pastern', LH: 'none', RH: 'none' }, // photo: one fore white from the coronet to about mid-pastern, with a pale hoof, on the near leg in three off-side photos, so read as RF. Hinds dark.
+    style: { primary: 'nige', secondary: 'senko', why: 'netkeiba 通過, first call / field: Leopard S 2/14 (2-2-2-2), Miyako S 1/16 (1-1-1-1), JCD 2010 1/16 (1-1-1-1), Feb S 2011 1/16 (1-1), Nambu Hai 2011 2/15, JBC Classic 2011 2/12, JCD 2011 1/16 (1-1-1-1), Tokai S 1/15, Nittele Hai 1/14. He sat further back in the Aldebaran 3/16, Antares 3/15, Feb S 2012 4/16 and JCD 2012 3/16. ja.wiki: JCD 2010「ハナに立ち」, Feb S「スタートから逃げると…逃げきって」, JCD 2011「大外枠から先手を奪うと…逃げ切り勝ち」, Nambu Hai「道中2番手から」.' },
+    size: { weightKg: [506, 522], typicalKg: 516, withersCm: null, girthCm: null, cannonCm: null, build: 'tall', notes: 'netkeiba race-day 馬体重 (JRA and NAR starts; none given for Dubai): 508 at debut, lightest 506 (2009 Elm S, Musashino S), heaviest 522 (2012 JCD). At his G1 wins: 512 (JCD 2010), 514 (Feb S 2011), 518 (Nambu Hai 2011), 520 (JCD 2011). A big horse that looks long-legged and upright in the 2010 Aldebaran S photo. No measurements found.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1e1b19', pompom: null, bandages: null, notes: '2010 Japan Cup Dirt finish photo (Commons, The_11th_Japan_Cup_Dirt_20101205R1.jpg): bare head with no menko, ears bare, no blinkers and no sheepskin shadow roll. Black bridle. The white line down his face is the marking. Ceremony photos (2010 Aldebaran S, 2010 Miyako S, 2011 Nambu Hai, 2011 JCD) also show no hood and a black bridle with a plain cavesson. In the race photo his legs are hidden against the flower bed, so bandages are not settled.' },
+    silks: { owner: '前田幸治 (ノースヒルズ)', desc: '水色、赤十字襷、赤袖水色一本輪', colors: ['#2ec4f6', '#dc2a40'] }, // the current 水色 version; ja.wiki says the owner once used 「青、赤十字襷、赤袖青一本輪」, but the 2010 JCD photo shows light blue
+    saddleNumber: 16, // 2011 ジャパンカップダート (Hanshin, 4 Dec 2011): 8枠16番 of 16, led all the way (1-1-1-1), the first horse to win the race twice. netkeiba and the ja.wikipedia 競走成績 table agree. (2010 JCD was 2枠3番; 2011 February S was 6枠12番.)
+    career: 'Japan Cup Dirt 2010 and 2011 (the first horse to win it twice), February Stakes 2011, Mile Championship Nambu Hai 2011 (JpnI, run at Tokyo). Also won the Miyako S 2010 and Leopard S 2009. 2nd to Victoire Pisa in the 2011 Dubai World Cup and 2nd in the 2011 JBC Classic. JRA Best Dirt Horse 2011. 24 starts, 10 wins.',
+    sources: [
+      'https://www.jbis.or.jp/horse/0000989072/',
+      'https://db.netkeiba.com/horse/result/2006104736/',
+      'https://en.netkeiba.com/db/horse/result/2006104736/',
+      'https://ja.wikipedia.org/wiki/トランセンド_(競走馬)',
+      'https://ja.wikipedia.org/wiki/前田幸治',
+      'https://commons.wikimedia.org/wiki/File:Owner_North_Hills_Maeda_Kouji.svg',
+      'https://commons.wikimedia.org/wiki/File:Transcend-horse.jpg',
+      'https://commons.wikimedia.org/wiki/File:Transcend-horse20101107.jpg',
+      'https://commons.wikimedia.org/wiki/File:The_11th_Japan_Cup_Dirt_20101205R1.jpg',
+      'https://commons.wikimedia.org/wiki/File:Transcend-2011nambuhai-tokyorc-002.jpg',
+      'https://commons.wikimedia.org/wiki/File:Transcend-horse20111204.jpg',
+    ],
+    uncertain: ['face.type', 'face.notes', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bandages', 'gear.bitLifter', 'silks.colors'],
+  },
+  {
+    id: 'wonder-acute', en: 'Wonder Acute', jp: 'ワンダーアキュート', born: 2006, sex: 'male', // 牡, born 14 Mar 2006, カリズマティック x ワンダーヘリテージ (Pleasant Tap), bred by フクダファーム (三石), trained by 佐藤正雄 (Ritto)
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: 'Registered 鹿毛 on JBIS (0000990619) and in the ja.wikipedia infobox. en.netkeiba gives "Bay Horse" and en.wikipedia "Bay". No source describes the shade.' },
+    face: { type: 'none', notes: 'No text source mentions a star, stripe or snip, and no photo could be read for the face.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    style: { primary: 'senko', secondary: 'sashi', why: 'netkeiba 通過, first call / field: Sirius 2009 4/16, Musashino 2009 1/16, Tokai 2011 3/14, TD 2011 3/12, JBC 2012 (win) 3/13 (3-3-5-3), Kawasaki Kinen 2013 2/11, Teio Sho 2013 1/12, NTV Hai 2013 (win) 3/12, JBC 2013 3/12, TD 2013 2/9, Kashiwa 2014 3/8, Teio Sho 2014 (win) 3/11, Kashiwa 2015 (win) 6/10, TD 2015 3/14. He sat further back in the big JRA dirt fields: JCD 2011 11/16 (stumbled at the start), Feb S 2013 10/16, JCD 2013 10/16, Champions Cup 2014 14/16. ja.wiki: JBC 2012「3頭の外を回ったのち、直線で見事に追い込み」/「外に持ち出してズドンといけた」, Teio Sho 2014「差しきり2馬身差」, Teio Sho 2013「逃げて3着」.' },
+    size: { weightKg: [480, 524], typicalKg: 508, withersCm: null, girthCm: null, cannonCm: null, build: 'heavy', notes: 'Race-day 馬体重 from netkeiba (db and en pages agree): lightest 480 kg (2009 Aoba Sho, his only turf start), heaviest 524 kg (2015 February S). Debut 496 kg. From 2010 on he raced mostly at 502-522 kg. Weights at his G1 wins: 501 kg (-21) in the JBC Classic 2012, 513 kg in the Teio Sho 2014, 508 kg in the Kashiwa Kinen 2015. No measurements were found.' },
+    gear: { hood: true, hoodColors: { main: '#f2f0ea', trim: '#1f4fb4', ears: '#f2f0ea' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: null, notes: 'The only gear source is the en.wikipedia alt text for the 2009 Sirius S winner photo (File:Wonder-Acute.jpg): "a white hood with blue-red stripes". The red stripe is not represented here. It is not known whether he wore the hood in his G1 wins, or whether the ears were covered. No source mentions blinkers, a shadow roll or a bit lifter, and the photos could not be checked.' },
+    silks: { owner: '山本信行 (Nobuyuki Yamamoto, "ワンダー")', desc: '桃、白菱山形', colors: ['#f09199', '#ffffff'] }, // read from the Commons silks SVG (pink, a row of white diamonds across body and sleeves); not an official JRA string
+    saddleNumber: 9, // 2012 JBCクラシック (Kawasaki, 5 Nov 2012): 6枠9番 of 13, 5th favourite, won under 和田竜二 (en.netkeiba race 201245110511). Other G1 wins: 2014 帝王賞 8枠10番, 2015 かしわ記念 7枠7番 (netkeiba horse table only)
+    career: 'JBC Classic 2012, Teio Sho 2014 (by 2 lengths over Copano Rickey) and Kashiwa Kinen 2015, at 9 the first nine-year-old to win a Japanese G1/JpnI. Also won the Sirius S and Musashino S 2009, Tokai S 2011 and Nippon TV Hai 2013. 2nd in the JCD 2011, 2012 and 2013 and in the Tokyo Daishoten 2011 and 2013. 48 starts, 13 wins.',
+    sources: [
+      'https://www.jbis.or.jp/horse/0000990619/',
+      'https://ja.wikipedia.org/wiki/ワンダーアキュート',
+      'https://en.wikipedia.org/wiki/Wonder_Acute',
+      'https://db.netkeiba.com/horse/result/2006106794/',
+      'https://en.netkeiba.com/db/horse/result/2006106794/',
+      'https://en.netkeiba.com/db/race/201245110511/',
+      'https://commons.wikimedia.org/wiki/File:Owner_Yamamoto_Nobuyuki.svg',
+      'https://commons.wikimedia.org/wiki/File:Wonder-Acute.jpg',
+    ],
+    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hood', 'gear.hoodColors', 'gear.blinkers', 'gear.shadowRoll', 'gear.bitLifter', 'gear.bridle', 'silks.desc', 'silks.colors'],
+  },
+  {
+    id: 'curren-chan', en: 'Curren Chan', jp: 'カレンチャン', born: 2007, sex: 'female', // 牝, born 31 Mar 2007, クロフネ x スプリングチケット, bred by 社台ファーム, owner 鈴木隆司, trained by 安田隆行 (Ritto)
+    coat: { reg: '芦毛', key: 'ashige', greyness: 0.3, tone: 0, mane: null, tail: '#b4b8ba', notes: 'Registered 芦毛 (ja.wikipedia infobox; en.netkeiba "Gray Mare"; JBIS returned 403). Photos from 2011-2012: still a dark iron grey while racing. The neck and legs are nearly black-grey. The barrel and quarters are lighter, with faint dapples (2011 Hanshin Himba winner photo) and grey flecks. The head is paler and flecked, with a pale grey muzzle. The mane is dark. The tail is clearly lighter, a silvery grey that pales toward the ends (2011 Sprinters paddock, 2012 Takamatsunomiya Kinen winner photos).' },
+    face: { type: 'none', notes: 'photo only: the 2011 Sprinters S paddock and 2012 Takamatsunomiya Kinen winner photos show a grey-flecked face, paler than the neck, with a light grey muzzle and no distinct star, stripe or snip. On a grey a small star may simply not show. No text source.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: dark grey/black legs with dark hooves in the 2011 Hanshin Himba winner and 2011 Sprinters paddock photos. One hind coronet looks slightly paler in the paddock photo, which is unclear
+    style: { primary: 'senko', secondary: 'sashi', why: 'netkeiba 通過, first call / field: Hanshin Himba S 2011 5/18 (5-4), Hakodate SS 5/12, Keeneland C 2/16, Sprinters 2011 6/15 (6-6, the win), Ocean S 2012 4/16, Takamatsunomiya 2012 2/18 (2-2, the win), Centaur S 2012 2/16, Sprinters 2012 5/16. ja.wiki: Keeneland「道中2・3番手につけると直線で早めに先頭」, Takamatsunomiya「直線好位から抜け出して」, Hanshin Himba「好位集団に付け」, Hakodate「中団から…外に持ち出されると末脚を伸ばし」. For Sprinters 2011 ja.wiki is quoted as 「やや後方待機から…上がり33.8秒」 and she ran the second-fastest closing 3F of the field, though the corner calls are 6-6 of 15.' },
+    size: { weightKg: [466, 504], typicalKg: 484, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'netkeiba race-day 馬体重 (db and en pages): lightest 466 kg (2010 Fillies\' Revue), heaviest 504 kg (+22, 2012 Centaur S). She weighed 474 kg at her debut. In her G1 wins she weighed 486 kg (2011 Sprinters S, ±0) and 482 kg (2012 Takamatsunomiya Kinen, ±0). She ran at 492 kg in the 2012 Sprinters S and 479 kg in the 2011 HK Sprint. Her 2012 HK Sprint weight is not listed. No measurements were found.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#f2f0ea', pompom: null, bandages: null, notes: 'White bridle (white browband, cheekpieces and plain white noseband) in the 2011 Sprinters S race and paddock photos, the 2011 Hanshin Himba winner photo, and the 2012 Takamatsunomiya Kinen race and winner photos. Her ears are bare, with no blinkers, shadow roll or bandages, and her legs are bare in the races. Exception: in the 2011 Hanshin Himba S winner photo she wears a black menko with a gold winged emblem on the forehead. In the G1 photos her head shows no hood, so hood=false is the G1 look.' },
+    silks: { owner: '鈴木隆司 (「カレン」)', desc: '黒、白縦縞、袖赤一本輪', colors: ['#111111', '#ffffff', '#d22630'] },
+    saddleNumber: 10, // 2011 スプリンターズステークス (Nakayama, 2 Oct 2011): 5枠10番 under 池添謙一 (db/en.netkeiba). "10 CURREN CHAN" is on the saddle cloth in the Commons finish photo. She was also 5枠10番 in the 2012 高松宮記念
+    career: 'Sprinters Stakes 2011 and Takamatsunomiya Kinen 2012 (both G1, 1200m). Also won the Hanshin Himba S (G2) 2011, Hakodate Sprint S (G3) 2011 and Keeneland Cup (G3) 2011. 2nd in the 2012 Sprinters S. 18 starts, 9 wins, including two Hong Kong Sprint runs (5th and 7th).',
+    sources: [
+      'https://ja.wikipedia.org/wiki/カレンチャン',
+      'https://db.netkeiba.com/horse/result/2007102807/',
+      'https://en.netkeiba.com/db/horse/result/2007102807/',
+      'https://ja.wikipedia.org/wiki/鈴木隆司',
+      'https://commons.wikimedia.org/wiki/Category:Curren_Chan',
+      'https://commons.wikimedia.org/wiki/File:Curren-Chan20111002(1).jpg',
+      'https://commons.wikimedia.org/wiki/File:Curren-Chan20111002(2).jpg',
+      'https://commons.wikimedia.org/wiki/File:Curren-Chan20120325(1).jpg',
+      'https://commons.wikimedia.org/wiki/File:Curren-Chan20120325(2).jpg',
+      'https://commons.wikimedia.org/wiki/File:Curren-Chan20110409.jpg',
+    ],
+    uncertain: ['coat.greyness', 'coat.tail (silvery grey read from photos)', 'face.type', 'face.notes', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hood', 'gear.shadowRoll', 'gear.bitLifter', 'silks.colors'],
+  },
+  {
+    id: 'eishin-flash', en: 'Eishin Flash', jp: 'エイシンフラッシュ', born: 2007, sex: 'male', // 牡, born 27 Mar 2007, キングズベスト x ムーンレディ, bred by 社台ファーム, trained by 藤原英昭 (Ritto)
+    coat: { reg: '黒鹿毛', key: 'kurokage', greyness: null, tone: -0.6, mane: null, notes: 'Registered 黒鹿毛 per the ja.wikipedia infobox. en.wikipedia and en.netkeiba say "Dark Bay". JBIS was not fetched. ja.wiki describes 「漆黒の艶やかな馬体」, hence the dark tone. Photos (2010 Satsuki Sho paddock, 2010 Derby finish, 2012 Tenno Sho, 2012 Japan Cup paddock): he looks almost jet black and glossy, with a black mane and tail and no visible brown.' },
+    face: { type: 'none', notes: 'photo only: no white is visible on the head in the 2010 Satsuki Sho paddock profile, the near-side three-quarter view at the 2010 Derby finish, or the 2012 Tenno Sho and Japan Cup photos. No face-on photo was checked, so a small star cannot be ruled out. ja.wiki mentions only 「端正な顔立ち」. No text source names a marking.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: both hind legs are dark to the hoof; both fores are bandaged, with dark pasterns showing below
+    style: { primary: 'sashi', secondary: 'senko', why: 'netkeiba 通過, first call / field size: Derby 10/17 (10-9-9-11, won with a 32.7 final 3F), Satsuki 11/18, Tenno Sho (Autumn) 2012 11/18 (the win, 11-12-12), Tenno Sho (Spring) 2011 9/18, Takarazuka 2011 9/16 and 2012 8/16, JC 2011 9/16 and 2012 8/17, Arima 2010 9/15 and 2012 7/16, Osaka Hai 2011 11/15 and 2013 8/14. Nearer the front in the Keisei Hai 3/13, JC 2010 2/18, Tenno Sho (Autumn) 2011 3/18, Arima 2011 5/13, Mainichi Okan 2013 4/11, and he led throughout (1-1-1-1) in JC 2013. ja.wiki: Derby「中団やや後方を追走し、直線で猛烈に加速」, 2012 Tenno Sho「残り300m辺りから内ラチ沿いを鋭く伸び」.' },
+    size: { weightKg: [484, 496], typicalKg: 486, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'netkeiba race-day 馬体重, JRA starts only: 496 at his debut (heaviest), 484 in the 2013 Mainichi Okan (lightest). 486 in both the 2010 Derby (-2, also on the JRA result page) and the 2012 Tenno Sho (Autumn) (-8). He mostly raced at 486-494. Weights for the Dubai and Hong Kong starts are not listed. No measurements were found.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1f1a17', pompom: null, bandages: { fore: '#f2f0ea', hind: null }, notes: 'Photos: white bandages on both forelegs, from below the knee to the fetlock, in the 2010 Satsuki Sho paddock, the 2012 Tenno Sho (Autumn) and the 2012 Japan Cup paddock. The fore bandages also show in the 2010 Derby finish. Hind legs bare. Black leather bridle with a cavesson noseband. No blinkers or shadow roll. His ears look bare in the 2010 Derby and 2012 Tenno Sho photos. In the 2012 Japan Cup paddock he may wear a black face covering that is hard to tell apart from his black coat.' },
+    silks: { owner: '平井豊光 (エイシン / 栄進堂), from Mar 2013 平井克彦', desc: '赤、黒縦縞、黒袖', colors: ['#d22630', '#111111'] },
+    saddleNumber: 1, // 2010 東京優駿 (Tokyo, 30 May 2010): 1枠1番 of 17, ridden by 内田博幸. Confirmed by the JRA result page, db.netkeiba and the "1 エイシンフラッシュ" saddle cloth in the JRA finish photo
+    career: 'Tokyo Yushun (Japanese Derby) 2010 at 7th favourite, with a record 32.7 s final 3F. Tenno Sho (Autumn) 2012 under Mirco Demuro, who knelt on the turf afterwards. Also won the Keisei Hai 2010 (G3) and Mainichi Okan 2013 (G2). 2nd in the 2011 Tenno Sho (Spring) and 2011 Arima Kinen. 27 starts, 6 wins.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/エイシンフラッシュ',
+      'https://en.wikipedia.org/wiki/Eishin_Flash',
+      'https://db.netkeiba.com/horse/result/2007102951/',
+      'https://en.netkeiba.com/db/horse/result/2007102951/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/derby/result/derby2010.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/derby/result/photo/2010-2.jpg',
+      'https://ja.wikipedia.org/wiki/平井豊光',
+      'https://commons.wikimedia.org/wiki/Category:Eishin_Flash',
+      'https://commons.wikimedia.org/wiki/File:Eishin-Flash20100418.jpg',
+      'https://commons.wikimedia.org/wiki/File:Eishin_Flash.jpg',
+      'https://commons.wikimedia.org/wiki/File:2012_Tennō_Shō_(Autumn)_002.jpg',
+      'https://commons.wikimedia.org/wiki/File:Eishin_Flash_20121125a.jpg',
+    ],
+    uncertain: ['face.type', 'face.notes', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'coat.tone', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hood', 'gear.bridle', 'gear.bitLifter', 'gear.bandages', 'silks.colors'],
+  },
+  {
+    id: 'rose-kingdom', en: 'Rose Kingdom', jp: 'ローズキングダム', born: 2007, sex: 'male', // 牡, born 10 May 2007, King Kamehameha x ローズバド, bred by ノーザンファーム, trained by 橋口弘次郎 (per ja.wikipedia)
+    coat: { reg: '黒鹿毛', key: 'kurokage', greyness: null, tone: 0, mane: null, notes: 'ja.wikipedia infobox says 黒鹿毛 and en.netkeiba says "Dark Bay". JBIS was not fetched. Photos: in sunlight in the 2010 Satsuki Sho paddock (Commons) the body is a deep red-brown with black legs, mane and tail. He looks almost black in the 2011 Kyoto Daishoten and 2012 Japan Cup photos.' },
+    face: { type: 'none', notes: 'photo: in the 2011 Kyoto Daishoten winner photo (Commons, front three-quarter view, no hood) the face is plain dark with no star, stripe or snip. In every paddock photo his forehead is under a hood, so a very small star cannot be ruled out. No text source.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: all four legs dark with dark hooves in the 2010 Satsuki paddock (off side), the 2009 debut paddock (near side) and the 2012 JC paddock
+    style: { primary: 'sashi', secondary: 'senko', why: 'db.netkeiba 通過, first call / field size: Tokyo Sports Hai 4/17, Asahi Hai FS 7/16, Spring S 7/15, Satsuki 8/18, Derby 7/17, Kobe Shimbun Hai 4/12, Kikka 13/18, JC 2010 5/18 (5-7-5-6), Nikkei Shinshun Hai 8/13, Nikkei Sho 5/10, Tenno Sho (Spring) 2011 8/18, Takarazuka 5/16, Kyoto Daishoten 2011 3/8 (3-3-3-3), Tenno Sho (Autumn) 2011 5/18, JC 2011 6/16. ja.wiki: Derby「中団追走から直線で先に抜け出した」, Kikka「中団待機から直線で鋭く伸びた」, Kyoto Daishoten「逃げるネコパンチを最後の直線で捉えて」.' },
+    size: { weightKg: [438, 470], typicalKg: 462, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Race-day 馬体重 from db.netkeiba (each +/- change agrees with the run before it): 450 in the Tokyo Sports Hai (-6, so about 456 at his 2009 debut), 446 in the Asahi Hai FS, a low of 438 in the 2010 Satsuki Sho and 440 in the Derby. He was 462 (+22) after the summer in the Kobe Shimbun Hai and 462 in the 2010 JC. The high was 470 (2011 Nikkei Sho and 2012 Kyoto Daishoten), with 468 in the 2011 Kyoto Daishoten win. ja.wiki agrees on 446 (Asahi Hai), 462 (JC) and 468 (Kyoto Daishoten). No measurements were found.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1714', pompom: null, bandages: null, notes: 'Paddock photos (Commons: 2009 Kyoto debut, 2010 Satsuki Sho, 2012 Japan Cup) show a black menko with black ear covers. Both winner photos (2010 JC, 2011 Kyoto Daishoten) show a bare face and bare ears in a plain black bridle. So the hood looks paddock-only, but no clear close-up race photo was found. The small 2011 Kyoto Daishoten race photo shows no shadow roll, no blinkers and no leg bandages.' },
+    silks: { owner: 'サンデーレーシング (Sunday Racing)', desc: '黒、赤十字襷、袖黄縦縞', colors: ['#111111', '#d22630', '#f5c800'] },
+    saddleNumber: 6, // 2010 ジャパンカップ (Tokyo, 28 Nov 2010): 3枠6番 of 18. Crossed the line 2nd and was placed 1st after Buena Vista was demoted for interference. Per ja.wikipedia and db.netkeiba; "6" on the cloth in Commons Rose-Kingdom20101128.jpg
+    career: 'Asahi Hai Futurity Stakes 2009 (GI, No. 8, 446 kg) and Japan Cup 2010 (GI, placed 1st after Buena Vista was demoted). Also won the Kobe Shimbun Hai 2010 (GII) and Kyoto Daishoten 2011 (GII). 2nd in the 2010 Tokyo Yushun and Kikka Sho. 25 starts, 6 wins (en.netkeiba 25-6-2-3).',
+    sources: [
+      'https://ja.wikipedia.org/wiki/ローズキングダム',
+      'https://db.netkeiba.com/horse/result/2007103404/',
+      'https://en.netkeiba.com/db/horse/result/2007103404/',
+      'https://commons.wikimedia.org/wiki/Category:Rose_Kingdom',
+      'https://commons.wikimedia.org/wiki/File:Rose-Kingdom20101128.jpg',
+      'https://commons.wikimedia.org/wiki/File:Rose-Kingdom20111009.jpg',
+      'https://commons.wikimedia.org/wiki/File:Rose-Kingdom20111009(2).jpg',
+      'https://commons.wikimedia.org/wiki/File:Rose-Kingdom20100418.jpg',
+      'https://commons.wikimedia.org/wiki/File:Rose_Kingdom.jpg',
+      'https://commons.wikimedia.org/wiki/File:Rose_Kingdom_20121125a.jpg',
+    ],
+    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'gear.hood', 'gear.bridle', 'gear.shadowRoll', 'gear.bandages', 'gear.bitLifter', 'silks.desc', 'silks.colors', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm'],
+  },
+  {
+    id: 'rulership', en: 'Rulership', jp: 'ルーラーシップ', born: 2007, sex: 'male', // 牡, born 15 May 2007, King Kamehameha x Air Groove, bred by Northern Farm, trained by 角居勝彦 (Ritto), owned by Sunday Racing
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: 'Registered 鹿毛 (ja.wikipedia infobox; en.netkeiba "Bay Horse"; JBIS not fetched). Photos: a rich red-brown bay with black mane, tail and lower legs in the sunny 2011 Nikkei Shinshun Hai winner photo. He looks dark brown in the overcast 2012 Japan Cup paddock and almost black-brown in the rain at the 2011 Kinko Sho.' },
+    face: { type: 'star-stripe', notes: 'photo only: in the 2012 Nikkei Sho post-parade photo (front view, small) a white star high on the forehead runs into a narrow stripe down the face toward the nose. The other Commons photos are side views and show no white on the near side of the face. No text source.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // photo: all four legs bandaged in every photo; the pasterns and coronets showing below the bandages look dark
+    style: { primary: 'sashi', secondary: 'oikomi', why: 'netkeiba 通過, first call / field size: Wakagoma S 4/10, Mainichi Hai 7/11, Principal S 9/18, Derby 7/17, Naruo Kinen 4/12, Arima 2010 6/15, Nikkei Shinshun Hai 4/13, Kinko Sho 16/16 (16-15-6-4), Takarazuka 2011 14/16, Arima 2011 11/13, AJCC 8/11, Nikkei Sho 8/14, Takarazuka 2012 6/16, Tenno Sho (Autumn) 2012 16/18, JC 2012 13/17, Arima 2012 13/16. QEII Cup (HKJC) 3-3-3-1-1 of 13. ja.wiki notes his 出遅れ癖 (habit of slow starts): Kinko Sho「大きく出遅れるも徐々にポジションを上げ」, AJCC「後方待機から…捲るように」, QEII「内目の3番手で控え」, Arima 2012「10馬身近い歴史的な大出遅れ…大外から追い込んだ」.' },
+    size: { weightKg: [484, 514], typicalKg: 498, withersCm: null, girthCm: null, cannonCm: null, build: 'heavy', notes: 'Race-day 馬体重 (ja.wikipedia table and en.netkeiba agree): lightest 484 kg (2010 Derby), heaviest 514 kg (2012 Tenno Sho (Autumn), +18). 498 kg at the 2012 QEII Cup (HKJC declared weight 1100 lb, about 499 kg). 496 kg at the Nikkei Shinshun Hai and Kinko Sho, 504 kg at the AJCC. From 2011 on he raced at about 496-514 kg. No measurements found. build is chosen from these weights only.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1e1a18', pompom: null, bandages: { fore: '#f2f0ea', hind: '#f2f0ea' }, notes: 'From the Commons photos of the 2011 Nikkei Shinshun Hai (winner photo), 2011 Kinko Sho (race), 2012 Nikkei Sho (post parade) and 2012 Japan Cup (paddock): bare face and ears, no menko, blinkers or shadow roll, and a black bridle. White bandages with two thin green bands on all four legs, from below the knee/hock to the fetlock, in every photo. The QEII Cup itself was not seen in a photo.' },
+    silks: { owner: 'サンデーレーシング (Sunday Racing)', desc: '黒、赤十字襷、袖黄縦縞', colors: ['#141414', '#d22630', '#f5c400'] },
+    saddleNumber: 4, // 2012 Audemars Piguet QEII Cup (Sha Tin, 29 Apr 2012, Race 8): Horse No. 4, draw 8, U. Rispoli, won by 3¾ lengths from Thumbs Up (HKJC result page; ja.wikipedia 枠8 馬番4)
+    career: 'Queen Elizabeth II Cup (G1, Sha Tin) 2012. Also won the AJCC 2012, Kinko Sho 2011, Nikkei Shinshun Hai 2011 and Naruo Kinen 2010. 2nd in the Takarazuka Kinen 2012; 3rd in the Tenno Sho (Autumn), Japan Cup and Arima Kinen 2012. 20 starts, 8 wins.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/ルーラーシップ',
+      'https://en.netkeiba.com/db/horse/result/2007103143/',
+      'https://db.netkeiba.com/horse/result/2007103143/',
+      'https://racing.hkjc.com/racing/information/English/Racing/LocalResults.aspx?RaceDate=2012/04/29&Racecourse=ST&RaceNo=8',
+      'https://ja.wikipedia.org/wiki/サンデーレーシング',
+      'https://commons.wikimedia.org/wiki/Category:Rulership',
+      'https://commons.wikimedia.org/wiki/File:Rulership20110116.jpg',
+      'https://commons.wikimedia.org/wiki/File:Rulership20110528(1).jpg',
+      'https://commons.wikimedia.org/wiki/File:Rulership20120324.jpg',
+      'https://commons.wikimedia.org/wiki/File:Rulership_20121125a.jpg',
+    ],
+    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bitLifter', 'gear.bandages', 'silks.colors'],
+  },
+  {
+    id: 'victoire-pisa', en: 'Victoire Pisa', jp: 'ヴィクトワールピサ', born: 2007, sex: 'male', // 牡, born 31 Mar 2007 (JBIS), Neo Universe x Whitewater Affair (Machiavellian), bred by 社台ファーム (Chitose), trained by 角居勝彦 (Ritto)
+    coat: { reg: '黒鹿毛', key: 'kurokage', greyness: null, tone: 0, mane: null, notes: 'Registered 黒鹿毛 (JBIS, ja.wikipedia). en.wikipedia gives "Dark Bay or Brown". Photos: in sun (2010 Satsuki paddock) the body is a deep reddish brown that shades to near-black on the head, neck and shoulders, with black legs. He looks almost black-brown in the JRA Arima 2010 race photos. Black mane and tail.' },
+    face: { type: 'none', notes: 'photo: plain dark face with no star, stripe or snip in the 2009 debut paddock photo (head-on), the 2009 Radio NIKKEI Hai presentation photo and the 2010 Satsuki Sho presentation photo. The bare face is also plain in the JRA Arima 2010 race photos. No text source.' },
+    legs: { LF: 'none', RF: 'none', LH: 'pastern', RH: 'none' }, // photo: one hind is white from the bandage bottom (fetlock) to the coronet over a pale, unpigmented hoof; the other three pasterns and hooves are black. LH by perspective (far hind in the off-side 2010 Satsuki paddock photo); anything above the fetlock is hidden by bandages
+    style: { primary: 'sashi', secondary: 'senko', why: 'netkeiba 通過, first call / field: Radio NIKKEI Hai 10/15, Yayoi 6/13, Satsuki 14/18 (14-13-7-8), Nakayama Kinen 10/12, JC 2011 16/16, but further forward in the Derby 5/17, JC 2010 2/18, Arima 2010 4/15 (4-4-2-2), Arima 2011 2/13. ja.wiki: Satsuki「後方の内に控え」, Arima 2010「4、5番手追走から早めに先頭へ」, DWC「最後方からの競馬…向正面で一気に進出し…2番手」. 特徴: 「デビュー当初は差す競馬をしていたが、有馬記念、ドバイワールドカップでは直線で早めに先頭に立ちそのまま押し切る」.' },
+    size: { weightKg: [502, 520], typicalKg: 512, withersCm: null, girthCm: null, cannonCm: null, build: 'heavy', notes: 'Race-day 馬体重 from the ja.wikipedia 競走成績 table (JRA starts): 514 (debut), 516, 510, 518 (Radio NIKKEI Hai), 510 (Yayoi), 506 (Satsuki win), 502 (Derby), 510 (JC 2010), 512 (Arima 2010 win, +2, also on the JRA result page), 512 (Nakayama Kinen), 508 (JC 2011), 520 (Arima 2011). Not weighed in France or Dubai. ja.wiki 特徴 quotes 週刊競馬ブック: 「大型で跳びの大きい走法だが、上手く流れに乗る器用さがある」. No measurements were found.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1714', pompom: null, bandages: { fore: '#f2f0ea', hind: '#f2f0ea' }, notes: 'He raced bare-headed: the JRA 2010 Satsuki Sho and 2010 Arima Kinen race photos show no menko, blinkers or shadow roll, with the ears bare. In the paddock he wore a black menko with black ear covers (2010 Satsuki paddock, 2010 JC paddock with Guyon up, 2012 retirement ceremony). Black leather bridle, with a silver studded browband in the presentation photos. White leg bandages on all four legs, each with two teal-green stripes (about #2a9d84) at the top, in every photo from his 2009 debut to his 2012 retirement, races included. Gear in the Dubai World Cup was not checked (no free photo).' },
+    silks: { owner: '市川義美 (Yoshimi Ichikawa; JBIS lists him as owner, the ja.wiki infobox lists 市川義美・吉田照哉)', desc: '白、青縦縞、赤袖青一本輪', colors: ['#ffffff', '#1f3fc8', '#e60033'] },
+    saddleNumber: 1, // 2010 有馬記念 (Nakayama, 26 Dec 2010): 1枠1番 of 15, won a photo finish (0.0 s) from Buena Vista under M. Demuro. Confirmed by the JRA result page, netkeiba, ja.wiki and the "1" saddle cloth in the JRA race photos. Chosen over the 2011 Dubai World Cup, where netkeiba and ja.wiki give 馬番 6 but no source shows whether that was his saddle-cloth number or his stall
+    career: 'Satsuki Sho 2010, Arima Kinen 2010, Dubai World Cup 2011 (the first Japanese-trained winner, two weeks after the Tohoku earthquake). Also won the Yayoi Sho 2010, Nakayama Kinen 2011 and Radio NIKKEI Hai Nisai S 2009. 3rd in the Tokyo Yushun 2010 and Japan Cup 2010, 7th in the 2010 Arc. JRA champion 3yo colt 2010 and champion older male 2011. 15 starts, 8 wins.',
+    sources: [
+      'https://www.jbis.or.jp/horse/0001046333/',
+      'https://ja.wikipedia.org/wiki/ヴィクトワールピサ',
+      'https://db.netkeiba.com/horse/result/2007102923/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/arima2010.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/photo/2010-1.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/photo/2010-3.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/photo/2010-4.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/satsuki/result/photo/2010-1.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/satsuki/result/photo/2010-2.jpg',
+      'https://ja.wikipedia.org/wiki/市川義美',
+      'https://commons.wikimedia.org/wiki/File:Owner_Ichikawa_Yoshimi.svg',
+      'https://commons.wikimedia.org/wiki/File:Victoire_pisa.jpg',
+      'https://commons.wikimedia.org/wiki/File:Victoire-Pisa20091226.jpg',
+      'https://commons.wikimedia.org/wiki/File:Victoire-Pisa20100418(1).jpg',
+      'https://commons.wikimedia.org/wiki/File:Victoire-Pisa20100418(2).jpg',
+      'https://commons.wikimedia.org/wiki/File:Victoire-Pisa20101128.jpg',
+      'https://commons.wikimedia.org/wiki/File:Victoire-Pisa20120115.jpg',
+      'https://en.wikipedia.org/wiki/Victoire_Pisa',
+      'https://en.wikipedia.org/wiki/2011_Dubai_World_Cup',
+    ],
+    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bitLifter', 'gear.bandages', 'style.secondary', 'silks.colors'],
+  },
+  {
+    id: 'orfevre', en: 'Orfevre', jp: 'オルフェーヴル', born: 2008, sex: 'male', // 牡, born 14 May 2008, Stay Gold x オリエンタルアート (by Mejiro McQueen), bred by 社台コーポレーション白老ファーム, trained by 池江泰寿 (Ritto)
+    coat: { reg: '栗毛', key: 'kuri', greyness: null, tone: 0, mane: null, notes: 'Registered 栗毛 per the ja.wikipedia infobox; en.netkeiba and en.wikipedia say "Chestnut" (JBIS not fetched). ja.wiki, on the foal: 「毛色は栗毛、サイズも平均的というお母さんにそっくりの馬」. Photos (2012 Japan Cup and 2013 Osaka Hai paddock): a bright orange-red chestnut. The mane is the same colour as the body. The tail is chestnut at the dock and turns paler and more golden toward the ends, most visibly in the 2012 JC paddock photo.' },
+    face: { type: 'blaze', notes: 'en.wikipedia: "Orfevre is a chestnut horse with a white blaze". photo: in JRA 2011 Kikuka Sho photo 4 (front three-quarter view), a white band of fairly even width runs from the forehead down to the nose. In the 2012 JC and 2013 Osaka Hai paddock photos the white continues below the hood onto the muzzle.' },
+    legs: { LF: 'none', RF: 'none', LH: 'sock', RH: 'none' }, // photo: one white hind, coronet to just above the fetlock, in both near-side paddock photos (JC 2012, Osaka Hai 2013). Its hoof sits lower in the frame, so it is put on the left (near) hind
+    style: { primary: 'sashi', secondary: 'oikomi', why: 'en.netkeiba bend positions, first call / field: Spring S 11/18, Satsuki Sho 12/18, Derby 14/18, Kobe Shimbun Hai 5/11, Kikuka Sho 10/18 (10-10-6-3), Arima 2011 11/13, Tenno Sho (Spring) 2012 16/18, Takarazuka 2012 11/16, JC 2012 12/17, Osaka Hai 2013 10/14, Arima 2013 13/16 (13-13-12-2, a long move round the outside). The one exception is the Hanshin Daishoten 2012 at 1/12, where he raced too keenly and ran wide mid-race. ja.wiki: Satsuki「道中中団やや後方で折り合い良く待機」, Derby「中団やや後ろ」, Kikuka「中団好位をキープ」, Arima 2011「最後方付近の内ラチ沿い」→「大外を捲」, Takarazuka「後方5番手付近に待機」, JC「後方5番手の外側」, Arima 2013「後方4番手」.' },
+    size: { weightKg: [440, 466], typicalKg: 460, withersCm: null, girthCm: null, cannonCm: null, build: 'compact', notes: 'Race-day 馬体重 from en.netkeiba (JRA starts only; the four French starts list no weight): 448 at his debut, 440 (-4) in the Satsuki Sho (his lightest), 444 (+4) in the Derby, 466 (+6) in the Kikuka Sho (his heaviest, matched in Arima 2013), 462 in Arima 2011, 456 in Takarazuka 2012, 458 in JC 2012, 464 in Osaka Hai 2013, 466 (0) in Arima 2013. The JRA Kikuka 2011 result page also gives 466. No measurements were found. build is inferred from the light race weights for a colt.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: null, notes: 'Race: in the four JRA photos of the 2011 Kikuka Sho he raced bare-headed, with no menko, blinkers or shadow roll, a dark bridle and no visible bandages. Paddock only: a dark hood with ear covers and brown-ringed eye cups. It was black at the 2013 Osaka Hai and dark navy at the 2012 JC. ja.wiki notes「メンコ（覆面）をしていたとか」among the suggested reasons for his Tenno Sho (Spring) 2012 defeat, so he may have raced hooded there. His 2012-13 race photos were not checked.' },
+    silks: { owner: 'サンデーレーシング (Sunday Racing)', desc: '黒、赤十字襷、袖黄縦縞', colors: ['#111111', '#d22630', '#f5c800'] },
+    saddleNumber: 14, // 2011 菊花賞 (Kyoto, 23 Oct 2011, Triple Crown clincher): 7枠14番, confirmed by the JRA result page, en.netkeiba and the "14 オルフェーヴル" saddle cloth in the JRA photos. Other options: Derby 2011 = 5, Arima 2013 = 6
+    career: 'Japanese Triple Crown 2011 (Satsuki Sho, Tokyo Yushun, Kikuka Sho), Arima Kinen 2011 and 2013 (by 8 lengths in his farewell), Takarazuka Kinen 2012, Prix Foy 2012 and 2013. 2nd in the Prix de l\'Arc de Triomphe 2012 and 2013 and the Japan Cup 2012. 21 starts: 12 wins, 6 seconds, 1 third.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/オルフェーヴル',
+      'https://en.wikipedia.org/wiki/Orfevre',
+      'https://en.netkeiba.com/db/horse/result/2008102636/',
+      'https://db.netkeiba.com/horse/result/2008102636/',
+      'https://www.jra.go.jp/datafile/seiseki/g1/kikka/result/kikka2011.html',
+      'https://www.jra.go.jp/datafile/seiseki/g1/kikka/result/photo/2011-1.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/kikka/result/photo/2011-2.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/kikka/result/photo/2011-3.jpg',
+      'https://www.jra.go.jp/datafile/seiseki/g1/kikka/result/photo/2011-4.jpg',
+      'https://commons.wikimedia.org/wiki/File:Orfevre_20121125a.jpg',
+      'https://commons.wikimedia.org/wiki/File:Orfevre_in_Osaka_hai_2013_(1)_IMG_1963_20130331.JPG',
+    ],
+    uncertain: ['legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'coat.tone', 'coat.mane', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hood', 'gear.bridle', 'gear.bitLifter', 'gear.bandages', 'style.secondary', 'silks.desc', 'silks.colors'],
+  },
 ];

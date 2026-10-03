@@ -81,6 +81,71 @@ window.LOCATIONS = [
     uncertain: ['stand.colors', 'backdrop.landmarks[0].bearingDeg', 'infield[0] position'],
   },
   {
+    // Seasonal variant: Tokyo on Japanese Derby day (東京優駿 / 日本ダービー). `variantOf` takes the 'tokyo' entry (stand, course, facts)
+    // and merges these fields over it.
+    id: 'tokyo-derby', variantOf: 'tokyo', en: 'Tokyo Racecourse (Japanese Derby)', jp: '東京競馬場（日本ダービー）', group: 'JRA G1',
+    // Since 2000 the race is run on the Sunday after the last Saturday of May (26 May to 1 June). Every running from 2021 to 2026 had
+    // post 15:40, weather 晴, going 良, turf 2400 m on the C course (inner rail 6 m out). Sources: netkeiba, ja.wikipedia.
+    // Sun computed for 31 May 2026, 15:40 JST, at 35.663N 139.485E: elevation 36.4°, true azimuth 272.4°. The scene azimuth keeps
+    // the base entry's offset (the base sets -35 for a true 236.1°): -35 - (272.4 - 236.1) = -71.
+    time: {
+      month: 5, post: '15:40', sunElevDeg: 36, sunAzimDeg: -71, fogNear: 125, fogFar: 390, exposure: 1.0,
+      sky: { top: '#6a9ad4', mid: '#b2cbe2', horizon: '#e4e6e0', sun: '#fff5de' }, // bright early-summer blue, milky haze low down
+      sunColor: '#fff3dc', sunIntensity: 3.0,                                     // a higher, whiter sun than the Japan Cup's
+      hemiSky: '#dde8f3', hemiGround: '#7e8c4e', hemiIntensity: 1.22,             // green bounce off the fresh turf
+    },
+    // JRA (2025 and 2026 spring meetings): 野芝に洋芝（イタリアンライグラス）をオーバーシード; in late May both grasses are green, so the
+    // turf is at its brightest (sampled from 2021 and 2024 Derby-day photos, toned down for the scene's sun).
+    turf: { color: '#6a9838' },
+    lawn: '#71964a', verge: '#689444',
+    leaf: ['#4a7236', '#5a843c', '#6b9545', '#3f5e35'], autumn: 0, // fresh early-summer broadleaves plus darker evergreens
+    dust: '#86774f', // dry, firm 良 ground (JRA turf moisture 13.5% / 11.5% on 31 May 2026)
+    saddleCloth: { cloth: '#f4f4f0', ink: '#141414', edge: '#c9a227' }, // Derby: 白地に黒文字, gold-thread edging (金糸の縁取り刺繍) since 1994
+    backdrop: {
+      ranges: [
+        { r: 585, base: '#8f97b5', h: [12, 28], step: 0.16, haze: 0.65 }, // Tanzawa / Okutama, washed out in the early-summer haze
+        { r: 545, base: '#8e9a8c', h: [4, 10], step: 0.1, haze: 0.55 },
+      ],
+      landmarks: [
+        { type: 'fuji', bearingDeg: 22, distM: 575, heightM: 42, snowLine: 0.72, haze: 0.62 }, // late May: snow only on the upper slopes; faint in the haze
+        { type: 'screen', bearingDeg: -4, distM: 320, wM: 66.4, hM: 11.2, liftM: 5 },           // Turf Vision (as in the base)
+        { type: 'tree', bearingDeg: -58, distM: 360, heightM: 24, leaf: '#4f7a38' },             // 大ケヤキ (really an エノキ) in full early-summer leaf
+        { type: 'skyline', fromDeg: 70, toDeg: 115, distM: 520, heightM: [6, 26] },              // Fuchu (as in the base)
+      ],
+    },
+    signature: 'Derby Day: the year\'s biggest crowd (78,678 in 2024; the course record is 196,517 at the 1990 Derby) lines the 525.9 m straight on a bright, hazy early-summer afternoon, with the overseeded turf at its greenest, the white Derby saddle cloths with gold edging, and Mt Fuji at most a pale shape in the haze.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/東京優駿',
+      'https://ja.wikipedia.org/wiki/第93回東京優駿',
+      'https://ja.wikipedia.org/wiki/第92回東京優駿',
+      'https://ja.wikipedia.org/wiki/第91回東京優駿',
+      'https://ja.wikipedia.org/wiki/第90回東京優駿',
+      'https://race.netkeiba.com/race/result.html?race_id=202605021211',
+      'https://race.netkeiba.com/race/result.html?race_id=202505021211',
+      'https://race.netkeiba.com/race/result.html?race_id=202405021211',
+      'https://race.netkeiba.com/race/result.html?race_id=202305021211',
+      'https://race.netkeiba.com/race/result.html?race_id=202205021211',
+      'https://race.netkeiba.com/race/result.html?race_id=202105021211',
+      'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)',
+      'https://ja.wikipedia.org/wiki/東京競馬場',
+      'https://www.jra.go.jp/keiba/baba/overview/2026_2-3_tokyo.html',
+      'https://www.jra.go.jp/keiba/baba/overview/2025_2-3_tokyo.html',
+      'https://www.jra.go.jp/keiba/baba/archive/2026pdf/tokyo02.pdf',
+      'https://www.openstreetmap.org/way/155529613',
+      'https://commons.wikimedia.org/wiki/File:11R_Tokyo_Yushun_(Japanese_Derby)_(G1,_3yo)_Turf_2400m_at_Tokyo_racecourse_(53747047631).jpg',
+      'https://commons.wikimedia.org/wiki/File:11R_Tokyo_Yushun_(Japanese_Derby)_(Grade_1,_3yo)_Turf_2400m_2021_at_tokyo_racecourse_(51216444985).jpg',
+    ],
+    uncertain: [
+      'time.sunAzimDeg (-71 keeps the base entry\'s offset; OSM puts the straight at ~268° true, which would make the real Derby sun +85 and the Japan Cup sun +122 in the scene frame, so the base Tokyo bearings need re-deriving)',
+      'time.sky, fog, exposure, light colours and intensities (look values from 2022 and 2024 Derby-day photos, not measured)',
+      'turf / lawn / verge / leaf colours (sampled from Commons photos and toned down by eye)',
+      'dust (estimated; only the dry going is sourced)',
+      'saddleCloth.edge hex (the gold edging is sourced but too thin to sample)',
+      'backdrop.landmarks[0] (Fuji on Derby afternoons: one Derby-day photo shows it faint through haze; snowLine and haze set by eye; its bearing kept at the base\'s 22 though the real bearing in this frame is about +66)',
+      'needs a kit: the C-course inner rail 6 m out, with the worn A-course strip inside it',
+    ],
+  },
+  {
     id: 'nakayama', en: 'Nakayama Racecourse', jp: '中山競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
     hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2032,
     // Arima Kinen, late December: low golden winter sun, overseeded turf going yellow-green

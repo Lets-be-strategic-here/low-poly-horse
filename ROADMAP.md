@@ -4,11 +4,12 @@ Where the low-poly horse goes next, in build order. Each **batch** adds the next
 order, a location or two, and one engine item. Horses come from the official character list at
 <https://umamusume.jp/character/>; every entry models the **real racehorse** behind a character.
 
-## Status after batch 14 (October 2026)
+## Status after batch 15 (October 2026)
 
 | Area | Done |
 |---|---|
 | Engine | Horse profiles drive the whole model: coat, markings, size and hair length. A gait table holds the gallop (left or right lead), a new **walk** and a standing **graze** pose. Stride counts are recomputed for each horse and location, so the loop stays seamless and planted hooves have 0.00 mm slip (measured). Includes a location system, background horses, the side panel and the URL hash. |
+| Reins and a quieter rider (B15) | **Reins** run from the bit rings to the jockey's hands (`gear.reins` colour, else the bridle's). Each end rides on its own node, a marker on the head and one at the rider's hands, and the strap between is skinned to both with the weight sliding along it, so it stays taut between them however the head nods (one extra draw call per ridden horse). The **rider now hangs from a pivot at the irons** and turns against about 70% of the back's pitch, so the upper body stays quieter over a horse that rocks under it. Each **arm** is its own node: the hands give and take along the rein as the head nods out and back (up to 6 cm about a slow running mean, so the rein keeps its length within about 3 cm at racing speed), and in race mode the riders **push** in the home straight, the hands pumping once a stride until past the post. **Puddles** (`wet.puddles`) lie on the dirt course and the apron of a soaked racecourse: flat glossy patches the colour of the grey sky. The second seasonal variant is **Tokyo on Derby day** (`tokyo-derby`): a bright, hazy early-summer afternoon with a higher, whiter sun, the overseeded turf at its greenest, trees in fresh leaf, Fuji faint with snow only near the top, and the Derby's white saddle cloths with black text and gold edging. Changing location now rebuilds the hero whenever its tack changes (a Derby cloth to a G1 cloth, not only cloth to no cloth). |
 | Rain and seasonal variants (B14) | **Location variants:** `variantOf: 'hanshin'` takes an existing entry and merges the variant's fields over it (objects key by key; arrays, colours and `null` replace), so a season or a race day reuses the course, stand and backdrop and changes only the light, colours and weather. **Rain** (`rain` { intensity, slantDeg }): fine streaks in a box that rides with the horse, a whole number of box lengths per scenery period and box heights per loop, so the loop stays seamless. Each streak is the path its drop sweeps in a 35 ms exposure as seen from the camera, so it falls nearly straight at a walk and rakes back past the horse at racing speed; wind slants it across the course. On a soaked course the hooves throw dark clods instead of dust. The first variant is **Hanshin for the Takarazuka Kinen in the rainy season** (梅雨): a flat grey overcast with soft, almost shadowless light, fog that swallows the Rokko hills, deep-green summer noshiba, dark wet dirt and the standard G1 cloth. Silks: hoops named after the sleeves now run across the sleeves too (「青、赤袖、白三本輪」). |
 | Race mode (B13) | On a racecourse the **Field** button runs a race: the hero against the **17 roster racehorses foaled closest to it**, each in its own coat, gear, silks and cap, numbered 1–18 round the hero's own number. A race is a ~52 s story told in metres behind a virtual leader. The field breaks from an 18-stall **starting gate** (it stays on the ground and slides away behind), settles into **running-style order** (逃げ in front, 先行, 差し, 追込 at the back, with a 30% chance of a horse's secondary style) in lanes off the inner rail, then fans out across the course off the home turn while the finishing order is decided (front-runners fade, closers kick; seeded per race). The leader passes the **winning post** (ゴール板) and the next race starts. Every runner's gait phase follows the ground it covers, so hooves stay planted while it gains or drops back, and it turns into its sideways drift. The camera side is kept clear: the hero sits just outside its row and comes wide in the straight (a front-runner keeps its line). A line under the hint shows the hero's place and the leader, then the result. The field shows at the race and gallop gaits (the story slows with the gait); the hash stores it as `race=1`. The gate is JRA's JSS40 as photographed: white posts, grey padded stalls, a green truss with yellow number plates (stall 1 on the inner rail) and the course's name on a white sign band, in two sections of 10 and 8. 18 horses with riders draw in about 115 calls. |
 | Limb ranges (B13) | The **front legs** looked wrong at speed: the swing path was a cubic Hermite carrying the ground's speed at both ends, which overshoots by 0.1 × the stride, so at racing speed the forefoot was flung half a metre past its landing spot and the IK pushed the elbow out in front of the chest (humerus +49° forward) or up level with the point of shoulder. The swing now spends the ground's speed in short windows at each end (`flick` after lift-off, `retract` before landing, per gait), and in the swing the **humerus keeps to −76°…+2°** and the **femur to 0°…76°**: past a limit the bone stops and the knee or hock bends to reach instead (the same pose at the limit, so nothing jumps). The race gait's fore lift is a little lower (forearm at most 65° forward). Stance slip is unchanged at 0.00 mm. |
@@ -29,7 +30,7 @@ order, a location or two, and one engine item. Horses come from the official cha
 | Forelimbs (B2) | Deeper, broader brisket so the elbow and forearm tuck into the chest instead of hanging off a rounded barrel; a broad flat shoulder blade, a triceps mass and a muscular forearm top; at the gallop the forefoot flips up into a hook behind the knee (deeper fetlock curl, higher fore lift). |
 | Colour | All 8 JBIS registry coats (鹿毛 … 白毛), pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. **Greys (B2):** greyness slider with a slow-greying curve, **dapples** (cellular noise painted on 16× subdivided coplanar faces, strongest at mid grey, with their own slider), lighter faces and dark lower legs on young greys, and a separate `coat.tail` colour. |
 | Parts | Mane and tail length, height (uniform scale) and weight (bulk of trunk, neck and upper limbs). |
-| Horses | 115 of 152, roster #1–#115, from Byerley Turk (c.1680) to Tosen Jordan (2006). 111 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
+| Horses | 123 of 152, roster #1–#123, from Byerley Turk (c.1680) to Orfevre (2008). 119 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
 | Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), and the JRA G1 courses **Tokyo**, **Nakayama**, **Kyoto** (infield lake), **Hanshin** (cherry blossom: `blossom` colours flowering broadleaf trees only) and **Chukyo** (B3); the NAR tracks **Oi** (B4), **Kawasaki** and **Funabashi** (B5) at night, **Urawa** at twilight and **Morioka** at night with the turf course inside the dirt (`innerTurf`, B6), **Kanazawa** in low November sun and **Saga** at night (B7); the **Tokyo Racecourse paddock** on Derby day, walked in path mode with the rest of the field (B8); a **beach at dawn** modelled on Kujukuri, the sun rising out of the Pacific behind the horse (B9); the **Ritto hill gallop** (坂路), an endless climb up the wood chips (B10); a **snowy Hidaka farm** on a clear February morning (B11); **Hanshin in the rain** for the Takarazuka Kinen, the first seasonal variant (B14). |
 | Research | Two reusable agent templates in `.claude/agents/`, run for every horse and track since batch 2 (8–10 agents in parallel, about 3–9 minutes each). |
 
@@ -60,7 +61,8 @@ Engine items are placed before the first horse that needs them.
 | ✅ 12 | #92–99 · 1999–2002 · Tanino Gimlet, Admire Groove, Neo Universe, Still in Love, Zenno Rob Roy, Sweep Tosho, Air Messiah, Cesario | — | Jockey in the owner's silks (勝負服, parsed from `silks.desc`) |
 | ✅ 13 | #100–107 · 2002–04 · Daring Heart, Rhein Kraft, Fusaichi Pandora, Kawakami Princess, Aston Machan, Daiwa Scarlet, Dream Journey, Furioso | — | **Race mode** (a field of roster horses by running style, gate start, winning post); limb ranges in the swing |
 | ✅ 14 | #108–115 · 2004–06 · Vodka, Casino Drive, Espoir City, Smart Falcon, Buena Vista, Nakayama Festa, Red Desire, Tosen Jordan | Hanshin in the rain (Takarazuka Kinen, 梅雨) | Location variants (`variantOf`); rain; clods off a wet course |
-| 15–19 | #116–152 · 2006–2021 · Transcend … Forever Young (8 per batch; the exact split is in `data/roster.js`) | More seasonal variants of existing tracks | Polish |
+| ✅ 15 | #116–123 · 2006–08 · Transcend, Wonder Acute, Curren Chan, Eishin Flash, Rose Kingdom, Rulership, Victoire Pisa, Orfevre | Tokyo on Derby day | Reins; the rider steadied at the irons |
+| 16–19 | #124–152 · 2008–2021 · Win Variation … Forever Young (8 per batch; the exact split is in `data/roster.js`) | More seasonal variants of existing tracks | Polish |
 
 Before every batch, re-read the official list. New characters are added over time, and they slot into the roster by foaling year.
 
@@ -101,6 +103,7 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
 | Variant | Status |
 |---|---|
 | Hanshin in the rainy season, Takarazuka Kinen (B14) | ✅ |
+| Tokyo on Derby day (B15) | ✅ |
 
 ## Anatomical accuracy (ordered by visual payoff)
 1. ✅ **Race-speed gallop** (B3; the old gallop stays as the "Gallop" button). The old gallop has 2.6 m strides at 0.42 s, about 6 m/s, which is a canter pace. A racing Thoroughbred runs about 16–17 m/s:
@@ -161,6 +164,7 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
 - Props are already static instanced strips that only slide each frame, so they cost no per-frame CPU.
 
 ## Research workflow (one agent per horse / per location)
+- **No personal information in requests.** Agents must never put the user's email (or anything personal) in a request, URL or header; a client that needs a User-Agent uses a generic one (`low-poly-horse-research/1.0`). Both templates say so since B15.
 - **Run the agents without Playwright.** The browser is shared, so parallel agents navigate each other's pages; they read photos by calling WebFetch on the image URL instead.
 - **Agent templates:**
   - `.claude/agents/horse-researcher.md` returns one `HORSES` entry.
@@ -363,6 +367,16 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Red Desire.** Face and legs from the 2009 Shuka Sho photos only (bandaged).
 - [ ] **Tosen Jordan.** Leg whites from photos; the white hind may be LH rather than RH.
 
+### Horses (batch 15)
+- [ ] **Transcend.** Face and the white RF pastern from photos; these are the owner's current 水色 silks (an older 青 version existed); his number is from the 2011 JCD (3 in 2010).
+- [ ] **Wonder Acute.** Face, legs and gear are not checked against any photo; 「桃、白菱山形」 is read from the Commons silks image, not an official string; the red stripe on his white hood is not drawn.
+- [ ] **Curren Chan.** Greyness and the silvery tail from photos (a small star may not show on a grey); the black-and-gold hood of her 2011 Hanshin Himba S is left off.
+- [ ] **Eishin Flash.** Face from side views only; he may have worn a black hood in the 2012 Japan Cup paddock.
+- [ ] **Rose Kingdom.** His silks are taken from the other Sunday Racing entries (they match the photo); his paddock-only black hood is not drawn.
+- [ ] **Rulership.** The face is from one small front view; legs bandaged in every photo.
+- [ ] **Victoire Pisa.** The white hind is put on LH by perspective; the silks colours come from the Commons image; his Dubai World Cup number (6) is not used.
+- [ ] **Orfevre.** The side of the white hind is read from perspective; the paler golden ends of his tail are not drawn; he may have raced hooded in the 2012 Tenno Sho (Spring).
+
 ### Race mode
 - [ ] The gate (JRA's JSS40: green truss, yellow number plates, white posts, grey padded stalls, two sections of 10 + 8) is drawn from Commons photos; no source gives its sizes, so the ~1.15 m stalls, ~2.9 m depth and ~4.3 m truss are read off photos against the tractor. The tractor and the starter's stand are not drawn.
 - [ ] The winning post uses Tokyo's style (white pylons, the dark mirror box of the photo-finish camera, a sky-blue badge) at every course; Kyoto, Nakayama and the NAR tracks have their own frames.
@@ -372,7 +386,7 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 ### Jockey
 - [ ] The cap colour assumes an 18-runner field; a horse's real bracket (枠) in its signature race is often in the research notes and could be stored (`saddleBracket`).
 - [ ] Patterns not drawn yet: the "ダイヤモンド" variants, two-colour sleeves split down the middle, and names written on the silks. Silks described only in English fall back to the first two colours.
-- [ ] The rider is rigid on the spine; a jockey absorbs the horse's motion with the knees and keeps the head still. Reins, the whip and a rider for the paddock (mounting at 「とまれ」) are still to do.
+- [ ] The rider turns against the back's pitch at the irons and the hands follow the mouth (B15), but the body still rises and falls with the back; a jockey's knees take up the bounce too. The arms slide as rigid pieces (no elbow). Reins and pushing are in (B15); the whip, rein covers and a rider for the paddock (mounting at 「とまれ」) are still to do.
 
 ### Locations
 - [ ] **Tokyo.** Stand colours, Mt Fuji's bearing, and the infield pond's position.
@@ -389,7 +403,8 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Snowy field.** Snow depth is a compromise between the coast (15–28 cm) and the valleys; colours sampled from a Biei photo; the one Urakawa winter photo shows weathered grey fences and an unrugged horse; rug colours, buildings and trees are not sourced; larch windbreaks need a kit.
 - [ ] **Beach.** The shoreline bearing (±10°) and the sun's position are computed; sand and sea colours are sampled from photos exposed for the sky; dune distance, pines and driftwood are guesses; needs a sun-glitter path on the sea and wet sand.
 - [ ] **Tokyo paddock.** The ring is a stadium fitted to a 0.49 m/px aerial (the real ends are flatter); the lane width varies (2.4 m on the straights, 4–5 m at the ends); the walking direction is read from two photos; terrace rows, screen size and the stand behind are estimates; the hero keeps the number of its own signature win on the Derby cloth; needs kits for the stand's deck balconies, the lawn numbers and lettering, the Tokinominoru statue, jockeys and handlers.
-- [ ] **Hanshin in the rain.** The light, sky, fog and rain strength are look values for a tsuyu overcast, not measured; turf, lawn and clod colours are read off June 2026 photos; puddles on the dirt and apron, and umbrellas in the crowd, are not drawn; the Takarazuka Kinen runs on the inner course, whose straight is shorter than the outer course's profile used here.
+- [ ] **Hanshin in the rain.** The light, sky, fog and rain strength are look values for a tsuyu overcast, not measured; turf, lawn and clod colours are read off June 2026 photos; umbrellas in the crowd are not drawn and the puddles (B15) are scattered at random; the Takarazuka Kinen runs on the inner course, whose straight is shorter than the outer course's profile used here.
+- [ ] **Tokyo on Derby day.** The sun keeps the base Tokyo entry's bearing offset, but OpenStreetMap puts the straight at ~268° true, so the real Derby sun would be at +85° in the scene frame (the Japan Cup sun at +122°) and Fuji at about +66°: the base Tokyo bearings need re-deriving. Light and colours are look values from Derby-day photos; the C-course rail 6 m out is not drawn.
 - [ ] **Morioka.** Mt Iwate really stands behind the stand (bearing ~178°) and is moved across the infield as artistic licence; floodlight count, height and colour are not published; the screen's size and the pond are read from the aerial; needs kits for the V-shaped glass atrium, the pale inner ring and the forest behind the back straight.
 
 ### Source access (affects every batch)
