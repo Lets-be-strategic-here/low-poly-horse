@@ -7,7 +7,7 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 ## What's in it
 
 - **Procedural horse.** Built in code from low-segment primitives with vertex sculpting and flat shading. There are no model or texture files. A hierarchical rig covers the spine, neck, head, ears, four legs, a chained tail and a mane.
-- **Real horses.** 19 so far, from Byerley Turk (c.1680) to Sakura Chiyono O (1985). Each one sets:
+- **Real horses.** 27 so far, from Byerley Turk (c.1680) to Mejiro Palmer (1987). Each one sets:
   - coat, using the JBIS registry colour (鹿毛, 黒鹿毛, 芦毛 …);
   - face and leg markings;
   - size: height at the withers and race weight;
@@ -17,12 +17,13 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
   The values are researched and sourced; anything unconfirmed is listed in the horse's info card. The full build queue (152 horses) is in `data/roster.js`.
 - **Customization.** Coat presets and colour pickers, greyness and dapple sliders for greys, 10 face markings, white height per leg, height, weight, and mane and tail length.
 - **Locations.**
-  - Tokyo, Nakayama, Kyoto and Hanshin racecourses. They're built from JRA course data: left- or right-handed layout, turf and dirt courses, rails, grandstand, infield (steeplechase jumps, Tokyo's garden pond, Kyoto's lake), the big screen, Mt Fuji behind Tokyo, and Hanshin's cherry blossom.
+  - Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses. They're built from JRA course data: left- or right-handed layout, turf and dirt courses, rails, grandstand, infield (steeplechase jumps, Tokyo's garden pond, Kyoto's lake), the big screen, Mt Fuji behind Tokyo, and Hanshin's cherry blossom.
   - A Hidaka stud farm, where the horse walks with a companion and other horses graze.
   - The original countryside trail.
 - **Gaits.**
   - Four-beat lateral walk.
   - Transverse gallop with left or right lead; on a racecourse it takes the outside lead for the home straight.
+  - Racing gallop at about 16 m/s: 7 m strides, a long suspension, a lower and longer body, push-off through the hocks. Racecourses start in it.
   - Standing graze pose for background horses.
 
   Leg IK keeps each hoof planted with no sliding (measured slip: 0.00 mm). The toe breaks over as the hoof lifts off.
@@ -31,7 +32,7 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 ## Controls
 
 - Drag to orbit, scroll to zoom. Space or ▶ plays and pauses; the slider sets speed from 0.25× to 2×.
-- **Walk / Gallop** switches gait. **Side, ¾, Front, Far** set camera presets; at a racecourse, Far looks across from the infield side. **Wire** shows a wireframe.
+- **Walk / Gallop / Race** switches gait. **Side, ¾, Front, Far** set camera presets; at a racecourse, Far looks across from the infield side. **Wire** shows a wireframe.
 - **Horse** opens the panel with the horse and location pickers, the horse's info card and the customization controls.
 - The URL hash stores the horse, location and gait, for example `#h=symboli-rudolf&l=tokyo&g=gallop`.
 
@@ -49,9 +50,10 @@ A low-poly 3D horse built with Three.js from primitive geometry. It walks or gal
 
 ## Status
 
-- **Batches 1–2 of 19 are done:** 19 of 152 horses (Byerley Turk to Sakura Chiyono O), plus 6 locations: Hidaka, the countryside trail, and the Tokyo, Nakayama, Kyoto and Hanshin racecourses.
+- **Batches 1–3 of 19 are done:** 27 of 152 horses (Byerley Turk to Mejiro Palmer), plus 7 locations: Hidaka, the countryside trail, and the Tokyo, Nakayama, Kyoto, Hanshin and Chukyo racecourses.
 - **Batch 2 added** dappled grey coats (Oguri Cap, Tamamo Cross), cherry blossom at Hanshin, Kyoto's infield lake, and a reworked chest and forelimbs.
-- **Batch 3 is next:** horses #20–27 (Super Creek to Mejiro Palmer), Chukyo racecourse, and a race-speed gallop.
+- **Batch 3 added** a racing gallop at about 16 m/s (7 m strides), the default on racecourses.
+- **Batch 4 is next:** horses #28–35 (Mejiro Ryan to Mihono Bourbon), Oi racecourse at night, and gear rendering (hoods, blinkers, bit-lifters).
 - **Unconfirmed values:** a value the sources couldn't confirm is never presented as fact. Each one is flagged in the data's `uncertain` lists, shown on the horse's info card, and listed as a to-do in `ROADMAP.md`. Examples are which hind leg is white on Mr. C.B., and Saint Lite's silks.
 
 ## Run locally

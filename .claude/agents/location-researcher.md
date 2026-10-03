@@ -53,7 +53,7 @@ depthM). Anything else: describe it in `signature` and list it in `uncertain` as
 ```js
 {
   id: 'nakayama', en: 'Nakayama Racecourse', jp: '中山競馬場', group: 'JRA G1', // or 'NAR JpnI' / 'Strolling'
-  builder: 'track', gait: 'gallop', hand: 'right', surface: 'turf', lead: 'L', W: 400,
+  builder: 'track', gait: 'race', hand: 'right', surface: 'turf', lead: 'L', W: 400,
   time: { month: 12, post: '15:25', sunElevDeg: 16, sunAzimDeg: -50, fogNear: 130, fogFar: 400, exposure: 1.0, night: false,
           sky: { top: '#…', mid: '#…', horizon: '#…', sun: '#…' }, sunColor: '#…', sunIntensity: 2.6,
           hemiSky: '#…', hemiGround: '#…', hemiIntensity: 1.15 },

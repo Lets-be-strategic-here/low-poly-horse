@@ -195,11 +195,48 @@ window.LOCATIONS = [
     sources: ['https://www.jra.go.jp/facilities/race/hanshin/course/index.html', 'https://ja.wikipedia.org/wiki/阪神競馬場', 'https://en.wikipedia.org/wiki/Hanshin_Racecourse', 'https://ja.wikipedia.org/wiki/桜花賞', 'https://commons.wikimedia.org/wiki/File:Hanshin_Racecourse_Aerial_photograph_2012.jpg'],
     uncertain: ['stand.colors (c.2009 photo)', 'stand.lengthM / depthM (from the aerial)', 'time (computed sun)', 'backdrop.ranges (map geography)', 'backdrop.landmarks', 'infield[0] jump count', 'facts.straightProfile (±0.2 m, read off the JRA chart)', 'lawn / verge', 'needs a new kit: a cherry-tree row along the outer rail and the 1600 m start pocket'],
   },
+  {
+    id: 'chukyo', en: 'Chukyo Racecourse', jp: '中京競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
+    hand: 'left', surface: 'turf', lead: 'R', W: 400, seed: 2035,
+    // Takamatsunomiya Kinen, late March (post 15:40). Sun computed for 29 Mar 15:40 at 35.07N: elevation 29.6°, azimuth 252° (WSW);
+    // from the GSI aerial the Pegasus stand faces ~144° and the straight runs ~234°, so the sun is toward +X, 18° round toward the stand side
+    time: {
+      month: 3, post: '15:40', sunElevDeg: 30, sunAzimDeg: 72, fogNear: 125, fogFar: 400, exposure: 1.02,
+      sky: { top: '#76a2d3', mid: '#bbd0e5', horizon: '#e8e2d4', sun: '#fff2dc' },
+      sunColor: '#fff0d8', sunIntensity: 2.8, hemiSky: '#e0e8f1', hemiGround: '#81844f', hemiIntensity: 1.2,
+    },
+    turf: { color: '#6a963e', widthM: 28 }, dirt: { color: '#b1a693', widthM: 25 }, rails: { color: '#f4f4f0' },
+    lawn: '#a59e68', verge: '#7d9a4a', leaf: ['#4f6b3e', '#5d7745', '#6b7f4a', '#8a8a62'], autumn: 0, dust: '#7f7662',
+    infieldTrees: 12, // the infield is a children's playland, pony ring and steeplechase course with scattered trees
+    stand: { name: 'Pegasus (main stand, 2012)', lengthM: 200, floors: 6, depthM: 40, colors: { body: '#dfe1e2', roof: '#dedbd0', glass: '#8eaabb', seats: '#b9b048' } },
+    infield: [{ type: 'jumps', count: 4, depthM: 120, notes: 'Steeplechase course in the infield (jumps 1.15–1.55 m); a hedge, flower beds and topiary line the dirt’s inner rail below the screen.' }],
+    backdrop: {
+      ranges: [
+        { r: 585, base: '#9aa0a8', h: [3, 9], step: 0.12, haze: 0.62 }, // low, hazy Owari / Mikawa hills: a flat horizon
+        { r: 545, base: '#7f8e74', h: [2, 6], step: 0.1, haze: 0.45 },  // tree belts of the Toyoake suburbs
+      ],
+      landmarks: [
+        { type: 'screen', bearingDeg: 0, distM: 300, wM: 26, hM: 10.5, liftM: 2 },   // Turf Vision (really just inside the dirt, behind the finish post)
+        { type: 'skyline', fromDeg: -30, toDeg: 50, distM: 520, heightM: [5, 24] }, // Toyoake / Nagoya Midori-ku flats
+      ],
+      clouds: 6,
+    },
+    facts: {
+      turfCircM: 1705.9, dirtCircM: 1530, turfStraightM: 412.5, dirtStraightM: 410.7, elevationM: 3.5,
+      straightProfile: [[412.5, 0], [340, 0], [240, 2.0], [0, 2.0]], // down off the 3rd–4th corner, then a 2.0 m climb 340–240 m out
+      races: [
+        { name: 'Takamatsunomiya Kinen', jp: '高松宮記念', surface: 'turf', distM: 1200, month: 3 },
+        { name: 'Champions Cup', jp: 'チャンピオンズカップ', surface: 'dirt', distM: 1800, month: 12 },
+      ],
+    },
+    signature: 'A long 412.5 m straight that climbs a 2.0 m hill right at its start; the Pegasus stand’s huge one-way cantilevered roof of steel ribs and white membrane fins (Pegasus’s wings), with the tower-shaped Twin Hat behind it.',
+    sources: ['https://www.jra.go.jp/facilities/race/chukyo/course/index.html', 'https://ja.wikipedia.org/wiki/中京競馬場', 'https://en.wikipedia.org/wiki/Chukyo_Racecourse', 'https://ja.wikipedia.org/wiki/高松宮記念_(競馬)', 'https://ja.wikipedia.org/wiki/チャンピオンズカップ_(競馬)', 'https://www.yamashitasekkei.co.jp/project/post_4/', 'https://commons.wikimedia.org/wiki/File:Chukyo_Racecourse_Main-Stand_PEGASUS,_Toyoake_2018.jpg'],
+    uncertain: ['time (computed sun; sunAzimDeg 70–78)', 'turf / dirt widths (secondary source)', 'stand.colors and size (photos, aerial)', 'stand.floors', 'infield[0] jump count', 'backdrop (flat horizon; heights are guesses)', 'backdrop.landmarks[0] (the screen is really ~60 m away; size estimated)', 'facts.straightProfile (only the 340→240 m climb is sourced)', 'needs new kits: the Pegasus membrane-fin roof, Twin Hat, power pylons'],
+  },
 ];
 
 // Every other venue on the roadmap, shown as "soon" in the picker (order = build order).
 window.LOCATION_QUEUE = [
-  { id: 'chukyo', en: 'Chukyo Racecourse', group: 'JRA G1' },
   { id: 'oi', en: 'Oi Racecourse (night)', group: 'NAR JpnI' },
   { id: 'kawasaki', en: 'Kawasaki Racecourse', group: 'NAR JpnI' },
   { id: 'funabashi', en: 'Funabashi Racecourse', group: 'NAR JpnI' },

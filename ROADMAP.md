@@ -4,17 +4,18 @@ Where the low-poly horse goes next, in build order. Each **batch** adds the next
 order, a location or two, and one engine item. Horses come from the official character list at
 <https://umamusume.jp/character/>; every entry models the **real racehorse** behind a character.
 
-## Status after batch 2 (October 2026)
+## Status after batch 3 (October 2026)
 
 | Area | Done |
 |---|---|
 | Engine | Horse profiles drive the whole model: coat, markings, size and hair length. A gait table holds the gallop (left or right lead), a new **walk** and a standing **graze** pose. Stride counts are recomputed for each horse and location, so the loop stays seamless and planted hooves have 0.00 mm slip (measured). Includes a location system, background horses, the side panel and the URL hash. |
+| Race gallop (B3) | A **race** gait at racing speed (~16 m/s): 7 m strides at 0.43 s, duty factor 0.2, a long suspension with all four legs gathered under the body. The body runs lower with more bound and lumbosacral flexion, 18° of scapular swing, and the hock opens up to 40° past rest at push-off (`hockPush`) so the hoof stays planted far behind the hip. Racecourses use it by default; the bar has Walk / Gallop / Race. Stance slip is still 0.00 mm for every horse size. |
 | Forelimbs (B2) | Deeper, broader brisket so the elbow and forearm tuck into the chest instead of hanging off a rounded barrel; a broad flat shoulder blade, a triceps mass and a muscular forearm top; at the gallop the forefoot flips up into a hook behind the knee (deeper fetlock curl, higher fore lift). |
 | Colour | All 8 JBIS registry coats (鹿毛 … 白毛), pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. **Greys (B2):** greyness slider with a slow-greying curve, **dapples** (cellular noise painted on 16× subdivided coplanar faces, strongest at mid grey, with their own slider), lighter faces and dark lower legs on young greys, and a separate `coat.tail` colour. |
 | Parts | Mane and tail length, height (uniform scale) and weight (bulk of trunk, neck and upper limbs). |
-| Horses | 19 of 152, roster #1–#19, from Byerley Turk (c.1680) to Sakura Chiyono O (1985). |
-| Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), and the JRA G1 courses **Tokyo**, **Nakayama**, **Kyoto** (infield lake) and **Hanshin** (cherry blossom: `blossom` colours flowering broadleaf trees only). |
-| Research | Two reusable agent templates in `.claude/agents/`, run for every horse and track of batch 2 (8 + 2 agents in parallel, about 4–9 minutes each). |
+| Horses | 27 of 152, roster #1–#27, from Byerley Turk (c.1680) to Mejiro Palmer (1987). |
+| Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), and the JRA G1 courses **Tokyo**, **Nakayama**, **Kyoto** (infield lake), **Hanshin** (cherry blossom: `blossom` colours flowering broadleaf trees only) and **Chukyo** (B3). |
+| Research | Two reusable agent templates in `.claude/agents/`, run for every horse and track since batch 2 (8–10 agents in parallel, about 3–9 minutes each). |
 
 ## Order of work
 
@@ -31,7 +32,7 @@ Engine items are placed before the first horse that needs them.
 |---|---|---|---|
 | ✅ 1 | #1–11 · c.1680–1982 · Byerley Turk, Darley Arabian, Godolphin Barb, Saint Lite, Speed Symboli, Haiseiko, Maruzensky, Katsuragi Ace, Mr. C.B., Symboli Rudolf, Sirius Symboli | Hidaka, Countryside, Tokyo, Nakayama | Profiles, gaits, locations, UI |
 | ✅ 2 | #12–19 · 1983–85 · Mejiro Ramonu, Gold City, Inari One, Tamamo Cross, Bamboo Memory, Mejiro Ardan, Oguri Cap, Sakura Chiyono O | Kyoto (big infield pond + Benten island), Hanshin (cherry trees, Rokko mountains) | **Grey coats**: dapple pattern, darker heads and legs on young greys (Oguri Cap, Tamamo Cross); forelimb and chest rework |
-| 3 | #20–27 · 1985–87 · Super Creek … Mejiro Palmer | Chukyo (Pegasus and Twin Hat stands) | **Race-speed gallop** (see Anatomy 1) |
+| ✅ 3 | #20–27 · 1985–87 · Super Creek, Yaeno Muteki, Daiichi Ruby, Daitaku Helios, Ikuno Dictus, Ines Fujin, Mejiro McQueen, Mejiro Palmer | Chukyo (Pegasus and Twin Hat stands) | **Race-speed gallop** (see Anatomy 1) |
 | 4 | #28–35 · 1987–89 · Mejiro Ryan … Mihono Bourbon | Oi (night racing: floodlights, white sand, dirt-only layout) | **Gear rendering** from `gear`: hood/メンコ, blinkers, bit-lifter, bridle and reins |
 | 5 | #36–43 · 1989–90 · Nishino Flower … Sakura Chitose O | Kawakami → see NAR list: Kawasaki (72 m screen), Funabashi | Shadow roll (needed for Narita Brian in B6), saddle and saddle cloth |
 | 6 | #44–51 · 1990–92 · Winning Ticket … Fuji Kiseki | Urawa, Morioka (Mt Iwate, NAR's only turf course) | Trot and canter gaits |
@@ -52,9 +53,9 @@ Before every batch, re-read the official list. New characters are added over tim
 |---|---|---|---|---|
 | Tokyo 東京 | L | 525.9 / 501.6 m | Fuji View Stand, Mt Fuji, 66 m Turf Vision | ✅ |
 | Nakayama 中山 | R | 310 / 308 m | 2.2 m final hill, steeplechase hedge and brush jumps | ✅ |
-| Kyoto 京都 | R | 403.7 (outer) / 329.1 m | Infield lake with Benten island, 淀の坂 at the 3rd corner | B2 (draft ready) |
-| Hanshin 阪神 | R | 473.6 (outer) / 352.7 m | Cherry blossom for the Oka Sho, final hill, Rokko mountains | B2 |
-| Chukyo 中京 | L | 412.5 / 410.7 m | Pegasus and Twin Hat stands, hill at the start of the straight | B3 |
+| Kyoto 京都 | R | 403.7 (outer) / 329.1 m | Infield lake with Benten island, 淀の坂 at the 3rd corner | ✅ |
+| Hanshin 阪神 | R | 473.6 (outer) / 352.7 m | Cherry blossom for the Oka Sho, final hill, Rokko mountains | ✅ |
+| Chukyo 中京 | L | 412.5 / 410.7 m | Pegasus and Twin Hat stands, hill at the start of the straight | ✅ |
 
 ### NAR JpnI venues (7)
 - Run JpnI races every year:
@@ -79,7 +80,7 @@ Before every batch, re-read the official list. New characters are added over tim
 Each strolling location gets 1–3 **background horses**: generic coats, either walking beside the hero or grazing in a field.
 
 ## Anatomical accuracy (ordered by visual payoff)
-1. **Race-speed gallop.** Today's gallop has 2.6 m strides at 0.42 s, about 6 m/s, which is a canter pace. A racing Thoroughbred runs about 16–17 m/s:
+1. ✅ **Race-speed gallop** (B3; the old gallop stays as the "Gallop" button). The old gallop has 2.6 m strides at 0.42 s, about 6 m/s, which is a canter pace. A racing Thoroughbred runs about 16–17 m/s:
    - stride 6.5–7.5 m, about 2.3 strides/s;
    - duty factor about 0.2–0.25 per limb;
    - longer suspension;
@@ -213,11 +214,22 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Oguri Cap.** Greyness and mane colour from photos; no face marking visible under the grey.
 - [ ] **Sakura Chiyono O.** No face or leg markings found; was the thick white noseband in the Derby photo a shadow roll?
 
+### Horses (batch 3)
+- [ ] **Super Creek.** Star from photos (a small snip?); one white hind pastern, but which hind is a guess (LH); silks colours from a silks image.
+- [ ] **Yaeno Muteki.** Four white socks and the star-stripe-snip from photos (the hind whites look a little higher).
+- [ ] **Daiichi Ruby.** No face or leg white in her one photo (right side only); owner kanji 春雄 or 晴雄; silks from an image.
+- [ ] **Daitaku Helios.** No photo shows his lower legs clearly; do the hood's eye pieces include blinker cups?
+- [ ] **Ikuno Dictus.** The LF coronet comes from one low-resolution photo; does the stripe end in a snip?
+- [ ] **Ines Fujin.** The star (en.wikipedia only) was always under his hood; the LF coronet comes from photo angles.
+- [ ] **Mejiro McQueen.** Greyness, dapple strength, and mane and tail colours from photos (greying from near black in 1990 to a dappled mid-dark grey by 1993).
+- [ ] **Mejiro Palmer.** Star-stripe from photos; the LH white is confirmed in text, but its height and the RH are judgement calls.
+
 ### Locations
 - [ ] **Tokyo.** Stand colours, Mt Fuji's bearing, and the infield pond's position.
 - [ ] **Nakayama.** Stand colours and length; the backdrop.
 - [ ] **Kyoto.** Stand colours and floors (6 or 7); the lake's size and distance (±15 m from the aerial); the big screen really stands on the lake's near shore; needs kits for Benten island, fountains, 淀の坂 and the poplar wall.
 - [ ] **Hanshin.** Stand colours and size; the straight's profile (±0.2 m); needs a cherry-tree row along the outer rail.
+- [ ] **Chukyo.** Course widths (secondary source); stand size and colours; only the 2.0 m climb 340–240 m out is sourced in the straight's profile; needs kits for the Pegasus membrane-fin roof and Twin Hat.
 
 ### Source access (affects every batch)
 - JBIS (jbis.or.jp) returns 403 to WebFetch. Read it through Playwright.
