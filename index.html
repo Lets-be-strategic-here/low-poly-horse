@@ -152,6 +152,7 @@
     <label class="row"><span>Mane</span><input id="maneLen" type="range" min="0.4" max="1.8" step="0.05"></label>
     <label class="row"><span>Tail</span><input id="tailLen" type="range" min="0.5" max="1.6" step="0.05"></label>
     <label class="row"><span>Gear</span><input id="gearOn" type="checkbox" checked> <small id="gearNote"></small></label>
+    <label class="row"><span>Rider</span><input id="riderOn" type="checkbox" checked> <small>jockey in the owner's silks (racecourses, training hill)</small></label>
   </section>
   <button id="resetLook" class="reset" type="button">Reset</button>
 </aside>
@@ -820,6 +821,82 @@ function buildHorse(look = {}, seed = 1337) {
     irons.forEach((g) => g.deleteAttribute('uv'));
     skinned(merge([pad, saddle, girth, over, ...irons]), mat).name = 'saddle';
     }
+    if (look.jockey) buildJockey(look.jockey, rowAt);
+  }
+
+  /* ----- the rider: a jockey in the owner's silks crouched over the withers (racecourses), or a work rider in a
+     vest (training). Authored in rest horse space and carried rigidly by the spine bone; merged like every rigid part. ----- */
+  function buildJockey(J, rowAt) {
+    const top = (x) => rowAt(x)[0], skin = 0xd8b493, P = J.silks ?? parseSilks(null);
+    const T = top(0.2), Hp = V(0.16, T + 0.33, 0), Sh = V(0.56, T + 0.48, 0), Hd = V(0.71, T + 0.58, 0);
+    const axis = Sh.clone().sub(Hp), len2 = axis.lengthSq();
+    const tube = (a, b, r0, r1, colorFn, seg = 5) => { // a tapered limb segment from a to b
+      const dir = b.clone().sub(a), up = Math.abs(dir.clone().normalize().y) > 0.9 ? X_AXIS : Y_AXIS;
+      const rings = [0, 0.5, 1].map((t) => ringAt(a.clone().addScaledVector(dir, t), dir, up, PROF.limb, { up: lerp(r0, r1, t), down: lerp(r0, r1, t), w: lerp(r0, r1, t) }));
+      return paint(loft(rings, a.clone().addScaledVector(dir, -0.02), b.clone().addScaledVector(dir, 0.02)).toNonIndexed(), colorFn);
+    };
+    const solid = (hexv) => (c, n) => shade(hexv, rnd, 0.03);
+    const tri = (x) => Math.abs(((x % 1) + 1) % 1 - 0.5) * 2; // triangle wave 0..1
+    const bodyColor = (u, sz) => { // silks pattern on the body: u along the back (0 hips … 1 shoulders), sz across it (-1 … 1)
+      if (J.training) return colorOf(J.vest ?? '#2a3340'); // a work rider's safety vest
+      const pt = P.pattern;
+      if (!pt) return P.body;
+      const on = {
+        hoops: () => ({ 1: [0.55], 2: [0.4, 0.66], 3: [0.3, 0.52, 0.74] }[pt.n] ?? [0.55]).some((c) => Math.abs(u - c) < 0.075),
+        bands: () => Math.floor(u * 6) % 2 === 1,
+        band: () => Math.abs(u - 0.55) < 0.12,
+        chevronHoops: () => ({ 1: [0.5], 2: [0.38, 0.62], 3: [0.3, 0.5, 0.7] }[pt.n] ?? [0.5]).some((c) => Math.abs(u - c - 0.14 * (1 - Math.abs(sz))) < 0.07),
+        chevronBand: () => Math.abs(u - 0.45 - 0.16 * (1 - Math.abs(sz))) < 0.1,
+        chevron: () => Math.abs(u - 0.45 - 0.16 * (1 - Math.abs(sz))) < 0.1,
+        sash: () => Math.abs(u - (0.5 + 0.42 * sz)) < 0.1,
+        cross: () => Math.abs(u - (0.5 + 0.42 * sz)) < 0.085 || Math.abs(u - (0.5 - 0.42 * sz)) < 0.085,
+        stripes: () => Math.floor((sz + 1) * 3.5) % 2 === 1,
+        checks: () => (Math.floor(u * 5) + Math.floor((sz + 1) * 3)) % 2 === 1,
+        sawtooth: () => u > 0.6 + 0.08 * tri((sz + 1) * 2.5),
+        spots: () => ((u * 5) % 1 - 0.5) ** 2 + (((sz + 1) * 3) % 1 - 0.5) ** 2 < 0.06,
+        diamonds: () => Math.abs(((u * 4) % 1) - 0.5) + Math.abs((((sz + 1) * 2) % 1) - 0.5) < 0.24,
+        ring: () => Math.abs(Math.hypot(u - 0.5, sz * 0.5) - 0.18) < 0.05,
+      }[pt.kind];
+      return on && on() ? pt.color : P.body;
+    };
+    const sleeveColor = (a, around) => { // a along the arm (0 shoulder … 1 wrist), around in turns
+      if (J.training) return colorOf(J.vest ?? '#2a3340');
+      const sp = P.sleevePattern;
+      if (!sp) return P.sleeves;
+      const on = {
+        hoops: () => ({ 1: [0.55], 2: [0.42, 0.7], 3: [0.3, 0.55, 0.8] }[sp.n] ?? [0.55]).some((c) => Math.abs(a - c) < 0.075),
+        bands: () => Math.floor(a * 5) % 2 === 1,
+        stripes: () => Math.floor(((around % 1) + 1) * 6) % 2 === 1,
+        chevronHoops: () => Math.abs(a - 0.55) < 0.08,
+      }[sp.kind] ?? (() => Math.abs(a - 0.55) < 0.08);
+      return on() ? sp.color : P.sleeves;
+    };
+    const parts = [];
+    // torso: a loft from the seat to the shoulders, subdivided so the pattern has faces to land on
+    const torsoRings = [0, 0.25, 0.5, 0.75, 1].map((t) => { const c = Hp.clone().addScaledVector(axis, t), w = lerp(0.15, 0.19, t), h = lerp(0.11, 0.12, t); return ringAt(c, axis, Y_AXIS, PROF.trunk, { up: h, down: h, w, wUp: w * 0.85, wDown: w * 0.8 }); });
+    let torso = subdivide(loft(torsoRings, Hp.clone().addScaledVector(axis, -0.06), Sh.clone().addScaledVector(axis, 0.05)), 2);
+    parts.push(paint(torso, (c) => { const u = c.clone().sub(Hp).dot(axis) / len2; return shade(bodyColor(clamp(u, 0, 1), clamp(c.z / 0.19, -1, 1)).getHex(), rnd, 0.025); }));
+    // head: face, a helmet cap in the bracket colour with a peak, goggles
+    parts.push(paint(new THREE.IcosahedronGeometry(0.095, 1).translate(Hd.x + 0.01, Hd.y - 0.02, 0), solid(skin)));
+    parts.push(paint(new THREE.SphereGeometry(0.108, 8, 5, 0, TAU, 0, Math.PI * 0.52).rotateZ(-0.5).translate(Hd.x, Hd.y + 0.005, 0).toNonIndexed(), solid(hex(J.cap ?? '#f4f4f0'))));
+    parts.push(paint(new THREE.BoxGeometry(0.09, 0.012, 0.14).rotateZ(-0.35).translate(Hd.x + 0.1, Hd.y + 0.02, 0).toNonIndexed(), solid(hex(J.cap ?? '#f4f4f0'))));
+    parts.push(paint(new THREE.BoxGeometry(0.04, 0.035, 0.2).translate(Hd.x + 0.085, Hd.y - 0.01, 0).toNonIndexed(), solid(0x1c1f24)));
+    parts.push(tube(Sh.clone().add(V(0.02, -0.02, 0)), Hd.clone().add(V(-0.03, -0.06, 0)), 0.05, 0.045, solid(skin)));
+    for (const sd of [-1, 1]) {
+      // arms: shoulder -> elbow -> hand, in the sleeves
+      const S0 = V(0.55, T + 0.45, sd * 0.17), E = V(0.6, T + 0.24, sd * 0.24), Hn = V(0.83, T + 0.23, sd * 0.08);
+      const armFn = (a0, a1, A, B) => (c) => { const d = B.clone().sub(A), t = clamp(c.clone().sub(A).dot(d) / d.lengthSq(), 0, 1); return shade(sleeveColor(lerp(a0, a1, t), Math.atan2(c.y - lerp(A.y, B.y, t), (c.z - lerp(A.z, B.z, t)) * sd) / TAU).getHex(), rnd, 0.03); };
+      parts.push(tube(S0, E, 0.055, 0.045, armFn(0, 0.5, S0, E)));
+      parts.push(tube(E, Hn, 0.045, 0.038, armFn(0.5, 1, E, Hn)));
+      parts.push(paint(new THREE.IcosahedronGeometry(0.04, 0).scale(1.2, 0.9, 1).translate(Hn.x + 0.02, Hn.y, Hn.z), solid(J.training ? 0x2a2a2a : 0xf2f0ea)));
+      // legs: hip -> knee (white breeches) -> ankle (black boots), feet in the run-up irons
+      const Hj = V(0.18, T + 0.3, sd * 0.1), K = V(0.44, T + 0.26, sd * 0.28), A = V(0.3, T - 0.12, sd * 0.31), Toe = V(0.42, T - 0.15, sd * 0.31);
+      parts.push(tube(Hj, K, 0.075, 0.055, solid(J.training ? 0x3a3f48 : 0xf2f0ea)));
+      parts.push(tube(K, A, 0.05, 0.04, solid(0x1a1a1a)));
+      parts.push(tube(A, Toe, 0.04, 0.032, solid(0x1a1a1a)));
+    }
+    const geo = merge(parts.map((g) => { if (g.attributes.uv) g.deleteAttribute('uv'); if (g.attributes.normal) g.deleteAttribute('normal'); return g; }));
+    attach(spine, geo).name = 'jockey';
   }
 
   /* ----- head: wedge loft with jowls, face marking, muzzle; eyes, nostrils, ears, forelock ----- */
@@ -2803,10 +2880,59 @@ let loopPhase = 0, playing = true, speed = 1;
 // saddle and white girth. `saddleNumber` (the horse's number in its signature race) is optional data.
 // Cloth colours follow the location's signature race (`loc.saddleCloth`): JRA G1 = 紫紺 with white text, the
 // classics = 紫紺 with yellow, the Derby = white with black and gold edging; ordinary races white with black.
+// The rider: on a racecourse a jockey in the owner's silks with the bracket-coloured cap; on the training hill a work
+// rider in a dark vest and a blue jockey's helmet (JRA helmet colours: jockeys blue).
+function jockeyFor(h, loc) {
+  if (loc.builder === 'hill') return { training: true, vest: '#2a3340', cap: '#2a4fb8' };
+  return { silks: parseSilks(h.silks), cap: BRACKET_CAP[(bracketOf(h.saddleNumber) ?? 1) - 1] };
+}
+
 function saddleFor(h, loc) {
   const c = { cloth: '#3a2a96', ink: '#ffffff', ...(loc.saddleCloth ?? {}) };
   return { ...c, number: c.numbered === false ? null : h.saddleNumber ?? null, label: h.jp }; // training cloths carry no race number
 }
+
+// Owner's silks (勝負服) from the JRA notation in `silks.desc`, e.g. 「黄、青一本輪、袖青」: body colour, then the pattern on
+// the body, then the sleeves (X袖 = sleeves of colour X, 袖X一本輪 = a hoop of X on the sleeves). Colour words are matched to
+// the nearest of the researched `silks.colors`; without a JRA string the body is colors[0] and the sleeves colors[1].
+const SILK_WORDS = [['水色', '#6ec6ea'], ['薄紫', '#b49bd3'], ['海老', '#8a2a3a'], ['えんじ', '#8a2030'], ['桃', '#f080c0'], ['紫', '#6a3a9a'], ['赤', '#d22630'], ['青', '#1f4fb4'], ['黄', '#f5d000'], ['緑', '#1f8a3c'], ['白', '#f4f4f0'], ['黒', '#151515'], ['茶', '#7a4a2a'], ['鼠', '#8a8a8a'], ['灰', '#8a8a8a'], ['橙', '#f08020']];
+const SILK_PATTERNS = [['十字襷', 'cross'], ['襷', 'sash'], ['山形一文字', 'chevronBand'], ['山形', 'chevron'], ['菱山形', 'chevron'], ['一文字', 'band'], ['縦縞', 'stripes'], ['格子', 'checks'], ['元禄', 'checks'], ['鋸歯形', 'sawtooth'], ['玉霰', 'spots'], ['銭形', 'spots'], ['菱形', 'diamonds'], ['蛇目', 'ring'], ['段', 'bands'], ['輪', 'hoops']];
+function parseSilks(silks) {
+  const cols = (silks?.colors ?? ['#f4f4f0']).map(colorOf);
+  const near = (hexv) => { const c = colorOf(hexv); let best = null, bd = 1e9; for (const k of cols) { const d = (k.r - c.r) ** 2 + (k.g - c.g) ** 2 + (k.b - c.b) ** 2; if (d < bd) { bd = d; best = k; } } return bd < 0.18 ? best.clone() : c; };
+  const colourIn = (t) => { for (const [w, h] of SILK_WORDS) { const i = t.indexOf(w); if (i >= 0) return { c: near(h), i, w }; } return null; };
+  const patternIn = (t) => {
+    for (const [w, kind] of SILK_PATTERNS) if (t.includes(w)) {
+      const n = /三本/.test(t) ? 3 : /二本/.test(t) ? 2 : 1;
+      return { kind: kind === 'chevron' && /輪/.test(t) ? 'chevronHoops' : kind, n };
+    }
+    return null;
+  };
+  const out = { body: cols[0].clone(), pattern: null, sleeves: (cols[1] ?? cols[0]).clone(), sleevePattern: null, parsed: false };
+  const m = (silks?.desc ?? '').match(/[白黒赤青黄緑紫桃水茶鼠灰橙海薄え][^()（）;:,.\s]*[、・][^()（）;:,.\s]*/);
+  if (!m) return out;
+  const segs = m[0].split(/[、・]/).filter(Boolean);
+  out.parsed = true;
+  let sleevesSet = false;
+  segs.forEach((seg, i) => {
+    const sl = seg.indexOf('袖');
+    if (sl >= 0) { // sleeves: "X袖", "袖X", "X袖Y一本輪", "袖Y縦縞"
+      const before = colourIn(seg.slice(0, sl)), after = seg.slice(sl + 1), pat = patternIn(after), ac = colourIn(after);
+      out.sleeves = before ? before.c : !pat && ac ? ac.c : out.body.clone();
+      if (pat) out.sleevePattern = { ...pat, color: ac ? ac.c : out.body.clone() };
+      sleevesSet = true;
+      return;
+    }
+    const c = colourIn(seg), pat = patternIn(seg);
+    if (i === 0 && c && !pat) { out.body = c.c; return; }
+    if (pat) out.pattern = { ...pat, color: c ? c.c : (cols[1] ?? cols[0]).clone() };
+  });
+  if (!sleevesSet) out.sleeves = out.body.clone(); // no sleeve entry: the sleeves match the body
+  return out;
+}
+// JRA cap colours follow the gate bracket (枠); with the field size unknown, a full 18-runner field is assumed.
+const BRACKET_CAP = ['#f4f4f0', '#151515', '#d22630', '#1f4fb4', '#f5d000', '#1f8a3c', '#f08020', '#f080c0'];
+const bracketOf = (n) => (n == null ? null : n <= 12 ? Math.ceil(n / 2) : n <= 15 ? 7 : 8);
 
 // Conformation from the profile: explicit `conf` wins; otherwise a gentle default from `size.build`.
 const BUILD_CONF = { rangy: { neck: 1.04 }, tall: { neck: 1.03 }, compact: { neck: 0.97 }, heavy: { neck: 0.98, crest: 1.1 } };
@@ -2829,6 +2955,7 @@ function currentLook() {
     racehorse: !!h.silks, // racehorses get a bridle unless their gear says otherwise
     saddle: !c.gearOff && h.silks && ['track', 'paddock', 'hill'].includes(state.loc?.builder) ? saddleFor(h, state.loc) : null,
     rug: !c.gearOff && state.loc?.rug ? state.loc.rug : null, // a winter turnout rug where the location has one
+    jockey: !c.gearOff && !c.noRider && h.silks && ['track', 'hill'].includes(state.loc?.builder) ? jockeyFor(h, state.loc) : null,
   };
 }
 
@@ -2898,7 +3025,7 @@ function spawnExtras() {
     }
   }
   (state.loc.extras ?? []).forEach((spec, n) => {
-    const R = state.loc.rug, look = { ...genericLook(rnd), ...(R ? { rug: { ...R, color: R.colors ? pick(R.colors, rnd) : R.color } } : {}) }, seed = 900 + n * 17, phaseOffset = rnd(), grazer = spec.mode === 'grazer'; // turned out in winter: rugged too
+    const R = state.loc.rug, ride = state.loc.builder === 'hill' && spec.mode === 'companion', look = { ...genericLook(rnd), ...(R ? { rug: { ...R, color: R.colors ? pick(R.colors, rnd) : R.color } } : {}), ...(ride ? { racehorse: true, saddle: { ...saddleFor({}, state.loc), label: '' }, jockey: jockeyFor({}, state.loc) } : {}) }, seed = 900 + n * 17, phaseOffset = rnd(), grazer = spec.mode === 'grazer'; // turned out in winter: rugged too
     const rigs = [];
     for (let c = 0; c < (grazer ? COPIES : 1); c++) {
       const r = buildHorse(look, seed);
@@ -2954,7 +3081,7 @@ function setLocation(id) {
   } else { dust.colors = null; dust.styleAt = null; }
   state.lead = loc.lead ?? 'L';
   // the saddle and cloth only appear on racecourses: rebuild the hero if that changes
-  if (rig && (!!rig.root.getObjectByName('saddle') !== !!currentLook().saddle || !!rig.root.getObjectByName('rug') !== !!currentLook().rug)) rebuildHorse();
+  if (rig && (!!rig.root.getObjectByName('saddle') !== !!currentLook().saddle || !!rig.root.getObjectByName('rug') !== !!currentLook().rug || !!rig.root.getObjectByName('jockey') !== !!currentLook().jockey)) rebuildHorse();
   spawnExtras();
   setGait(loc.gait ?? 'gallop');
   syncTitle();
@@ -3179,6 +3306,7 @@ function buildPickers() {
   $('maneLen').addEventListener('input', (e) => tweak((x) => { x.maneLen = +e.target.value; }));
   $('tailLen').addEventListener('input', (e) => tweak((x) => { x.tailLen = +e.target.value; }));
   $('gearOn').addEventListener('change', (e) => tweak((x) => { x.gearOff = !e.target.checked; }));
+  $('riderOn').addEventListener('change', (e) => tweak((x) => { x.noRider = !e.target.checked; }));
   $('resetLook').addEventListener('click', () => { state.custom = {}; rebuildHorse(); syncPanel(); });
 }
 
@@ -3246,6 +3374,7 @@ function syncPanel(editing = null) {
   $('greyness').value = look.coat.greyness ?? 0.5;
   $('dapple').value = pal.dapple ?? 0;
   $('gearOn').checked = !state.custom.gearOff;
+  $('riderOn').checked = !state.custom.noRider;
   $('gearOn').disabled = !state.horse.gear;
   for (const [id, col] of [['cCoat', pal.coat], ['cMane', pal.mane], ['cLegs', pal.legs]]) if (id !== editing) $(id).value = toCss(col);
   $('faceSel').value = MARKS[look.face] ? look.face : 'none';

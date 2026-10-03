@@ -4,11 +4,12 @@ Where the low-poly horse goes next, in build order. Each **batch** adds the next
 order, a location or two, and one engine item. Horses come from the official character list at
 <https://umamusume.jp/character/>; every entry models the **real racehorse** behind a character.
 
-## Status after batch 11 (October 2026)
+## Status after batch 12 (October 2026)
 
 | Area | Done |
 |---|---|
 | Engine | Horse profiles drive the whole model: coat, markings, size and hair length. A gait table holds the gallop (left or right lead), a new **walk** and a standing **graze** pose. Stride counts are recomputed for each horse and location, so the loop stays seamless and planted hooves have 0.00 mm slip (measured). Includes a location system, background horses, the side panel and the URL hash. |
+| Jockey (B12) | A low-poly **jockey in the owner's silks** rides on racecourses: crouched over the withers in short irons, hands at the crest, white breeches and black boots, goggles and a cap in the colour of the gate bracket (枠; an 18-runner field is assumed). The silks are **parsed from the JRA notation** in `silks.desc` (「黄、青一本輪、袖青」): the body colour, the body pattern (hoops 一本輪/二本輪/三本輪, band 一文字, chevrons 山形, sash 襷, cross-sash 十字襷, stripes 縦縞, checks 元禄/格子, sawtooth yoke 鋸歯形, spots 玉霰/銭形, diamonds 菱, ring 蛇目) and the sleeves (X袖, 袖X一本輪, 袖X縦縞, 段). Colour words snap to the researched `silks.colors`. Patterns are painted per face on a subdivided torso, so they need no texture. On the training hill a work rider in a dark vest and a blue jockey's helmet rides the hero and the work partner. The rider is carried by the spine bone and merged into the horse's single skinned mesh. A **Rider** toggle in the panel. |
 | Snow (B11) | `builder: 'snow'`: a trampled track through fetlock-deep snow with sunlit and blue-shaded drifts, mud and hay where the horses dig, half-buried board fences, bare birches (twig crowns), firs with snow on their tiers, barns with snow on the roofs (`buildings`), and snow caps on the far ranges above `snowline`. **Winter rugs** (`rug`, 馬着): a draped blanket with a binding and belly straps, on the hero and the turned-out horses. **Breath** (`breath`): a puff from the nostrils at each exhale, once per stride at a canter or gallop (locomotor-respiratory coupling) and about every 2.5 s at a walk. **Falling snow** (`snow.falling`) is supported but the researched morning is clear. Cloths (rug, saddle cloth) are now **draped**: each cross-section of the barrel is clipped to the cloth's band and resampled, so hems run straight instead of zig-zagging across faces. |
 | Slopes (B10) | **Sloped straights**: a height along the direction of travel. `slope` (a training hill) is a climb that never ends: each period of the strip rises by the same amount, the copies are drawn one rise higher each and the world sinks as it scrolls, with the real course's sections squeezed into one period. A racecourse's `facts.straightProfile` becomes a closed bump: the home straight's profile over 70% of the period, easing back down over the rest, so Tokyo, Nakayama, Hanshin, Chukyo and Morioka now have their final hills. The grade is smoothed so the pitch never jumps; the horse (and any companion) pitches with the ground, and the hooves stay on it (toes 1–3 mm above the slope, about 5 mm of slip on a 4.5% grade). **Training hill** builder: a wood-chip course between rails, churned lanes, verges, banks and woods, timing posts, light poles and an observation tower; training saddle cloths carry the horse's name and no number (`saddleCloth.numbered: false`). |
 | Rigid-skin merge (B10, ahead of B11) | Each horse is now one SkinnedMesh for everything but its eyes and saddle cloth: every rigid part (limbs, hooves, head, ears, mane blades, tail, gear) is baked in and weighted 100% to its own node, and the nodes keep animating as before. About 60 draw calls per horse became 3; the paddock's 18 horses draw in about 100 calls for the whole scene. |
@@ -25,7 +26,7 @@ order, a location or two, and one engine item. Horses come from the official cha
 | Forelimbs (B2) | Deeper, broader brisket so the elbow and forearm tuck into the chest instead of hanging off a rounded barrel; a broad flat shoulder blade, a triceps mass and a muscular forearm top; at the gallop the forefoot flips up into a hook behind the knee (deeper fetlock curl, higher fore lift). |
 | Colour | All 8 JBIS registry coats (鹿毛 … 白毛), pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. **Greys (B2):** greyness slider with a slow-greying curve, **dapples** (cellular noise painted on 16× subdivided coplanar faces, strongest at mid grey, with their own slider), lighter faces and dark lower legs on young greys, and a separate `coat.tail` colour. |
 | Parts | Mane and tail length, height (uniform scale) and weight (bulk of trunk, neck and upper limbs). |
-| Horses | 91 of 152, roster #1–#91, from Byerley Turk (c.1680) to Symboli Kris S (1999). 87 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
+| Horses | 99 of 152, roster #1–#99, from Byerley Turk (c.1680) to Cesario (2002). 95 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
 | Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), and the JRA G1 courses **Tokyo**, **Nakayama**, **Kyoto** (infield lake), **Hanshin** (cherry blossom: `blossom` colours flowering broadleaf trees only) and **Chukyo** (B3); the NAR tracks **Oi** (B4), **Kawasaki** and **Funabashi** (B5) at night, **Urawa** at twilight and **Morioka** at night with the turf course inside the dirt (`innerTurf`, B6), **Kanazawa** in low November sun and **Saga** at night (B7); the **Tokyo Racecourse paddock** on Derby day, walked in path mode with the rest of the field (B8); a **beach at dawn** modelled on Kujukuri, the sun rising out of the Pacific behind the horse (B9); the **Ritto hill gallop** (坂路), an endless climb up the wood chips (B10); a **snowy Hidaka farm** on a clear February morning (B11). |
 | Research | Two reusable agent templates in `.claude/agents/`, run for every horse and track since batch 2 (8–10 agents in parallel, about 3–9 minutes each). |
 
@@ -53,7 +54,7 @@ Engine items are placed before the first horse that needs them.
 | ✅ 9 | #68–75 · 1995–96 · King Halo, Phalaenopsis, Seiun Sky, Special Week, Tsurumaru Tsuyoshi, Admire Vega, Haru Urara, Meisho Doto | Beach at dawn (Kujukuri) | Sand builder, surf, splash / clods / dust variants, hoof prints |
 | ✅ 10 | #76–83 · 1996–98 · Narita Top Road, T.M. Opera O, Agnes Digital, Air Shakur, Tap Dance City, Agnes Tachyon, Believe, Calstone Light O | Ritto hill gallop (坂路) | Sloped straights (and the racecourses' final hills); fore/hind hoof shapes and racing plates |
 | ✅ 11 | #84–91 · 1998–99 · Dantsu Flame, Jungle Pocket, Manhattan Cafe, Durandal, Fine Motion, Hishi Miracle, No Reason, Symboli Kris S | Snowy Hokkaido field | Snow builder, winter rugs, breath, draped cloths (rigid-skin merge done early in B10) |
-| 12 | #92–99 · 1999–2002 · Tanino Gimlet … Cesario | — | **Jockey in the owner's silks** (勝負服, already in `silks`) |
+| ✅ 12 | #92–99 · 1999–2002 · Tanino Gimlet, Admire Groove, Neo Universe, Still in Love, Zenno Rob Roy, Sweep Tosho, Air Messiah, Cesario | — | Jockey in the owner's silks (勝負服, parsed from `silks.desc`) |
 | 13–19 | #100–152 · 2002–2021 · Daring Heart … Forever Young (8 per batch; the exact split is in `data/roster.js`) | Seasonal variants of existing tracks | **Race mode** (below), then polish |
 
 Before every batch, re-read the official list. New characters are added over time, and they slot into the roster by foaling year.
@@ -318,6 +319,21 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Hishi Miracle.** Greyness from photos; the white hind pastern placed as LH.
 - [ ] **No Reason.** Only two photos; a tiny fleck may be a star.
 - [ ] **Symboli Kris S.** Coat tone from photos and the trainer's "black and big".
+
+### Horses (batch 12)
+- [ ] **Tanino Gimlet.** Leg whites from one 2026 photo partly hidden by plants; which hind is which is a guess.
+- [ ] **Admire Groove.** The hood hides the forehead and the forelegs are always bandaged; the hind whites may be bandages; the "RK" monogram on her hood is not drawn.
+- [ ] **Neo Universe.** Face from one stud photo; hind whites from one paddock photo.
+- [ ] **Still in Love.** Star from one photo; darker mane from photos.
+- [ ] **Zenno Rob Roy.** Registry gives 左後一白; the height is read from photos.
+- [ ] **Sweep Tosho.** Blaze or long star-stripe; her JRA silks wording is reconstructed from photos.
+- [ ] **Air Messiah.** The hood hides the forehead in every photo.
+- [ ] **Cesario.** Legs bandaged in every photo, so her natural markings are unknown.
+
+### Jockey
+- [ ] The cap colour assumes an 18-runner field; a horse's real bracket (枠) in its signature race is often in the research notes and could be stored (`saddleBracket`).
+- [ ] Patterns not drawn yet: stars (星), the "ダイヤモンド" variants, two-colour sleeves split down the middle, and names written on the silks. Silks described only in English fall back to the first two colours.
+- [ ] The rider is rigid on the spine; a jockey absorbs the horse's motion with the knees and keeps the head still. Reins, the whip and a rider for the paddock (mounting at 「とまれ」) are still to do.
 
 ### Locations
 - [ ] **Tokyo.** Stand colours, Mt Fuji's bearing, and the infield pond's position.

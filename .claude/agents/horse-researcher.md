@@ -55,7 +55,9 @@ Rules learned from earlier runs:
   `hoodColors` { main, trim (eye-hole and edge trim), ears (ear covers, or false if the ears are bare) } as hex; `blinkers` / `shadowRoll` /
   `bitLifter` (ハミ吊り) booleans; `bridle` hex (leather brown '#3a2a20' if unknown, '#f2f0ea' for white);
   `pompom` hex if it wore a poll pompom; `bandages` { fore, hind } hex if it raced bandaged. `notes` for when/which race.
-- **silks**: real owner's 勝負服 — owner name, description in words, colours as hex.
+- **silks**: real owner's 勝負服 — owner name, description in words, colours as hex. Put the official JRA notation in
+  `desc` (e.g. 「黄、青一本輪、袖青」: body colour, body pattern, sleeves): the jockey renderer parses it, and snaps its
+  colour words to `colors`, so list every colour in it.
 - **saddleNumber**: its horse number (馬番) in its signature win, from that race's result page (shown on the saddle cloth).
 
 ## Output — exactly this shape, nothing else before or after except one line of caveats if needed
