@@ -5,6 +5,7 @@
    time: sun/sky/fog; extras: background horses ('companion' walks beside the hero, 'grazer' stands in a field).
    saddleCloth (tracks): the cloth of the signature race; default JRA G1 = 紫紺 #3a2a96 with white text.
    variantOf: a seasonal variant of another entry (its fields are merged over that entry's); rain: { intensity 0..1, slantDeg }.
+   crowd (tracks): 0..1, the race-day crowd on the apron and the stand's steps (0.4 by default; Derby day is 1).
    Racetrack facts come from the JRA course pages and Japanese Wikipedia (sources listed per entry). */
 window.LOCATIONS = [
   {
@@ -99,6 +100,7 @@ window.LOCATIONS = [
     turf: { color: '#6a9838' },
     lawn: '#71964a', verge: '#689444',
     leaf: ['#4a7236', '#5a843c', '#6b9545', '#3f5e35'], autumn: 0, // fresh early-summer broadleaves plus darker evergreens
+    crowd: 1, // the year's biggest crowd
     dust: '#86774f', // dry, firm 良 ground (JRA turf moisture 13.5% / 11.5% on 31 May 2026)
     saddleCloth: { cloth: '#f4f4f0', ink: '#141414', edge: '#c9a227' }, // Derby: 白地に黒文字, gold-thread edging (金糸の縁取り刺繍) since 1994
     backdrop: {
@@ -224,6 +226,57 @@ window.LOCATIONS = [
     uncertain: ['stand.colors (2023 photos)', 'stand.floors (6 or 7)', 'stand.depthM (estimated)', 'time (computed sun)', 'infield[0] size and distance (±15 m from the aerial)', 'backdrop.ranges', 'backdrop.landmarks[0] (the screen is really much closer, on the shore)', 'facts.races[0].month (late April or early May)', 'needs new kits: Benten island, fountains, 淀の坂, the poplar wall along the back straight'],
   },
   {
+    // Seasonal variant: Kyoto on Tenno Sho (Spring) day (天皇賞（春）). `variantOf` takes the 'kyoto' entry (stand, lake, backdrop, facts)
+    // and merges these fields over it.
+    id: 'kyoto-tenno-spring', variantOf: 'kyoto', en: 'Kyoto Racecourse (Tenno Sho Spring)', jp: '京都競馬場（天皇賞・春）', group: 'JRA G1',
+    // Turf 3200 m on the OUTER course: the start is on the back straight, the field goes about 1.5 laps, climbs the 淀の坂 twice and passes
+    // the stands once. Post 15:40 in every running checked (netkeiba: 2019, 2020, 2023-2026 at Kyoto; 2021-22 at Hanshin while Kyoto was rebuilt).
+    // Sun (NOAA algorithm) for 3 May 2026, 15:40 JST, at 34.908N 135.727E: elevation 36.2°, true azimuth 264.2°. Scene mapping from the base
+    // entry (stand facing ~145°, straight ~55°): sunAzimDeg = trueAz - 325, which gives the base's -83 for late October; 264.2 - 325 = -61.
+    time: {
+      month: 5, post: '15:40', sunElevDeg: 36, sunAzimDeg: -61, fogNear: 130, fogFar: 400, exposure: 1.0,
+      sky: { top: '#6b9dd8', mid: '#b3cde7', horizon: '#e0e6e6', sun: '#fff5e0' }, // Golden Week blue, pale bluish-white haze low down
+      sunColor: '#fff3dc', sunIntensity: 3.0,                                     // a high, white mid-afternoon sun
+      hemiSky: '#dde8f4', hemiGround: '#7d8d4e', hemiIntensity: 1.22,             // green bounce off the fresh turf
+    },
+    // JRA going notes (2025, 2026): 野芝に洋芝（イタリアンライグラス）をオーバーシード; the overseed is at its freshest (median of race-day photos 2023-2026).
+    turf: { color: '#66983a' },
+    lawn: '#7a9a4e', verge: '#6e9447', // noshiba-only lawns still greening
+    leaf: ['#5f8c42', '#73a04b', '#526b3e', '#3f5637'], autumn: 0, // fresh new broadleaves; dark columnar trees and clipped hedges
+    blossom: null, // no flowering trees in any race-day photo (the cherries are long over)
+    dust: '#84754e', // dry, firm turf: 良 in 5 of the 6 Kyoto runnings from 2019 to 2026
+    crowd: 0.6,
+    saddleCloth: { cloth: '#3a2a96', ink: '#ffffff' }, // an ordinary G1: 紫紺 with white text (seen on the 2023 and 2024 race-day cloths)
+    signature: 'Tenno Sho (Spring), the 3200 m marathon: the field passes the stands once on its 1.5 laps, climbs the 淀の坂 twice and comes home down the flat 400 m outer straight under a high Golden Week sun, with fresh overseeded turf, new-leaf trees and clipped hedges round the lake, and purple G1 cloths with white text.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/天皇賞（春）',
+      'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)',
+      'https://ja.wikipedia.org/wiki/京都競馬場',
+      'https://race.netkeiba.com/race/result.html?race_id=202608030411',
+      'https://race.netkeiba.com/race/result.html?race_id=202508020411',
+      'https://race.netkeiba.com/race/result.html?race_id=202408030411',
+      'https://race.netkeiba.com/race/result.html?race_id=202308010411',
+      'https://race.netkeiba.com/race/result.html?race_id=202008030411',
+      'https://race.netkeiba.com/race/result.html?race_id=201908030311',
+      'https://www.jra.go.jp/keiba/baba/overview/2026_3_kyoto.html',
+      'https://www.jra.go.jp/keiba/baba/overview/2025_2_kyoto.html',
+      'https://commons.wikimedia.org/wiki/File:Croix_du_Nord-2026-5-3.jpg',
+      'https://commons.wikimedia.org/wiki/File:Redentor-2025-5-4.jpg',
+      'https://commons.wikimedia.org/wiki/File:Blow_the_Horn-2024-4-28.jpg',
+      'https://commons.wikimedia.org/wiki/File:Justin_Palace_Tenno_Sho_(Spring)_2023(IMG1).jpg',
+      'https://commons.wikimedia.org/wiki/File:Kyoto_Racecourse_2023_3.jpg',
+    ],
+    uncertain: [
+      'time.sunAzimDeg (-61 relies on the base entry\'s stand facing of ~145° from the GSI aerial; not re-measured)',
+      'time.month (5; the race fell on 28 or 30 April in 2019, 2023 and 2024)',
+      'time.sky, fog, exposure, light colours and intensities (look values from 2023-2025 photos, not measured)',
+      'turf / lawn / verge / leaf colours (median samples from Commons photos, toned down by eye)',
+      'dust (estimated; only the 良 going is sourced)',
+      'crowd 0.6 (a guess between an ordinary G1 and Derby day)',
+      'needs a kit: the flower beds by the winning post; the C-course inner rail 7 m out (2025-26); the tall clipped hedge along the infield side of the dirt course',
+    ],
+  },
+  {
     id: 'hanshin', en: 'Hanshin Racecourse', jp: '阪神競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
     hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2034,
     // Oka Sho, early-to-mid April (post 15:40): spring haze, Somei Yoshino in full bloom, overseeded turf bright green
@@ -287,6 +340,7 @@ window.LOCATIONS = [
     lawn: '#6a8c45', verge: '#5c7d3d',
     leaf: ['#3f6a35', '#4a7a3c', '#577f45'], blossom: null, // the infield cherries in dark summer leaf
     dust: '#4b4535',                                        // the wet root zone flung up as dark clods
+    crowd: 0.25,                                            // a thin crowd out on the apron in the rain (most stay under the roof)
     saddleCloth: { cloth: '#3a2a96', ink: '#ffffff' },      // the standard JRA G1 紫紺 with white text
     backdrop: { clouds: 0 },                                // one low grey deck, no separate clouds
     signature: 'Takarazuka Kinen in the rainy season: a low grey sky swallowing the Rokko hills, steady rain over deep-green summer noshiba, the dirt dark and shining, clods flying, and the purple G1 cloths soaked almost black.',

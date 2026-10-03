@@ -1087,6 +1087,11 @@ function buildHorse(look = {}, seed = 1337) {
     const g = loft(rings, tp.clone().addScaledVector(dir, -0.07), end.clone().addScaledVector(dir, 0.05));
     attach(seg, paint(jitter(g, 0.012, 50 + i), flat(i % 2 ? pal.tail : pal.tail2, rnd)));
     rig.tail.push(seg);
+    if (i === 1 && look.gear?.tailRibbon) { // a ribbon tied in the top of the tail: the kicker's warning (蹴り癖)
+      const c = tp.clone().addScaledVector(dir, 0.3 * TAIL_LEN[i]), rb = flat(hex(look.gear.tailRibbon), rnd, 0.04);
+      attach(seg, paint(new THREE.TorusGeometry(TAIL_R[i] * 1.25, 0.008, 4, 8).rotateX(Math.PI / 2).applyQuaternion(new THREE.Quaternion().setFromUnitVectors(Y_AXIS, dir)).translate(c.x, c.y, c.z), rb));
+      for (const sd of [-1, 1]) attach(seg, paint(new THREE.ConeGeometry(0.03, 0.07, 4).rotateZ(sd * 1.2).translate(c.x - 0.03, c.y - 0.02, sd * 0.03), rb)); // the bow's two loops
+    }
     tp = end; tAng += 9 * DEG; tParent = seg;
   }
 
@@ -2454,6 +2459,30 @@ function crowdSet(k, Y, loc) {
   addSet(rest, mat, people.map((it) => ({ ...it, color: new THREE.Color().setScalar(0.85 + rnd() * 0.25) })));
 }
 
+// The race-day crowd at a racecourse (`crowd` 0..1, 0.4 by default; Derby day is 1): people pressed against the outer
+// rail and scattered on the apron, and rows on the stand's terrace steps, along the length of the stand. Each person is
+// a jacket in the instance's colour over dark trousers, and a head: about 32 triangles, as they are seen from afar.
+function raceCrowdSet(k, loc, T) {
+  const { S, rnd, item, mat, addSet } = k, d = clamp(loc.crowd ?? 0.4, 0, 1);
+  const colors = (loc.crowdColors ?? ['#2b2d33', '#f2f0ea', '#3a4a6a', '#6a6f78', '#a33a3a', '#c9b48a', '#2f5a45', '#d8d4cc', '#1d2a44']).map(colorOf);
+  const body = merge([
+    paint(noUV(new THREE.BoxGeometry(0.42, 0.64, 0.26).translate(0, 1.12, 0)), flat(0xffffff, rnd, 0.05)), // jacket (instance colour)
+    paint(noUV(new THREE.BoxGeometry(0.28, 0.82, 0.2).translate(0, 0.41, 0)), flat(0x3a3b42, rnd, 0.05)),  // trousers
+  ]);
+  const head = paint(noUV(new THREE.OctahedronGeometry(0.14, 0).scale(1, 1.15, 1).translate(0, 1.62, 0)), flat(0xd8b493, rnd, 0.06));
+  const L = Math.min(loc.stand.lengthM ?? 220, W - 60), x0 = W / 2 - L / 2, people = [];
+  const face = S > 0 ? Math.PI : 0; // toward the course
+  const row = (z, y, perM, from = x0, to = x0 + L) => {
+    for (let x = from; x < to; x += 1 / (perM * d)) people.push(item(x + (rnd() - 0.5) * 0.4, (z + (rnd() - 0.5) * 0.3) * S, 0.9 + rnd() * 0.18, face + (rnd() - 0.5) * 0.9, -y, { color: pick(colors, rnd) }));
+  };
+  row(T.outer + 0.5, 0, 1.5, x0 - L * 0.08, x0 + L * 1.08); // pressed against the outer rail
+  row(T.outer + 1.2, 0, 0.8);
+  for (let i = 0; i < 0.5 * L * d; i++) people.push(item(x0 + rnd() * L, (T.outer + 2.5 + rnd() * (T.standFront - T.outer - 3.5)) * S, 0.9 + rnd() * 0.18, rnd() * TAU, 0, { color: pick(colors, rnd) }));
+  for (let i = 0; i < 9; i++) for (const f of [0.6, 1.6]) row(T.standFront + i * 2.3 + f, 1.25 * (i + 1), 0.55 * (1 - i * 0.05)); // two rows to a terrace step
+  addSet(body, mat, people);
+  addSet(head, mat, people.map((it) => ({ ...it, color: new THREE.Color().setScalar(0.85 + rnd() * 0.25) })));
+}
+
 function ringSpot(S, bearingDeg, distM) {
   const b = (bearingDeg ?? 0) * DEG, x = Math.sin(b) * distM, z = -S * Math.cos(b) * distM;
   return { x, z, rotY: Math.atan2(-x, -z) };
@@ -2658,6 +2687,7 @@ const PROP_BUILDERS = {
     const T = trackLayout(loc), { S } = k, rail = loc.rails?.color ?? '#f4f4f0';
     for (const zs of T.rails) fenceLine(k, zs * S, { gap: 3, post: rail, rail, rails: [0.95], postH: 0.95, postR: 0.045, postSeg: 4, boardH: 0.11, boardD: 0.11, wobble: 0.004, tint: 0.05 });
     if (loc.stand) standSet(k, loc, T);
+    if (loc.stand && (loc.crowd ?? 0.4) > 0) raceCrowdSet(k, loc, T);
     if (loc.floodlights) floodlightSet(k, loc.floodlights, T);
     if (loc.wet?.puddles) puddleSet(k, T, loc);
     const infield = (r) => S * (T.dIn - 8 - r() * (T.D - T.turfW - T.dirtW - 30)); // somewhere between the two dirt courses
