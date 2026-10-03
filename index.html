@@ -1632,8 +1632,29 @@ function idleEars(rig, p, o, fwd) {
   }
 }
 
-const _jr = new THREE.Matrix4(), _bit = V(0, 0);
+const _jr = new THREE.Matrix4(), _bit = V(0, 0), _bq = new THREE.Quaternion();
+// Gait changes blend (rig.blend { from, t, dur }): the old gait is posed too, from the same loop phase, and every joint
+// eases from its pose to the new gait's over ~0.6 s, while the ground's speed eases between the two (see the loop).
 function pose(rig, g, p = 0) {
+  const B = rig.blend;
+  if (B && !B.frozen) {
+    const G = rig.gait;
+    rig.gait = B.from;
+    poseGait(rig, wrap01(p * B.from.strides), p);
+    rig.gait = G;
+    rig.nodes ??= (() => { const n = []; rig.root.traverse((o) => { if (o !== rig.root && !o.isMesh) n.push(o); }); return n; })();
+    B.q ??= rig.nodes.map(() => new THREE.Quaternion());
+    B.v ??= rig.nodes.map(() => V(0, 0));
+    rig.nodes.forEach((o, i) => { B.q[i].copy(o.quaternion); B.v[i].copy(o.position); });
+  }
+  poseGait(rig, g, p);
+  if (B) {
+    const w = smooth01(B.t / B.dur);
+    rig.nodes.forEach((o, i) => { _bq.copy(o.quaternion); o.quaternion.slerpQuaternions(B.q[i], _bq, w); o.position.lerpVectors(B.v[i], o.position.clone(), w); });
+    rig.root.updateMatrixWorld(true);
+  }
+}
+function poseGait(rig, g, p) {
   BODY[rig.gait.body](rig, g, p, rig.phaseOffset ?? 0);
   if (rig.jockeyPivot) { // the rider keeps ~70% of the back's pitch out of the upper body
     rig.root.updateMatrixWorld(true);
@@ -3216,14 +3237,21 @@ function rebuildHorse() {
 }
 
 // Gait of the hero (and the companions walking with it); the loop length follows the hero.
-function setGait(key) {
+function setGait(key, { blend = false } = {}) {
   state.gait = GAITS[key] && !GAITS[key].stand ? key : 'gallop';
   const gaitFor = (r) => Object.assign(makeGait(state.gait, r.scale, W, state.lead), world?.path ? { path: world.path } : {});
+  const change = (r) => { // blend from the old gait when the viewer switches gait while it plays
+    const from = r.gait, to = gaitFor(r), mid = r.blend && r.nodes; // switched again mid-blend: ease on from the pose as it stands
+    r.blend = blend && playing && from && from.key !== to.key
+      ? { from, t: 0, dur: 0.6, ...(mid ? { frozen: true, q: r.nodes.map((o) => o.quaternion.clone()), v: r.nodes.map((o) => o.position.clone()) } : {}) }
+      : null;
+    r.gait = to;
+  };
   if (rig) {
-    rig.gait = gaitFor(rig);
+    change(rig);
     loopPeriod = rig.gait.period;
   }
-  for (const ex of extras) if (ex.mode === 'companion' || ex.mode === 'parade' || ex.mode === 'field') ex.rigs[0].gait = gaitFor(ex.rigs[0]);
+  for (const ex of extras) if (ex.mode === 'companion' || ex.mode === 'parade' || ex.mode === 'field') change(ex.rigs[0]);
   syncBar();
   writeHash();
 }
@@ -3671,6 +3699,7 @@ function setView(name) {
 // Hook: jump to loop phase p and hold it (shown as paused in the UI); resume() plays on from there.
 function setPhase(p) {
   setPlaying(false);
+  for (const r of [rig, ...extras.flatMap((e) => e.rigs)]) r.blend = null;
   loopPhase = wrap01(p);
   applyPhase(loopPhase);
   renderNow();
@@ -3720,7 +3749,7 @@ playBtn.addEventListener('click', () => setPlaying(!playing));
 const speedIn = $('speed'), speedOut = $('speedOut');
 speedIn.addEventListener('input', () => { speed = +speedIn.value; speedOut.textContent = `${speed.toFixed(2)}×`; });
 document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
-document.querySelectorAll('[data-gait]').forEach((b) => b.addEventListener('click', () => setGait(b.dataset.gait)));
+document.querySelectorAll('[data-gait]').forEach((b) => b.addEventListener('click', () => setGait(b.dataset.gait, { blend: true })));
 const fieldBtn = $('fieldBtn');
 fieldBtn.addEventListener('click', () => {
   state.race = !state.race;
@@ -3933,8 +3962,10 @@ renderer.setAnimationLoop((ts) => {
   timer.update(ts);
   const dt = Math.min(timer.getDelta(), 0.1);
   if (playing) {
-    loopPhase = wrap01(loopPhase + (dt * speed) / rig.gait.period);
-    raceT += (dt * speed * W) / rig.gait.period / RACE.speed; // story time: ground covered at 16 m/s
+    const B = rig.blend, rate = B ? lerp(1 / B.from.period, 1 / rig.gait.period, smooth01(B.t / B.dur)) : 1 / rig.gait.period; // loops per second
+    loopPhase = wrap01(loopPhase + dt * speed * rate);
+    raceT += (dt * speed * W * rate) / RACE.speed; // story time: ground covered at 16 m/s
+    for (const r of [rig, ...extras.flatMap((e) => e.rigs)]) if (r.blend && (r.blend.t += dt * speed) >= r.blend.dur) r.blend = null;
   }
   applyPhase(loopPhase);
   controls.update();
