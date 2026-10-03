@@ -4,12 +4,14 @@ Where the low-poly horse goes next, in build order. Each **batch** adds the next
 order, a location or two, and one engine item. Horses come from the official character list at
 <https://umamusume.jp/character/>; every entry models the **real racehorse** behind a character.
 
-## Status after batch 12 (October 2026)
+## Status after batch 13 (October 2026)
 
 | Area | Done |
 |---|---|
 | Engine | Horse profiles drive the whole model: coat, markings, size and hair length. A gait table holds the gallop (left or right lead), a new **walk** and a standing **graze** pose. Stride counts are recomputed for each horse and location, so the loop stays seamless and planted hooves have 0.00 mm slip (measured). Includes a location system, background horses, the side panel and the URL hash. |
-| Jockey (B12) | A low-poly **jockey in the owner's silks** rides on racecourses: crouched over the withers in short irons, hands at the crest, white breeches and black boots, goggles and a cap in the colour of the gate bracket (枠; an 18-runner field is assumed). The silks are **parsed from the JRA notation** in `silks.desc` (「黄、青一本輪、袖青」): the body colour, the body pattern (hoops 一本輪/二本輪/三本輪, band 一文字, chevrons 山形, sash 襷, cross-sash 十字襷, stripes 縦縞, checks 元禄/格子, sawtooth yoke 鋸歯形, spots 玉霰/銭形, diamonds 菱, ring 蛇目) and the sleeves (X袖, 袖X一本輪, 袖X縦縞, 段). Colour words snap to the researched `silks.colors`. Patterns are painted per face on a subdivided torso, so they need no texture. On the training hill a work rider in a dark vest and a blue jockey's helmet rides the hero and the work partner. The rider is carried by the spine bone and merged into the horse's single skinned mesh. A **Rider** toggle in the panel. |
+| Race mode (B13) | On a racecourse the **Field** button runs a race: the hero against the **17 roster racehorses foaled closest to it**, each in its own coat, gear, silks and cap, numbered 1–18 round the hero's own number. A race is a ~52 s story told in metres behind a virtual leader. The field breaks from an 18-stall **starting gate** (it stays on the ground and slides away behind), settles into **running-style order** (逃げ in front, 先行, 差し, 追込 at the back, with a 30% chance of a horse's secondary style) in lanes off the inner rail, then fans out across the course off the home turn while the finishing order is decided (front-runners fade, closers kick; seeded per race). The leader passes the **winning post** (ゴール板) and the next race starts. Every runner's gait phase follows the ground it covers, so hooves stay planted while it gains or drops back, and it turns into its sideways drift. The camera side is kept clear: the hero sits just outside its row and comes wide in the straight (a front-runner keeps its line). A line under the hint shows the hero's place and the leader, then the result. The field shows at the race and gallop gaits (the story slows with the gait); the hash stores it as `race=1`. The gate is JRA's JSS40 as photographed: white posts, grey padded stalls, a green truss with yellow number plates (stall 1 on the inner rail) and the course's name on a white sign band, in two sections of 10 and 8. 18 horses with riders draw in about 115 calls. |
+| Limb ranges (B13) | The **front legs** looked wrong at speed: the swing path was a cubic Hermite carrying the ground's speed at both ends, which overshoots by 0.1 × the stride, so at racing speed the forefoot was flung half a metre past its landing spot and the IK pushed the elbow out in front of the chest (humerus +49° forward) or up level with the point of shoulder. The swing now spends the ground's speed in short windows at each end (`flick` after lift-off, `retract` before landing, per gait), and in the swing the **humerus keeps to −76°…+2°** and the **femur to 0°…76°**: past a limit the bone stops and the knee or hock bends to reach instead (the same pose at the limit, so nothing jumps). The race gait's fore lift is a little lower (forearm at most 65° forward). Stance slip is unchanged at 0.00 mm. |
+| Jockey (B12) | A low-poly **jockey in the owner's silks** rides on racecourses: crouched over the withers in short irons, hands at the crest, white breeches and black boots, goggles and a cap in the colour of the gate bracket (枠; an 18-runner field is assumed). The silks are **parsed from the JRA notation** in `silks.desc` (「黄、青一本輪、袖青」): the body colour, the body pattern (hoops 一本輪/二本輪/三本輪, band 一文字, chevrons 山形, sash 襷, cross-sash 十字襷, stripes 縦縞, checks 元禄/格子, sawtooth yoke 鋸歯形, spots 玉霰/銭形, stars 星散 (B13), diamonds 菱, ring 蛇目) and the sleeves (X袖, 袖X一本輪, 袖X縦縞, 段). Colour words snap to the researched `silks.colors`. Patterns are painted per face on a subdivided torso, so they need no texture. On the training hill a work rider in a dark vest and a blue jockey's helmet rides the hero and the work partner. The rider is carried by the spine bone and merged into the horse's single skinned mesh. A **Rider** toggle in the panel. |
 | Snow (B11) | `builder: 'snow'`: a trampled track through fetlock-deep snow with sunlit and blue-shaded drifts, mud and hay where the horses dig, half-buried board fences, bare birches (twig crowns), firs with snow on their tiers, barns with snow on the roofs (`buildings`), and snow caps on the far ranges above `snowline`. **Winter rugs** (`rug`, 馬着): a draped blanket with a binding and belly straps, on the hero and the turned-out horses. **Breath** (`breath`): a puff from the nostrils at each exhale, once per stride at a canter or gallop (locomotor-respiratory coupling) and about every 2.5 s at a walk. **Falling snow** (`snow.falling`) is supported but the researched morning is clear. Cloths (rug, saddle cloth) are now **draped**: each cross-section of the barrel is clipped to the cloth's band and resampled, so hems run straight instead of zig-zagging across faces. |
 | Slopes (B10) | **Sloped straights**: a height along the direction of travel. `slope` (a training hill) is a climb that never ends: each period of the strip rises by the same amount, the copies are drawn one rise higher each and the world sinks as it scrolls, with the real course's sections squeezed into one period. A racecourse's `facts.straightProfile` becomes a closed bump: the home straight's profile over 70% of the period, easing back down over the rest, so Tokyo, Nakayama, Hanshin, Chukyo and Morioka now have their final hills. The grade is smoothed so the pitch never jumps; the horse (and any companion) pitches with the ground, and the hooves stay on it (toes 1–3 mm above the slope, about 5 mm of slip on a 4.5% grade). **Training hill** builder: a wood-chip course between rails, churned lanes, verges, banks and woods, timing posts, light poles and an observation tower; training saddle cloths carry the horse's name and no number (`saddleCloth.numbered: false`). |
 | Rigid-skin merge (B10, ahead of B11) | Each horse is now one SkinnedMesh for everything but its eyes and saddle cloth: every rigid part (limbs, hooves, head, ears, mane blades, tail, gear) is baked in and weighted 100% to its own node, and the nodes keep animating as before. About 60 draw calls per horse became 3; the paddock's 18 horses draw in about 100 calls for the whole scene. |
@@ -26,7 +28,7 @@ order, a location or two, and one engine item. Horses come from the official cha
 | Forelimbs (B2) | Deeper, broader brisket so the elbow and forearm tuck into the chest instead of hanging off a rounded barrel; a broad flat shoulder blade, a triceps mass and a muscular forearm top; at the gallop the forefoot flips up into a hook behind the knee (deeper fetlock curl, higher fore lift). |
 | Colour | All 8 JBIS registry coats (鹿毛 … 白毛), pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. **Greys (B2):** greyness slider with a slow-greying curve, **dapples** (cellular noise painted on 16× subdivided coplanar faces, strongest at mid grey, with their own slider), lighter faces and dark lower legs on young greys, and a separate `coat.tail` colour. |
 | Parts | Mane and tail length, height (uniform scale) and weight (bulk of trunk, neck and upper limbs). |
-| Horses | 99 of 152, roster #1–#99, from Byerley Turk (c.1680) to Cesario (2002). 95 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
+| Horses | 107 of 152, roster #1–#107, from Byerley Turk (c.1680) to Furioso (2004). 103 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
 | Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), and the JRA G1 courses **Tokyo**, **Nakayama**, **Kyoto** (infield lake), **Hanshin** (cherry blossom: `blossom` colours flowering broadleaf trees only) and **Chukyo** (B3); the NAR tracks **Oi** (B4), **Kawasaki** and **Funabashi** (B5) at night, **Urawa** at twilight and **Morioka** at night with the turf course inside the dirt (`innerTurf`, B6), **Kanazawa** in low November sun and **Saga** at night (B7); the **Tokyo Racecourse paddock** on Derby day, walked in path mode with the rest of the field (B8); a **beach at dawn** modelled on Kujukuri, the sun rising out of the Pacific behind the horse (B9); the **Ritto hill gallop** (坂路), an endless climb up the wood chips (B10); a **snowy Hidaka farm** on a clear February morning (B11). |
 | Research | Two reusable agent templates in `.claude/agents/`, run for every horse and track since batch 2 (8–10 agents in parallel, about 3–9 minutes each). |
 
@@ -55,7 +57,8 @@ Engine items are placed before the first horse that needs them.
 | ✅ 10 | #76–83 · 1996–98 · Narita Top Road, T.M. Opera O, Agnes Digital, Air Shakur, Tap Dance City, Agnes Tachyon, Believe, Calstone Light O | Ritto hill gallop (坂路) | Sloped straights (and the racecourses' final hills); fore/hind hoof shapes and racing plates |
 | ✅ 11 | #84–91 · 1998–99 · Dantsu Flame, Jungle Pocket, Manhattan Cafe, Durandal, Fine Motion, Hishi Miracle, No Reason, Symboli Kris S | Snowy Hokkaido field | Snow builder, winter rugs, breath, draped cloths (rigid-skin merge done early in B10) |
 | ✅ 12 | #92–99 · 1999–2002 · Tanino Gimlet, Admire Groove, Neo Universe, Still in Love, Zenno Rob Roy, Sweep Tosho, Air Messiah, Cesario | — | Jockey in the owner's silks (勝負服, parsed from `silks.desc`) |
-| 13–19 | #100–152 · 2002–2021 · Daring Heart … Forever Young (8 per batch; the exact split is in `data/roster.js`) | Seasonal variants of existing tracks | **Race mode** (below), then polish |
+| ✅ 13 | #100–107 · 2002–04 · Daring Heart, Rhein Kraft, Fusaichi Pandora, Kawakami Princess, Aston Machan, Daiwa Scarlet, Dream Journey, Furioso | — | **Race mode** (a field of roster horses by running style, gate start, winning post); limb ranges in the swing |
+| 14–19 | #108–152 · 2004–2021 · Vodka … Forever Young (8 per batch; the exact split is in `data/roster.js`) | Seasonal variants of existing tracks (B14: Hanshin in the rain for the Takarazuka Kinen) | Weather (rain, soft going), then polish |
 
 Before every batch, re-read the official list. New characters are added over time, and they slot into the roster by foaling year.
 
@@ -137,11 +140,14 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
 3. Mane styles (pulled, long, braided), forelock, tail set.
 4. Jockey wearing the owner's silks (勝負服).
 
-## Race mode (later)
-- A field of horses whose positions follow their real running styles (逃げ 先行 差し 追込, already in the data).
-- Real course geometry: turns, plus elevation from `facts.straightProfile`.
-- Gate start and lead changes.
-- Prerequisite: the rigid-skin merge.
+## Race mode
+- ~~A field of horses whose positions follow their real running styles (逃げ 先行 差し 追込, already in the data).~~ Done in B13 (the Field button).
+- ~~Gate start.~~ Done in B13; the gate stays on the ground as the field breaks.
+- ~~Elevation from `facts.straightProfile`.~~ The final hills came in B10; the field rides them too.
+- Real course geometry: the turns (path mode on a racecourse, with the stands only on the home straight).
+- Lead changes: a flying change off the home turn, for the hero and the field.
+- The race is told on one long straight; the clock is a story, not the real race distance.
+- Prerequisite: the rigid-skin merge (done in B10).
 
 ## Performance
 - ~~**Rigid-skin merge.**~~ Done in B10: each horse is one skinned mesh plus its eyes and saddle cloth (3 draw calls, was about 60). Grazer copies could still share one skeleton.
@@ -330,9 +336,25 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Air Messiah.** The hood hides the forehead in every photo.
 - [ ] **Cesario.** Legs bandaged in every photo, so her natural markings are unknown.
 
+### Horses (batch 13)
+- [ ] **Daring Heart.** The hood covers the forehead in every photo; the thin nose line may be hood or noseband trim; bandages vary by race.
+- [ ] **Rhein Kraft.** The white hind (RH over LH) is read from how the legs overlap in two photos; a star may hide under the paddock hood.
+- [ ] **Fusaichi Pandora.** The face comes from one farm photo that may not be her; her hood hides it in every race photo.
+- [ ] **Kawakami Princess.** No source gives markings; the hood covers the forehead; by 2007 the hood had turquoise ear covers.
+- [ ] **Aston Machan.** Face from one photo; bandages hid her legs in every photo.
+- [ ] **Daiwa Scarlet.** Face and legs from photos only; striped bandages hide any leg white.
+- [ ] **Dream Journey.** The small star is from one photo.
+- [ ] **Furioso.** These are jockey 戸崎圭太's NAR silks (the notation is built from Wikipedia's wording); his checkerboard (市松) hood is drawn plain.
+
+### Race mode
+- [ ] The gate (JRA's JSS40: green truss, yellow number plates, white posts, grey padded stalls, two sections of 10 + 8) is drawn from Commons photos; no source gives its sizes, so the ~1.15 m stalls, ~2.9 m depth and ~4.3 m truss are read off photos against the tractor. The tractor and the starter's stand are not drawn.
+- [ ] The winning post uses Tokyo's style (white pylons, the dark mirror box of the photo-finish camera, a sky-blue badge) at every course; Kyoto, Nakayama and the NAR tracks have their own frames.
+- [ ] Field sizes are always 18 (smaller real fields change the bracket colours); the field is the hero's contemporaries, not a real race card.
+- [ ] No turns, no flying lead changes, no whips or riders urging in the straight.
+
 ### Jockey
 - [ ] The cap colour assumes an 18-runner field; a horse's real bracket (枠) in its signature race is often in the research notes and could be stored (`saddleBracket`).
-- [ ] Patterns not drawn yet: stars (星), the "ダイヤモンド" variants, two-colour sleeves split down the middle, and names written on the silks. Silks described only in English fall back to the first two colours.
+- [ ] Patterns not drawn yet: the "ダイヤモンド" variants, two-colour sleeves split down the middle, and names written on the silks. Silks described only in English fall back to the first two colours.
 - [ ] The rider is rigid on the spine; a jockey absorbs the horse's motion with the knees and keeps the head still. Reins, the whip and a rider for the paddock (mounting at 「とまれ」) are still to do.
 
 ### Locations

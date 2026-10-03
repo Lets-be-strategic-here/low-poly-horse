@@ -31,7 +31,9 @@
   .title h1 { margin: 0; font-size: 15px; font-weight: 650; letter-spacing: 0.02em; }
   .title p { margin: 2px 0 0; font-size: 11.5px; color: var(--ink-soft); letter-spacing: 0.02em; }
   .hint { position: fixed; right: max(16px, env(safe-area-inset-right)); top: max(16px, env(safe-area-inset-top)); font-size: 11px; color: var(--ink-soft); pointer-events: none; user-select: none; }
+  .raceHud { position: fixed; right: max(16px, env(safe-area-inset-right)); top: calc(max(16px, env(safe-area-inset-top)) + 18px); font-size: 12px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; pointer-events: none; user-select: none; text-shadow: 0 1px 10px rgba(255, 246, 234, 0.9), 0 0 2px rgba(255, 246, 234, 0.7); }
   /* night locations: light text over the dark sky */
+  body.night .raceHud { color: #f1ece4; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85); }
   body.night .title, body.night .hint { color: #f1ece4; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85); }
   body.night .title p, body.night .hint { color: #cfc8bd; }
   .bar {
@@ -49,7 +51,7 @@
   .icon:hover { background: #56443a; }
   .seg { display: flex; gap: 2px; padding: 2px; border-radius: 10px; background: rgba(59, 47, 39, 0.06); }
   .seg button { padding: 6px 9px; }
-  .seg button.on, #wire.on { background: #fffaf4; box-shadow: 0 1px 3px rgba(60, 40, 25, 0.18); font-weight: 600; }
+  .seg button.on, #wire.on, #fieldBtn.on { background: #fffaf4; box-shadow: 0 1px 3px rgba(60, 40, 25, 0.18); font-weight: 600; }
   .speed { display: flex; align-items: center; gap: 7px; padding: 0 4px 0 6px; }
   .speed span { font-size: 11px; color: var(--ink-soft); }
   .speed output { min-width: 36px; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 12px; }
@@ -98,7 +100,8 @@
     .speed span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     input[type=range] { width: 72px; }
     .seg button { padding: 6px 7px; }
-    #wire { padding: 7px 8px; }
+    #wire, #fieldBtn { padding: 7px 8px; }
+    .raceHud { top: calc(max(14px, env(safe-area-inset-top)) + 40px); right: auto; left: max(16px, env(safe-area-inset-left)); text-align: left; } /* under the title: the hint is hidden here */
   }
 </style>
 <script src="data/horses.js"></script>
@@ -112,6 +115,7 @@
 <div class="vignette"></div>
 <div class="title"><h1 id="hName">Gallop</h1><p id="hSub">procedural low-poly study &middot; seamless loop</p></div>
 <div class="hint">drag to orbit &middot; scroll to zoom &middot; space to pause</div>
+<div class="raceHud" id="raceHud" hidden></div>
 <aside class="panel" id="panel" aria-label="Horse and location" hidden>
   <section>
     <h2>Horse</h2>
@@ -168,6 +172,7 @@
     <button data-view="side">Side</button><button data-view="three-quarter">3/4</button><button data-view="front">Front</button><button data-view="far" title="From the far side (the infield at a racetrack)">Far</button>
   </div>
   <div class="sep"></div>
+  <button id="fieldBtn" aria-pressed="false" title="Race against a field of 17 roster horses (racecourses)">Field</button>
   <button id="wire" aria-pressed="false" title="Show the horse's polygons">Wire</button>
   <button id="panelBtn" aria-expanded="false" aria-controls="panel" title="Horse, location and customization">Horse</button>
 </div>
@@ -189,7 +194,8 @@ const BREAKOVER = 34 * DEG;         // heel lift at lift-off: the hoof rolls ove
 const BREAKOVER_START = 0.62;       // stance fraction where the heel starts to rise
 
 // T: seconds per stride at 1x; stride: metres per stride (163 cm horse); duty: fraction of a stride
-// each hoof is planted; land: gait phase at which each hoof touches down. fore/hind shape the swing.
+// each hoof is planted; land: gait phase at which each hoof touches down. fore/hind shape the swing
+// (flick / retract: the fraction of the swing spent matching the ground's speed after lift-off / before landing).
 const GAITS = {
   // transverse gallop, left lead: RH -> LH -> RF -> LF(lead) -> suspension
   gallop: {
@@ -205,8 +211,8 @@ const GAITS = {
   race: {
     label: 'Race', T: 0.43, stride: 7.0, duty: 0.2, body: 'race', dust: true, curl: 1, leads: true,
     land: { RH: 0.0, LH: 0.09, RF: 0.27, LF: 0.37 },
-    fore: { xc: 0.62, lift: 0.5, rise: 0.25, fall: 0.55, flex: 125 * DEG, flexPeak: 0.3, flexEnd: 0.8, sag: 17 * DEG, scapSwing: 18 * DEG },
-    hind: { xc: -0.55, lift: 0.36, rise: 0.3, fall: 0.6, flex: 70 * DEG, flexPeak: 0.38, flexEnd: 0.86, sag: 15 * DEG, hockSag: 12 * DEG, hockOpen: -8 * DEG, hockPush: 40 * DEG },
+    fore: { xc: 0.62, lift: 0.44, rise: 0.25, fall: 0.55, flex: 125 * DEG, flexPeak: 0.3, flexEnd: 0.8, sag: 17 * DEG, scapSwing: 18 * DEG },
+    hind: { xc: -0.55, lift: 0.36, rise: 0.3, fall: 0.6, flex: 70 * DEG, flexPeak: 0.38, flexEnd: 0.86, sag: 15 * DEG, hockSag: 12 * DEG, hockOpen: -8 * DEG, hockPush: 40 * DEG, flick: 0.16 },
   },
   // working trot (~3.6 m/s): two-beat, the diagonal pairs (LF+RH, RF+LH) land together, a short suspension
   // between them; the head stays steady
@@ -365,9 +371,14 @@ const smooth01 = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
 const smoothstep = (a, b, x) => smooth01((x - a) / (b - a));
 const hump = (s, a, b, c) => (s < b ? smoothstep(a, b, s) : 1 - smoothstep(b, c, s)); // C1: 0 -> 1 at b -> 0
 const cyc = (g, k, phase) => Math.cos(TAU * (k * g - phase));                          // periodic for integer k
-const hermite = (x0, x1, m, s) => {
-  const s2 = s * s, s3 = s2 * s;
-  return (2 * s3 - 3 * s2 + 1) * x0 + (s3 - 2 * s2 + s) * m + (3 * s2 - 2 * s3) * x1 + (s3 - s2) * m;
+// Swing path along the body, x0 -> x1 over s = 0..1, leaving and arriving at velocity m (the ground's speed, so
+// the hoof never jerks at lift-off or touchdown). A plain cubic Hermite spreads that end velocity over the
+// whole swing and overshoots both ends by ~0.1 m; at racing speed that flung the hoof half a metre past its
+// landing spot (the elbow came out in front of the chest). Here the overshoot stays in short windows: the
+// hoof flicks back for t0 of the swing after lift-off and retracts for the last t1 before landing.
+const swingX = (x0, x1, m, s, t0, t1) => {
+  const e = (t, w) => (t < w ? t * (1 - t / w) ** 2 : 0); // e(0) = 0, e'(0) = 1, gone (C1) by t = w
+  return x0 + (x1 - x0) * smooth01(s) + m * (e(s, t0) - e(1 - s, t1));
 };
 function mulberry32(a) {
   return () => {
@@ -854,6 +865,10 @@ function buildHorse(look = {}, seed = 1337) {
         checks: () => (Math.floor(u * 5) + Math.floor((sz + 1) * 3)) % 2 === 1,
         sawtooth: () => u > 0.6 + 0.08 * tri((sz + 1) * 2.5),
         spots: () => ((u * 5) % 1 - 0.5) ** 2 + (((sz + 1) * 3) % 1 - 0.5) ** 2 < 0.06,
+        stars: () => { // 星散: five-pointed stars on a staggered grid
+          const row = Math.floor(u * 5), x = ((u * 5) % 1) - 0.5, y = (((sz + 1) * 3 + (row % 2) * 0.5) % 1) - 0.5;
+          return Math.hypot(x, y) < 0.3 * (0.62 + 0.38 * Math.cos(5 * Math.atan2(y, x)));
+        },
         diamonds: () => Math.abs(((u * 4) % 1) - 0.5) + Math.abs((((sz + 1) * 2) % 1) - 0.5) < 0.24,
         ring: () => Math.abs(Math.hypot(u - 0.5, sz * 0.5) - 0.18) < 0.05,
       }[pt.kind];
@@ -1267,7 +1282,7 @@ function footPath(L, g, G) {
   const [bx, by] = plantedFetlock(toeUp, BREAKOVER, A.pastern - BREAKOVER); // actual lift-off fetlock
   const [fx0, fy0] = plantedFetlock(toeUp, 0, A.pastern);                    // same, with a flat hoof
   const fade = 1 - smoothstep(0, 0.3, s);
-  const fx = hermite(fx0, fx0 + STANCE_LEN, -STRIDE * (1 - DUTY), s) + (bx - fx0) * fade;
+  const fx = swingX(fx0, fx0 + STANCE_LEN, -STRIDE * (1 - DUTY), s, P.flick ?? 0.4, P.retract ?? 0.2) + (bx - fx0) * fade;
   const fy = fy0 + P.lift * smoothstep(0, P.rise, s) * (1 - smoothstep(P.fall, 1, s)) + (by - fy0) * fade;
   const flex = P.flex * hump(s, 0, P.flexPeak, P.flexEnd) - (L.fore ? 0 : (P.hockPush ?? 0) * (1 - smoothstep(0, 0.22, s))); // push-off unwinds early in the swing
   const curl = G.curl * smoothstep(0, 0.28, s) * (1 - smoothstep(0.62, 0.96, s));
@@ -1292,6 +1307,8 @@ function solve2(px, py, tx, ty, l1, l2, bend) {
 }
 
 const _t = V(0, 0), _rel = new THREE.Matrix4();
+const ARM_RANGE = [-76 * DEG, 2 * DEG]; // humerus angle from vertical (+ = elbow forward), held in the swing
+const FEMUR_RANGE = [0, 76 * DEG];       // femur angle from vertical (+ = stifle forward), held in the swing
 function solveLeg(rig, L, g) {
   const G = rig.gait, f = footPath(L, g, G);
   // body pitch relative to the horse's own root (which may be moved, turned or scaled)
@@ -1316,16 +1333,35 @@ function solveLeg(rig, L, g) {
     const shy = r.sc.y + (r.sh.x - r.sc.x) * s + (r.sh.y - r.sc.y) * c;
     // knee folds backward: cannon = forearm - flex
     const k = f.flex, ex = -L.len.can * Math.sin(k), ey = -L.len.fa - L.len.can * Math.cos(k);
-    const [aArm, aE] = solve2(shx, shy, _t.x, _t.y, L.len.arm, Math.hypot(ex, ey), -1);
-    const aFa = aE - Math.atan2(ex, -ey), aCan = aFa - k;
+    let [aArm, aE] = solve2(shx, shy, _t.x, _t.y, L.len.arm, Math.hypot(ex, ey), -1);
+    let aFa = aE - Math.atan2(ex, -ey), aCan = aFa - k;
+    // In the swing the humerus keeps to its real range: it never swings in front of the point of shoulder,
+    // nor lifts the elbow up to it. Past a limit the humerus stops and the knee bends to reach instead
+    // (the same pose at the limit, so there is no jump): the forearm swings forward with the cannon
+    // hanging back from the knee, as in a real gallop, instead of the elbow flying up or out of the chest.
+    if (f.u >= G.duty) {
+      const lim = clamp(aArm, ARM_RANGE[0], ARM_RANGE[1]);
+      if (lim !== aArm) {
+        aArm = lim;
+        [aFa, aCan] = solve2(shx + L.len.arm * Math.sin(lim), shy - L.len.arm * Math.cos(lim), _t.x, _t.y, L.len.fa, L.len.can, 1);
+      }
+    }
     angles = [aArm, aFa, aCan];
     chain = [[L.arm, r.humerus], [L.fa, r.forearm], [L.can, r.cannon]];
   } else {
     // hock: cannon = tibia + eta; flexing swings the cannon forward under the belly
     const r = L.rest, eta = L.hockRest + G.hind.hockOpen + f.flex;
     const ex = L.len.can * Math.sin(eta), ey = -L.len.tib - L.len.can * Math.cos(eta);
-    const [aFem, aE] = solve2(L.hip.x, L.hip.y, _t.x, _t.y, L.len.fem, Math.hypot(ex, ey), 1);
-    const aTib = aE - Math.atan2(ex, -ey), aCan = aTib + eta;
+    let [aFem, aE] = solve2(L.hip.x, L.hip.y, _t.x, _t.y, L.len.fem, Math.hypot(ex, ey), 1);
+    let aTib = aE - Math.atan2(ex, -ey), aCan = aTib + eta;
+    // likewise the femur: the stifle never swings behind the hip joint or up level with it; the hock bends instead
+    if (f.u >= G.duty) {
+      const lim = clamp(aFem, FEMUR_RANGE[0], FEMUR_RANGE[1]);
+      if (lim !== aFem) {
+        aFem = lim;
+        [aTib, aCan] = solve2(L.hip.x + L.len.fem * Math.sin(lim), L.hip.y - L.len.fem * Math.cos(lim), _t.x, _t.y, L.len.tib, L.len.can, -1);
+      }
+    }
     angles = [aFem, aTib, aCan];
     chain = [[L.fem, r.femur], [L.tib, r.tibia], [L.can, r.cannon]];
   }
@@ -2872,7 +2908,7 @@ const MARKS = { none: 'None', star: 'Star', stripe: 'Stripe', 'star-stripe': 'St
 const LEG_MARKS = { none: 'None', coronet: 'Coronet', pastern: 'Pastern', fetlock: 'Fetlock', sock: 'Sock', stocking: 'Stocking' };
 const SEX = { male: 'colt', female: 'filly', gelding: 'gelding' };
 
-const state = { horse: HORSE_LIST[0], custom: {}, loc: LOC_LIST[0], gait: 'gallop', lead: 'L' };
+const state = { horse: HORSE_LIST[0], custom: {}, loc: LOC_LIST[0], gait: 'gallop', lead: 'L', race: false };
 let rig = null, world = null, extras = [], wireOn = false;
 let loopPhase = 0, playing = true, speed = 1;
 
@@ -2896,7 +2932,7 @@ function saddleFor(h, loc) {
 // the body, then the sleeves (X袖 = sleeves of colour X, 袖X一本輪 = a hoop of X on the sleeves). Colour words are matched to
 // the nearest of the researched `silks.colors`; without a JRA string the body is colors[0] and the sleeves colors[1].
 const SILK_WORDS = [['水色', '#6ec6ea'], ['薄紫', '#b49bd3'], ['海老', '#8a2a3a'], ['えんじ', '#8a2030'], ['桃', '#f080c0'], ['紫', '#6a3a9a'], ['赤', '#d22630'], ['青', '#1f4fb4'], ['黄', '#f5d000'], ['緑', '#1f8a3c'], ['白', '#f4f4f0'], ['黒', '#151515'], ['茶', '#7a4a2a'], ['鼠', '#8a8a8a'], ['灰', '#8a8a8a'], ['橙', '#f08020']];
-const SILK_PATTERNS = [['十字襷', 'cross'], ['襷', 'sash'], ['山形一文字', 'chevronBand'], ['山形', 'chevron'], ['菱山形', 'chevron'], ['一文字', 'band'], ['縦縞', 'stripes'], ['格子', 'checks'], ['元禄', 'checks'], ['鋸歯形', 'sawtooth'], ['玉霰', 'spots'], ['銭形', 'spots'], ['菱形', 'diamonds'], ['蛇目', 'ring'], ['段', 'bands'], ['輪', 'hoops']];
+const SILK_PATTERNS = [['十字襷', 'cross'], ['襷', 'sash'], ['山形一文字', 'chevronBand'], ['山形', 'chevron'], ['菱山形', 'chevron'], ['一文字', 'band'], ['縦縞', 'stripes'], ['格子', 'checks'], ['元禄', 'checks'], ['鋸歯形', 'sawtooth'], ['玉霰', 'spots'], ['銭形', 'spots'], ['星', 'stars'], ['菱形', 'diamonds'], ['蛇目', 'ring'], ['段', 'bands'], ['輪', 'hoops']];
 function parseSilks(silks) {
   const cols = (silks?.colors ?? ['#f4f4f0']).map(colorOf);
   const near = (hexv) => { const c = colorOf(hexv); let best = null, bd = 1e9; for (const k of cols) { const d = (k.r - c.r) ** 2 + (k.g - c.g) ** 2 + (k.b - c.b) ** 2; if (d < bd) { bd = d; best = k; } } return bd < 0.18 ? best.clone() : c; };
@@ -2941,8 +2977,8 @@ function confFor(h) {
 }
 
 // A roster horse with the viewer's overrides on top, as a buildHorse() look.
-function currentLook() {
-  const h = state.horse, c = state.custom;
+function currentLook() { return lookFor(state.horse, state.custom, state.loc); }
+function lookFor(h, c = {}, loc = state.loc) {
   return {
     coat: { ...h.coat, ...c.coat },
     face: c.face ?? h.face?.type ?? 'none',
@@ -2953,9 +2989,9 @@ function currentLook() {
     gear: c.gearOff ? null : h.gear ?? null,
     conf: { ...confFor(h), ...(c.conf ?? {}) },
     racehorse: !!h.silks, // racehorses get a bridle unless their gear says otherwise
-    saddle: !c.gearOff && h.silks && ['track', 'paddock', 'hill'].includes(state.loc?.builder) ? saddleFor(h, state.loc) : null,
-    rug: !c.gearOff && state.loc?.rug ? state.loc.rug : null, // a winter turnout rug where the location has one
-    jockey: !c.gearOff && !c.noRider && h.silks && ['track', 'hill'].includes(state.loc?.builder) ? jockeyFor(h, state.loc) : null,
+    saddle: !c.gearOff && h.silks && ['track', 'paddock', 'hill'].includes(loc?.builder) ? saddleFor(h, loc) : null,
+    rug: !c.gearOff && loc?.rug ? loc.rug : null, // a winter turnout rug where the location has one
+    jockey: !c.gearOff && !c.noRider && h.silks && ['track', 'hill'].includes(loc?.builder) ? jockeyFor(h, loc) : null,
   };
 }
 
@@ -2986,7 +3022,7 @@ function setGait(key) {
     rig.gait = gaitFor(rig);
     loopPeriod = rig.gait.period;
   }
-  for (const ex of extras) if (ex.mode === 'companion' || ex.mode === 'parade') ex.rigs[0].gait = gaitFor(ex.rigs[0]);
+  for (const ex of extras) if (ex.mode === 'companion' || ex.mode === 'parade' || ex.mode === 'field') ex.rigs[0].gait = gaitFor(ex.rigs[0]);
   syncBar();
   writeHash();
 }
@@ -3005,10 +3041,16 @@ function blobShadow() {
 function clearExtras() {
   for (const ex of extras) for (const r of ex.rigs) { r.root.parent?.remove(r.root); disposeTree(r.root); }
   extras = [];
+  racePlan = null;
+  if (raceGate) { raceGate.visible = racePost.visible = false; }
+  if (world && !world.path) world.group.position.z = 0; // the course slides back under the hero
+  if (rig) rig.root.rotation.y = 0;
+  raceHud('');
 }
 function spawnExtras() {
   clearExtras();
   const rnd = mulberry32(4242);
+  if (state.race && state.loc.builder === 'track') spawnField();
   if (world.path && state.loc.runners) {
     // the rest of the field walks the ring in number order (馬番順), evenly spaced: the horse ahead carries the
     // next number down. Generic coats; the location's saddle cloth with the number only.
@@ -3049,10 +3091,266 @@ function spawnExtras() {
   sun.shadow.camera.updateProjectionMatrix();
 }
 
+/* ----- Race mode (racecourses): the hero races a field of roster racehorses -----
+   The hero stays at the origin, so every runner is placed relative to it. A race is a short story told in
+   metres behind a virtual leader: out of the gate abreast, settled into running-style order (逃げ in front,
+   追込 at the back) in lanes off the inner rail, then the home straight, where the field fans out across the
+   course and the closers come wide. The story runs at 16 m/s; at a slower gait its clock slows by the same
+   factor, so the field keeps its shape. Each runner's gait phase follows the ground it covers (the scroll plus
+   its own offset), so its hooves stay planted while it gains or drops back; it turns into its sideways drift.
+   The field is 18 runners (the cap colours assume a full field): the hero plus the 17 roster racehorses
+   foaled closest to it, each in its own silks, gear and coat, numbered round the hero's own number. */
+const RACE = {
+  secs: 52,        // one race, start to restart (s of story at 16 m/s)
+  settle: 8,       // out of the gate and into running-style order
+  turnIn: 28,      // the home turn: the field starts to fan out and the order to change
+  post: 45,        // the leader reaches the winning post
+  speed: 16,       // m/s the story is told at
+  lane: 1.25,      // m between lanes in the back straight
+  fan: 0.95,       // m between neighbours once the field fans out in the straight
+  rail: 0.9,       // m from the inner rail to the first lane
+  spacing: 4,      // m nose to nose in one lane
+  stall: 1.15,     // m from one gate stall to the next
+  split: 0.3,      // m between the gate's two sections (stalls 1-10 and 11-18)
+};
+const STYLE_GAP = { nige: [0, 2.5], senko: [4, 10], sashi: [11, 18], oikomi: [19, 27] }; // m behind the leader in the back straight
+const STYLE_KICK = { nige: -0.22, senko: 0, sashi: 0.14, oikomi: 0.1 };                 // finishing order bias
+let raceT = 0, raceNo = 0, racePlan = null, raceGate = null, racePost = null;
+const _v = V(0, 0);
+const raceOn = () => !!racePlan && state.race && state.loc?.builder === 'track' && ['race', 'gallop'].includes(state.gait);
+
+// 17 roster racehorses nearest the hero by foaling year; numbers 1-18 dealt round the hero's own number
+function raceField(hero) {
+  const N = 18, mine = clamp(hero.saddleNumber ?? 1, 1, N), born = hero.born ?? 2000;
+  const pool = ROSTER.filter((h) => h.silks && h.id !== hero.id)
+    .sort((a, b) => Math.abs((a.born ?? 2000) - born) - Math.abs((b.born ?? 2000) - born) || a.en.localeCompare(b.en))
+    .slice(0, N - 1);
+  let seed = 7; for (const ch of hero.id) seed = (seed * 31 + ch.charCodeAt(0)) >>> 0;
+  const rnd = mulberry32(seed), nums = [];
+  for (let n = 1; n <= N; n++) if (n !== mine) nums.push(n);
+  for (let i = nums.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [nums[i], nums[j]] = [nums[j], nums[i]]; }
+  return pool.map((h, i) => ({ h, number: nums[i] }));
+}
+
+// One race: each entry's gap behind the leader in the back straight (from its running style), its lane there,
+// its wobble, and its margin at the post (from a seeded score, biased by style: front-runners fade, closers kick).
+function planRace(entries, seed) {
+  const rnd = mulberry32(seed);
+  for (const e of entries) {
+    const st = e.h.style ?? {}, key = st.secondary && rnd() < 0.3 ? st.secondary : st.primary;
+    e.style = STYLE_GAP[key] ? key : 'senko';
+    const [a, b] = STYLE_GAP[e.style];
+    e.c = a + (b - a) * rnd();
+    e.score = rnd() + STYLE_KICK[e.style] + (e.hero ? 0.12 : 0);
+    e.wob = [0.25 + 0.25 * rnd(), 0.3 + 0.3 * rnd(), rnd() * TAU]; // amplitude (m), rate (rad/s), phase
+    e.slow = rnd() < 0.15 ? 1 + 1.5 * rnd() : 0;                    // a slow break costs a length or so
+  }
+  const byGap = [...entries].sort((a, b) => a.c - b.c), laneEnd = [];
+  byGap.forEach((e, r) => { // the innermost lane that is clear of the horse ahead in it; abreast, the one ahead is inside
+    e.rank = r;
+    if (e.hero) return;
+    let l = 0;
+    while (laneEnd[l] !== undefined && e.c - laneEnd[l] < RACE.spacing) l++;
+    laneEnd[l] = e.c; e.lane = l;
+  });
+  // The camera watches the hero from the stand side, so nobody runs abreast outside it: in the back straight it
+  // sits just outside its row, and off the home turn it comes wide round the field (a front-runner keeps its line).
+  const hero = entries.find((e) => e.hero), fan = byGap.filter((e) => !e.hero);
+  hero.lane = 1 + Math.max(-1, ...fan.filter((e) => Math.abs(e.c - hero.c) < RACE.spacing).map((e) => e.lane));
+  fan.splice(hero.style === 'nige' ? hero.rank : fan.length, 0, hero);
+  fan.forEach((e, k) => { e.home = RACE.rail + k * RACE.fan; });
+  let f = 0;
+  [...entries].sort((a, b) => b.score - a.score).forEach((e, i) => { e.place = i + 1; e.f = f; f += 0.3 + 4 * rnd() * rnd(); });
+  return entries;
+}
+
+// Gap behind the virtual leader (m) and distance out from the inner rail (m) at story time t
+function raceSpot(e, t) {
+  const e1 = smoothstep(0, RACE.settle, t), e2 = smoothstep(RACE.turnIn, RACE.post, t), w = e1 * (1 - e2);
+  const gap = lerp(lerp(e.slow * smoothstep(0, 1.5, t), e.c, e1), e.f, e2) + e.wob[0] * Math.sin(e.wob[1] * t + e.wob[2]) * w;
+  const gate = stallOut(e.number), back = RACE.rail + e.lane * RACE.lane;
+  const out = lerp(lerp(gate, back, smoothstep(0, 14, t)), e.home, smoothstep(RACE.turnIn - 6, RACE.turnIn + 5, t));
+  return [gap, out];
+}
+
+// Everyone's position at story time t: x ahead of the hero, out from the rail; side by side, a soft push apart.
+function raceLayout(t) {
+  const P = racePlan, spots = P.map((e) => raceSpot(e, t)), hero = spots[0];
+  const xs = spots.map(([g]) => hero[0] - g), outs = spots.map(([, o]) => o);
+  for (let i = 0; i < P.length; i++) for (let j = i + 1; j < P.length; j++) {
+    const dx = Math.abs(xs[i] - xs[j]), dz = outs[i] - outs[j];
+    if (dx > 2.8 || Math.abs(dz) > 0.95) continue;
+    const push = ((0.95 - Math.abs(dz)) / 2) * (1 - smoothstep(2.1, 2.8, dx)) * (dz < 0 ? -1 : 1);
+    outs[i] += push; outs[j] -= push;
+  }
+  return { xs, outs };
+}
+
+function spawnField() {
+  const loc = state.loc, hero = state.horse;
+  const entries = [{ h: hero, number: clamp(hero.saddleNumber ?? 1, 1, 18), hero: true }];
+  for (const { h, number } of raceField(hero)) {
+    const look = lookFor(h, {}, loc);
+    if (look.saddle) look.saddle = { ...look.saddle, number };
+    if (look.jockey) look.jockey = { ...look.jockey, cap: BRACKET_CAP[bracketOf(number) - 1] };
+    const r = buildHorse(look, 1000 + number * 37);
+    r.phaseOffset = (number * 0.37) % 1;
+    r.root.traverse((o) => { o.castShadow = false; }); // outside the shadow map: a soft blob instead
+    r.root.add(blobShadow());
+    r.materials.forEach((m) => { m.wireframe = wireOn; });
+    scene.add(r.root);
+    const e = { h, number, rig: r };
+    entries.push(e);
+    extras.push({ mode: 'field', rigs: [r], entry: e, phase: (number * 0.61) % 1 });
+  }
+  racePlan = planRace(entries, 101 + raceNo);
+  if (!raceGate) { raceGate = buildGate(world.S, loc); racePost = buildPost(); }
+  world.group.add(raceGate, racePost);
+}
+
+// The starting gate (発馬機), JRA's JSS40 as photographed: 18 stalls in two towed sections (1-10 and 11-18), stall 1
+// on the inner rail. White aluminium posts, grey padded partitions and doors (the front ones flung open), a green
+// truss over the top carrying yellow number plates, and a white sign band with the course's name on top.
+// Sizes are read off photos against the tractor (no published spec): stalls ~1.15 m apart, the truss ~4.3 m up.
+const stallOut = (n) => RACE.rail + (n - 1) * RACE.stall + (n > 10 ? RACE.split : 0); // stall n's centre, m off the rail
+function buildGate(S, loc) {
+  const rnd = mulberry32(18), N = 18, L = 2.9, TOP = 4.3, geos = [];
+  const box = (w, h, d, x, y, z, color, ry = 0) => {
+    const g = new THREE.BoxGeometry(w, h, d);
+    if (ry) g.rotateY(ry);
+    g.translate(x, y, z * S);
+    geos.push(paint(g, flat(hex(color), rnd, 0.03)));
+  };
+  const POST = '#e6eaec', GREEN = '#2f8f4f', PAD = '#4a4f55', GRILLE = '#8c9399', SIGN = '#f4f6f4';
+  const half = RACE.stall / 2, z0 = stallOut(1) - half, z1 = stallOut(N) + half;
+  const walls = [];
+  for (let n = 1; n <= N + 1; n++) walls.push(n <= N ? stallOut(n) - half : z1);
+  walls.push(stallOut(11) - half - RACE.split); // the end wall of the first section
+  for (const z of walls) {
+    for (const x of [L / 2, -L / 2]) box(0.1, TOP, 0.1, x, TOP / 2, z, POST);      // posts, front and back
+    box(L, 1.0, 0.09, 0, 0.95, z, PAD);                                            // padded partition
+    for (const y of [1.75, 2.35]) box(L, 0.06, 0.06, 0, y, z, GRILLE);             // the grille above it
+    box(L + 0.1, 0.1, 0.12, 0, 0.32, z, POST);                                     // bottom rail
+  }
+  for (let n = 1; n <= N; n++) { // front doors swung open (two leaves), back doors shut
+    const z = stallOut(n), w = half - 0.07;
+    for (const side of [-1, 1]) box(w, 1.4, 0.05, L / 2 + w * 0.47, 1.05, z + side * (half - 0.05 - w * 0.17), PAD, side * S * 0.35);
+    box(0.06, 1.4, RACE.stall - 0.14, -L / 2, 1.05, z, PAD);
+  }
+  for (const [a, b] of [[z0, stallOut(10) + half], [stallOut(11) - half, z1]]) { // each section's truss and wheels
+    const mid = (a + b) / 2, span = b - a + 0.1;
+    for (const x of [L / 2, -L / 2]) {
+      box(0.18, 0.18, span, x, TOP - 0.62, mid, GREEN);
+      box(0.18, 0.18, span, x, TOP, mid, GREEN);
+      for (let z = a; z <= b + 0.01; z += (b - a) / Math.round((b - a) / 1.2)) box(0.12, 0.6, 0.12, x, TOP - 0.31, z, GREEN);
+    }
+    box(L, 0.12, 0.18, 0, TOP, a, GREEN);
+    box(L, 0.12, 0.18, 0, TOP, b, GREEN);
+    box(0.12, 0.9, span, L / 2 - 0.05, TOP + 0.55, mid, SIGN);                     // the sign band
+    for (const z of [a + 0.6, mid, b - 0.6]) for (const x of [-L / 2 + 0.25, L / 2 - 0.25]) {
+      const wh = new THREE.CylinderGeometry(0.28, 0.28, 0.22, 10).rotateX(Math.PI / 2).translate(x, 0.28, z * S);
+      geos.push(paint(wh, flat(0x252525, rnd, 0.02)));
+    }
+  }
+  const group = new THREE.Group();
+  const mesh = new THREE.Mesh(merge(geos), new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.75 }));
+  mesh.castShadow = mesh.receiveShadow = true;
+  // the faces of the truss and the sign band: one canvas each, plates and lettering placed stall by stall
+  const face = (y0, h, draw) => {
+    const span = z1 - z0, cv = document.createElement('canvas');
+    cv.width = 2048; cv.height = Math.round((2048 * h) / span);
+    const g = cv.getContext('2d'), u = (z) => ((S > 0 ? z1 - z : z - z0) / span) * cv.width; // the plane's u runs toward -z
+    draw(g, u, cv.width / span, cv.height);
+    const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(span, h).rotateY(Math.PI / 2), new THREE.MeshStandardMaterial({ map: tex, transparent: true, roughness: 0.8 }));
+    m.position.set(L / 2 + 0.1, y0 + h / 2, (S * (z0 + z1)) / 2);
+    group.add(m);
+  };
+  face(TOP - 0.55, 0.45, (g, u, k, H) => { // yellow plates with black numbers, one per stall
+    g.font = `800 ${Math.round(H * 0.8)}px system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
+    for (let n = 1; n <= N; n++) {
+      const c = u(stallOut(n)), w = 0.5 * k;
+      g.fillStyle = '#f5c800'; g.fillRect(c - w / 2, H * 0.06, w, H * 0.88);
+      g.fillStyle = '#141414'; g.fillText(String(n), c, H * 0.53);
+    }
+  });
+  face(TOP + 0.15, 0.8, (g, u, k, H) => { // the course's name in white on dark green boxes, one per section
+    const name = (loc.en ?? '').replace(/\s*\(.*\)/, '').toUpperCase();
+    g.font = `700 ${Math.round(H * 0.42)}px system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
+    for (const [a, b] of [[stallOut(1), stallOut(10)], [stallOut(11), stallOut(N)]]) {
+      const c = (u(a) + u(b)) / 2, w = Math.abs(u(b) - u(a)) * 0.7;
+      g.fillStyle = '#1e6b45'; g.fillRect(c - w / 2, H * 0.14, w, H * 0.72);
+      g.fillStyle = '#f4f6f4'; g.fillText(name, c, H * 0.52, w * 0.92);
+    }
+  });
+  group.add(mesh);
+  group.name = 'raceGate';
+  return group;
+}
+
+// The winning post (ゴール板) on the inside of the course: a grey plinth and the dark mirror box of the photo-finish
+// camera, framed by two white pylons with the course's badge on top (Tokyo's style; every course has its own frame).
+function buildPost() {
+  const rnd = mulberry32(19), geos = [];
+  const add = (g, color) => geos.push(paint(g, flat(hex(color), rnd, 0.02)));
+  add(new THREE.BoxGeometry(0.7, 1.1, 0.7).translate(0, 0.55, 0), '#9a9a94');        // plinth
+  add(new THREE.BoxGeometry(0.34, 2.7, 0.3).translate(0, 1.1 + 1.35, 0), '#1f2a27');  // mirror box
+  for (const side of [-1, 1]) add(new THREE.BoxGeometry(0.16, 4.8, 0.16).rotateX(side * 0.09).translate(0, 2.4, side * 0.34), '#f2f5f2'); // pylons
+  add(new THREE.CylinderGeometry(0.42, 0.42, 0.08, 16).rotateZ(Math.PI / 2).translate(0, 5.0, 0), '#4ec3de'); // badge
+  const mesh = new THREE.Mesh(merge(geos), new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.7 }));
+  mesh.castShadow = true;
+  mesh.name = 'racePost';
+  return mesh;
+}
+
+// Per frame: place the field, the hero's lane (the course slides sideways under the hero), the gate and the post.
+function updateRace(p, scroll, under, y0) {
+  const on = raceOn(), S = world.S, T = world.terrain, inner = trackLayout(state.loc).inner, t0 = raceT;
+  if (raceGate) { raceGate.visible = on && t0 < 6; racePost.visible = on; }
+  for (const ex of extras) if (ex.mode === 'field') ex.rigs[0].root.visible = on;
+  if (!on) { world.group.position.z = 0; rig.root.rotation.y = 0; raceHud(''); return; }
+  if (raceT >= RACE.secs) { raceT %= RACE.secs; raceNo++; racePlan = planRace(racePlan, 101 + raceNo); }
+  const t = raceT, now = raceLayout(t), soon = raceLayout(t + 0.05); // heading: into the drift over the next 0.05 s
+  const heading = (i) => -Math.atan2(S * (soon.outs[i] - now.outs[i]), RACE.speed * 0.05 + soon.xs[i] - now.xs[i]);
+  const heroOut = inner + now.outs[0];
+  world.group.position.z = -S * heroOut;
+  rig.root.rotation.y = heading(0);
+  racePlan.forEach((e, i) => {
+    if (e.hero) return;
+    const r = e.rig, x = now.xs[i], at = under + x;
+    r.root.position.set(x, T ? T.h(at) - y0 : 0, S * (inner + now.outs[i] - heroOut));
+    r.root.rotation.set(0, heading(i), T ? Math.atan(T.slope(at)) : 0);
+    // a runner passing right by the lens (out of the gate, the field is all round the camera) is dropped for the moment
+    r.root.visible = _v.set(x, r.root.position.y + 1.3, r.root.position.z).distanceTo(camera.position) > 3.2;
+    const G = r.gait, strideM = W / G.strides;
+    pose(r, wrap01((scroll + x) / strideM + ((e.number * 0.61) % 1)), p);
+  });
+  // the gate opened at t = 0 round the field and stays on the ground; the post is passed by the leader at t = post
+  const lead = raceSpot(racePlan[0], RACE.post)[0];
+  raceGate.position.set(-RACE.speed * t - 0.3, T ? T.h(under - RACE.speed * t) - y0 : 0, S * inner);
+  racePost.position.set(lead + 1.3 + RACE.speed * (RACE.post - t), 0, S * (inner - 0.35));
+  racePost.position.y = T ? T.h(under + racePost.position.x) - y0 : 0;
+  // the HUD: the hero's place on the run and the leader, then the result
+  const order = racePlan.map((e, i) => [now.xs[i], e]).sort((a, b) => b[0] - a[0]), me = order.findIndex(([, e]) => e.hero) + 1;
+  const ord = (n) => n + (n % 100 > 10 && n % 100 < 14 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] ?? 'th');
+  const winner = racePlan.find((e) => e.place === 1);
+  raceHud(t < 1.5 ? 'They\u2019re off!'
+    : t < RACE.post ? `${t < RACE.turnIn ? 'Back straight' : 'Home straight'} \u00b7 ${ord(me)} of ${racePlan.length}${me > 1 ? ` \u00b7 ${order[0][1].h.en} leads` : ''}`
+    : `${winner.hero ? 'Won!' : `${ord(racePlan[0].place)} \u00b7 won by ${winner.h.en}`}`);
+}
+let hudText = null;
+function raceHud(text) {
+  if (text === hudText) return;
+  hudText = text;
+  const el = $('raceHud');
+  el.textContent = text;
+  el.hidden = !text;
+}
+
 function setLocation(id) {
   const loc = LOC_LIST.find((l) => l.id === id) ?? LOC_LIST[0];
   clearExtras();
-  if (world) { scene.remove(world.group, world.statics); disposeTree(world.group); disposeTree(world.statics); }
+  if (world) { scene.remove(world.group, world.statics); disposeTree(world.group); disposeTree(world.statics); raceGate = racePost = null; }
   state.loc = loc;
   world = buildWorld(loc);
   scene.add(world.group, world.statics);
@@ -3093,7 +3391,7 @@ function setHorse(id) {
   state.horse = HORSE_LIST.find((h) => h.id === id) ?? HORSE_LIST[0];
   state.custom = {};
   rebuildHorse();
-  if (world?.path) { spawnExtras(); setGait(state.gait); } // the field renumbers round the hero
+  if (world?.path || (state.race && state.loc.builder === 'track')) { spawnExtras(); setGait(state.gait); } // the field renumbers round the hero
   syncTitle();
   syncPanel();
   setView(currentView);
@@ -3129,7 +3427,9 @@ function applyPhase(p) {
   }
   updateDust(dust, g, rig);
   world.breath?.update(p, rig);
+  if (racePlan) updateRace(p, scroll, under, y0);
   for (const ex of extras) {
+    if (ex.mode === 'field') continue;
     ex.rigs.forEach((r, c) => {
       if (ex.mode === 'grazer') r.root.position.x = wrapCentered(ex.x - W / 2 - scroll) + (c - (COPIES - 1) / 2) * W;
       if (T && ex.mode === 'companion') { r.root.position.y = T.h(under + ex.x) - y0; r.root.rotation.z = Math.atan(T.slope(under + ex.x)); }
@@ -3214,6 +3514,15 @@ const speedIn = $('speed'), speedOut = $('speedOut');
 speedIn.addEventListener('input', () => { speed = +speedIn.value; speedOut.textContent = `${speed.toFixed(2)}×`; });
 document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
 document.querySelectorAll('[data-gait]').forEach((b) => b.addEventListener('click', () => setGait(b.dataset.gait)));
+const fieldBtn = $('fieldBtn');
+fieldBtn.addEventListener('click', () => {
+  state.race = !state.race;
+  raceT = 0;
+  spawnExtras();
+  setGait(state.race && state.gait !== 'race' ? 'race' : state.gait); // a race is run at the racing gallop
+  syncBar();
+  if (!playing) { applyPhase(loopPhase); renderNow(); }
+});
 const wireBtn = $('wire');
 wireBtn.addEventListener('click', () => {
   wireOn = !wireOn;
@@ -3238,6 +3547,8 @@ document.addEventListener('keyup', (e) => { if (e.code === 'Space' && e.target.c
 
 function syncBar() {
   document.querySelectorAll('[data-gait]').forEach((b) => b.classList.toggle('on', b.dataset.gait === state.gait));
+  const fb = $('fieldBtn');
+  if (fb) { fb.hidden = state.loc?.builder !== 'track'; fb.classList.toggle('on', state.race); fb.setAttribute('aria-pressed', String(state.race)); }
 }
 function syncTitle() {
   const h = state.horse;
@@ -3248,12 +3559,12 @@ function syncTitle() {
 
 function writeHash() {
   if (!state.horse || !state.loc) return;
-  const q = new URLSearchParams({ h: state.horse.id, l: state.loc.id, g: state.gait });
+  const q = new URLSearchParams({ h: state.horse.id, l: state.loc.id, g: state.gait, ...(state.race ? { race: 1 } : {}) });
   try { history.replaceState(null, '', `#${q}`); } catch { /* sandboxed previews may refuse */ }
 }
 function readHash() {
   const q = new URLSearchParams(location.hash.slice(1));
-  return { h: q.get('h'), l: q.get('l'), g: q.get('g') };
+  return { h: q.get('h'), l: q.get('l'), g: q.get('g'), race: q.get('race') === '1' };
 }
 
 // ----- panel: pickers, the horse's card, coat / markings / build controls -----
@@ -3399,6 +3710,7 @@ panelBtn.setAttribute('aria-expanded', String(!panelEl.hidden));
 panelBtn.classList.toggle('on', !panelEl.hidden);
 const init = readHash();
 state.horse = HORSE_LIST.find((h) => h.id === init.h) ?? HORSE_LIST[0];
+state.race = init.race;
 rig = buildHorse(currentLook()); // sized first: the world's stride count depends on the horse's scale
 scene.add(rig.root);
 setLocation(LOC_LIST.find((l) => l.id === init.l)?.id ?? window.DEFAULT_LOCATION ?? LOC_LIST[0].id);
@@ -3412,7 +3724,10 @@ resize();
 renderer.setAnimationLoop((ts) => {
   timer.update(ts);
   const dt = Math.min(timer.getDelta(), 0.1);
-  if (playing) loopPhase = wrap01(loopPhase + (dt * speed) / rig.gait.period);
+  if (playing) {
+    loopPhase = wrap01(loopPhase + (dt * speed) / rig.gait.period);
+    raceT += (dt * speed * W) / rig.gait.period / RACE.speed; // story time: ground covered at 16 m/s
+  }
   applyPhase(loopPhase);
   controls.update();
   renderNow();
@@ -3424,6 +3739,7 @@ window.__horse = {
   setPhase, resume, setView, setHorse, setLocation, setGait, toeWorld, gaits: GAITS, rebuild: () => rebuildHorse(),
   renderer, scene, camera, controls,
   get horse() { return rig.root; }, get rig() { return rig; }, get world() { return world; }, get extras() { return extras; }, state,
+  get raceT() { return raceT; }, set raceT(t) { raceT = t; }, get racePlan() { return racePlan; }, RACE,
 };
 </script>
 </body>
