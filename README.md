@@ -2,7 +2,7 @@
 
 A low-poly 3D horse built with Three.js from primitive geometry. It walks or gallops in a seamless loop through real Japanese racecourses and generic places. The horse presets are the real racehorses behind the [Uma Musume](https://umamusume.jp/character/) roster, built in generation order.
 
-**Live demo:** https://derprito64bit.github.io/low-poly-horse/
+**Live demo:** https://lets-be-strategic-here.github.io/low-poly-horse/
 
 ## What's in it
 
