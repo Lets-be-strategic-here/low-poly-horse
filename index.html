@@ -147,6 +147,8 @@
     <label class="row"><span>Neck</span><input id="confNeck" type="range" min="0.85" max="1.2" step="0.01"></label>
     <label class="row"><span>Crest</span><input id="confCrest" type="range" min="0.6" max="1.6" step="0.05"></label>
     <label class="row"><span>Head</span><input id="confHead" type="range" min="0.88" max="1.15" step="0.01"></label>
+    <label class="row"><span>Profile</span><input id="confProfile" type="range" min="-1" max="1" step="0.05" title="dished ← straight → Roman"></label>
+    <label class="row"><span>Ears</span><input id="confEars" type="range" min="0.8" max="1.25" step="0.01"></label>
     <label class="row"><span>Mane</span><input id="maneLen" type="range" min="0.4" max="1.8" step="0.05"></label>
     <label class="row"><span>Tail</span><input id="tailLen" type="range" min="0.5" max="1.6" step="0.05"></label>
     <label class="row"><span>Gear</span><input id="gearOn" type="checkbox" checked> <small id="gearNote"></small></label>
@@ -642,6 +644,10 @@ function buildHorse(look = {}, seed = 1337) {
 
   /* ----- conformation (look.conf): neck length along its own axis, crest height, head size ----- */
   const conf = look.conf ?? {}, neckLen = NECK_BASE * (conf.neck ?? 1), crestH = conf.crest ?? 1, headSize = conf.head ?? 1;
+  // head profile: -1 dished (concave between the eyes and the nostrils, the Arabian face), 0 straight, +1 Roman (convex
+  // nasal bone, the Barb's ram head). Only the top line of the face moves; the gear follows because it reads the same rows.
+  const profile = clamp(conf.profile ?? 0, -1.5, 1.5), earSize = conf.ears ?? 1;
+  const HEADP = HEAD.map(([x, top, bot, w]) => [x, top + profile * 0.032 * Math.sin(Math.PI * clamp((x - 0.15) / 0.47, 0, 1)), bot, w]);
   const NB = V(0.55, 1.4), NDIR = POLL.clone().sub(NB).normalize();
   const stretch = (p) => { const d = p.clone().sub(NB).dot(NDIR); return p.clone().addScaledVector(NDIR, d * (neckLen - 1)); };
   const NECK_ROWS = NECK.map(([cx, cy, tx, ty, w], i, all) => {
@@ -771,7 +777,7 @@ function buildHorse(look = {}, seed = 1337) {
   /* ----- head: wedge loft with jowls, face marking, muzzle; eyes, nostrils, ears, forelock ----- */
   const headM = new THREE.Matrix4().makeRotationZ(HEAD_TILT).setPosition(POLL_H);
   // a ring between every pair of authored rings, so a star or stripe has faces small enough to read
-  const headRows = HEAD.flatMap((r, i) => (i ? [HEAD[i - 1].map((v, j) => (v + r[j]) / 2), r] : [r]));
+  const headRows = HEADP.flatMap((r, i) => (i ? [HEADP[i - 1].map((v, j) => (v + r[j]) / 2), r] : [r]));
   const headRings = headRows.map(([x, top, bot, w]) =>
     ringAt(V(x, (top - bot) / 2), X_AXIS, Y_AXIS, PROF.head, { up: (top + bot) / 2, down: (top + bot) / 2, w, wUp: w * 0.78, wDown: w * 0.7 }));
   let headGeo = loft(headRings, V(-0.08, -0.02), V(0.66, -0.035));
@@ -800,6 +806,7 @@ function buildHorse(look = {}, seed = 1337) {
     const mount = new THREE.Object3D();
     mount.position.copy(V(0.02, 0.07, s * 0.05).applyMatrix4(headM)).sub(POLL_H);
     mount.rotation.set(s * 0.28, 0, HEAD_TILT + 58 * DEG);
+    mount.scale.set(Math.sqrt(earSize), earSize, Math.sqrt(earSize)); // conf.ears: longer ears are a little broader too
     mount.add(ear);
     head.add(mount);
     rig.ears.push({ mesh: ear, side: s });
@@ -808,10 +815,10 @@ function buildHorse(look = {}, seed = 1337) {
   const gear = look.gear;
   if (gear) buildGear(gear);
   function buildGear(G) {
-    const H0 = HEAD[0], HN = HEAD[HEAD.length - 1];
-    const rowAt = (x) => { // [top, bot, w] of the head at x, interpolated between the authored rows
+    const H0 = HEADP[0], HN = HEADP[HEADP.length - 1];
+    const rowAt = (x) => { // [top, bot, w] of the head at x, interpolated between the rows (profile included)
       if (x <= H0[0]) return H0.slice(1);
-      for (let i = 1; i < HEAD.length; i++) if (x <= HEAD[i][0]) { const a = HEAD[i - 1], b = HEAD[i], t = (x - a[0]) / (b[0] - a[0]); return [1, 2, 3].map((j) => lerp(a[j], b[j], t)); }
+      for (let i = 1; i < HEADP.length; i++) if (x <= HEADP[i][0]) { const a = HEADP[i - 1], b = HEADP[i], t = (x - a[0]) / (b[0] - a[0]); return [1, 2, 3].map((j) => lerp(a[j], b[j], t)); }
       return HN.slice(1);
     };
     const ringX = (x, grow) => { const [top, bot, w] = rowAt(x), t = top + grow, b = bot + grow * 0.6, ww = w + grow; return ringAt(V(x, (t - b) / 2), X_AXIS, Y_AXIS, PROF.head, { up: (t + b) / 2, down: (t + b) / 2, w: ww, wUp: ww * 0.78, wDown: ww * 0.7 }); };
@@ -840,8 +847,11 @@ function buildHorse(look = {}, seed = 1337) {
       // メンコ: a close-fitting shell over the poll and face down to the cheeks, with eye holes, trimmed edges
       const C = { main: '#f2f0ea', ...(G.hoodColors ?? {}) }; C.trim ??= C.main; C.ears ??= C.main;
       const rings = []; for (let x = -0.07; x <= 0.401; x += 0.035) rings.push(ringX(x, 0.011));
-      const shell = keepFaces(loft(rings), (c) => c.y > -0.085 && !hole(c, 0.045));
-      toHead(paint(shell, (c) => shade(hex(c.x > 0.36 || c.y < -0.06 || hole(c, 0.068) ? C.trim : C.main), rnd, 0.03)));
+      // cut and trim along the loft's own rows (v = height in the head profile, -1 jaw … 1 forehead), so the lower edge
+      // runs straight down the cheek instead of zig-zagging across the faces
+      const v = (c) => { const [top, bot] = rowAt(c.x), t = top + 0.011, bb = bot + 0.0066; return (c.y - (t - bb) / 2) / ((t + bb) / 2); };
+      const shell = keepFaces(subdivide(loft(rings), 1), (c) => v(c) > -0.3 && !hole(c, 0.045)); // finer faces: rounder eye holes
+      toHead(paint(shell, (c) => shade(hex(c.x > 0.367 || v(c) < 0.03 || hole(c, 0.068) ? C.trim : C.main), rnd, 0.03)));
       if (C.ears !== false) for (const e of rig.ears) { // ear covers ride on the animated ears (`ears: false`: a hood without them)
         const cover = new THREE.ConeGeometry(0.046, 0.16, 5, 1).translate(0, 0.074, 0).scale(0.7, 1, 1);
         e.mesh.add(new THREE.Mesh(paint(jitter(cover, 0.003, 90), flat(hex(C.ears), rnd, 0.03)), mat));
@@ -2379,7 +2389,7 @@ function buildPickers() {
   }
   $('withers').addEventListener('input', (e) => tweak((x) => { x.size = { ...x.size, withersCm: +e.target.value }; }));
   $('weight').addEventListener('input', (e) => tweak((x) => { x.size = { ...x.size, typicalKg: +e.target.value, weightKg: null }; }));
-  for (const [id, key] of [['confNeck', 'neck'], ['confCrest', 'crest'], ['confHead', 'head']]) {
+  for (const [id, key] of [['confNeck', 'neck'], ['confCrest', 'crest'], ['confHead', 'head'], ['confProfile', 'profile'], ['confEars', 'ears']]) {
     $(id).addEventListener('input', (e) => tweak((x) => { x.conf = { ...x.conf, [key]: +e.target.value }; }));
   }
   $('maneLen').addEventListener('input', (e) => tweak((x) => { x.maneLen = +e.target.value; }));
@@ -2463,6 +2473,7 @@ function syncPanel(editing = null) {
   $('weightOut').textContent = `${Math.round(kg)} kg`;
   $('maneLen').value = look.maneLen;
   $('confNeck').value = look.conf.neck ?? 1; $('confCrest').value = look.conf.crest ?? 1; $('confHead').value = look.conf.head ?? 1;
+  $('confProfile').value = look.conf.profile ?? 0; $('confEars').value = look.conf.ears ?? 1;
   $('tailLen').value = look.tailLen;
 }
 

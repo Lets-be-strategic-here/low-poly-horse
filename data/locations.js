@@ -466,12 +466,98 @@ window.LOCATIONS = [
     sources: ['https://ja.wikipedia.org/wiki/盛岡競馬場', 'https://www.oddspark.com/keiba/racetrack/11/course.html', 'https://en.wikipedia.org/wiki/Morioka_Racecourse', 'https://ja.wikipedia.org/wiki/マイルチャンピオンシップ南部杯', 'https://nar.netkeiba.com/race/result.html?race_id=202535101312', 'https://nar.netkeiba.com/race/result.html?race_id=202435101412', 'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)', 'https://ja.wikipedia.org/wiki/JBCクラシック', 'https://www.openstreetmap.org/way/566989957', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/16/58476/24883.jpg', 'https://commons.wikimedia.org/wiki/File:Morioka_racecourse_grandstand.JPG', 'https://commons.wikimedia.org/wiki/File:Morioka_Racecourse_2024.jpg', 'https://commons.wikimedia.org/wiki/File:11R_南部杯_トウホクビジン_(10287637683).jpg'],
     uncertain: ['time.post (18:15 in 2024 and 2025; earlier years ran ~16:30 in daylight)', 'sky / light values', 'floodlights (count, height, colour: only “towers on the dirt course since Sept 2018” is sourced)', 'backdrop.landmarks[0]: Mt Iwate really stands at bearing ~178, behind the stand; it is moved to -28 (across the infield) as artistic licence. Its height is computed', 'backdrop.landmarks[1]: screen size and position are guessed. A ~55 m dark structure on the aerial, opposite the stand and ~65 m from the dirt rail, is probably the screen', 'backdrop.ranges (heights are guesses; Mt Hayachine lies ~123° (scene -13) but is probably hidden by the near hills)', 'stand.lengthM / depthM (from the aerial, ±15 m) and colours (2015 and 2024 photos)', 'infield[0] (pond reading, size and position from the aerial)', 'turf.color / lawn / leaf / autumn (October in Iwate)', 'facts.straightProfile (only the shape is sourced: the 3rd–4th-corner hill and a climb from ~150 m out; the heights are guesses)', 'JBC Sprint / Ladies’ Classic distances at Morioka (not fetched)', 'needs new kits: the V-shaped glass atrium and angular cantilevered stand decks; the pale inner ring (~20 m) inside the turf and a small loop at the NE end of the infield; the 芝スタンド grass bank near the 4th corner; the forest close behind the back straight'],
   },
+  {
+    id: 'kanazawa', en: 'Kanazawa Racecourse (JBC years)', jp: '金沢競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
+    hand: 'right', surface: 'dirt', lead: 'L', W: 400, seed: 2041,
+    dirtOnly: true, // one 20 m dirt oval, no turf; a 1,080 m x 16 m training track runs just inside it
+    // JBC Classic (JpnI, 2100 m), scheduled for 3 Nov 2026, post 16:25: a day meeting, so no floodlights.
+    // Sun at 36.636N 136.675E: elevation 4.8°, azimuth 247° (WSW). Sunset is about 16:51.
+    // On the GSI aerial the stand faces 90° (E) and the home straight runs 0° (N), so the sun is low behind the stand,
+    // 23° toward the 4th corner. Elevation raised 4.8° -> 6° for readable light.
+    time: {
+      month: 11, post: '16:25', sunElevDeg: 6, sunAzimDeg: -23, fogNear: 130, fogFar: 420, exposure: 1.0, night: false,
+      sky: { top: '#6c8cbd', mid: '#c6c1c6', horizon: '#f1c896', sun: '#ffd6a0' }, // late-autumn golden hour on the Japan Sea side
+      sunColor: '#ffc88e', sunIntensity: 2.2, hemiSky: '#d6d8e2', hemiGround: '#776c4c', hemiIntensity: 1.05,
+    },
+    dirt: { color: '#d6ccb6', widthM: 20 }, // pale Aichi mountain sand (山砂, since 2021)
+    rails: { color: '#f2f2ee' },
+    lawn: '#7a8a48', apron: '#a8a6a0', // grey concrete apron about 20 m deep in front of the stand
+    leaf: ['#4f6a3c', '#5d7444', '#8a8a4a', '#a8783e'], autumn: 0.25, dust: '#b5ab98',
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // Kanazawa's top-tier 重賞 (白山大賞典, 百万石賞…): 紫紺 with yellow text
+    stand: { name: 'Main stand (1973, SRC, 5 storeys, 15,000 capacity)', lengthM: 130, floors: 5, depthM: 40, colors: { body: '#e2dfd6', roof: '#d4d4d0', glass: '#3e4c56', seats: '#9a9c98' } },
+    infield: [], infieldTrees: 14, // lawn, topiary, a playground and a small ring, with a tall tree belt along the back straight
+    backdrop: {
+      ranges: [
+        { r: 585, base: '#8790aa', h: [8, 26], step: 0.15, haze: 0.6 },  // Ryohaku foothills east of the Kahokugata polder (Iozen, 939 m, to the SE)
+        { r: 550, base: '#7f8b78', h: [3, 8], step: 0.1, haze: 0.45 },   // treelines and farm villages on the reclaimed polder
+      ],
+      landmarks: [
+        { type: 'screen', bearingDeg: 0, distM: 300, wM: 15, hM: 7.5, liftM: 0.5 },          // big screen under a traditional kawara tiled roof (really ~30 m inside the inner rail, opposite the middle of the stand)
+        { type: 'screen', bearingDeg: 6, distM: 300, wM: 8, hM: 5.5, liftM: 0.5 },           // results board (着順掲示板), also with a tiled roof, just north of the screen
+        { type: 'fuji', bearingDeg: -81, distM: 575, heightM: 28 },                          // Hakusan (2,702 m), about 54 km SSE; may have early snow
+        { type: 'skyline', fromDeg: -125, toDeg: -95, distM: 540, heightM: [3, 10] },       // central Kanazawa / station towers, about 7 km SSW
+      ],
+      clouds: 8,
+    },
+    facts: {
+      turfCircM: null, dirtCircM: 1200, turfStraightM: null, dirtStraightM: 236, elevationM: 0,
+      straightProfile: [[236, 0], [0, 0]],
+      races: [ // JpnI only in JBC host years: 2013 (4 Nov), 2021 (3 Nov), 2026 (3 Nov)
+        { name: 'JBC Classic (host years)', jp: 'JBCクラシック', surface: 'dirt', distM: 2100, month: 11 },
+        { name: 'JBC Sprint (host years)', jp: 'JBCスプリント', surface: 'dirt', distM: 1400, month: 11 },
+        { name: 'JBC Ladies’ Classic (host years)', jp: 'JBCレディスクラシック', surface: 'dirt', distM: 1500, month: 11 },
+      ],
+    },
+    signature: 'Hokuriku’s only local track, by the Kahokugata lagoon near the Sea of Japan: a flat 1,200 m right-handed oval of pale sand with a short 236 m straight. Across the infield the big screen and the results board both wear traditional grey kawara tiled roofs, among clipped topiary and a tall tree belt. The 5-storey 1973 stand has a deep cantilevered roof, and Hakusan stands far to the SSE.',
+    sources: ['https://ja.wikipedia.org/wiki/金沢競馬場', 'https://www.kanazawakeiba.com/race/course/', 'https://www.kanazawakeiba.com/facilities/outline/', 'https://www.kanazawakeiba.com/race/info-37700/', 'https://ja.wikipedia.org/wiki/JBCクラシック', 'https://ja.wikipedia.org/wiki/ジャパンブリーディングファームズカップ', 'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)', 'https://commons.wikimedia.org/wiki/File:Kanazawa_racecourse_vision.JPG', 'https://commons.wikimedia.org/wiki/File:Kanazawa_racecourse_stand.jpg', 'https://commons.wikimedia.org/wiki/File:Kanazawa_Racecourse_Aerial_photograph.1975.jpg', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/17/115297/51182.jpg'],
+    uncertain: ['time (the 2026 JBC post time is from the announced schedule; the sun is computed; elevation raised 4.8° -> 6°; at 16:25 the stand’s ~300 m shadow really covers the straight and most of the infield)', 'the 22 track floodlights (2023, for 薄暮/night racing) are probably already lit at a 16:25 post in November; left out because night: false', 'sky / light values (Hokuriku in November is often overcast)', 'saddleCloth: Wikipedia says the 2013/2021 JBC Sprint and Ladies’ Classic at Kanazawa used 紫紺 with WHITE text; the JBC Classic is not listed (yellow assumed from the top-tier row); JBC logo on the cloth since 2021', 'dirt.color (2016 photo predates the 2021 sand)', 'lawn / leaf / autumn (season guessed)', 'stand.lengthM / depthM (from the GSI aerial) and stand.colors (2016 photo)', 'stand year (the site opened 1973; any later renovation not checked)', 'backdrop.landmarks[0..1] (sizes estimated from a photo; really ~30 m inside the inner rail, not 300 m; the finish-post position is unknown)', 'backdrop.landmarks[2] Hakusan (bearing and distance from map coordinates recalled, not fetched; snow cap and visibility past the 4th-corner trees not verified)', 'backdrop.ranges and the Kanazawa skyline (map geography, not verified)', 'infieldTrees (the tree belt along the back straight)', 'the Sea of Japan and the Kahokugata lagoon are behind the stand (W/NW), so the camera cannot see them', 'needs new kits: kawara tiled roofs on the screen and board, topiary hedges, the inner training track, the infield playground and ring'],
+  },
+  {
+    id: 'saga', en: 'Saga Racecourse (night)', jp: '佐賀競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
+    hand: 'right', surface: 'dirt', lead: 'L', W: 400, seed: 2042,
+    dirtOnly: true, // one 1,100 m dirt oval (19.2–24 m wide), no turf
+    // JBC Classic (JpnI, 2000 m), 4 Nov 2024, post 18:30 under the lights (Hotomeki Nighter, lights since 2018);
+    // sun -14.3° at azimuth 260.6°, and the stand faces 122.5° (OSM way 850680074), so the sun is behind and to the right of the camera
+    time: {
+      month: 11, post: '18:30', sunElevDeg: -14, sunAzimDeg: -42, fogNear: 150, fogFar: 480, exposure: 1.15, night: true,
+      sky: { top: '#050a1a', mid: '#0f1730', horizon: '#2e3048', sun: '#2a2540' }, // rural night: dark, only a faint Tosu/Kurume glow low down
+      hemiSky: '#232c44', hemiGround: '#262620', hemiIntensity: 0.38,
+    },
+    floodlights: { count: 16, heightM: 28, color: '#f3f3ec', intensity: 1.0, poleColor: '#c4c7ca' }, // slim masts close together along both straights (2024 photo)
+    dirt: { color: '#cbbfa8', widthM: 24 }, // pale, coarse-grained sand ("whitish Chinese sand" per oddspark)
+    rails: { color: '#f4f4f0' },
+    lawn: '#5f6d3c', apron: '#9c9a94', // infield lawn in early November, starting to go dormant
+    leaf: ['#2f4f2c', '#3d5e35', '#4a6a3c'], autumn: 0.1, dust: '#b8ad98', // evergreen woods on the ridge
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // Saga graded races and NAR dirt-graded races: 紫紺 with yellow text (ja.wikipedia ゼッケン)
+    stand: { name: 'Main stand (red brick)', lengthM: 175, floors: 4, depthM: 35, colors: { body: '#b0503c', roof: '#c0583f', glass: '#3d4a52', seats: '#8a8f96' } },
+    infield: [], infieldTrees: 5, // lawn with round clipped hedges along the inner rail, a playground, a pergola and a few trees
+    backdrop: {
+      ranges: [
+        { r: 545, base: '#2b4530', h: [18, 38], step: 0.12, haze: 0.42 }, // wooded ridge just behind the back straight (ground ~57 m vs track ~33 m, at ~350–450 m)
+        { r: 590, base: '#3b4660', h: [16, 30], step: 0.18, haze: 0.6 },  // east end of the Sefuri range (Kusenbu-yama 848 m, Ishitani-yama 754 m), really NNW behind the stands
+      ],
+      landmarks: [
+        { type: 'screen', bearingDeg: -15, distM: 300, wM: 20, hM: 9, liftM: 3 }, // infield video screen beside the result board
+      ],
+      clouds: 2, // clear on JBC night (netkeiba: 晴)
+    },
+    facts: {
+      turfCircM: null, dirtCircM: 1100, turfStraightM: null, dirtStraightM: 200, elevationM: 1, // straight is 250 m in all, 200 m of it to the post
+      straightProfile: [[200, 0], [0, 0]],
+      races: [
+        { name: 'JBC Classic (2024)', jp: 'JBCクラシック', surface: 'dirt', distM: 2000, month: 11 },          // post 18:30
+        { name: 'JBC Sprint (2024)', jp: 'JBCスプリント', surface: 'dirt', distM: 1400, month: 11 },          // post 17:20, at sunset
+        { name: 'JBC Ladies’ Classic (2024)', jp: 'JBCレディスクラシック', surface: 'dirt', distM: 1860, month: 11 }, // post 16:40, daylight
+      ],
+    },
+    signature: 'Hotomeki Nighter (ほとめきナイター): a tiny, flat 1,100 m right-handed oval of pale coarse sand with only 200 m to the post, a long red-brick stand, slim floodlight masts, and a dark wooded ridge right behind the back straight. It staged its first JpnI races at the 2024 JBC.',
+    sources: ['https://ja.wikipedia.org/wiki/佐賀競馬場', 'https://www.sagakeiba.net/raceinfo/course/', 'https://www.sagakeiba.net/guide/', 'https://www.oddspark.com/keiba/racetrack/61/course.html', 'https://ja.wikipedia.org/wiki/JBCクラシック', 'https://nar.netkeiba.com/race/result.html?race_id=202455110411', 'https://nar.netkeiba.com/race/result.html?race_id=202455110410', 'https://nar.netkeiba.com/race/result.html?race_id=202455110409', 'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)', 'https://ja.wikipedia.org/wiki/ナイター競走', 'https://www.openstreetmap.org/way/850680074', 'https://commons.wikimedia.org/wiki/File:Saga_Racecourse_Aerial_photograph.1987.jpg', 'https://commons.wikimedia.org/wiki/File:Saga_Racecourse._20080815.jpg', 'https://commons.wikimedia.org/wiki/File:Vaincre_Tateyama_in_Saga_Race_Cource.jpg', 'https://commons.wikimedia.org/wiki/File:UMATENAデビューステージにて(2024年4月28日).jpg', 'https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php'],
+    uncertain: ['time (sun computed for 18:30, 4 Nov 2024; stand bearing 32.5°/122.5° from the OSM/GSI footprint)', 'sky / light values', 'floodlights (count and height from a 2024 photo; no published spec)', 'dirt.color (photos)', 'dirt.widthM (19.2–24 m; 24 used)', 'lawn / leaf / apron', 'stand (length and depth from the footprint; floors, colours and seats from photos; build year unknown)', 'backdrop.ranges (ranges are rings, so the Sefuri peaks that stand NNW behind the stands also show over the ESE ridge; the Minō range 20+ km ESE is hidden by the ridge and left out)', 'backdrop.landmarks[0] (screen size and bearing estimated from a photo; really ~100 m away in the infield)', 'Kyushu Shinkansen (~2.2 km ESE, behind the ridge) and Nagasaki Expressway (~2 km N, behind the stands) not drawn', 'saddleCloth (the 2024 JBC Ladies’ Classic used pink text for horse and race names)', 'needs new kits: red-brick stand, infield playground, pergola and clipped hedges'],
+  },
 ];
 
 // Every other venue on the roadmap, shown as "soon" in the picker (order = build order).
 window.LOCATION_QUEUE = [
-  { id: 'kanazawa', en: 'Kanazawa Racecourse (JBC years)', group: 'NAR JpnI' },
-  { id: 'saga', en: 'Saga Racecourse (JBC years)', group: 'NAR JpnI' },
   { id: 'paddock', en: 'Racecourse paddock', group: 'Strolling' },
   { id: 'beach', en: 'Beach at dawn', group: 'Strolling' },
   { id: 'hill-gallops', en: 'Training-centre hill gallop (坂路)', group: 'Strolling' },

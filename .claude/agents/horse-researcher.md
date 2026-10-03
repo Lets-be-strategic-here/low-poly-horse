@@ -48,8 +48,11 @@ Rules learned from earlier runs:
 - **size**: `weightKg` = [min, max] race-day 馬体重 over the career; `typicalKg` = weight at its biggest
   wins. `withersCm`, `girthCm`, `cannonCm` only if documented (else null). `build` one of
   `compact, average, tall, heavy, rangy`.
+- **conf** (optional): conformation only when a source or clear photos single it out: `neck`, `crest`, `head`,
+  `ears` multipliers (1 = average, e.g. a famously big head → head 1.1) and `profile` −1 dished … 0 straight … +1 Roman nose.
+  Omit the field when nothing is unusual.
 - **gear**: what it actually raced in (photos of its big races), drawn by the engine: `hood` (メンコ) with
-  `hoodColors` { main, trim (eye-hole and edge trim), ears (ear covers) } as hex; `blinkers` / `shadowRoll` /
+  `hoodColors` { main, trim (eye-hole and edge trim), ears (ear covers, or false if the ears are bare) } as hex; `blinkers` / `shadowRoll` /
   `bitLifter` (ハミ吊り) booleans; `bridle` hex (leather brown '#3a2a20' if unknown, '#f2f0ea' for white);
   `pompom` hex if it wore a poll pompom; `bandages` { fore, hind } hex if it raced bandaged. `notes` for when/which race.
 - **silks**: real owner's 勝負服 — owner name, description in words, colours as hex.
