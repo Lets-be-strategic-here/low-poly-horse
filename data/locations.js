@@ -632,11 +632,57 @@ window.LOCATIONS = [
     sources: ['https://ja.wikipedia.org/wiki/九十九里浜', 'https://ja.wikipedia.org/wiki/一宮町', 'https://ja.wikipedia.org/wiki/浦河町', 'https://ja.wikipedia.org/wiki/うらかわ優駿ビレッジAERU', 'https://commons.wikimedia.org/wiki/File:Toyoumi_beach_new_year.jpg', 'https://commons.wikimedia.org/wiki/File:First_sunrise_at_Kujukuri_Beach,_Japan.jpg', 'https://commons.wikimedia.org/wiki/File:蓮沼海浜公園付近（九十九里浜、山武市）_-_panoramio.jpg', 'https://commons.wikimedia.org/wiki/File:Sirasato_beach_2022.jpg', 'https://commons.wikimedia.org/wiki/File:Kujukuri_beach_and_around_2.jpg', 'https://commons.wikimedia.org/wiki/File:Kujukuri_Beach.jpg'],
     uncertain: ['time (sun computed for 23 Sep at 35.53°N 140.46°E; the ~40° shoreline bearing from the GPS tags of two Commons photos, ±10°; 4° chosen so the sun stays in the three-quarter view)', 'sky / light (sampled from a clear 1 Jan 2018 sunrise photo; September air is hazier)', 'sand colours (the photos are exposed for the sky; dry sand scaled up about 1.5×)', 'sand.wetWidthM, sea.waterlineZ, sea.waveM (estimates)', 'sea colours (dawn photo samples, darkened for the far sea)', 'dunes.distM / heightM (not sourced)', 'pines (the black-pine coastal forest is sourced; count, distance and colours are guesses)', 'props.driftwood (count guessed; no rocks on this sand coast)', 'backdrop: the headlands at the ends of the arc (~30 km) and the 九十九里ビーチタワー are not drawn', 'extras (a companion for a group ride is plausible, not verified)', 'needs kits: a sun-glitter path on the sea and wet sand, a drawn sun disc'],
   },
+  {
+    id: 'hill-gallops', en: 'Ritto hill gallop (坂路)', jp: '栗東トレセン 坂路コース', group: 'Strolling', builder: 'hill', gait: 'race', W: 300, seed: 2070,
+    // JRA: 1,085 m long, 7 m wide, 32 m rise. From the bottom: 300 m at 2.0%, then 570 m at 3.5%, then 100 m at 4.5%, then 115 m at 1.25%.
+    // The timed section (800 m, IC chips) runs from 70 m to 870 m. The sections are squeezed into one 300 m loop (slope mode).
+    // A fast work over the timed 800 m takes about 51–55 s (~15 m/s), so the race gait fits.
+    slope: { meanPct: 2.95, sectionsPct: [[0, 2.0], [300, 3.5], [870, 4.5], [970, 1.25]], lengthM: 1085, riseM: 32 },
+    // Uphill bearing 127.6° (SE) on the main straight (OSM way 595273486); the camera stands on the SW (woods) side looking NE across
+    // the course, so +X is uphill. Autumn schedule 06:00–10:00. Sun for Wed 22 Oct 07:00 at 34.99N 136.01E: elevation 9.4°,
+    // azimuth 110.7°, 17° left of the uphill heading, so horses gallop almost into the low sun.
+    time: {
+      month: 10, post: '07:00', sunElevDeg: 9, sunAzimDeg: 107, fogNear: 60, fogFar: 300, exposure: 1.05,
+      sky: { top: '#6d95c8', mid: '#b4c8de', horizon: '#ecd8bd', sun: '#ffe6b8' }, sunColor: '#ffd7a0', sunIntensity: 2.3,
+      hemiSky: '#cdd9e6', hemiGround: '#6b5a48', hemiIntensity: 1.2,
+    },
+    course: {
+      widthM: 7, chip: '#7a5e4e', chipDark: '#5a4438', // red-brown wood chips (red pine + cedar); hoof-churned lanes darker
+      rail: { color: '#f3f3ef', heightM: 1.1 }, // white round-pipe rails, top and middle pipe, both sides
+      verge: '#55693c', hedge: { color: '#55693c', heightM: 1.5 }, // clipped evergreen hedges right behind both rails
+      farDirt: [22, 48], farDirtColor: '#a08a6a', // beyond the far hedge strip: open ground and the dirt of the main training ovals
+    },
+    // SW (camera) side: continuous mixed broadleaf woods from 2–5 m beyond the rail; NE (far) side: the hedge strip, a line of
+    // wired utility poles ~17 m from the centre line, then the open dirt course
+    woods: { side: 'near', distM: 5, count: 80, leaf: ['#3f5a34', '#4b6a3a', '#5a7444', '#6e7a3c'], autumn: 0.15 },
+    props: { timingPoles: 2, lightPoles: 0, utilityPoles: 5, utilityDistM: 14, tower: { heightM: 15, color: '#e6e4dc' } },
+    saddleCloth: { cloth: '#5b2c83', ink: '#f5c800', numbered: false }, // JRA G1-winner training cloth: 紫 with yellow text, the horse's name (and a ★ per G1 win, not drawn)
+    backdrop: {
+      ranges: [
+        { r: 580, base: '#8f9db6', h: [5, 17], step: 0.16, haze: 0.62 }, // Hira and Suzuka ranges, ~1.7° high over the Lake Biwa basin
+        { r: 470, base: '#61774f', h: [1.5, 4], step: 0.12, haze: 0.45 }, // low wooded hills across the Ōmi plain
+      ],
+      landmarks: [
+        { type: 'fuji', bearingDeg: -19, distM: 520, heightM: 20, snow: false, base: '#5f7650', haze: 0.45 }, // Mt Mikami 三上山 "Ōmi Fuji", a green cone 2.2° high
+        { type: 'skyline', fromDeg: -70, toDeg: 30, distM: 520, heightM: [3, 9] }, // stable blocks and Ritto town across the training ovals
+      ],
+      clouds: 4,
+    },
+    dust: '#5e4a3d', // dark clods of damp chip kicked up behind
+    extras: [{ mode: 'companion', x: -1.2, z: -2.4 }], // 併せ馬: a work partner half a length back on the far side of the 7 m course
+    facts: {
+      typical4F: 'Fast work (追い切り) over the timed 800 m: about 51–55 s (Indy Champ 52.4 s; Silence Suzuka 52.3 s; Doura Erede 54.5 s). Routine work is about 15 s a furlong (~60 s).',
+      opened: 1985, // Nov 1985 at 394 m; three extensions brought it to 1,085 m by Nov 1992
+      notes: 'The busiest course at Ritto: more than 1,000 horses a day on busy days. Training hours: summer 05:00–09:00, spring/autumn 06:00–10:00, winter 07:00–11:00. Training cloths by age and sex; G1 entrants wear 紫紺/yellow until the race, G1 winners 紫/yellow with stars. Helmet colours are compulsory (jockeys blue, trainers black, 調教厩務員 orange). Horses go up singly or in pairs, then walk back down the 逍遥馬道 on the SW side.',
+    },
+    signature: 'A dead-straight 7 m ribbon of dark red-brown wood chips climbs south-east between low white pipe rails and clipped hedges; woods crowd one side and a line of wired poles runs along the other. A white gantry and red-on-white boards count down the timed 800 m, and horses come up in pairs into the low morning sun toward the four-storey 坂路 stand at the top.',
+    sources: ['https://www.jra.go.jp/facilities/tc/rittou/guide/', 'https://www.jra.go.jp/facilities/tc/rittou/guide/img/img_hill.png', 'https://www.jra.go.jp/facilities/tc/rittou/guide/img/pic_course_hanro.jpg', 'https://www.jra.go.jp/facilities/tc/rittou/guide/img/img_allmap.jpg', 'https://www.jra.go.jp/facilities/tc/rittou/intro/', 'https://ja.wikipedia.org/wiki/栗東トレーニングセンター', 'https://ja.wikipedia.org/wiki/インディチャンプ', 'https://ja.wikipedia.org/wiki/ドゥラエレーデ', 'https://ja.wikipedia.org/wiki/サイレンススズカ', 'https://www.openstreetmap.org/way/595273486', 'https://www.openstreetmap.org/way/1414517042', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/18/230113/103843.jpg', 'https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?lon=136.00552&lat=34.99306&outtype=JSON'],
+    uncertain: ['time (22 Oct 07:00 chosen within the sourced autumn hours; sky colours invented for a clear morning)', 'course chip colours (two JRA photos and the aerial)', 'rail height and type (photos)', 'hedge heights (by eye; the camera-side hedge is drawn lower so it does not hide the legs)', 'woods (count, leaf, gap from the aerial and one photo)', 'timing boards every 200 m (inferred from the 800 m timed section); one gantry', 'lightPoles 0 (pre-dawn floodlighting not verified)', 'utility pole spacing (aerial shadows)', 'tower 15 m (4 floors in OSM)', 'saddleCloth (from the JRA table; assumes the hero is a G1 winner; stars not drawn)', 'backdrop (ranges are rings; Hira and Suzuka really sit only at -53..-68° and +32..+62°; the near 阿星山 hills straight up the course are not drawn)', 'companion position (plausible, not measured)', 'the slope sections are squeezed into one 300 m loop', 'needs kits: riders in coloured helmets and vests, the 坂路 stand at the top, the hedge on the bend'],
+  },
 ];
 
 // Every other venue on the roadmap, shown as "soon" in the picker (order = build order).
 window.LOCATION_QUEUE = [
-  { id: 'hill-gallops', en: 'Training-centre hill gallop (坂路)', group: 'Strolling' },
 ];
 
 window.DEFAULT_LOCATION = 'tokyo';

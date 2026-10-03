@@ -723,8 +723,8 @@ function buildHorse(look = {}, seed = 1337) {
 
   /* ----- race tack on the back (racecourses only): saddle cloth with the number, saddle, girth. Skinned
      to the body's own skeleton with the trunk's weights, so it stays glued to the back as it flexes ----- */
-  if (look.saddle) {
-    const S = look.saddle, trunkWeights = [[-0.55, 1], [-0.12, 0], [0.1, 0], [0.45, 2]];
+  if (look.saddle || look.rug) {
+    const S = look.saddle ?? {}, trunkWeights = [[-0.55, 1], [-0.12, 0], [0.1, 0], [0.45, 2]];
     const rowAt = (x) => { // trunk [top, bot, w, wu, wd] at x (interpolated, with this horse's bulk and belly)
       let i = 1; while (i < TRUNK.length - 1 && TRUNK[i][0] < x) i++;
       const a = TRUNK[i - 1], b = TRUNK[i], t = clamp((x - a[0]) / (b[0] - a[0]), 0, 1), r = [1, 2, 3, 4, 5].map((j) => lerp(a[j], b[j], t));
@@ -747,6 +747,16 @@ function buildHorse(look = {}, seed = 1337) {
       root.add(m); root.updateMatrixWorld(true); m.bind(body.skeleton);
       return m;
     };
+    if (look.rug) {
+      // winter turnout rug (馬着): from the withers to the croup, down over three quarters of the barrel, with a
+      // contrasting binding along the hem and two dark belly straps (surcingles)
+      const R = look.rug, X0 = -0.66, X1 = 0.5, hemR = (x) => lerp(rowAt(x)[0], rowAt(x)[1], 0.74);
+      const body = paint(cut(shell(X0, X1, 12, 0.03), (x, y) => y > hemR(x) + 0.06), flat(hex(R.color ?? '#2d3e6b'), rnd, 0.04));
+      const bind = paint(cut(shell(X0, X1, 12, 0.034), (x, y) => y <= hemR(x) + 0.06 && y > hemR(x) - 0.02), flat(hex(R.trim ?? '#c8b27a'), rnd, 0.03));
+      const straps = [0.02, 0.2].map((x) => paint(cut(shell(x, x + 0.045, 1, 0.038), () => true), flat(hex(R.strap ?? '#1e1e22'), rnd, 0.03)));
+      skinned(merge([body, bind, ...straps]), mat).name = 'rug';
+    }
+    if (look.saddle) {
     // saddle cloth: hangs from the spine about a third of the way down the barrel; the number reads
     // front-to-back on both sides (u flips on the near side)
     // JRA cloth: ~70 cm long and ~51 cm down each side, front edge at the withers, hanging to ~45% of the barrel
@@ -772,6 +782,7 @@ function buildHorse(look = {}, seed = 1337) {
     const irons = [-1, 1].map((sd) => { const [t, , w] = rowAt(0.36); return paint(new THREE.BoxGeometry(0.06, 0.05, 0.012).toNonIndexed().translate(0.36, t - 0.07, sd * (w * 0.62 + 0.03)), flat(hex('#c8ccd0'), rnd, 0.04)); });
     irons.forEach((g) => g.deleteAttribute('uv'));
     skinned(merge([pad, saddle, girth, over, ...irons]), mat).name = 'saddle';
+    }
   }
 
   /* ----- head: wedge loft with jowls, face marking, muzzle; eyes, nostrils, ears, forelock ----- */
@@ -946,12 +957,19 @@ function buildHorse(look = {}, seed = 1337) {
     return paint(fine(jitter(g, 0.006, seed), fineLv), colorFn);
   };
   const UP = pal.dapple > 0 ? 1 : 0; // upper limbs carry the dapples too (less finely)
-  const hoofGeo = (co, pale) => {
-    const top = ringAt(V(co.x - 0.004, co.y + 0.012, co.z), V(0, -1, 0), X_AXIS, PROF.limb, { up: 0.04, down: 0.036, w: 0.042 });
-    const sole = V(co.x + HOOF_TOE - 0.057, SOLE, co.z);
-    const bot = ringAt(sole, V(0, -1, 0), X_AXIS, PROF.limb, { up: 0.057, down: 0.04, w: 0.053 });
+  // fore hooves are rounder and wider than the hind ones, which are narrower and more pointed at the toe
+  const HOOF_SHAPE = { fore: { top: [0.041, 0.037, 0.044], bot: [0.057, 0.043, 0.056] }, hind: { top: [0.039, 0.035, 0.04], bot: [0.058, 0.038, 0.049] } };
+  const hoofGeo = (co, pale, fore) => {
+    const H = HOOF_SHAPE[fore ? 'fore' : 'hind'], [tu, td, tw] = H.top, [bu, bd, bw] = H.bot;
+    const top = ringAt(V(co.x - 0.004, co.y + 0.012, co.z), V(0, -1, 0), X_AXIS, PROF.limb, { up: tu, down: td, w: tw });
+    const sole = V(co.x + HOOF_TOE - bu, SOLE, co.z);
+    const bot = ringAt(sole, V(0, -1, 0), X_AXIS, PROF.limb, { up: bu, down: bd, w: bw });
     const g = loft([top, bot], V(co.x - 0.004, co.y + 0.02, co.z), sole);
-    return paint(jitter(g, 0.003, 60, (x, y) => y < SOLE + 1e-4), flat(pale ? HOOF_PALE : pal.hoof, rnd, 0.05));
+    const horn = paint(jitter(g, 0.003, 60, (x, y) => y < SOLE + 1e-4), flat(pale ? HOOF_PALE : pal.hoof, rnd, 0.05));
+    if (!look.racehorse) return horn;
+    // aluminium racing plate: a U on the sole, open at the heel, inside the hoof's outline (seen when the foot flips up)
+    const a = ((bu + bd) / 2) * 0.94, plate = new THREE.RingGeometry(0.72, 1, 12, 1, -2.5, 5).rotateX(Math.PI / 2).scale(a, 1, bw * 0.94).translate(sole.x + (bu - bd) / 2, SOLE - 0.0015, co.z);
+    return merge([horn, paint(plate.toNonIndexed(), flat(0xb9bdc2, rnd, 0.04))]);
   };
   const lower = (L, fe, co, top, seed) => {
     // cannon (with knee/hock block) is built by the caller; this adds fetlock, pastern and hoof
@@ -961,7 +979,7 @@ function buildHorse(look = {}, seed = 1337) {
     attach(pas, paint(jitter(ball, 0.004, seed), low));
     attach(pas, limb(fe, co, [[0, 0.03, 0.033, 0.032], [0.68, 0.035, 0.035, 0.037], [1, 0.037, 0.036, 0.04]], low, seed + 1));
     const hoof = joint(pas, co, `${L.id}-hoof`);
-    attach(hoof, hoofGeo(co, top > 0)).name = `hoof-${L.id}`; // white at the coronet -> pale horn
+    attach(hoof, hoofGeo(co, top > 0, L.fore)).name = `hoof-${L.id}`; // white at the coronet -> pale horn
     return { pas, hoof };
   };
   const ang = (a, b) => Math.atan2(b.x - a.x, -(b.y - a.y)); // 0 = pointing down, + = lower end forward
@@ -1018,7 +1036,62 @@ function buildHorse(look = {}, seed = 1337) {
     L.z = z;
     rig.legs.push(L);
   }
+  mergeRigid(rig, body);
   return rig;
+}
+
+// Rigid-skin merge: one draw call per material per horse instead of ~60. Every rigid mesh (limbs, hooves, head,
+// eyes, ears, mane blades, tail, gear) is baked into one SkinnedMesh together with the skinned body and saddle,
+// each part weighted 100% to its own node. The nodes stay in the hierarchy as they were and keep animating (a
+// Skeleton only reads matrixWorld), so nothing else changes: the old meshes just stop drawing. Parts with their
+// own texture (the saddle cloth) stay separate.
+function mergeRigid(rig, body) {
+  const root = rig.root, own = new Set(rig.materials);
+  root.updateMatrixWorld(true);
+  const rootInv = root.matrixWorld.clone().invert(), bones = [...body.skeleton.bones], inverses = body.skeleton.boneInverses.map((m) => m.clone());
+  const buckets = new Map(), parts = [], add = (mat, geo) => { if (!buckets.has(mat)) buckets.set(mat, []); buckets.get(mat).push(geo); };
+  root.traverse((o) => { if (o.isMesh && !o.isInstancedMesh && own.has(o.material) && (!o.isSkinnedMesh || o.skeleton === body.skeleton)) parts.push(o); });
+  const plain = (g) => { // non-indexed, with only the attributes the merge keeps
+    const src = g.index ? g.toNonIndexed() : g.clone(), out = new THREE.BufferGeometry();
+    for (const k of ['position', 'color', 'skinIndex', 'skinWeight']) if (src.attributes[k]) out.setAttribute(k, src.attributes[k]);
+    return out;
+  };
+  for (const m of parts) {
+    let g;
+    if (m.isSkinnedMesh) g = plain(m.geometry); // already in root space, weighted to the body's bones
+    else {
+      const bi = bones.length, n = (m.geometry.index ?? m.geometry.attributes.position).count;
+      bones.push(m);
+      inverses.push(m.matrixWorld.clone().invert());
+      g = plain(m.geometry).applyMatrix4(rootInv.clone().multiply(m.matrixWorld));
+      const si = new Uint16Array(n * 4), sw = new Float32Array(n * 4);
+      for (let i = 0; i < n; i++) { si[i * 4] = bi; sw[i * 4] = 1; }
+      g.setAttribute('skinIndex', new THREE.BufferAttribute(si, 4));
+      g.setAttribute('skinWeight', new THREE.BufferAttribute(sw, 4));
+    }
+    add(m.material, g);
+  }
+  const skeleton = new THREE.Skeleton(bones, inverses);
+  for (const [mat, geos] of buckets) {
+    const withColor = geos.some((g) => g.attributes.color);
+    for (const g of geos) if (withColor && !g.attributes.color) g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(g.attributes.position.count * 3).fill(1), 3));
+    const geo = merge(geos);
+    geo.computeVertexNormals();
+    const merged = new THREE.SkinnedMesh(geo, mat);
+    merged.name = mat === rig.materials[0] ? 'horse-merged' : 'horse-merged-eyes';
+    merged.castShadow = mat === rig.materials[0];
+    merged.receiveShadow = true;
+    merged.frustumCulled = false;
+    root.add(merged);
+    root.updateMatrixWorld(true);
+    merged.bind(skeleton, merged.matrixWorld);
+  }
+  // the originals stop drawing but stay as nodes (bones); the skinned ones are dropped (a 'saddle' marker stays)
+  for (const m of parts) {
+    if (m.isSkinnedMesh) { m.parent.remove(m); m.geometry.dispose(); if (m.name === 'saddle' || m.name === 'rug') { const k = new THREE.Object3D(); k.name = m.name; root.add(k); } }
+    else { m.geometry.dispose(); m.geometry = new THREE.BufferGeometry(); m.visible = false; }
+  }
+  rig.skeleton = skeleton;
 }
 
 /* =====================================================================
@@ -1342,6 +1415,44 @@ function pose(rig, g, p = 0) {
    ===================================================================== */
 let W = 65, COPIES = 3;                                 // scenery period (m) and copies drawn, set per location
 let PATH = null;                                       // path mode: the strip is bent round a closed walking path
+let TERRAIN = null;                                    // sloped straights: a height along the strip (see makeTerrain)
+
+// Sloped straights. A gradient along the direction of travel, as a height h(x) over the unwrapped strip x:
+//  - `slope` (a training hill): a climb that never ends. Each period rises by the same amount, so the strip's copies
+//    are drawn one rise higher each and the world sinks as it scrolls; sections of the real course are squeezed
+//    proportionally into one period.
+//  - `facts.straightProfile` (a racecourse's home straight): a closed bump. The straight's profile fills 70% of the
+//    period and the rest eases back down (the far side of the course), so the loop still closes.
+// The grade is smoothed (a ~24 m running mean) so the horse's pitch never jumps; the hero pitches with the ground.
+function makeTerrain(loc) {
+  const N = Math.max(8, Math.round(W)), dx = W / N, g = new Float32Array(N);
+  if (loc.slope) {
+    const S = loc.slope, len = S.lengthM ?? W, secs = [...(S.sectionsPct ?? [[0, S.meanPct ?? 4]])].sort((a, b) => a[0] - b[0]);
+    const gradeAt = (m) => secs.reduce((v, [from, pct]) => (m >= from ? pct : v), secs[0][1]) / 100;
+    for (let i = 0; i < N; i++) g[i] = gradeAt(((i + 0.5) / N) * len);
+  } else {
+    const prof = loc.facts?.straightProfile;
+    if (!prof || prof.length < 2) return null;
+    const hs = prof.map(([, h]) => h);
+    if (Math.max(...hs) - Math.min(...hs) < 0.3) return null;
+    const pts = [...prof].sort((a, b) => b[0] - a[0]), D0 = pts[0][0], span = 0.7 * W;
+    const hAt = (x) => { // x along the straight -> distance to the finish
+      const d = D0 * (1 - Math.min(x, span) / span);
+      for (let k = 1; k < pts.length; k++) if (d >= pts[k][0]) { const [d0, h0] = pts[k - 1], [d1, h1] = pts[k]; return h0 + ((h1 - h0) * (d0 - d)) / Math.max(1e-6, d0 - d1); }
+      return pts[pts.length - 1][1];
+    };
+    const H0 = Array.from({ length: N + 1 }, (_, i) => { const x = i * dx; return x <= span ? hAt(x) : hAt(span) + (hAt(0) - hAt(span)) * smoothstep(span, W, x); });
+    for (let i = 0; i < N; i++) g[i] = (H0[i + 1] - H0[i]) / dx;
+  }
+  const win = Math.max(1, Math.round(12 / dx)), gs = new Float32Array(N);
+  for (let i = 0; i < N; i++) { let t = 0; for (let k = -win; k <= win; k++) t += g[(i + k + N) % N]; gs[i] = t / (2 * win + 1); }
+  const H = new Float32Array(N + 1);
+  for (let i = 0; i < N; i++) H[i + 1] = H[i] + gs[i] * dx;
+  const per = H[N]; // the rise per period (0 for a closed profile)
+  const h = (x) => { const k = Math.floor(x / W), f = (x - k * W) / dx, i = Math.min(N - 1, Math.floor(f)); return k * per + H[i] + (H[i + 1] - H[i]) * (f - i); };
+  const slope = (x) => { const f = (wrap01(x / W) * N) - 0.5, i = Math.floor(f), a = gs[(i + N) % N], b = gs[(i + 1) % N]; return a + (b - a) * (f - i); };
+  return { h, slope, per, maxPct: Math.max(...gs) * 100 };
+}
 
 // A closed walking path (path mode): a stadium of two straights joined by semicircles, of length W. The
 // scenery strip is authored straight (x along the path, z across it, like every other location) and bent round
@@ -1473,7 +1584,7 @@ const LANDMARKS = {
     const geo = jitter(new THREE.LatheGeometry(prof.map(([r, y]) => new THREE.Vector2(r, y)), 13), h * 0.025, 404);
     geo.translate(P.x, 0, P.z);
     const snowLine = h * (L.snowLine ?? 0.6);
-    bake(geo, (c) => [c.y > snowLine + (rnd() - 0.5) * h * 0.14 ? L.snow ?? '#f2f4f8' : L.base ?? '#6d7a99', L.haze ?? 0.4], V(P.x, h * 0.3, P.z));
+    bake(geo, (c) => [L.snow !== false && c.y > snowLine + (rnd() - 0.5) * h * 0.14 ? L.snow ?? '#f2f4f8' : L.base ?? '#6d7a99', L.haze ?? 0.4], V(P.x, h * 0.3, P.z)); // snow: false for a green hill
   },
   // giant screen on two legs, facing the stands; the panel shows a race (sky over turf)
   screen(L, { bake, at, night }) {
@@ -1546,7 +1657,7 @@ function buildGround(spec) {
     }
   }
   const pos = [], col = [];
-  const vtx = PATH ? (i, j) => { const m = PATH.map(i * dx, Z[j]); return [m.x, h(i, j), m.z]; } : (i, j) => [i * dx, h(i, j), Z[j]];
+  const vtx = PATH ? (i, j) => { const m = PATH.map(i * dx, Z[j]); return [m.x, h(i, j), m.z]; } : (i, j) => [i * dx, h(i, j) + (TERRAIN ? TERRAIN.h(i * dx) : 0), Z[j]];
   for (let i = 0; i < nx * (PATH ? 1 : COPIES + 1); i++) { // one spare period so the strip always covers the view while scrolling (a bent strip closes on itself)
     for (let j = 0; j < Z.length - 1; j++) {
       const p00 = vtx(i, j), p10 = vtx(i + 1, j), p01 = vtx(i, j + 1), p11 = vtx(i + 1, j + 1);
@@ -1608,7 +1719,60 @@ function beachLayout(loc) {
     beachY: (z) => -sg * z * 0.025 };              // the beach rises gently away from the sea
 }
 
+// Training hill (坂路) cross-section: a wood-chip course between two rails, grass verges, then banks rising into the
+// woods on both sides. The horse runs a little left of the middle; the lane the horses use most is churned darker.
+function hillLayout(loc) {
+  const c = loc.course ?? {}, w = c.widthM ?? 10;
+  return { w, in: -w * 0.4, out: w * 0.6, verge: c.vergeM ?? 3, c };
+}
+
+// Snowy field cross-section: the horse's trampled track, drifts and sun/shade on deep snow, straw where horses dig.
+const GROUND_SNOW = (loc) => {
+  const k = TAU / W, sn = loc.snow ?? {};
+  const lit = colorOf(sn.sunlit ?? '#f4f6f8'), shade = colorOf(sn.shade ?? '#c9d6e6'), track = colorOf(sn.tracks ?? '#b9b8b2'), straw = colorOf(sn.straw ?? '#a39463');
+  const digs = (loc.extras ?? []).filter((e) => e.mode === 'grazer');
+  return {
+    dx: 1.8, Z: mirrorRows(ROWS), seed: 61, jit: 0.02,
+    height(x, z, rnd) {
+      const az = Math.abs(z), drift = 0.5 + 0.5 * Math.sin(k * harm(23) * x + z * 0.19) * Math.cos(k * harm(9) * x - z * 0.07);
+      return smoothstep(1.6, 6, az) * (0.18 * drift + (rnd() - 0.5) * 0.06) + smoothstep(18, 60, az) * 3.5 * (0.5 + 0.5 * Math.sin(k * harm(70) * x + z * 0.03));
+    },
+    color(x, z, rnd) {
+      const az = Math.abs(z), sun = 0.5 + 0.5 * Math.sin(k * harm(19) * x + z * 0.33 + 1.1); // drift faces in sun or shade
+      const dug = digs.some((e) => Math.hypot(wrapCentered(x - e.x), z - e.z) < 2.2 + rnd());
+      if (dug) return straw.clone().lerp(track, rnd() * 0.5);
+      if (az < 1.1) return track.clone().lerp(lit, rnd() * 0.35); // the trampled line
+      return lit.clone().lerp(shade, (1 - sun) * 0.7 + rnd() * 0.08);
+    },
+  };
+};
+
 const GROUND = {
+  snow: GROUND_SNOW,
+  hill(loc) {
+    const Y = hillLayout(loc), k = TAU / W, c = Y.c;
+    const chip = colorOf(c.chip ?? '#5a4232'), dark = colorOf(c.chipDark ?? '#3f2e24'), verge = colorOf(c.verge ?? '#6f8a47'), bank = colorOf(loc.lawn ?? '#5d7a3e');
+    const marks = [Y.in, Y.in + 1.2, -0.9, 0.9, 2.2, 4, Y.out - 1.2, Y.out, Y.in - Y.verge, Y.out + Y.verge];
+    return {
+      dx: 2, Z: rowsWith(marks, 400), seed: 51, jit: 0.03,
+      height(x, z, rnd) {
+        const off = z < Y.in ? Y.in - Y.verge - z : z > Y.out ? z - Y.out - Y.verge : -1; // metres beyond the verge
+        if (off <= 0) return 0;
+        if (c.farDirt && z < 0) return (rnd() - 0.5) * 0.06; // open, flat ground toward the training ovals
+        const side = z < 0 ? 1 : -0.6, roll = 0.5 + 0.5 * Math.sin(k * harm(41) * x + z * 0.07);
+        return side * smoothstep(0, 18, off) * (3 + 4 * roll) + (rnd() - 0.5) * 0.25 * smoothstep(0, 6, off); // a cut bank on one side, a fall on the other
+      },
+      color(x, z, rnd) {
+        if (z >= Y.in && z <= Y.out) {
+          const worn = Math.max(1 - smoothstep(0.5, 1.6, Math.abs(z)), 1 - smoothstep(0.4, 1.4, Math.abs(z - 3.1))); // the two lanes horses use
+          return chip.clone().lerp(dark, 0.75 * worn + rnd() * 0.15).offsetHSL(0, 0, (rnd() - 0.5) * 0.03);
+        }
+        const off = z < Y.in ? Y.in - z : z - Y.out;
+        if (c.farDirt && z < -c.farDirt[0] && z > -c.farDirt[1]) return colorOf(c.farDirtColor ?? '#a08a6a').offsetHSL(0, 0, (rnd() - 0.5) * 0.04); // the oval's dirt
+        return (off < Y.verge ? verge : bank).clone().lerp(colorOf('#8a8a4e'), rnd() * 0.2).offsetHSL(0, 0, (rnd() - 0.5) * 0.03);
+      },
+    };
+  },
   // beach: sea, foam line, wet and dry sand with wind ripples, dunes
   beach(loc) {
     const Y = beachLayout(loc), k = TAU / W, s = Y.sand, se = Y.sea;
@@ -1777,7 +1941,7 @@ function makeKit(loc, heightAt, S) {
           _s.set((it.sx ?? 1) * it.s * (it.sx ? m.stretch : 1), it.s, it.s);
           mesh.setMatrixAt(i * reps + c, _m.compose(_p, _q, _s));
         } else {
-          _p.set(it.x + c * W, it.y, it.z);
+          _p.set(it.x + c * W, it.y + (TERRAIN ? TERRAIN.h(it.x + c * W) : 0), it.z);
           _s.set((it.sx ?? 1) * it.s, it.s, it.s);
           mesh.setMatrixAt(i * reps + c, _m.compose(_p, it.q, _s));
         }
@@ -1886,7 +2050,7 @@ function treeSet(k, count, zOf, leaves, { conifer = 0.38, autumn = 0.22, size = 
 }
 
 // Hokkaido birch: white bark with dark marks, a slim light-green crown
-function birchSet(k, count, zOf) {
+function birchSet(k, count, zOf, { bare = false } = {}) {
   const { rnd, item, colored, mat, addSet } = k;
   const trunk = paint(jitter(new THREE.CylinderGeometry(0.08, 0.12, 4.2, 5, 5), 0.015, 320).translate(0, 2.1, 0), () => shade(rnd() < 0.22 ? 0x3a3330 : 0xe9e6de, rnd, 0.03));
   const crown = merge([
@@ -1894,9 +2058,11 @@ function birchSet(k, count, zOf) {
     colored(jitter(new THREE.IcosahedronGeometry(1, 0), 0.15, 322).scale(0.7, 1.1, 0.7).translate(0.3, 5.4, 0.1), 0xffffff, 0.08),
   ]);
   const items = [];
-  for (let i = 0; i < count; i++) items.push(item(rnd() * W, zOf(rnd), 0.75 + rnd() * 0.5, rnd() * TAU, 0.1, { color: colorOf(pick(['#9cbf5e', '#8db454', '#a9c76a'], rnd)) }));
+  // bare (winter): a see-through tangle of thin purple-brown twigs instead of the leafy crown
+  const twigs = merge(Array.from({ length: 9 }, (_, j) => { const a = (j / 9) * TAU, h = 3 + (j % 3) * 0.6; return colored(new THREE.CylinderGeometry(0.012, 0.03, 1.8, 3).translate(0, 0.9, 0).rotateZ(0.5 + (j % 2) * 0.25).rotateY(a).translate(0, h, 0).toNonIndexed(), 0xffffff, 0.06); }));
+  for (let i = 0; i < count; i++) items.push(item(rnd() * W, zOf(rnd), 0.75 + rnd() * 0.5, rnd() * TAU, 0.1, { color: colorOf(bare ? pick(['#6b5a5e', '#5f4f55', '#7a6a66'], rnd) : pick(['#9cbf5e', '#8db454', '#a9c76a'], rnd)) }));
   addSet(trunk, mat, items.map((it) => ({ ...it, color: new THREE.Color(1, 1, 1) })));
-  addSet(crown, mat, items);
+  addSet(bare ? twigs : crown, mat, items);
 }
 
 // wrapped round bales lying on their sides, in little groups
@@ -2137,8 +2303,68 @@ function beachProps(k, loc) {
   }
 }
 
+// Training hill props: rails both sides, the woods, timing posts and light poles along the course, an observation tower.
+function hillProps(k, loc) {
+  const { rnd, item, colored, mat, addSet } = k, Y = hillLayout(loc), c = Y.c, rail = c.rail ?? {}, P = loc.props ?? {}, wd = loc.woods ?? {};
+  const rc = rail.color ?? '#f2f2ee', rh = rail.heightM ?? 1.2;
+  for (const z of [Y.in - 0.3, Y.out + 0.3]) fenceLine(k, z, { gap: 2.5, post: rc, rail: rc, rails: [rh * 0.55, rh - 0.05], postH: rh, postR: 0.045, postSeg: 5, boardH: 0.09, boardD: 0.06, wobble: 0.004, tint: 0.05 });
+  if (c.hedge) { // clipped evergreen hedges just behind both rails (lower on the camera side, so it does not hide the legs)
+    const hc = c.hedge.color ?? c.verge ?? '#55693c', hh = c.hedge.heightM ?? 1.5;
+    fenceLine(k, Y.in - 1.1, { gap: 2, post: hc, rail: hc, rails: [hh / 2], postH: 0.04, postR: 0.01, boardH: hh, boardD: 1.1, wobble: 0.01, tint: 0.12 });
+    fenceLine(k, Y.out + 1.4, { gap: 2, post: hc, rail: hc, rails: [0.4], postH: 0.04, postR: 0.01, boardH: 0.8, boardD: 1.2, wobble: 0.01, tint: 0.12 });
+  }
+  const side = wd.side ?? 'both';
+  const near = (a, b) => (r) => ((side === 'both' ? r() < 0.5 : side === 'far') ? Y.in - Y.verge - a - r() * (b - a) : Y.out + Y.verge + a + r() * (b - a));
+  if (P.utilityPoles) { // wired utility poles along the far side: poles with a crossarm, three sagging cables
+    const n = Math.max(1, perLoop(P.utilityPoles)), z = Y.in - (P.utilityDistM ?? 14);
+    fenceLine(k, z, { gap: W / n, post: '#8a8478', rail: '#2a2a2a', rails: [8.3, 8.05, 7.7], postH: 9, postR: 0.13, postSeg: 6, boardH: 0.025, boardD: 0.025, wobble: 0.002, tint: 0.05 });
+    addSet(colored(new THREE.BoxGeometry(0.12, 0.12, 1.6).translate(0, 8.4, 0), '#6f6a60', 0.03), mat, Array.from({ length: n }, (_, i) => item((i * W) / n, z, 1, 0, 0)));
+  }
+  treeSet(k, perLoop(wd.count ?? 40), near(wd.distM ?? 4, (wd.distM ?? 4) + 40), wd.leaf ?? loc.leaf ?? PAL.leaf, { autumn: wd.autumn ?? 0.15, conifer: wd.conifer ?? 0.35, size: [1.1, 0.8] });
+  tuftSet(k, perLoop(80), (r) => (r() < 0.5 ? Y.in - 0.8 - r() * Y.verge : Y.out + 0.8 + r() * Y.verge), [c.verge ?? '#6f8a47', '#7d9650'], '#b8b070');
+  if (P.timingPoles) { // distance boards on posts beside the course: white with a red panel ("0", "2" … furlongs to the line)
+    const board = merge([colored(new THREE.CylinderGeometry(0.06, 0.08, 3.2, 6).translate(0, 1.6, 0).toNonIndexed(), '#f2f2ee', 0.03), colored(new THREE.BoxGeometry(0.9, 0.9, 0.08).translate(0, 3.1, 0).toNonIndexed(), '#f2f2ee', 0.02), colored(new THREE.BoxGeometry(0.5, 0.55, 0.1).translate(0, 3.1, 0).toNonIndexed(), '#c8202c', 0.03)]);
+    const n = Math.max(1, perLoop(P.timingPoles));
+    addSet(board, mat, Array.from({ length: n }, (_, i) => item(((i + 0.5) / n) * W, Y.in - 0.9, 1, Math.PI / 2, 0)));
+    // the overhead gantry at the timing line: two white legs and a beam across the course
+    const span = Y.w + 1.6, gantry = colored(merge([...[-1, 1].map((sd) => new THREE.BoxGeometry(0.35, 6.2, 0.35).translate(0, 3.1, (sd * span) / 2).toNonIndexed()), new THREE.BoxGeometry(0.5, 0.7, span + 0.4).translate(0, 6.1, 0).toNonIndexed()]), '#f2f2ee', 0.03);
+    addSet(gantry, mat, [item(W * 0.3, (Y.in + Y.out) / 2, 1, 0, 0)]);
+  }
+  if (P.lightPoles) {
+    const lp = colored(merge([new THREE.CylinderGeometry(0.12, 0.2, 14, 6).translate(0, 7, 0).toNonIndexed(), new THREE.BoxGeometry(1.6, 0.5, 0.6).translate(0, 14, 0).toNonIndexed()]), '#9aa0a6', 0.03);
+    const n = Math.max(1, perLoop(P.lightPoles));
+    addSet(lp, mat, Array.from({ length: n }, (_, i) => item(((i + 0.25) / n) * W, Y.in - Y.verge - 1, 1, 0, 0)));
+  }
+  if (P.tower) { // the observation stand where trainers watch and time the work
+    const T = P.tower, h = T.heightM ?? 9, col = T.color ?? '#d9d6cf';
+    const geo = colored(merge([new THREE.BoxGeometry(6, 3.2, 5).translate(0, h, 0).toNonIndexed(), ...[-2.4, 2.4].flatMap((x) => [-1.8, 1.8].map((z) => new THREE.BoxGeometry(0.4, h - 1.6, 0.4).translate(x, (h - 1.6) / 2, z).toNonIndexed())), new THREE.BoxGeometry(6.6, 0.4, 5.6).translate(0, h + 1.8, 0).toNonIndexed()]), col, 0.03);
+    const glass = colored(new THREE.BoxGeometry(5.6, 1.4, 0.1).translate(0, h + 0.3, -2.55), '#5d7686', 0.04);
+    const at = [item(W * 0.62, Y.in - Y.verge - 7, 1, 0, 0)];
+    addSet(geo, mat, at); addSet(glass, mat, at.map((a) => ({ ...a })));
+  }
+}
+
+// Snowy field props: half-buried white board fences, bare birches, snow-laden conifers, a farm, snow-capped tufts.
+function snowProps(k, loc) {
+  const { rnd, item, colored, mat, addSet } = k, f = loc.fence ?? {}, buried = f.buriedM ?? 0.4, tr = loc.trees ?? {}, c = f.color ?? '#f3f1ea';
+  const board = { gap: 3, post: c, rail: c, rails: [0.42, 0.8, 1.18].map((y) => y - buried).filter((y) => y > 0.05), postH: 1.35 - buried, postR: 0.06, postSeg: 4, boardH: 0.17, boardD: 0.035, wobble: 0.012, tint: 0.07 };
+  fenceLine(k, -3.6, board); fenceLine(k, -27, board); fenceLine(k, 11, board);
+  birchSet(k, perLoop(tr.birch ?? 18), (r) => (r() < 0.7 ? -(30 + 40 * r()) : 16 + 34 * r()), { bare: true });
+  // conifers with snow on their tiers: the dark tree and a white cap set, same placements
+  const n = perLoop(tr.conifer ?? 16), items = [];
+  for (let i = 0; i < n; i++) items.push(item(rnd() * W, rnd() < 0.8 ? -(45 + 45 * rnd()) : 30 + 30 * rnd(), 1 + rnd() * 0.9, rnd() * TAU, 0.1, { color: colorOf(tr.coniferLeaf ?? '#2f4a3a') }));
+  const tree = merge([colored(new THREE.CylinderGeometry(0.1, 0.16, 1, 5).translate(0, 0.5, 0).toNonIndexed(), PAL.bark), colored(jitter(new THREE.ConeGeometry(1.3, 2.6, 7), 0.1, 501).translate(0, 2, 0).toNonIndexed(), 0xffffff, 0.08), colored(jitter(new THREE.ConeGeometry(0.95, 2, 7), 0.08, 502).translate(0, 3.3, 0).toNonIndexed(), 0xffffff, 0.08)]);
+  const caps = colored(merge([new THREE.ConeGeometry(1.05, 0.9, 7).translate(0, 2.85, 0).toNonIndexed(), new THREE.ConeGeometry(0.75, 0.8, 7).translate(0, 4.0, 0).toNonIndexed()]), loc.snow?.sunlit ?? '#f4f6f8', 0.03);
+  addSet(tree, mat, items);
+  if (tr.snowOnBranches !== false) addSet(caps, mat, items.map((it) => ({ ...it, color: WHITE_C })));
+  farmSet(k, -68);
+  tuftSet(k, perLoop(60), (r) => (r() < 0.5 ? -1 : 1) * (2 + 30 * r() ** 1.5), ['#a39463', '#8f8a5a'], '#c8b878'); // dry grass poking through
+}
+
 const PROP_BUILDERS = {
   paddock: paddockProps,
+  snow: snowProps,
+  hill: hillProps,
   beach: beachProps,
   country(k) {
     const { rnd } = k;
@@ -2280,6 +2506,62 @@ function buildSurf(loc) {
   };
 }
 
+// Falling snow: a few layers of flakes, each a slab that tiles vertically and repeats along the strip like the
+// props; the slabs sink a whole number of times per loop (seamless) and drift a little sideways.
+function buildSnowfall(loc) {
+  const rate = loc.snow?.falling ?? 0, group = new THREE.Group(), rnd = mulberry32(93), layers = [];
+  if (!rate) return null;
+  const H = 14, per = Math.round((rate * W * 60) / 100), geo = new THREE.OctahedronGeometry(0.035, 0);
+  const m = new THREE.MeshBasicMaterial({ color: 0xffffff, fog: true });
+  for (let l = 0; l < 3; l++) {
+    const mesh = new THREE.InstancedMesh(geo, m, per * 2 * (COPIES + 1));
+    let i = 0;
+    for (let f = 0; f < per; f++) {
+      const x = rnd() * W, y = rnd() * H, z = (rnd() - 0.5) * 60, s = 0.7 + rnd() * 0.8;
+      for (let c = 0; c <= COPIES; c++) for (let v = 0; v < 2; v++) mesh.setMatrixAt(i++, _m.compose(_p.set(x + c * W, y + v * H, z), _q.identity(), _s.setScalar(s)));
+    }
+    mesh.frustumCulled = false;
+    group.add(mesh);
+    layers.push({ mesh, ph: rnd(), fall: 1 + l * 0.35 });
+  }
+  return {
+    group,
+    update(p, scroll) {
+      const n = Math.max(1, Math.round(loopPeriod / 9)); // each slab falls its height every ~9 s
+      for (const L of layers) L.mesh.position.set(-(COPIES / 2) * W - scroll + Math.sin(TAU * (p + L.ph)) * 0.6, -H * wrap01(n * L.fall * p + L.ph) - 0.5, 0);
+    },
+  };
+}
+
+// Breath in cold air: a puff from the nostrils at each exhale. At a canter or gallop horses breathe once per
+// stride (locomotor-respiratory coupling); at a walk or trot about every 2.5 s. Puffs hang in the air (they move
+// back with the ground), grow and fade.
+function buildBreath() {
+  const group = new THREE.Group(), m = new THREE.MeshLambertMaterial({ color: 0xf2f4f6, transparent: true, depthWrite: false, opacity: 0 }), puffs = [];
+  const geo = jitter(new THREE.IcosahedronGeometry(1, 0), 0.15, 557);
+  for (let i = 0; i < 4; i++) { const mesh = new THREE.Mesh(geo, m.clone()); mesh.visible = false; group.add(mesh); puffs.push(mesh); }
+  const nose = V(0, 0);
+  return {
+    group,
+    update(p, r) {
+      const G = r.gait, coupled = ['canter', 'gallop', 'race'].includes(G.key), n = coupled ? G.strides : Math.max(1, Math.round(loopPeriod / 2.5));
+      const life = Math.min(1.2, (0.9 * loopPeriod) / n), speed = W / loopPeriod;
+      r.head.updateMatrixWorld(true);
+      r.head.localToWorld(nose.set(0.62 * Math.cos(HEAD_TILT) + 0.02 * Math.sin(HEAD_TILT), 0.62 * Math.sin(HEAD_TILT) - 0.02 * Math.cos(HEAD_TILT), 0)); // the nostrils, in the head's own frame
+      puffs.forEach((mesh, i) => {
+        const age = (wrap01(n * p - i / puffs.length) / n) * loopPeriod; // seconds since this puff's exhale
+        const on = i < Math.min(puffs.length, Math.ceil((life * n) / loopPeriod) + 1) && age < life;
+        mesh.visible = on;
+        if (!on) return;
+        const t = age / life;
+        mesh.position.set(nose.x - speed * age + 0.25 * t, nose.y - 0.08 * t, nose.z);
+        mesh.scale.setScalar(0.05 + 0.18 * t);
+        mesh.material.opacity = 0.45 * (1 - t) ** 1.5 * smoothstep(0, 0.1, t);
+      });
+    },
+  };
+}
+
 // Hoof prints in the sand behind the hero: each hoof's last few touchdowns, carried back with the ground,
 // fading with distance (a pure function of the loop phase, like everything else).
 function buildPrints(loc) {
@@ -2321,20 +2603,23 @@ function buildWorld(loc) {
   // at night the key light is the floodlights: high and from the stand side (the sun itself is below the horizon)
   const night = !!t.night, sunDir = sunDirOf(night ? { sunElevDeg: loc.floodlights?.elevDeg ?? 52, sunAzimDeg: loc.floodlights?.azimDeg ?? 12 } : t, S);
   const sky = { ...DEFAULT_SKY, ...(t.sky ?? {}) };
+  TERRAIN = PATH ? null : makeTerrain(loc);
   const gspec = GROUND[loc.builder](loc, S), ground = buildGround(gspec);
   const kit = makeKit(loc, ground.heightAt, S);
   PROP_BUILDERS[loc.builder](kit, loc);
   const group = new THREE.Group();
   group.add(ground.mesh);
   if (PATH) group.add(buildPathCentre(loc, S, gspec.dx));
-  const surf = loc.builder === 'beach' ? buildSurf(loc) : null, prints = loc.prints ? buildPrints(loc) : null;
+  const surf = loc.builder === 'beach' ? buildSurf(loc) : null, prints = loc.prints ? buildPrints(loc) : null, snowfall = buildSnowfall(loc), breath = loc.breath ? buildBreath() : null;
   if (surf) group.add(surf.group);
+  if (snowfall) group.add(snowfall.group);
   if (prints) group.add(prints.mesh);
   kit.sets.forEach((s) => group.add(s.mesh));
   const back = loc.backdrop ?? {};
   const statics = new THREE.Group();
+  if (breath) statics.add(breath.group); // puffs are placed in scene space each frame
   statics.add(buildSky(night ? V(0, -1, 0) : sunDir, sky), buildBackdrop(sunDir, { horizon: sky.horizon, ranges: back.ranges ?? DEFAULT_RANGES, landmarks: back.landmarks, clouds: back.clouds, seed: back.seed, night }, S));
-  return { loc, S, group, statics, ground, props: kit.sets, sunDir, sky, night, fog: [t.fogNear ?? 24, fogFar], path: PATH, surf, prints };
+  return { loc, S, group, statics, ground, props: kit.sets, sunDir, sky, night, fog: [t.fogNear ?? 24, fogFar], path: PATH, surf, prints, snowfall, breath, terrain: TERRAIN };
 }
 
 // Dust kicked up at each hoof strike; a pure function of gait phase (one puff per hoof per stride).
@@ -2474,7 +2759,7 @@ let loopPhase = 0, playing = true, speed = 1;
 // classics = 紫紺 with yellow, the Derby = white with black and gold edging; ordinary races white with black.
 function saddleFor(h, loc) {
   const c = { cloth: '#3a2a96', ink: '#ffffff', ...(loc.saddleCloth ?? {}) };
-  return { ...c, number: h.saddleNumber ?? null, label: h.jp };
+  return { ...c, number: c.numbered === false ? null : h.saddleNumber ?? null, label: h.jp }; // training cloths carry no race number
 }
 
 // Conformation from the profile: explicit `conf` wins; otherwise a gentle default from `size.build`.
@@ -2496,7 +2781,8 @@ function currentLook() {
     gear: c.gearOff ? null : h.gear ?? null,
     conf: { ...confFor(h), ...(c.conf ?? {}) },
     racehorse: !!h.silks, // racehorses get a bridle unless their gear says otherwise
-    saddle: !c.gearOff && h.silks && (state.loc?.builder === 'track' || state.loc?.builder === 'paddock') ? saddleFor(h, state.loc) : null,
+    saddle: !c.gearOff && h.silks && ['track', 'paddock', 'hill'].includes(state.loc?.builder) ? saddleFor(h, state.loc) : null,
+    rug: !c.gearOff && state.loc?.rug ? state.loc.rug : null, // a winter turnout rug where the location has one
   };
 }
 
@@ -2566,7 +2852,7 @@ function spawnExtras() {
     }
   }
   (state.loc.extras ?? []).forEach((spec, n) => {
-    const look = genericLook(rnd), seed = 900 + n * 17, phaseOffset = rnd(), grazer = spec.mode === 'grazer';
+    const R = state.loc.rug, look = { ...genericLook(rnd), ...(R ? { rug: { ...R, color: R.colors ? pick(R.colors, rnd) : R.color } } : {}) }, seed = 900 + n * 17, phaseOffset = rnd(), grazer = spec.mode === 'grazer'; // turned out in winter: rugged too
     const rigs = [];
     for (let c = 0; c < (grazer ? COPIES : 1); c++) {
       const r = buildHorse(look, seed);
@@ -2622,7 +2908,7 @@ function setLocation(id) {
   } else { dust.colors = null; dust.styleAt = null; }
   state.lead = loc.lead ?? 'L';
   // the saddle and cloth only appear on racecourses: rebuild the hero if that changes
-  if (rig && !!rig.root.getObjectByName('saddle') !== !!currentLook().saddle) rebuildHorse();
+  if (rig && (!!rig.root.getObjectByName('saddle') !== !!currentLook().saddle || !!rig.root.getObjectByName('rug') !== !!currentLook().rug)) rebuildHorse();
   spawnExtras();
   setGait(loc.gait ?? 'gallop');
   syncTitle();
@@ -2657,17 +2943,23 @@ function placeOnPath(s) {
 function applyPhase(p) {
   const g = wrap01(p * rig.gait.strides), scroll = p * W;
   if (world.path) { placeOnPath(scroll); rig.gait.pathS = scroll; }
+  const T = world.terrain, under = (COPIES / 2) * W + scroll, y0 = T ? T.h(under) : 0; // strip x under the hero
+  rig.root.rotation.z = T ? Math.atan(T.slope(under)) : 0;
   pose(rig, g, p);
   if (!world.path) {
-    world.ground.mesh.position.x = -(COPIES / 2) * W - scroll;
+    world.ground.mesh.position.set(-(COPIES / 2) * W - scroll, -y0, 0);
     updateProps(world.props, scroll);
+    if (T) for (const { mesh } of world.props) mesh.position.y = -y0;
     world.surf?.update(p, scroll);
+    world.snowfall?.update(p, scroll);
     world.prints?.update(p, rig, world.ground.heightAt, scroll);
   }
   updateDust(dust, g, rig);
+  world.breath?.update(p, rig);
   for (const ex of extras) {
     ex.rigs.forEach((r, c) => {
       if (ex.mode === 'grazer') r.root.position.x = wrapCentered(ex.x - W / 2 - scroll) + (c - (COPIES - 1) / 2) * W;
+      if (T && ex.mode === 'companion') { r.root.position.y = T.h(under + ex.x) - y0; r.root.rotation.z = Math.atan(T.slope(under + ex.x)); }
       if (ex.mode === 'parade') { // walking the ring ahead of the hero, on the ring's own ground
         const s = scroll + ex.ahead, f = world.path.at(s);
         r.root.position.set(f.x, 0, f.z);
