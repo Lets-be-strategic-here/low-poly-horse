@@ -153,3 +153,68 @@ Each strolling location gets 1–3 **background horses**: generic coats, either 
 - **Console** is clean.
 - **Phone width.** At 375 px there's no horizontal scroll.
 - **Visual.** A side and a 3/4 screenshot of each new horse and location.
+
+## To-do: open research uncertainties
+Every item below is flagged in an entry's `uncertain` list in `data/horses.js` or `data/locations.js`.
+When a primary source settles a value, fix it, remove it from `uncertain` and tick the box. Primary sources:
+JBIS, a JRA 顕彰馬 page, a netkeiba or keibabook race table, or a dated photo.
+
+### Horses (batch 1)
+- [ ] **Byerley Turk.**
+  - Foaling year: c.1679 or c.1680?
+  - Height and size are not documented anywhere.
+  - Unverified: the 1690 Down Royal "Silver Bell" win.
+- [ ] **Darley Arabian.**
+  - How high the white goes on LF, LH and RH. The 1703 letter says only "white upon them". Check the Wootton portrait at Aldby.
+  - Blaze width: one secondary source says narrow. The data uses the letter's "something of the largest".
+- [ ] **Godolphin Barb.**
+  - Foaling year: c.1724, ±1–2 years.
+  - Face: none recorded, but not checked against the Wootton and Morier portraits.
+  - The size of the tiny white patch inside the LH hoof.
+- [ ] **Saint Lite.**
+  - The small star and the clean legs come only from photos.
+  - 500 kg is an estimate; no race weights exist from 1941.
+  - Owner 加藤雄策's silks (青、黄袖、赤二本輪) come only from secondary summaries.
+- [ ] **Speed Symboli.**
+  - Face: none, or a tiny star?
+  - Which legs are white. LF, LH and RH come only from the painting and one photo.
+  - The peak weight in the mid-460s is weakly sourced.
+  - Did 和田共弘's silks have the red sleeve hoop?
+- [ ] **Haiseiko.**
+  - Race-day weights: only "500 kg+" at his debut and an unverified 516 kg.
+  - The official registry wording of the silks (white, purple sleeves).
+- [ ] **Maruzensky.**
+  - Race weights come only from the Japanese Wikipedia table; keibabook and netkeiba have no weights for 1976–77.
+  - Race-day bandaging. Front bandages are confirmed only at the retirement gallop.
+- [ ] **Katsuragi Ace.**
+  - Hind-leg white. No white is seen on the forelegs.
+  - The 1984 Arima menko pattern matching the silks is marked 要出典 (citation needed).
+- [ ] **Mr. C.B.** Which hind leg is white. LH is inferred from photos; no text names the side.
+- [ ] **Symboli Rudolf.**
+  - LH white height: pastern or short sock?
+  - Which way the crescent (三日月) star points.
+- [ ] **Sirius Symboli.**
+  - Which hind leg is white: RH, medium confidence.
+  - The exact star shape.
+  - Whether the silks had the red sleeve hoop.
+  - The registered owner: 和田共弘 or シンボリ牧場?
+- [ ] **Withers height (体高)** is undocumented for all of them except Saint Lite (166 cm) and Haiseiko (171 cm). The engine uses its default for the rest.
+
+### Locations
+- [ ] **Tokyo.** Stand colours, Mt Fuji's bearing, and the infield pond's position.
+- [ ] **Nakayama.** Stand colours and length; the backdrop.
+
+### Batch-2 drafts (`research/drafts/batch2-drafts.js`)
+These need to be re-run with the hardened templates before they move into `data/`.
+- [ ] **Mejiro Ramonu.**
+  - Face: a large 流星?
+  - Legs, running style, weight and gear.
+  - Silks: "white, green hoop" is UNVERIFIED and from memory.
+- [ ] **Kyoto.**
+  - Time of day, turf colour, stand colours, infield and backdrop.
+  - The G1 list, which is from memory.
+
+### Source access (affects every batch)
+- JBIS (jbis.or.jp) returns 403 to WebFetch. Read it through Playwright.
+- netkeiba and JRA-VAN come back garbled through WebFetch (Shift_JIS / EUC-JP). Read them through Playwright.
+- netkeiba hides 馬体重 for older races. keibabook race pages show it from 1982 onward.
