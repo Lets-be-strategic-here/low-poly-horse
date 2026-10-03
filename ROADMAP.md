@@ -1,16 +1,14 @@
 # Roadmap
 
 > **Handoff (3 Oct 2026, saved mid-run before a terminal restart).** Branch `worktree-anatomy-review-customization`.
-> Done and committed: the build and running-style controls, `data/quirks.js` (empty so far), batch 18/19 horses, docs.
+> Done and committed: the build and running-style controls, `data/quirks.js`, batch 18/19 horses, docs.
 > Still to finish:
 > 1. **Anatomy review**: all 8 critics finished (99 raw findings in `research/anatomy-review/critic-findings-raw.md` /
 >    `.json`, **unverified**). Still to run: merge → two skeptics per finding → gap critics → synthesis into
 >    `research/anatomy-review/ANATOMY-TODO.md`. The workflow script is `research/workflows/horse-anatomy-review.js`
 >    (feed it the saved critic findings instead of re-running the critics). No fixes until the owner chooses them.
-> 2. **Quirk research**: 10 of 12 roster groups researched and checked by a skeptic (`research/quirks/partial-results.json`).
->    Still to run: groups #105–117 and #131–143 (script `research/workflows/horse-quirk-research.js`, args
->    `research/workflows/roster-args.json`). Then write the verified/adjusted quirks into `data/quirks.js` (conf/run
->    values + `notes` with sources) and the evidence into `research/quirks/`.
+> 2. ✅ **Quirk research** (done): all 152 horses; 318 verified quirks on 122 horses, 143 mapped onto controls (72 horses)
+>    in `data/quirks.js`; evidence and 175 candidates for new parameters in `research/quirks/`.
 > 3. Rebase on `origin/main`, re-run the checks below, push, and open a PR (or merge) for the owner.
 
 Where the low-poly horse goes next, in build order. Each **batch** adds the next horses in generation
