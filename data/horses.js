@@ -2490,7 +2490,7 @@ window.HORSES = [
     ],
     uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hoodColors', 'gear.bridle', 'gear.bitLifter', 'silks.desc', 'silks.colors'],
   },
-  // ---- Batch 18 (2026-10): #140–147, foaled 2014–16 — Almond Eye (#141), Curren Bouquetd'or (#145) and Loves Only You (#147) still to research ----
+  // ---- Batch 18 (2026-10): #140–147, foaled 2014–16 ----
   {
     id: 'kiseki', en: 'Kiseki', jp: 'キセキ', born: 2014, sex: 'male', // 牡, born 13 May 2014 (ja.wiki, en.wiki), ルーラーシップ ('rulership') x ブリッツフィナーレ (by Deep Impact), bred by 下河辺牧場 (Hidaka), owner 石川達絵, trained by 角居勝彦 (Ritto), later 中竹和也 and 辻野泰之. Registration cancelled 7 Jan 2022; at stud at Breeders' Stallion Station from 2022
     coat: { reg: '黒鹿毛', key: 'kurokage', greyness: null, tone: 0.2, mane: null, notes: 'The ja.wiki infobox gives 黒鹿毛 and en.netkeiba / en.wiki say "Dark Bay"; JBIS returned 403. Photos: in sun (2018 Japan Cup paddock, 2017 Sumire S) a rich, fairly bright red-brown bay, darker over the back and flank, with black lower legs, mane and tail. Soaked in the rain of the 不良 2017 Kikuka Sho he looks almost black. The tone value comes from the sunny photos.' },
@@ -2516,6 +2516,20 @@ window.HORSES = [
       'https://commons.wikimedia.org/wiki/File:Owner_Ishikawa_Tatsue.svg',
     ],
     uncertain: ['coat.reg (JBIS 403; ja.wiki and en.netkeiba agree)', 'coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bitLifter', 'gear.bandages', 'silks.desc', 'silks.colors'],
+  },
+  {
+    id: 'almond-eye', en: 'Almond Eye', jp: 'アーモンドアイ', born: 2015, sex: 'female',
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: 'JBIS was 403; 鹿毛 from ja.wikipedia and the netkeiba profile (raw HTML). A medium-dark bay with black mane and tail.' },
+    face: { type: 'star', notes: 'A small irregular star high between the eyes (unhooded retirement-ceremony photo, Commons); a thin mark just above the nostrils may be a snip.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' }, // no leg white (2018 Japan Cup paddock + retirement photos); the white behind in race photos is bandages
+    style: { primary: 'senko', secondary: 'sashi', why: 'netkeiba 通過: from the 2018 Japan Cup on she raced near the front (JC 2018 3-2-2-2 of 14, VM 2020 4-4, Tenno Sho Autumn 2020 3-3-4, JC 2020 4-5-4-4); in the 2018 classics and both Yasuda Kinen she came from behind (Oka Sho 15-16 of 17, Shuka Sho 11-11-11-12).' },
+    size: { weightKg: [462, 490], typicalKg: 486, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Race weights from the ja.wikipedia table: 462 (2018 Oka Sho) to 490 (2020 Tenno Sho Autumn and Japan Cup). The 153.5 cm / 175.5 cm / 19.7 cm measurements were taken as a yearling, so they are left out. She over-reached (追突) and raced in custom rubber shoes.' },
+    gear: { hood: true, hoodColors: { main: '#1a1a1a', trim: '#f2f0ea', ears: '#1a1a1a' }, blinkers: false, shadowRoll: true, bitLifter: false, bridle: '#1a1a1a', pompom: null, bandages: { hind: '#eef0f4' }, notes: 'Black hood with ear covers and a white sheepskin noseband (2018 Japan Cup paddock and race photos; JRA-VAN photo from the 2020 Japan Cup); white hind bandages with blue stripes (stripes not drawn).' },
+    silks: { owner: 'シルクレーシング', desc: '水色、赤玉霰、袖赤一本輪', colors: ['#7fd0ee', '#e8384f'] },
+    saddleNumber: 1, // 2018 Japan Cup: 1枠1番 of 14 (netkeiba result page; ja.wikipedia 「1枠1番から先行し」)
+    career: 'Filly Triple Crown 2018 (Oka Sho, Yushun Himba, Shuka Sho); Japan Cup 2018 (record time) and 2020; Dubai Turf 2019; Tenno Sho (Autumn) 2019 and 2020; Victoria Mile 2020: 9 G1 wins from 15 starts.',
+    sources: ['https://ja.wikipedia.org/wiki/アーモンドアイ', 'https://en.wikipedia.org/wiki/Almond_Eye', 'https://db.netkeiba.com/horse/result/2015104961/', 'https://ja.wikipedia.org/wiki/シルクレーシング', 'https://commons.wikimedia.org/wiki/File:Almond_Eye_Retirement_Celemony(IMG3).jpg', 'https://commons.wikimedia.org/wiki/File:Almond_Eye,_Paddock_Japan_Cup_(45134778585).jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_2015104961.jpg'],
+    uncertain: ['face.type (a possible snip)', 'style (先行 for her peak, 差し for the 2018 classics)', 'size.typicalKg', 'gear.hoodColors.trim', 'gear.bridle', 'coat.reg (JBIS not read)'],
   },
   {
     id: 'blast-onepiece', en: 'Blast Onepiece', jp: 'ブラストワンピース', born: 2015, sex: 'male', // 牡, born 2 Apr 2015 (ja.wiki), ハービンジャー x ツルマルワンピース (by キングカメハメハ), bred by ノーザンファーム, trained by 大竹正博 (Miho). Raced as an entire (「牡3」 in the 2018 Arima); retired Jan 2022 to be a riding horse at Northern Horse Park (the ja.wiki infobox now reads 牡→せん)
@@ -2599,6 +2613,20 @@ window.HORSES = [
     uncertain: ['coat.reg (JBIS not read directly)', 'coat.greyness', 'coat.tail', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.reins', 'gear.bitLifter', 'silks.colors'],
   },
   {
+    id: 'curren-bouquetd-or', en: "Curren Bouquetd'or", jp: 'カレンブーケドール', born: 2016, sex: 'female',
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: '牝・鹿毛 on the netkeiba profile (raw HTML) and Wikipedia.' },
+    face: { type: 'none', notes: 'UNCONFIRMED: hooded in every usable photo; no white below the noseband.' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'pastern' }, // one hind has a white pastern and pale hoof (2019 Shuka Sho, off side); which hind is not confirmed
+    style: { primary: 'senko', secondary: null, why: 'netkeiba 通過: front third in most G1s (Oaks 2019 4-4-4-4 of 18, JC 2019 4-4-3-2 of 15, Tenno Sho Spring 2021 3-3-2-2, Tenno Sho Autumn 2021 4-3-3); midfield in the Shuka Sho and 2020 Japan Cup.' },
+    size: { weightKg: [460, 482], typicalKg: 460, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Weights from the Wikipedia table rows that could be read (8 of 17 starts): 460 at the Oaks, 464 at the Shuka Sho, 466 at the Japan Cup.' },
+    gear: { hood: true, hoodColors: { main: '#1a1a1a', trim: '#1a1a1a', ears: '#1a1a1a' }, blinkers: false, shadowRoll: true, bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: { fore: '#f2f0ea' }, notes: 'Black hood with ear covers, white sheepskin shadow roll and white fore bandages with red stripes in the 2019 Shuka Sho (Commons photo); the shadow roll shows in the 2019 Japan Cup too.' },
+    silks: { owner: '鈴木隆司', desc: '黒、白縦縞、袖赤一本輪', colors: ['#111111', '#f2f0ea', '#d22630'] },
+    saddleNumber: 10, // 2019 Yushun Himba: 5枠10番 of 18, 2nd (netkeiba result page)
+    career: "Sweet Pea S. (L) 2019; G1 seconds in the 2019 Yushun Himba (a neck behind Loves Only You), Shuka Sho and Japan Cup: 17 starts, 2 wins, 7 seconds.",
+    sources: ['https://ja.wikipedia.org/wiki/カレンブーケドール', 'https://db.netkeiba.com/horse/result/2016105089/', 'https://ja.wikipedia.org/wiki/鈴木隆司', 'https://commons.wikimedia.org/wiki/File:Curren_Bouquetd%27or_Shukasho_2019.jpg', 'https://uma-furi.com/curren-bouquetdor/'],
+    uncertain: ['face.type', 'legs.RH (one hind white; which one is not confirmed)', 'legs.LF / RF (bandaged in photos; one fore hoof looks pale)', 'gear.hood (seen in the Shuka Sho; the Oaks not checked)', 'size.weightKg', 'gear.bridle'],
+  },
+  {
     id: 'gran-alegria', en: 'Gran Alegria', jp: 'グランアレグリア', born: 2016, sex: 'female', // 牝, born 24 Jan 2016 (JBIS), ディープインパクト x タピッツフライ (by Tapit), bred by ノーザンファーム (安平), trained by 藤沢和雄 (Miho), owned by (有)サンデーレーシング. Ridden by C. ルメール, except the 2020 Takamatsunomiya Kinen and Yasuda Kinen (池添謙一)
     coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: -0.2, mane: null, notes: 'Registered 鹿毛 (JBIS; the JRA 2020 Yasuda Kinen result page gives 「牝4・鹿毛」, and ja.wiki agrees). Photos: in sun (JRA 2020 Yasuda photo 4, Commons 2019 Oka Sho) a rich red-brown bay, warm and reddish on the head and shoulder, darker over the neck, back and flanks; under cloud (Commons 2021 Victoria Mile, 2018 debut) a deep dark brown. Black mane, tail and lower legs.' },
     face: { type: 'star', notes: 'photo: JRA 2020 Yasuda Kinen photo 4 (three-quarter head close-up) shows a small, irregular, elongated white star on the forehead just above eye level, slightly off-centre, with no stripe down the nose. The side views (2019 Oka Sho, 2021 VM) show no white down the face. No text source.' },
@@ -2623,6 +2651,20 @@ window.HORSES = [
       'https://commons.wikimedia.org/wiki/File:Gran_Alegria_Maiden_2018.jpg',
     ],
     uncertain: ['coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bitLifter', 'silks.colors', 'saddleNumber (choice of signature race)'],
+  },
+  {
+    id: 'loves-only-you', en: 'Loves Only You', jp: 'ラヴズオンリーユー', born: 2016, sex: 'female',
+    coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: -0.4, mane: null, notes: 'Registered 鹿毛 (ja.wikipedia, netkeiba raw HTML) but photographs very dark, almost 黒鹿毛.' },
+    face: { type: 'star', notes: 'A small star on the forehead (2019 Queen Elizabeth II Cup photo on Commons, 2021 BC photo on JRA-VAN); no blaze or snip.' },
+    legs: { LF: 'pastern', RF: 'none', LH: 'pastern', RH: 'none' }, // one fore and one hind white to the pastern with pale hooves (near-side photo); sides not confirmed
+    style: { primary: 'sashi', secondary: 'senko', why: 'netkeiba 通過: Oaks 2019 9-8-10-10 of 18, Victoria Mile 2020 8-8, Queen Elizabeth II Cup 2020 11-11-13-8, Arima 2020 9-9-10-9; but 2-2-2-2 in the 2019 Queen Elizabeth II Cup.' },
+    size: { weightKg: [452, 486], typicalKg: 456, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'netkeiba 馬体重: 452 (Nov 2018) to 486 (2020); 456 at the 2019 Oaks. Overseas weights not shown.' },
+    gear: { hood: false, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#c8202f', pompom: null, bandages: null, notes: 'Wore a メンコ at her debut (ja.wikipedia, citing 週刊競馬ブック) but raced bare-faced in the 2019 Queen Elizabeth II Cup and the 2021 BC F&M Turf, in a red-and-white bridle and breastplate (breastplate not drawn).' },
+    silks: { owner: 'DMMドリームクラブ', desc: '黒、緑山形一文字', colors: ['#111111', '#1f9d55'] },
+    saddleNumber: 13, // 2019 Yushun Himba (Oaks), won: 7枠13番 of 18 (netkeiba result page, ja.wikipedia table)
+    career: 'Yushun Himba (Oaks) 2019; then the 2021 Queen Elizabeth II Cup (Hong Kong), Breeders\' Cup Filly & Mare Turf and Hong Kong Cup.',
+    sources: ['https://ja.wikipedia.org/wiki/ラヴズオンリーユー', 'https://db.netkeiba.com/horse/result/2016104648/', 'https://ja.wikipedia.org/wiki/DMMドリームクラブ', 'https://commons.wikimedia.org/wiki/File:Loves_Only_You(JPN)_IMG_7016-1_20191110.jpg', 'https://jra-van.jp/fun/memorial/2016104648.html'],
+    uncertain: ['face.type (small star, distant photos)', 'legs (which fore and which hind are white; another leg may have a white coronet)', 'gear for the 2019 Oaks itself', 'gear.bridle (red and white; drawn red)', 'coat.tone'],
   },
   // ---- Batch 19 (2026-10): #148–152, foaled 2016–21 ----
   {

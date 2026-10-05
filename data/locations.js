@@ -517,6 +517,66 @@ window.LOCATIONS = [
     uncertain: ['time.post (20:10 assumed)', 'sky / light values (chosen for an urban night)', 'dirt.color (dusk photo)', 'stand size and colours', 'floodlights (count, height, colour from photos; no published spec)', 'backdrop.landmarks[0] (28.48 × 8.0 m from an old install list; position unknown)', 'skyline bearings and heights (OSM)', 'the Tokyo Daishoten is run at a day/dusk meeting, not under lights', 'needs new kits: the monorail with a lit train, the L-WING roof, the left-handed course (2021)'],
   },
   {
+    // Seasonal variant: Oi on Tokyo Daishoten day (東京大賞典; GI with international status since 2011, dirt 2000 m, run on
+    // 29 December since 1999). Unlike the base (Teio Sho, a Twinkle night race) it is an afternoon race in daylight: every
+    // running from 2021 to 2025 was 9R with post 15:40, weather 晴, going 良 (2021–2024) or 重 (2025). The meeting goes on past
+    // sunset under the floodlights (2025: 11R 17:05, 12R 17:45). Sources: ja.wikipedia 東京大賞典, nar.netkeiba results.
+    id: 'oi-daishoten', variantOf: 'oi', en: 'Oi Racecourse (Tokyo Daishoten)', jp: '大井競馬場（東京大賞典）', group: 'NAR JpnI',
+    // Sun computed (NOAA algorithm) for 29 Dec 2025, 15:40 JST, at 35.593N 139.743E: elevation 8.8° (8.5° at the ~15:42 finish),
+    // true azimuth 233.0° (NAOJ: Tokyo sunset 16:36 at 241.7°). The base is a night entry whose sun is never used (the floodlights
+    // light it) and whose -161 does not fit the course, so the frame comes from OSM, which also matches the base's landmark
+    // bearings: the home straight runs 60° true (ENE) with the stands on its NNW side (330°), so scene = true - 330 = 233.0 - 330
+    // = -97. The low sun shines almost straight down the home straight from behind the approaching field, 7° out over the infield.
+    time: {
+      month: 12, post: '15:40', sunElevDeg: 9, sunAzimDeg: -97, fogNear: 150, fogFar: 480, exposure: 1.0, night: false,
+      sky: { top: '#6f98cc', mid: '#bfcbdc', horizon: '#f0d5ae', sun: '#ffe0aa' }, // dry, clear winter blue; gold low in the WSW
+      sunColor: '#ffd49e', sunIntensity: 2.5,                                     // low golden sun about 55 min before sunset
+      hemiSky: '#d6deea', hemiGround: '#9a8c78', hemiIntensity: 1.1,              // warm bounce off the pale sand
+    },
+    // The white Western Australian sand (2023) in low winter sun: sunlit #dccdbb, shade #cdc4c0 in 2023 Daishoten-day photos
+    dirt: { color: '#d5cabb' },
+    lawn: '#7f7a50', // winter-dormant infield grass (dry brown-olive behind the inner rail in the 2023 race photo)
+    leaf: ['#3b5233', '#4a5c3a', '#5b6240', '#7a6a48'], autumn: 0.1, // dark evergreens plus bare / brown deciduous crowns
+    crowd: 0.8, // 37,259 (2024) and 31,447 (2025), against 18,079–19,118 at the Teio Sho: about twice the base's crowd
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // Oi graded races: 紫紺, yellow numbers plus the title 「第69回東京大賞典」 (2023 photos)
+    backdrop: { clouds: 2 }, // 晴 in every running 2021–2025
+    signature: 'The year-end finale on 29 December, 「1年を締めくくるダート競馬の総決算レース」: Oi\'s biggest crowd of the year fills the apron on a clear, cold afternoon. The field comes up the 386 m straight with the golden sun 9° up straight behind it, the white sand glowing cream, 紫紺 saddle cloths with yellow numbers. After sunset (16:36) the last races run under the floodlights.',
+    sources: [
+      'https://ja.wikipedia.org/wiki/東京大賞典',
+      'https://nar.netkeiba.com/race/result.html?race_id=202544122909',
+      'https://nar.netkeiba.com/race/result.html?race_id=202444122909',
+      'https://nar.netkeiba.com/race/result.html?race_id=202344122909',
+      'https://nar.netkeiba.com/race/result.html?race_id=202244122909',
+      'https://nar.netkeiba.com/race/result.html?race_id=202144122909',
+      'https://nar.netkeiba.com/race/result.html?race_id=202544122911',
+      'https://nar.netkeiba.com/race/result.html?race_id=202544122912',
+      'https://ja.wikipedia.org/wiki/大井競馬場',
+      'https://ja.wikipedia.org/wiki/帝王賞',
+      'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)',
+      'https://eco.mtk.nao.ac.jp/koyomi/dni/2025/s1312.html',
+      'https://www.openstreetmap.org/way/207543031',
+      'https://www.openstreetmap.org/way/207543013',
+      'https://www.openstreetmap.org/way/690276609',
+      'https://prtimes.jp/main/html/rd/p/000000335.000039442.html',
+      'https://commons.wikimedia.org/wiki/File:69th_Tokyo_Daishoten.jpg',
+      'https://commons.wikimedia.org/wiki/File:Mirai_Iwata_2023_Tokyo_Daishoten.jpg',
+      'https://commons.wikimedia.org/wiki/File:9R_Tokyo_Daishoten_(G1,_3yo_and_up)_Dirt_2000m_at_Oi_racecourse.jpg',
+      'https://commons.wikimedia.org/wiki/File:9R_Tokyo_Daishoten_(G1,_3yo_and_up)_Dirt_2000m_at_Oi_racecourse_-_53428804220.jpg',
+    ],
+    uncertain: [
+      'time.sunAzimDeg (-97 comes from OSM: straight segments 59.5–60.0° true, L-WING / G-FRONT ~185 m NNW of the oval; the Tokyo Ryutsu Center warehouses seen across the track in the 2023 race photo agree. It does NOT keep the base\'s offset: the base\'s -161 for 2 July 2025 20:10 (true 310.5°) would be -20 in this frame, and keeping its offset as tokyo-derby does would give +122, a sun in the east. The base value is cosmetic, since night entries are lit by the floodlights.)',
+      'time.sunElevDeg (9 is the true value; the Nakayama Arima Kinen entry, same week and post time, raises its sun to 16 for readable shadows)',
+      'time.sky, fog, exposure, light colours and intensities (chosen by eye from 2023 race-day photos, whose skies are overexposed, and the Nakayama December entry; not measured)',
+      'dirt.color (sampled from 2023 photos and set between sun and shade; the 2025 running was on 重 going, so darker, wetter sand is also typical)',
+      'lawn, leaf, autumn (from 2023 photos; the bare deciduous trees there need a new kit: leafless trees)',
+      'crowd (0.8 scaled from attendance against the Teio Sho and Derby day = 1; Tokyo Derby-day attendance at Oi not checked)',
+      'saddleCloth hexes (photos: shade #141836, sunlit and overexposed #8779c6–#9e8dd3, so the base 紫紺 #3a2a96 is kept; the race title printed on the cloth needs a kit)',
+      'floodlights (masts kept from the base; whether the lamps are already on at 15:40 is unconfirmed; they must be on for 11R 17:05 / 12R 17:45)',
+      'backdrop.clouds (2 is a guess for a 晴 day)',
+      'the phrase 「大井の年末」 was not found in any source; TCK\'s 2025 release uses 「年の瀬を遊び尽くす」 and 「1年を締めくくるダート競馬の総決算レース」',
+    ],
+  },
+  {
     id: 'kawasaki', en: 'Kawasaki Racecourse (night)', jp: '川崎競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
     hand: 'left', surface: 'dirt', lead: 'R', W: 400, seed: 2037,
     dirtOnly: true, // one 25 m dirt course, no turf
