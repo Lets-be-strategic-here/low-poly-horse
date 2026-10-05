@@ -1,11 +1,11 @@
 # Roadmap
 
-> **Status (3 Oct 2026).** Branch `worktree-anatomy-review-customization`, all work committed and pushed:
-> the build and running-style controls, `data/quirks.js` (318 verified quirks on 122 horses), batch 18/19 horses,
-> and the anatomy review. **Next is the owner's call:** tick fix options in
+> **Status (4 Oct 2026).** The roster is complete: **all 152 horses** are built (the last three, Almond Eye, Curren
+> Bouquetd'or and Loves Only You, joined in batch 18), and **Oi on Tokyo Daishoten day** is the fifth seasonal variant
+> (23 locations). The build and running-style controls, `data/quirks.js` (318 verified quirks on 122 horses) and the
+> anatomy review were merged into `main` on 3 Oct (PR #1). **Next is the owner's call:** tick fix options in
 > [research/anatomy-review/ANATOMY-TODO.md](research/anatomy-review/ANATOMY-TODO.md) (124 verified items: 13 high,
-> 45 medium, 66 low severity, plus 1 disputed); only the ticked fixes get implemented. Then merge the branch into `main`
-> (a PR or a merge), and research the three missing batch-18 horses if wanted.
+> 45 medium, 66 low severity, plus 1 disputed); only the ticked fixes get implemented.
 
 Where the low-poly horse goes next, in build order. Each **batch** adds the next horses in generation
 order, a location or two, and one engine item. Horses come from the official character list at
@@ -41,7 +41,7 @@ order, a location or two, and one engine item. Horses come from the official cha
 | Forelimbs (B2) | Deeper, broader brisket so the elbow and forearm tuck into the chest instead of hanging off a rounded barrel; a broad flat shoulder blade, a triceps mass and a muscular forearm top; at the gallop the forefoot flips up into a hook behind the knee (deeper fetlock curl, higher fore lift). |
 | Colour | All 8 JBIS registry coats (鹿毛 … 白毛), pickers for coat, mane/tail and lower legs, 10 face markings, white height per leg, and Reset. **Greys (B2):** greyness slider with a slow-greying curve, **dapples** (cellular noise painted on 16× subdivided coplanar faces, strongest at mid grey, with their own slider), lighter faces and dark lower legs on young greys, and a separate `coat.tail` colour. |
 | Parts | Mane and tail length, height (uniform scale) and weight (bulk of trunk, neck and upper limbs). |
-| Horses | 149 of 152: roster #1–#152 except Almond Eye (#141), Curren Bouquetd'or (#145) and Loves Only You (#147), whose research was stopped; from Byerley Turk (c.1680) to Forever Young (2021). 135 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
+| Horses | **152 of 152**, the whole roster, from Byerley Turk (c.1680) to Forever Young (2021). 135 carry their verified number (馬番) in their signature win (Haru Urara's is from her famous 2004 race with Yutaka Take). |
 | Locations | **Hidaka stud farm** (walk, with a companion and grazing horses), **Countryside trail** (the original scene), and the JRA G1 courses **Tokyo**, **Nakayama**, **Kyoto** (infield lake), **Hanshin** (cherry blossom: `blossom` colours flowering broadleaf trees only) and **Chukyo** (B3); the NAR tracks **Oi** (B4), **Kawasaki** and **Funabashi** (B5) at night, **Urawa** at twilight and **Morioka** at night with the turf course inside the dirt (`innerTurf`, B6), **Kanazawa** in low November sun and **Saga** at night (B7); the **Tokyo Racecourse paddock** on Derby day, walked in path mode with the rest of the field (B8); a **beach at dawn** modelled on Kujukuri, the sun rising out of the Pacific behind the horse (B9); the **Ritto hill gallop** (坂路), an endless climb up the wood chips (B10); a **snowy Hidaka farm** on a clear February morning (B11); **Hanshin in the rain** for the Takarazuka Kinen, the first seasonal variant (B14). |
 | Research | Two reusable agent templates in `.claude/agents/`, run for every horse and track since batch 2 (8–10 agents in parallel, about 3–9 minutes each). |
 
@@ -75,9 +75,9 @@ Engine items are placed before the first horse that needs them.
 | ✅ 15 | #116–123 · 2006–08 · Transcend, Wonder Acute, Curren Chan, Eishin Flash, Rose Kingdom, Rulership, Victoire Pisa, Orfevre | Tokyo on Derby day | Reins; the rider steadied at the irons |
 | ✅ 16 | #124–131 · 2008–10 · Win Variation, Fenomeno, Gentildonna, Gold Ship, Hokko Tarumae, Verxina, Copano Rickey, Epiphaneia | Kyoto for the Tenno Sho (Spring) | Race-day crowds on the apron and the stand; tail ribbons |
 | ✅ 17 | #132–139 · 2010–13 · Logotype, Sounds of Earth, Cheval Grand, Duramente, Kitasan Black, Satono Crown, Satono Diamond, Vivlos | Nakayama for the Satsuki Sho | Hood patterns (stripes, hoops, checks, centre, band, x) |
-| ◐ 18 | #140–147 · 2014–16 · Kiseki, Blast Onepiece, Lucky Lilac, Chrono Genesis, Gran Alegria (Almond Eye, Curren Bouquetd'or, Loves Only You still to research) | (Oi for the Tokyo Daishoten: still to research) | Smooth gait changes; **build and running-style controls**; **anatomy review** (to-do list, no fixes yet) |
+| ✅ 18 | #140–147 · 2014–16 · Kiseki, Almond Eye, Blast Onepiece, Lucky Lilac, Chrono Genesis, Curren Bouquetd'or, Gran Alegria, Loves Only You | Oi on Tokyo Daishoten day (a low winter sun in daylight; the last races under the lights) | Smooth gait changes; **build and running-style controls**; **anatomy review** (to-do list, no fixes yet) |
 | ✅ 19 | #148–152 · 2016–21 · Marche Lorraine, Daring Tact, Efforia, Titleholder, Forever Young | — | **Quirk research** over the whole roster (`data/quirks.js`) |
-| 20 | The three missing batch-18 horses; the owner's choices from the anatomy to-do list | Oi for the Tokyo Daishoten | Fixes chosen from ANATOMY-TODO.md |
+| 20 | Re-check the official list for new characters | — | Fixes chosen by the owner from ANATOMY-TODO.md |
 
 Before every batch, re-read the official list. New characters are added over time, and they slot into the roster by foaling year.
 
@@ -440,7 +440,10 @@ JBIS returned 403 for every batch-2 horse, so the registry colours come from net
 - [ ] **Lucky Lilac** (ラッキーライラック): coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.hoodColors, gear.bridle, gear.bitLifter, silks.colors.
 - [ ] **Chrono Genesis** (クロノジェネシス): coat.reg (JBIS not read directly), coat.greyness, coat.tail, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.bridle, gear.reins, gear.bitLifter, silks.colors.
 - [ ] **Gran Alegria** (グランアレグリア): coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.bridle, gear.bitLifter, silks.colors, saddleNumber (choice of signature race).
-- [ ] **Almond Eye**, **Curren Bouquetd'or**, **Loves Only You**: not researched yet (their agents were stopped).
+- [ ] **Almond Eye** (アーモンドアイ): a possible snip under the small star; 先行 for her peak (2018 Japan Cup on) but 差し in the 2018 classics; hood trim colour and bridle; coat registry not read (JBIS 403).
+- [ ] **Curren Bouquetd'or** (カレンブーケドール): face unknown (hooded in every usable photo); which hind is white (put on RH); the forelegs were bandaged in photos (one fore hoof looks pale); hood seen at the Shuka Sho, not checked for the Oaks.
+- [ ] **Loves Only You** (ラヴズオンリーユー): the small star is from distant photos; which fore and hind are white (put on LF and LH; another leg may have a white coronet); her gear in the 2019 Oaks itself; the red-and-white bridle is drawn red, the breastplate not at all.
+- [ ] **Oi on Tokyo Daishoten day**: the base Oi entry's sun bearing (-161) does not fit the course (about -20 in the OSM frame; cosmetic, as the base is lit by floodlights); whether the floodlights are on at 15:40; leafless winter trees need a new kit; the race title printed on the saddle cloth is not drawn.
 
 ### Horses (batch 19)
 - [ ] **Marche Lorraine** (マルシュロレーヌ): coat.reg (JBIS not read), coat.tone, face.type, legs.LF, legs.RF, legs.LH, legs.RH, style.secondary, size.build, size.withersCm, size.girthCm, size.cannonCm, gear.hoodColors (BC photos only 480 px; one ear cover white), gear.bridle, gear.blinkers, gear.bitLifter, gear.bandages (none seen at Del Mar; bandaged at the Heian S), silks.colors.
