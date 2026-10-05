@@ -40,26 +40,31 @@ window.LOCATIONS = [
   {
     id: 'tokyo', en: 'Tokyo Racecourse', jp: '東京競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
     hand: 'left', surface: 'turf', lead: 'R', W: 400, seed: 2031,
-    // Japan Cup afternoon, late November (sun raised a little for readable shadows)
+    // Japan Cup afternoon, late November. Scene frame (OSM): the home straight runs 267.6° true with the stand on its north
+    // side, so the stand faces 177.6°; bearingDeg = true - 177.6 and sunAzimDeg = 357.6 - true. Sun (NOAA) on 29 Nov 2026,
+    // 15:40 JST: true azimuth 236.4°, elevation 7.8°, low across the infield ahead of the runners (raised to 22° for readable shadows).
     time: {
-      month: 11, post: '15:40', sunElevDeg: 22, sunAzimDeg: -35, fogNear: 140, fogFar: 420, exposure: 1.0,
+      month: 11, post: '15:40', sunElevDeg: 22, sunAzimDeg: 121, fogNear: 140, fogFar: 420, exposure: 1.0,
       sky: { top: '#6f9fd6', mid: '#b8cfe6', horizon: '#ecdcc4', sun: '#fff0d6' },
       sunColor: '#ffe9c8', sunIntensity: 2.8, hemiSky: '#dfe7f2', hemiGround: '#7d8a55', hemiIntensity: 1.2,
     },
     turf: { color: '#5c8f3a', widthM: 31 }, dirt: { color: '#bba684', widthM: 25 }, rails: { color: '#f6f6f2' },
     lawn: '#6f9a46', leaf: ['#5f7d45', '#6f8a4c', '#c58a45', '#b9733c'], autumn: 0.25, dust: '#7a6c4a',
-    stand: { name: 'Fuji View Stand', lengthM: 380, floors: 9, depthM: 30, colors: { body: '#e4e2dc', roof: '#f2f3f4', glass: '#7d98ab', seats: '#9aa7b0' } },
-    infield: [{ type: 'pond', xFrac: 0.62, sizeM: [70, 30], distM: 75, notes: 'Japanese garden with a pond' }],
+    stand: { name: 'Fuji View Stand', lengthM: 380, floors: 9, depthM: 30, colors: { body: '#e4dbd2', roof: '#f2f3f4', glass: '#3e4d62', seats: '#9aa7b0' } },
+    // No pond in the infield: the Japanese garden's pond is north of the paddock, behind the stand (OSM way 1426167545; the
+    // GSI aerial shows no water in the infield, which holds buildings, a playground garden and the 2022 international stables).
+    infield: [],
     backdrop: {
       ranges: [
         { r: 585, base: '#8f97b5', h: [12, 28], step: 0.16, haze: 0.6 }, // Tanzawa / Okutama
         { r: 545, base: '#8e9a8c', h: [4, 10], step: 0.1, haze: 0.5 },
       ],
+      // Bearings measured from the turf in front of the middle of the stand (35.66435N 139.48350E).
       landmarks: [
-        { type: 'fuji', bearingDeg: 22, distM: 575, heightM: 42 },                       // beyond the 1st-2nd corner
-        { type: 'screen', bearingDeg: -4, distM: 320, wM: 66.4, hM: 11.2, liftM: 5 },     // Turf Vision
-        { type: 'tree', bearingDeg: -58, distM: 360, heightM: 24, leaf: '#6d7f45' },       // 大ケヤキ, 3rd-4th corner
-        { type: 'skyline', fromDeg: 70, toDeg: 115, distM: 520, heightM: [6, 26] },       // Fuchu
+        { type: 'fuji', bearingDeg: 66, distM: 575, heightM: 42 },                       // true 243.9°, 76 km: beyond the 1st-2nd corner
+        { type: 'screen', bearingDeg: -33, distM: 320, wM: 66.4, hM: 11.2, liftM: 5 },    // Turf Vision (OSM way 1540198715): really ~150 m out; drawn at 320 because the backdrop does not scroll
+        { type: 'tree', bearingDeg: -72, distM: 545, heightM: 24, leaf: '#6d7f45' },       // 大ケヤキ (an エノキ) inside the 3rd-4th corner (GSI aerial)
+        { type: 'skyline', fromDeg: 70, toDeg: 115, distM: 520, heightM: [6, 26] },       // low-rise Fuchu-honmachi / Bubaigawara beyond the JR lines (the Fuchu towers are behind the stand)
       ],
       clouds: 6,
     },
@@ -78,8 +83,8 @@ window.LOCATIONS = [
       ],
     },
     signature: 'Japan’s biggest grandstand, the 525.9 m home straight with its rise 460–300 m out, the 66 m infield screen, and Mt Fuji beyond the first turn.',
-    sources: ['https://www.jra.go.jp/facilities/race/tokyo/course/index.html', 'https://ja.wikipedia.org/wiki/東京競馬場', 'https://www.tokyokeibajo.com/s/fvs.html'],
-    uncertain: ['stand.colors', 'backdrop.landmarks[0].bearingDeg', 'infield[0] position'],
+    sources: ['https://www.jra.go.jp/facilities/race/tokyo/course/index.html', 'https://ja.wikipedia.org/wiki/東京競馬場', 'https://www.tokyokeibajo.com/s/fvs.html', 'https://www.openstreetmap.org/way/566666105', 'https://www.openstreetmap.org/way/1426167545', 'https://www.openstreetmap.org/way/1540198715', 'https://commons.wikimedia.org/wiki/File:東京競馬場.jpg'],
+    uncertain: ['stand.colors (roof and seats not re-sampled)', 'backdrop.landmarks[1] / [2] (screen and tree positions measured from the stand centre; a few degrees different from the finish post)', 'backdrop.ranges and skyline heights (by eye)', 'missing: the elevated Chuo Expressway along the far side of the course, about 460 m across'],
   },
   {
     // Seasonal variant: Tokyo on Japanese Derby day (東京優駿 / 日本ダービー). `variantOf` takes the 'tokyo' entry (stand, course, facts)
@@ -87,10 +92,10 @@ window.LOCATIONS = [
     id: 'tokyo-derby', variantOf: 'tokyo', en: 'Tokyo Racecourse (Japanese Derby)', jp: '東京競馬場（日本ダービー）', group: 'JRA G1',
     // Since 2000 the race is run on the Sunday after the last Saturday of May (26 May to 1 June). Every running from 2021 to 2026 had
     // post 15:40, weather 晴, going 良, turf 2400 m on the C course (inner rail 6 m out). Sources: netkeiba, ja.wikipedia.
-    // Sun computed for 31 May 2026, 15:40 JST, at 35.663N 139.485E: elevation 36.4°, true azimuth 272.4°. The scene azimuth keeps
-    // the base entry's offset (the base sets -35 for a true 236.1°): -35 - (272.4 - 236.1) = -71.
+    // Sun computed for 31 May 2026, 15:40 JST, at 35.663N 139.485E: elevation 36.4°, true azimuth 272.4°. In the base entry's
+    // frame (stand facing 177.6° true) that is sunAzimDeg = 357.6 - 272.4 = 85: the sun is ahead of the runners, nearly along the straight.
     time: {
-      month: 5, post: '15:40', sunElevDeg: 36, sunAzimDeg: -71, fogNear: 125, fogFar: 390, exposure: 1.0,
+      month: 5, post: '15:40', sunElevDeg: 36, sunAzimDeg: 85, fogNear: 125, fogFar: 390, exposure: 1.0,
       sky: { top: '#6a9ad4', mid: '#b2cbe2', horizon: '#e4e6e0', sun: '#fff5de' }, // bright early-summer blue, milky haze low down
       sunColor: '#fff3dc', sunIntensity: 3.0,                                     // a higher, whiter sun than the Japan Cup's
       hemiSky: '#dde8f3', hemiGround: '#7e8c4e', hemiIntensity: 1.22,             // green bounce off the fresh turf
@@ -109,10 +114,10 @@ window.LOCATIONS = [
         { r: 545, base: '#8e9a8c', h: [4, 10], step: 0.1, haze: 0.55 },
       ],
       landmarks: [
-        { type: 'fuji', bearingDeg: 22, distM: 575, heightM: 42, snowLine: 0.72, haze: 0.62 }, // late May: snow only on the upper slopes; faint in the haze
-        { type: 'screen', bearingDeg: -4, distM: 320, wM: 66.4, hM: 11.2, liftM: 5 },           // Turf Vision (as in the base)
-        { type: 'tree', bearingDeg: -58, distM: 360, heightM: 24, leaf: '#4f7a38' },             // 大ケヤキ (really an エノキ) in full early-summer leaf
-        { type: 'skyline', fromDeg: 70, toDeg: 115, distM: 520, heightM: [6, 26] },              // Fuchu (as in the base)
+        { type: 'fuji', bearingDeg: 66, distM: 575, heightM: 42, snowLine: 0.72, haze: 0.62 }, // late May: snow only on the upper slopes; faint in the haze
+        { type: 'screen', bearingDeg: -33, distM: 320, wM: 66.4, hM: 11.2, liftM: 5 },          // Turf Vision (as in the base)
+        { type: 'tree', bearingDeg: -72, distM: 545, heightM: 24, leaf: '#4f7a38' },             // 大ケヤキ (really an エノキ) in full early-summer leaf
+        { type: 'skyline', fromDeg: 70, toDeg: 115, distM: 520, heightM: [6, 26] },              // low-rise Fuchu-honmachi / Bubaigawara (as in the base)
       ],
     },
     signature: 'Derby Day: the year\'s biggest crowd (78,678 in 2024; the course record is 196,517 at the 1990 Derby) lines the 525.9 m straight on a bright, hazy early-summer afternoon, with the overseeded turf at its greenest, the white Derby saddle cloths with gold edging, and Mt Fuji at most a pale shape in the haze.',
@@ -138,27 +143,28 @@ window.LOCATIONS = [
       'https://commons.wikimedia.org/wiki/File:11R_Tokyo_Yushun_(Japanese_Derby)_(Grade_1,_3yo)_Turf_2400m_2021_at_tokyo_racecourse_(51216444985).jpg',
     ],
     uncertain: [
-      'time.sunAzimDeg (-71 keeps the base entry\'s offset; OSM puts the straight at ~268° true, which would make the real Derby sun +85 and the Japan Cup sun +122 in the scene frame, so the base Tokyo bearings need re-deriving)',
       'time.sky, fog, exposure, light colours and intensities (look values from 2022 and 2024 Derby-day photos, not measured)',
       'turf / lawn / verge / leaf colours (sampled from Commons photos and toned down by eye)',
       'dust (estimated; only the dry going is sourced)',
       'saddleCloth.edge hex (the gold edging is sourced but too thin to sample)',
-      'backdrop.landmarks[0] (Fuji on Derby afternoons: one Derby-day photo shows it faint through haze; snowLine and haze set by eye; its bearing kept at the base\'s 22 though the real bearing in this frame is about +66)',
+      'backdrop.landmarks[0] (Fuji on Derby afternoons: one Derby-day photo shows it faint through haze; snowLine and haze set by eye)',
       'needs a kit: the C-course inner rail 6 m out, with the worn A-course strip inside it',
     ],
   },
   {
     id: 'nakayama', en: 'Nakayama Racecourse', jp: '中山競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
     hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2032,
-    // Arima Kinen, late December: low golden winter sun, overseeded turf going yellow-green
+    // Arima Kinen, late December: low golden winter sun, overseeded turf going yellow-green. Scene frame (OSM rails): the home
+    // straight runs 15.2° true with the stand on its west side, so the stand faces 105.2° and sunAzimDeg = trueAz - 285.2.
+    // Sun (NOAA) for 28 Dec 2025, 15:40 JST: true azimuth 233.3°, elevation ~8° (raised to 16).
     time: {
-      month: 12, post: '15:40', sunElevDeg: 16, sunAzimDeg: -50, fogNear: 130, fogFar: 400, exposure: 1.0,
+      month: 12, post: '15:40', sunElevDeg: 16, sunAzimDeg: -52, fogNear: 130, fogFar: 400, exposure: 1.0,
       sky: { top: '#7f9fc8', mid: '#c9c6cf', horizon: '#f0cfa8', sun: '#ffe2b0' },
       sunColor: '#ffd9a8', sunIntensity: 2.6, hemiSky: '#dfe3ee', hemiGround: '#857a52', hemiIntensity: 1.15,
     },
     turf: { color: '#879a4e', widthM: 30 }, dirt: { color: '#b4a080', widthM: 25 }, rails: { color: '#f6f6f2' },
     lawn: '#8a9a55', verge: '#7f9050', leaf: ['#5b7046', '#6d7a4a', '#8a7a52', '#4f6a42'], autumn: 0.3, dust: '#7c6d4a',
-    stand: { name: 'Main stand (blocks A–D)', lengthM: 300, floors: 7, depthM: 26, colors: { body: '#d8d3c8', roof: '#c9ced2', glass: '#7c94a6', seats: '#8a9a8c' } },
+    stand: { name: 'Main stand (blocks A–D)', lengthM: 320, floors: 7, depthM: 26, colors: { body: '#eef2f4', roof: '#9ea2a4', glass: '#26445f', seats: '#8a9a8c' } }, // length: OSM ways 145659834 / 145659837 (323-325 m); colours from a sunny 2026 Commons photo
     infield: [{ type: 'jumps', count: 6, depthM: 150, notes: '大竹柵 brush fence 1.6 m x 2.05 m and 大生垣 hedge 1.6 m x 2.4 m on the diagonal たすき course' }],
     backdrop: {
       ranges: [{ r: 580, base: '#9a9cae', h: [5, 14], step: 0.14, haze: 0.62 }],
@@ -181,18 +187,18 @@ window.LOCATIONS = [
       ],
     },
     signature: 'A short 310 m straight ending in the JRA’s steepest hill (+2.2 m), and the giant hedge and brush jumps of the steeplechase course in the infield.',
-    sources: ['https://www.jra.go.jp/facilities/race/nakayama/course/index.html', 'https://ja.wikipedia.org/wiki/中山競馬場'],
-    uncertain: ['stand.colors', 'stand.lengthM', 'backdrop'],
+    sources: ['https://www.jra.go.jp/facilities/race/nakayama/course/index.html', 'https://ja.wikipedia.org/wiki/中山競馬場', 'https://www.openstreetmap.org/way/145659834', 'https://www.openstreetmap.org/way/145659840', 'https://commons.wikimedia.org/wiki/File:中山競馬場スタンド20260124-P1079041.jpg'],
+    uncertain: ['stand.colors.seats (mostly blue, with red, green and orange blocks; not sampled)', 'backdrop.ranges and skyline (by eye)', 'backdrop.landmarks[0] (the screen looks to stand inside the dirt course near the 1st corner, about +50° and ~170 m out, from a GSI aerial and a 2024 photo; not moved)'],
   },
   {
     // Seasonal variant: Nakayama on Satsuki Sho day (皐月賞). `variantOf` takes the 'nakayama' entry (stand, course, jumps, backdrop, facts)
     // and merges these fields over it.
     id: 'nakayama-satsuki', variantOf: 'nakayama', en: 'Nakayama Racecourse (Satsuki Sho)', jp: '中山競馬場（皐月賞）', group: 'JRA G1',
     // Turf 2000 m, right-handed. Run between 14 and 20 April in every year 2019-2026 (ja.wikipedia); post 15:40 in every running checked (netkeiba 2021-2026).
-    // Sun (NOAA algorithm) for 19 Apr 2026, 15:40 JST, at 35.7259N 139.9624E: elevation 30.6°, true azimuth 261.5°. Scene mapping from the base entry
-    // (its -50 is for ~24 Dec 15:40, true azimuth 233.4°): sunAzimDeg = trueAz - 283.4, the same rule as Kyoto's (the stand's facing, ~103°, + 180).
+    // Sun (NOAA algorithm) for 19 Apr 2026, 15:40 JST, at 35.7259N 139.9624E: elevation 30.6°, true azimuth 261.5°. In the base entry's
+    // frame (stand facing 105.2° true from the OSM rails): sunAzimDeg = trueAz - 285.2 = -24.
     time: {
-      month: 4, post: '15:40', sunElevDeg: 31, sunAzimDeg: -22, fogNear: 120, fogFar: 380, exposure: 1.02,
+      month: 4, post: '15:40', sunElevDeg: 31, sunAzimDeg: -24, fogNear: 120, fogFar: 380, exposure: 1.02,
       sky: { top: '#82a8d4', mid: '#c4d5e6', horizon: '#e6e6df', sun: '#fff3de' }, // pale, hazy Kanto spring blue
       sunColor: '#fff0da', sunIntensity: 2.85,                                    // mid-afternoon sun about 31° up, softened by spring haze
       hemiSky: '#e0e8f2', hemiGround: '#7d884c', hemiIntensity: 1.22,             // yellow-green bounce off the fresh turf
@@ -226,7 +232,6 @@ window.LOCATIONS = [
       'https://commons.wikimedia.org/wiki/File:皐月賞2022.jpg',
     ],
     uncertain: [
-      'time.sunAzimDeg (-22 keeps the base entry\'s offset; the low-resolution GSI tile only roughly confirms the ~103° stand facing it implies)',
       'time.sunElevDeg (31 is the real computed value, but the base raises a real ~8° December sun to 16, so the two are not raised the same way)',
       'time.sky, fog, exposure, light colours and intensities (look values from 2023-2025 race-day photos, not measured)',
       'turf / lawn / verge / leaf colours (median samples from Commons photos 2022-2025, toned down by eye)',
@@ -258,7 +263,7 @@ window.LOCATIONS = [
         { r: 550, base: '#8a9784', h: [3, 8], step: 0.1, haze: 0.5 },    // Otokoyama and nearer low hills
       ],
       landmarks: [
-        { type: 'screen', bearingDeg: 0, distM: 300, wM: 64.0, hM: 10.8, liftM: 4 }, // Turf Vision (really on the lake's near shore)
+        { type: 'screen', bearingDeg: -5, distM: 300, wM: 64.0, hM: 10.8, liftM: 4 }, // Turf Vision: really on the lake's near shore ~78 m out; drawn at 300 because the backdrop does not scroll
       ],
       clouds: 5,
     },
