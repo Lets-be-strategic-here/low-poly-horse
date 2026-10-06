@@ -631,13 +631,13 @@ window.HORSES = [
     silks: { owner: '太田美實', desc: '赤、水色一本輪、袖黄縦縞 (red, one light-blue hoop, red sleeves with yellow stripes)', colors: ['#d22630', '#2fa3d6', '#f5c400'] },
     saddleNumber: 10, // 1993 Tokyo Yushun
     career: '1993 Tokyo Yushun (Japanese Derby), Yayoi Sho and Kyoto Shimbun Hai; 3rd in the Kikuka Sho and Japan Cup. One of the "BNW" trio. 14 starts, 6 wins.',
-    sources: ['https://ja.wikipedia.org/wiki/ウイニングチケット', 'https://ja.wikipedia.org/wiki/太田美實', 'https://en.netkeiba.com/db/horse/1990102314/', 'https://commons.wikimedia.org/wiki/File:Winning_Ticket_2013.jpg'],
-    uncertain: ['face.type', 'legs', 'gear (one photo)', 'silks.colors'],
+    sources: ['https://ja.wikipedia.org/wiki/ウイニングチケット', 'https://ja.wikipedia.org/wiki/太田美實', 'https://en.netkeiba.com/db/horse/1990102314/', 'https://commons.wikimedia.org/wiki/File:Winning_Ticket_2013.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_1990102314.jpg'],
+    uncertain: ['silks.colors'],
   },
   {
     id: 'narita-brian', en: 'Narita Brian', jp: 'ナリタブライアン', born: 1991, sex: 'male',
     coat: { reg: '黒鹿毛', key: 'kurokage', tone: -0.1, notes: 'Almost black in JRA race photos; brown only on the muzzle and flanks.' },
-    face: { type: 'star-snip', notes: '特徴 "星額刺毛鼻梁鼻白": a small star with scattered white hairs and a small white patch just above the nostrils.' },
+    face: { type: 'star-snip', notes: '特徴 "星額刺毛鼻梁鼻白": a small star with scattered white hairs, and separately a narrow white patch on the lower bridge running down between the nostrils (JRA hall-of-fame photo of the 1994 Arima Kinen, head-on); the two are not joined.' },
     legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
     style: { primary: 'sashi', secondary: 'senko', why: 'Mid-division at the first corner (Satsuki 8/18, Derby 6/18, Kikuka 7/15), up to 2nd–4th by the 4th corner; closer to the pace in the 1994 Arima (4-2-2-1).' },
     size: { weightKg: [448, 486], typicalKg: 470, withersCm: null, build: 'average', notes: 'Satsuki Sho 460, Derby 468, Kikuka Sho 470, Arima 94 476.' },
@@ -646,7 +646,7 @@ window.HORSES = [
     saddleNumber: 4, // 1994 Kikuka Sho (the Triple Crown clincher)
     career: '1994 Triple Crown (Satsuki Sho, Tokyo Yushun, Kikuka Sho) and Arima Kinen; 1993 Asahi Hai Sansai Stakes; Hanshin Daishoten 1995 and 1996. Biwa Hayahide’s half-brother.',
     sources: ['https://ja.wikipedia.org/wiki/ナリタブライアン', 'https://en.netkeiba.com/db/horse/result/1991108889/', 'https://www.jra.go.jp/gallery/dendo/horse24/', 'https://ja.wikipedia.org/wiki/山路秀則'],
-    uncertain: ['face.type (shape)', 'legs.LH / RH', 'gear.bridle', 'silks.colors'],
+    uncertain: ['gear.bridle', 'silks.colors'],
   },
   {
     id: 'sakura-laurel', en: 'Sakura Laurel', jp: 'サクラローレル', born: 1991, sex: 'male',
@@ -660,7 +660,7 @@ window.HORSES = [
     saddleNumber: 6, // 1996 Arima Kinen
     career: '1996 Tenno Sho (Spring, beating Narita Brian) and Arima Kinen; 1996 Nakayama Kinen and All Comers. 22 starts, 9 wins.',
     sources: ['https://ja.wikipedia.org/wiki/サクラローレル', 'https://en.netkeiba.com/db/horse/1991103498/', 'https://jra-van.jp/fun/memorial/img/horses/l_1991103498.jpg', 'https://commons.wikimedia.org/wiki/File:Sakura_Laurel.jpg'],
-    uncertain: ['face.type (photo)', 'legs heights (photos)', 'gear (two photos)'],
+    uncertain: ['gear (two photos)'],
   },
   {
     id: 'hishi-amazon', en: 'Hishi Amazon', jp: 'ヒシアマゾン', born: 1991, sex: 'female',
@@ -673,8 +673,8 @@ window.HORSES = [
     silks: { owner: '阿部雅一郎 (ヒシ)', desc: '白、青二本輪、袖青二本輪 (white, two blue hoops, white sleeves with two blue hoops)', colors: ['#f5f5f2', '#1f40a0'] },
     saddleNumber: 6, // 1994 Queen Elizabeth II Cup
     career: '1993 Hanshin Sansai Himba Stakes, 1994 Queen Elizabeth II Cup (her sixth straight graded win); 2nd in the 1994 Arima Kinen and 1995 Japan Cup. 20 starts, 10 wins.',
-    sources: ['https://ja.wikipedia.org/wiki/ヒシアマゾン', 'https://en.netkeiba.com/db/horse/result/1991109852/', 'https://ja.wikipedia.org/wiki/阿部雅一郎', 'https://commons.wikimedia.org/wiki/File:HishiAmazon.JPG'],
-    uncertain: ['face.type', 'legs', 'gear.bridle', 'silks blue shade'],
+    sources: ['https://ja.wikipedia.org/wiki/ヒシアマゾン', 'https://en.netkeiba.com/db/horse/result/1991109852/', 'https://ja.wikipedia.org/wiki/阿部雅一郎', 'https://commons.wikimedia.org/wiki/File:HishiAmazon.JPG', 'https://db.netkeiba.com/horse/1991109852/'],
+    uncertain: ['gear.bridle'],
   },
   {
     id: 'samson-big', en: 'Samson Big', jp: 'サムソンビッグ', born: 1991, sex: 'male',
@@ -701,8 +701,8 @@ window.HORSES = [
     silks: { owner: '齊藤四方司', desc: '緑、黄縦縞、黒袖黄一本輪 (green with yellow stripes, black sleeves with one yellow hoop)', colors: ['#3eb370', '#ffff00', '#000000'] },
     saddleNumber: 1, // 1994 Asahi Hai Sansai Stakes
     career: 'Unbeaten in 4: the 1994 Asahi Hai Sansai Stakes and 1995 Yayoi Sho; retired with a tendon injury before the Satsuki Sho. Sunday Silence’s first G1 winner.',
-    sources: ['https://jra-van.jp/fun/memorial/1992109618.html', 'https://en.netkeiba.com/db/horse/1992109618/', 'https://ja.wikipedia.org/wiki/フジキセキ', 'https://upload.wikimedia.org/wikipedia/commons/1/13/Owner_Saito_Yomoji.svg'],
-    uncertain: ['face (photos)', 'legs.RH (low-res photos)', 'gear.bridle'],
+    sources: ['https://jra-van.jp/fun/memorial/1992109618.html', 'https://en.netkeiba.com/db/horse/1992109618/', 'https://ja.wikipedia.org/wiki/フジキセキ', 'https://upload.wikimedia.org/wikipedia/commons/1/13/Owner_Saito_Yomoji.svg', 'https://db.netkeiba.com/horse/1992109618/'],
+    uncertain: ['gear.bridle'],
   },
   {
     id: 'yukino-bijin', en: 'Yukino Bijin', jp: 'ユキノビジン', born: 1990, sex: 'female',
@@ -715,8 +715,8 @@ window.HORSES = [
     silks: { owner: '荒井幸勝', desc: 'Yellow and red vertical stripes, blue sleeves (黄・赤縦縞、青袖)', colors: ['#ffff00', '#b01040', '#1544ff'] },
     saddleNumber: 9, // 1993 Yushun Himba (2nd to Vega)
     career: 'From Iwate (NAR) to the JRA: 2nd to Vega in the 1993 Oka Sho and Yushun Himba; won the 1993 Queen Stakes. 10 starts, 6 wins.',
-    sources: ['https://ja.wikipedia.org/wiki/ユキノビジン', 'https://en.netkeiba.com/db/horse/1990103565/', 'https://cdnv2.netkeiba.com/img/db/colours/286009.gif', 'https://db.netkeiba.com/show_photo.php?horse_id=1990103565&no=5318&tmp=no'],
-    uncertain: ['face.type (photos)', 'legs (photos)', 'gear hood trim', 'silks.colors (icon)'],
+    sources: ['https://ja.wikipedia.org/wiki/ユキノビジン', 'https://en.netkeiba.com/db/horse/1990103565/', 'https://cdnv2.netkeiba.com/img/db/colours/286009.gif', 'https://db.netkeiba.com/show_photo.php?horse_id=1990103565&no=5318&tmp=no', 'https://db.netkeiba.com/horse/1990103565/'],
+    uncertain: ['silks.colors (icon)'],
   },
   {
     id: 'biko-pegasus', en: 'Biko Pegasus', jp: 'ビコーペガサス', born: 1991, sex: 'male',
@@ -729,8 +729,8 @@ window.HORSES = [
     silks: { owner: 'レジェンド', desc: '紫、白襷、白袖赤一本輪 (purple, white sash, white sleeves with one red hoop)', colors: ['#7d3fbf', '#f2f0ea', '#d42a2a'] },
     saddleNumber: 12, // 1994 Sprinters Stakes (2nd to Sakura Bakushin O)
     career: '1994 Keisei Hai and 1995 Centaur Stakes; 2nd in the Sprinters Stakes 1994 and 1995 — three G1 seconds in all. 27 starts, 4 wins.',
-    sources: ['https://ja.wikipedia.org/wiki/ビコーペガサス', 'https://en.netkeiba.com/db/horse/result/1991109886/', 'https://en.netkeiba.com/db/race/199406050610/', 'https://commons.wikimedia.org/wiki/File:Biko-pegasasu.jpg', 'https://en.wikipedia.org/wiki/Biko_Pegasus'],
-    uncertain: ['face.type', 'legs', 'gear.bridle', 'silks.colors'],
+    sources: ['https://ja.wikipedia.org/wiki/ビコーペガサス', 'https://en.netkeiba.com/db/horse/result/1991109886/', 'https://en.netkeiba.com/db/race/199406050610/', 'https://commons.wikimedia.org/wiki/File:Biko-pegasasu.jpg', 'https://en.wikipedia.org/wiki/Biko_Pegasus', 'https://db.netkeiba.com/horse/1991109886/'],
+    uncertain: ['silks.colors'],
   },
   // ---- Batch 7 (2026-10): #52–59, foaled 1992–94 ----
   {
@@ -745,13 +745,13 @@ window.HORSES = [
     saddleNumber: 6, // 1995 Satsuki Sho: 枠3 馬番6 (netkeiba race table; race photo shows No.6)
     career: 'Satsuki Sho (G1) 1995, Mile Championship (G1) 1996; 2nd Tokyo Yushun 1995, Tenno Sho (Autumn) 1995, Yasuda Kinen 1997; 21 starts, 5 wins',
     sources: ['https://ja.wikipedia.org/wiki/ジェニュイン_(競走馬)', 'https://db.netkeiba.com/horse/1992109450/', 'https://db.netkeiba.com/horse/result/1992109450/', 'https://en.netkeiba.com/db/horse/1992109450/', 'https://ja.wikipedia.org/wiki/社台レースホース', 'https://db.netkeiba.com/show_photo.php?horse_id=1992109450&no=15536&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992109450&no=9216&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992109450&no=1098&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992109450&no=1097&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992109450&no=9854&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992109450&no=9855&tn=no&tmp=no'],
-    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'gear.hood (a lavender menko seen once, paddock only)', 'gear.bridle', 'gear.bitLifter', 'gear.bandages.fore', 'size.build'],
+    uncertain: ['gear.bridle', 'gear.bitLifter', 'gear.bandages.fore', 'size.build'],
   },
   {
     id: 'hishi-akebono', en: 'Hishi Akebono', jp: 'ヒシアケボノ', born: 1992, sex: 'male',
     coat: { reg: '黒鹿毛', key: 'kurokage', greyness: null, tone: 0, mane: null, notes: 'Registered 黒鹿毛 (ja.wikipedia infobox; en.netkeiba "Dark Bay"). Bred in the USA (by Woodman out of Mysteries, by Seattle Slew). In race-day photos he is a deep dark brown with a black mane and tail.' },
     face: { type: 'star', notes: 'From photos only: a small star, slightly off-centre, high on the forehead under the forelock. It shows on the netkeiba stud photo in the green rug and the headshot. No stripe or snip visible.' },
-    legs: { LF: 'none', RF: 'pastern', LH: 'coronet', RH: 'none' },
+    legs: { LF: 'none', RF: 'none', LH: 'pastern', RH: 'none' },
     style: { primary: 'senko', secondary: 'nige', why: 'Corner positions from the netkeiba race table: Swan S 95 4-4/14, Mile CS 95 2-2/18, Sprinters S 95 2-3/16 (race page; the horse page gives 7-5), Silk Road S 96 2-1, Takamatsunomiya Hai 96 3-2, Swan S 96 2-2, Mile CS 96 2-3. He led throughout (1-1) in all four of his summer-1995 wins and in the 1996 Yasuda Kinen. ja.wikipedia: "安田記念では…逃げ戦法を取り…3着".' },
     size: { weightKg: [518, 582], typicalKg: 560, withersCm: null, girthCm: null, cannonCm: null, build: 'heavy', notes: 'Raced at 518 kg (May 1995) up to 582 kg (1996 Mile CS); 556 kg in the 1995 Swan S and 560 kg in the 1995 Sprinters S. ja.wikipedia: "体重550キログラムを超える大型馬" and "この時の馬体重は560キロで、JRA史上最高馬体重でのGI勝利である". conf comes from photos only (1996 Mile CS paddock photo on Commons, 1996 Chukyo and 1997 Yasuda paddock photos on netkeiba): a long, very thick neck with a heavy crest on a massive frame; the head is big in absolute terms and slightly heavy for the body.' },
     conf: { neck: 1.05, crest: 1.25, head: 1.05 }, // photos: a long, very thick neck with a heavy crest
@@ -759,13 +759,13 @@ window.HORSES = [
     silks: { owner: '阿部雅一郎 (Masaichiro Abe)', desc: 'White with two blue hoops across the body and sleeves; blue cap (cap colour from race photo)', colors: ['#ffffff', '#1f3fbf'] },
     saddleNumber: 8, // 1995 Sprinters Stakes, gate 4 / no. 8 (ja.wikipedia race table, en.netkeiba race page)
     career: '1995 Sprinters Stakes (G1, 560 kg, heaviest JRA G1 winner), 1995 Swan Stakes (G2, record time); 3rd in the 1995 Mile CS, 1996 Takamatsunomiya Hai and 1996 Yasuda Kinen; 30 starts, 6 wins',
-    sources: ['https://ja.wikipedia.org/wiki/ヒシアケボノ', 'https://db.netkeiba.com/horse/result/1992110167/', 'https://en.netkeiba.com/db/horse/result/1992110167/', 'https://en.netkeiba.com/db/race/199506050610/', 'https://commons.wikimedia.org/wiki/File:HishiAkebono-1996-11-17.jpg', 'https://db.netkeiba.com/show_photo.php?horse_id=1992110167&no=5081&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992110167&no=12981&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992110167&no=12196&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992110167&no=14860&tn=no&tmp=no', 'https://ja.wikipedia.org/wiki/阿部雅一郎', 'https://commons.wikimedia.org/wiki/File:Owner_Abe_Masahide.svg'],
-    uncertain: ['face.type', 'legs.LF', 'legs.LH (a low-confidence read from a small stud photo)', 'legs.RH', 'conf.neck', 'conf.crest', 'conf.head', 'gear.bitLifter', 'silks.desc (cap colour)', 'silks.colors (blue shade)', 'saddleNumber (JRA archive 403; from ja.wikipedia and en.netkeiba)'],
+    sources: ['https://ja.wikipedia.org/wiki/ヒシアケボノ', 'https://db.netkeiba.com/horse/result/1992110167/', 'https://en.netkeiba.com/db/horse/result/1992110167/', 'https://en.netkeiba.com/db/race/199506050610/', 'https://commons.wikimedia.org/wiki/File:HishiAkebono-1996-11-17.jpg', 'https://db.netkeiba.com/show_photo.php?horse_id=1992110167&no=5081&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992110167&no=12981&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992110167&no=12196&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1992110167&no=14860&tn=no&tmp=no', 'https://ja.wikipedia.org/wiki/阿部雅一郎', 'https://commons.wikimedia.org/wiki/File:Owner_Abe_Masahide.svg', 'https://db.netkeiba.com/horse/1992110167/'],
+    uncertain: ['legs.LF', 'legs.RH', 'conf.neck', 'conf.crest', 'conf.head', 'gear.bitLifter', 'silks.colors (blue shade)', 'legs.LH (side read from photos; medium-low)', 'legs.RF (side read from photos; low)'],
   },
   {
     id: 'marvelous-sunday', en: 'Marvelous Sunday', jp: 'マーベラスサンデー', born: 1992, sex: 'male',
     coat: { reg: '栃栗毛', key: 'tochikuri', greyness: null, tone: 0, mane: '#2a1a14', notes: 'ja.wikipedia infobox 栃栗毛, en.wikipedia "Dark Chestnut" (en.netkeiba just says "Chestnut"; JBIS not reachable). In the 1997 Takarazuka photos he is a deep liver chestnut, and his mane and tail are nearly black-brown, much darker than the default reddish tochikuri mane.' },
-    face: { type: 'none', notes: 'Photos (JRA-VAN memorial Takarazuka 1997 race shot, Wikimedia 1997-7-6 winner\'s-circle shot): the forehead is always under the red hood, so a star cannot be seen either way. The visible nose and muzzle are fully chestnut, with no stripe reaching the nose and no snip.' },
+    face: { type: 'star', notes: 'An irregular white star between the eyes, with no stripe or snip (netkeiba photos without the hood, head-on). In races it is under his red menko.' },
     legs: { LF: 'none', RF: 'none', LH: 'sock', RH: 'fetlock' }, // photos: forelegs chestnut to the hoof; near hind white above the fetlock, off hind partly hidden
     style: { primary: 'sashi', secondary: 'senko', why: 'First-corner position / field in graded races: 7/14, 6/14, 3/11, 7/14, 7/17, 4/14, 3/9, 10/16, 10/12, 12/16 (mean about 0.49). In 1996 he raced 3rd-7th (senko-ish). His G1 win, the 1997 Takarazuka, came from 10th of 12. ja.wiki: 「後方で脚を溜め、道中で徐々に先団に進出」.' },
     size: { weightKg: [474, 500], typicalKg: 490, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'netkeiba 馬体重: 474 kg in 1995, then 482-494 kg in 1996 after a long layoff (en.wikipedia: an illness dropped him from 480 to 390 kg). He was 500 kg for the 1997 Osaka Hai and Tenno Sho Spring, 490 kg (-10) for the Takarazuka Kinen and 494 kg for the 1997 Arima. No source describes his neck or head, and the photos look average, so there is no conf entry.' },
@@ -773,8 +773,8 @@ window.HORSES = [
     silks: { owner: '笹原貞生 (Sadao Sasahara)', desc: 'Pink body, purple sleeves (JRA-VAN silks image 764005; en.wiki "Pink and Purple"; matches race photo)', colors: ['#f080d0', '#6428be'] },
     saddleNumber: 8, // 1997 Takarazuka Kinen, 6枠8番 (JRA result, en.netkeiba and the saddle cloth in the photo)
     career: '1997 Takarazuka Kinen (G1); 1996 Kyoto Daishoten (G2), 1997 Sankei Osaka Hai (G2); 1996 Epsom Cup, Sapporo Kinen, Asahi Challenge Cup (G3); 2nd Arima Kinen 1996 & 1997, 3rd Tenno Sho (Spring) 1997; 15 starts, 10 wins; JRA Award Best Older Male 1997',
-    sources: ['https://ja.wikipedia.org/wiki/マーベラスサンデー', 'https://en.wikipedia.org/wiki/Marvelous_Sunday', 'https://en.netkeiba.com/db/horse/1992103687/', 'https://db.netkeiba.com/horse/result/1992103687/', 'https://www.jra.go.jp/datafile/seiseki/g1/takara/result/takara1997.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1992103687.jpg', 'https://jra-van.jp/fun/memorial/img/silks/764005.gif', 'https://commons.wikimedia.org/wiki/File:MarvelousSunday-1997-7-6.jpg'],
-    uncertain: ['face.type (the hood always covers the forehead)', 'legs.RH', 'legs.LH', 'coat.mane (dark, from photos)', 'gear.hoodColors.trim', 'gear.bridle', 'silks.colors'],
+    sources: ['https://ja.wikipedia.org/wiki/マーベラスサンデー', 'https://en.wikipedia.org/wiki/Marvelous_Sunday', 'https://en.netkeiba.com/db/horse/1992103687/', 'https://db.netkeiba.com/horse/result/1992103687/', 'https://www.jra.go.jp/datafile/seiseki/g1/takara/result/takara1997.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1992103687.jpg', 'https://jra-van.jp/fun/memorial/img/silks/764005.gif', 'https://commons.wikimedia.org/wiki/File:MarvelousSunday-1997-7-6.jpg', 'https://db.netkeiba.com/horse/1992103687/'],
+    uncertain: ['gear.hoodColors.trim', 'gear.bridle', 'silks.colors'],
   },
   {
     id: 'mayano-top-gun', en: 'Mayano Top Gun', jp: 'マヤノトップガン', born: 1992, sex: 'male',
@@ -787,8 +787,8 @@ window.HORSES = [
     silks: { owner: '田所祐 (Yu Tadokoro)', desc: '黄、緑縦縞、袖緑二本輪: yellow body with green vertical stripes, yellow sleeves with two green hoops', colors: ['#f2d21a', '#1f8a3c'] },
     saddleNumber: 4, // 1997 Tenno Sho (Spring), 2枠4番 (ja.wikipedia and the finish photo)
     career: 'Won the 1995 Kikuka Sho (record), 1995 Arima Kinen, 1996 Takarazuka Kinen and 1997 Tenno Sho (Spring) (Japanese record, 3:14.4). 21 starts, 8 wins.',
-    sources: ['https://ja.wikipedia.org/wiki/マヤノトップガン', 'https://db.netkeiba.com/horse/result/1992102988/', 'https://en.netkeiba.com/db/horse/1992102988/', 'https://ja.wikipedia.org/wiki/第115回天皇賞', 'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/arima1995.html', 'https://ja.wikipedia.org/wiki/田所祐', 'https://jra-van.jp/fun/memorial/img/horses/l_1992102988.jpg', 'https://commons.wikimedia.org/wiki/Category:Mayano_Top_Gun'],
-    uncertain: ['face.type (no "stripe + lips" type; blaze is closest)', 'legs.LF', 'legs.LH', 'style.secondary', 'gear.bridle', 'silks.colors'],
+    sources: ['https://ja.wikipedia.org/wiki/マヤノトップガン', 'https://db.netkeiba.com/horse/result/1992102988/', 'https://en.netkeiba.com/db/horse/1992102988/', 'https://ja.wikipedia.org/wiki/第115回天皇賞', 'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/arima1995.html', 'https://ja.wikipedia.org/wiki/田所祐', 'https://jra-van.jp/fun/memorial/img/horses/l_1992102988.jpg', 'https://commons.wikimedia.org/wiki/Category:Mayano_Top_Gun', 'https://commons.wikimedia.org/wiki/File:MayanoTopGun-1996-7-7.jpg'],
+    uncertain: ['face.type (no "stripe + lips" type; blaze is closest)', 'style.secondary', 'gear.bridle', 'silks.colors'],
   },
   {
     id: 'air-groove', en: 'Air Groove', jp: 'エアグルーヴ', born: 1993, sex: 'female',
@@ -801,8 +801,8 @@ window.HORSES = [
     silks: { owner: 'Lucky Field Co., Ltd. (ラッキーフィールド; earlier 吉原貞敏 / 吉原毎文)', desc: 'Yellow, a single blue hoop, blue sleeves (黄、青一本輪、袖青)', colors: ['#f5e100', '#1f5fd6'] },
     saddleNumber: 12, // 1997 Tenno Sho (Autumn): 6枠12番 (JRA G1 archive; en.netkeiba)
     career: 'Yushun Himba (Oaks) 1996, Tenno Sho (Autumn) 1997 beating colts, JRA Horse of the Year 1997; Sapporo Kinen 1997 and 1998, Sankei Osaka Hai 1998; 2nd Japan Cup 1997. 19 starts, 9 wins.',
-    sources: ['https://ja.wikipedia.org/wiki/エアグルーヴ', 'https://en.wikipedia.org/wiki/Air_Groove', 'https://db.netkeiba.com/horse/result/1993109154/', 'https://en.netkeiba.com/db/horse/1993109154/', 'https://www.jra.go.jp/datafile/seiseki/g1/akiten/result/akiten1997.html', 'https://jra-van.jp/fun/memorial/1993109154.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1993109154.jpg', 'https://jra-van.jp/fun/memorial/img/silks/84800.gif', 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Air_Groove-1998-4-5a.jpg', 'https://db.netkeiba.com/show_photo.php?horse_id=1993109154&no=14821&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1993109154&no=8113&tn=no&tmp=no'],
-    uncertain: ['face.type (photo only; blaze vs star-stripe-snip, forehead hidden by hood in paddock shots)', 'legs (wrapped in every photo; no white visible below the wraps)', 'coat.reg (JBIS not checked; ja.wikipedia and en.netkeiba say 鹿毛/Bay)', 'gear.bitLifter', 'gear.bandages.fore in races (seen in paddock; race photo shows only hind clearly)', 'gear hex values (estimated from photos)', 'style.primary (borderline senko/sashi)', 'mane bobbles (yellow and blue): no engine field yet'],
+    sources: ['https://ja.wikipedia.org/wiki/エアグルーヴ', 'https://en.wikipedia.org/wiki/Air_Groove', 'https://db.netkeiba.com/horse/result/1993109154/', 'https://en.netkeiba.com/db/horse/1993109154/', 'https://www.jra.go.jp/datafile/seiseki/g1/akiten/result/akiten1997.html', 'https://jra-van.jp/fun/memorial/1993109154.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1993109154.jpg', 'https://jra-van.jp/fun/memorial/img/silks/84800.gif', 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Air_Groove-1998-4-5a.jpg', 'https://db.netkeiba.com/show_photo.php?horse_id=1993109154&no=14821&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1993109154&no=8113&tn=no&tmp=no', 'https://db.netkeiba.com/horse/1993109154/'],
+    uncertain: ['legs (wrapped in every photo; no white visible below the wraps)', 'coat.reg (JBIS not checked; ja.wikipedia and en.netkeiba say 鹿毛/Bay)', 'gear.bitLifter', 'gear hex values (estimated from photos)', 'style.primary (borderline senko/sashi)', 'mane bobbles (yellow and blue): no engine field yet'],
   },
   {
     id: 'bubble-gum-fellow', en: 'Bubble Gum Fellow', jp: 'バブルガムフェロー', born: 1993, sex: 'male',
@@ -816,7 +816,7 @@ window.HORSES = [
     saddleNumber: 4, // 1996 Tenno Sho (Autumn): 2枠4番 (JRA result archive; also netkeiba)
     career: 'Asahi Hai Sansai Stakes (G1, 1995); Spring Stakes (G2, 1996); Tenno Sho (Autumn) (G1, 1996), the first post-war 3yo winner and the first since Happy Might in 1937; Naruo Kinen and Mainichi Okan (G2, 1997); 2nd in the 1997 Takarazuka Kinen and Tenno Sho (Autumn), 3rd in the 1997 Japan Cup. 13 starts, 7 wins.',
     sources: ['https://ja.wikipedia.org/wiki/バブルガムフェロー', 'https://db.netkeiba.com/horse/1993109219/', 'https://db.netkeiba.com/horse/result/1993109219/', 'https://en.netkeiba.com/db/horse/1993109219/', 'https://www.jra.go.jp/datafile/seiseki/g1/akiten/result/akiten1996.html', 'https://ja.wikipedia.org/wiki/社台レースホース', 'https://commons.wikimedia.org/wiki/File:BubbleGumFellow-1997-7-6.jpg', 'https://commons.wikimedia.org/wiki/File:Baburugamu.JPG', 'https://jra-van.jp/fun/memorial/img/horses/l_1993109219.jpg', 'https://db.netkeiba.com/show_photo.php?horse_id=1993109219&no=11783&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1993109219&no=1240&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1993109219&no=1239&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1993109219&no=4047&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1993109219&no=11782&tmp=no'],
-    uncertain: ['coat.reg (JBIS not checked; netkeiba and ja.wikipedia agree)', 'face.type (photo)', 'legs (photo, all four look dark)', 'gear.shadowRoll (1996 Tenno Sho: judged from one 800px finish photo; a royal-blue shadow roll is certain only for 1995 to early 1996)', 'gear.bridle (photo)', 'size.build (photo)'],
+    uncertain: ['coat.reg (JBIS not checked; netkeiba and ja.wikipedia agree)', 'gear.shadowRoll (1996 Tenno Sho: judged from one 800px finish photo; a royal-blue shadow roll is certain only for 1995 to early 1996)', 'gear.bridle (photo)', 'size.build (photo)'],
   },
   {
     id: 'shinko-windy', en: 'Shinko Windy', jp: 'シンコウウインディ', born: 1993, sex: 'male',
@@ -829,51 +829,51 @@ window.HORSES = [
     silks: { owner: '安田修 (Osamu Yasuda)', desc: 'Plain black (勝負服の柄は黒); the cap colour follows the JRA bracket colour, blue for bracket 4 in the 1997 February S', colors: ['#1a1a1f'] },
     saddleNumber: 8, // 1997 February Stakes, bracket 4, horse no. 8 (JRA result page, ja.wikipedia, en.netkeiba)
     career: '17 starts, 5 wins. Won the 1996 Unicorn S (G3, placed first after the 1st-place finisher was demoted), the 1997 Heian S (G3, dead heat with Toyo Seattle) and the 1997 February S (G1, by a neck from Stone Stepper on a heavy track, earning the nickname 初代ダート王). Known for biting rivals during races.',
-    sources: ['https://ja.wikipedia.org/wiki/シンコウウインディ', 'https://en.wikipedia.org/wiki/Shinko_Windy', 'https://en.netkeiba.com/db/horse/1993106964/', 'https://db.netkeiba.com/horse/result/1993106964/', 'https://www.jra.go.jp/datafile/seiseki/g1/feb/result/feb1997.html', 'https://ja.wikipedia.org/wiki/安田修_(実業家)', 'https://commons.wikimedia.org/wiki/File:Owner_Yasuda_Osamu.svg', 'https://upload.wikimedia.org/wikipedia/en/0/0a/Shinko_Windy_at_Unicorn_Stakes.jpg', 'https://cdnv2.netkeiba.com/img.en/db/show_photo.php?horse_id=1993106964&no=1206&tn=&tmp=no', 'https://cdnv2.netkeiba.com/img.en/db/show_photo.php?horse_id=1993106964&no=1205&tn=&tmp=no', 'https://cdnv2.netkeiba.com/img.en/db/show_photo.php?horse_id=1993106964&no=10939&tn=&tmp=no', 'https://cdnv2.netkeiba.com/img.en/db/show_photo.php?horse_id=1993106964&no=14066&tn=&tmp=no'],
-    uncertain: ['face.type (photo, retirement-era only)', 'legs (photos: no white seen)', 'gear.hood and hoodColors (a black blinker hood read from one finish photo)', 'gear.hoodColors.ears (looked uncovered, so false: no ear covers)', 'gear.bridle', 'style.secondary', 'size.build', 'size.withersCm'],
+    sources: ['https://ja.wikipedia.org/wiki/シンコウウインディ', 'https://en.wikipedia.org/wiki/Shinko_Windy', 'https://en.netkeiba.com/db/horse/1993106964/', 'https://db.netkeiba.com/horse/result/1993106964/', 'https://www.jra.go.jp/datafile/seiseki/g1/feb/result/feb1997.html', 'https://ja.wikipedia.org/wiki/安田修_(実業家)', 'https://commons.wikimedia.org/wiki/File:Owner_Yasuda_Osamu.svg', 'https://upload.wikimedia.org/wikipedia/en/0/0a/Shinko_Windy_at_Unicorn_Stakes.jpg', 'https://cdnv2.netkeiba.com/img.en/db/show_photo.php?horse_id=1993106964&no=1206&tn=&tmp=no', 'https://cdnv2.netkeiba.com/img.en/db/show_photo.php?horse_id=1993106964&no=1205&tn=&tmp=no', 'https://cdnv2.netkeiba.com/img.en/db/show_photo.php?horse_id=1993106964&no=10939&tn=&tmp=no', 'https://cdnv2.netkeiba.com/img.en/db/show_photo.php?horse_id=1993106964&no=14066&tn=&tmp=no', 'https://db.netkeiba.com/horse/1993106964/'],
+    uncertain: ['legs (photos: no white seen)', 'gear.bridle', 'style.secondary', 'size.build', 'size.withersCm'],
   },
   {
     id: 'matikanefukukitaru', en: 'Matikanefukukitaru', jp: 'マチカネフクキタル', born: 1994, sex: 'male',
     coat: { reg: '栗毛', key: 'kuri', greyness: null, tone: 0, mane: '#b8692f', notes: 'Rich red chestnut. In the 1997 Kikuka Sho race photo the mane and especially the tail are a shade lighter and more golden than the body, and the forelock is lighter in the 2012 farm photo. Not flaxen.' },
     face: { type: 'star', notes: 'Small elongated, diamond-shaped star high on the forehead, slightly off-centre. No stripe and no snip; the muzzle skin is dark grey. Read from the 2012 Kosuda Bokujo photo (Commons), because he raced in a full-face hood.' },
-    legs: { LF: 'none', RF: 'none', LH: 'pastern', RH: 'none' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'pastern' },
     style: { primary: 'sashi', secondary: 'senko', why: 'netkeiba 通過: Kobe Shimbun Hai 9-9-8-11 of 11 (last at the final corner, then a wide run to win), Kyoto Shimbun Hai 6-6-8-8 of 12 (中団), Kikuka Sho 5-5-6-9 of 18 (sat 4th-5th on the rail, then split the field). Later G1s often 9th-11th early (Arima 10/16, Spring Tenno Sho 11/12), but 3rd early in Kyoto Kinen, Osaka Hai and Sapporo Kinen.' },
     size: { weightKg: [494, 532], typicalKg: 512, withersCm: null, girthCm: null, cannonCm: null, build: 'heavy', notes: 'netkeiba 馬体重: debut 496, low of 494 (Dec 1996), 500 at the Kobe Shimbun Hai, 510 at the Kyoto Shimbun Hai, 512 at the Kikuka Sho, high of 532 at the 1999 Kyoto Kinen. A big, long-bodied colt. No source describes his neck, crest or head as unusual, so conf is omitted. Height and girth are not documented.' },
     gear: { hood: true, hoodColors: { main: '#141414', trim: '#f2f0ea', ears: '#141414' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#c62a3e', pompom: null, bandages: { fore: '#f2f0ea', hind: null }, notes: '1997 Kikuka Sho, paddock and race photos: black full-face メンコ with black ear covers and thin white piping on the edges, a red browband and noseband over dark cheekpieces, no shadow roll or blinkers, and white bandages on both fore cannons (knee to fetlock). Hind legs not bandaged.' },
     silks: { owner: '細川益男 (Masuo Hosokawa)', desc: 'Red body with two blue hoops; blue sleeves with two red hoops (赤、青二本輪、青袖赤二本輪)', colors: ['#d22630', '#1f4fb4'] },
     saddleNumber: 4, // 1997 Kikuka Sho, 2枠4番 (en.netkeiba race 199708050210, ja.wikipedia, and the "4" saddle cloth in the JRA-VAN race photo)
     career: 'Kikuka Sho (G1, 1997), Kobe Shimbun Hai (G2, 1997), Kyoto Shimbun Hai (G2, 1997); 6 wins from 22 starts, 1996-2000',
-    sources: ['https://ja.wikipedia.org/wiki/マチカネフクキタル', 'https://ja.wikipedia.org/wiki/細川益男', 'https://en.netkeiba.com/db/horse/1994100530/', 'https://db.netkeiba.com/horse/result/1994100530/', 'https://en.netkeiba.com/db/race/199708050210/', 'https://commons.wikimedia.org/wiki/File:Matikanefukukitaru-1997-11-2.jpg', 'https://commons.wikimedia.org/wiki/File:マチカネフクキタル.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_1994100530.jpg'],
-    uncertain: ['legs.LF / legs.RF (bandaged in every photo)', 'legs.LH (a whitish patch in one blurred race photo)', 'legs.RH', 'coat.mane', 'gear.hoodColors.trim', 'gear.bridle', 'size.build', 'size.withersCm'],
+    sources: ['https://ja.wikipedia.org/wiki/マチカネフクキタル', 'https://ja.wikipedia.org/wiki/細川益男', 'https://en.netkeiba.com/db/horse/1994100530/', 'https://db.netkeiba.com/horse/result/1994100530/', 'https://en.netkeiba.com/db/race/199708050210/', 'https://commons.wikimedia.org/wiki/File:Matikanefukukitaru-1997-11-2.jpg', 'https://commons.wikimedia.org/wiki/File:マチカネフクキタル.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_1994100530.jpg', 'https://commons.wikimedia.org/wiki/File:Matikanefukukitaru_19990502P1.jpg'],
+    uncertain: ['legs.LF / legs.RF (bandaged in every photo)', 'coat.mane', 'gear.hoodColors.trim', 'gear.bridle', 'size.build', 'size.withersCm'],
   },
   // ---- Batch 8 (2026-10): #60–67, foaled 1994–95 ----
   {
     id: 'mejiro-bright', en: 'Mejiro Bright', jp: 'メジロブライト', born: 1994, sex: 'male',
     coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: '鹿毛 per ja.wikipedia infobox; en.netkeiba "Bay Horse". Photos from 1998 and 1999 show a rich, fairly dark bay with black legs, mane and tail. No text source gives a tone, so it stays at 0.' },
     face: { type: 'star', notes: 'From a photo only: in the 1998 Tenno Sho (Spring) JRA-VAN photo there seems to be a small white spot on the forehead just below the browband. No text source mentions any face marking.' },
-    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'pastern' },
     style: { primary: 'oikomi', secondary: 'sashi', why: 'Position at the first corner over field size: 1996-97 races 16/16, 12/13, 13/13, 16/18 (Satsuki Sho), 13/17 (Derby), 12/12, 13/18 (Kikuka Sho); 1998 AJCC 10/11, 1998 Arima 15/16, 1999 Tenno Sho (Autumn) 15/17. As an older stayer he sat mid-pack: Stayers S 8/13, Hanshin Daishoten 7/10, 1998 Tenno Sho (Spring) 6/14. ja.wikipedia repeatedly says 最後方を追走 and 大外から追い上げ.' },
     size: { weightKg: [446, 474], typicalKg: 460, withersCm: null, girthCm: null, cannonCm: null, build: 'rangy', notes: 'ja.wikipedia: 脚が細長く、小型な馬 (small, with long thin legs). He took after his dam, not his big-boned, large sire Mejiro Ryan, and weighed only 49 kg at birth. Race weights 446 kg (1996 debut) to 474 kg (1999 Nikkei Shinshun Hai). He weighed 460 kg in the 1998 Tenno Sho (Spring), 466 in the 1998 Hanshin Daishoten and 460 in the 1997 Stayers S.' },
     gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: null, notes: 'Bare head in both photos: the 1998 Tenno Sho (Spring) JRA-VAN photo (#5, blue gate-4 cap) and the 1999 Arima Kinen Commons photo (#13, orange gate-7 cap). No hood, blinkers or shadow roll. The bridle is dark leather with silver studs on the browband. Reins were green and white in 1998 and orange-red with a white grip in 1999. The mane was braided with white tape at the 1999 Arima. No bandages are visible.' },
     silks: { owner: 'メジロ牧場 (Mejiro Farm)', desc: '白、緑一本輪、袖緑縦縞: white with one green hoop, and white sleeves with green vertical stripes', colors: ['#ffffff', '#2f9a5e'] },
     saddleNumber: 5, // 1998 Tenno Sho (Spring): gate 4, horse #5 (en.netkeiba + ja.wikipedia; #5 cloth visible in the JRA-VAN photo)
     career: '1998 Tenno Sho (Spring) (G1); G2: 1997 Stayers S, 1998 AJCC, 1998 Hanshin Daishoten, 1999 Nikkei Shinshun Hai; G3: 1996 Radio Tampa Hai Sansai S, 1997 Kyodo News Hai; 2nd 1998 Arima Kinen and 1999 Tenno Sho (Spring); 25 starts, 8 wins',
-    sources: ['https://ja.wikipedia.org/wiki/メジロブライト', 'https://en.netkeiba.com/db/horse/1994108411/', 'https://en.netkeiba.com/db/horse/result/1994108411/', 'https://en.wikipedia.org/wiki/Mejiro_Bright', 'https://ja.wikipedia.org/wiki/メジロ牧場', 'https://upload.wikimedia.org/wikipedia/commons/8/81/Owner_Mejiro_Farm.svg', 'https://upload.wikimedia.org/wikipedia/commons/1/1f/Mejiro_Bright_19991226R1.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_1994108411.jpg'],
-    uncertain: ['face.type (a small spot in one photo)', 'legs (photos only)', 'coat.tone', 'size.weightKg (the 1998 Takarazuka weight is missing)', 'size.withersCm', 'silks.colors (the green is darker in photos than the SVG)'],
+    sources: ['https://ja.wikipedia.org/wiki/メジロブライト', 'https://en.netkeiba.com/db/horse/1994108411/', 'https://en.netkeiba.com/db/horse/result/1994108411/', 'https://en.wikipedia.org/wiki/Mejiro_Bright', 'https://ja.wikipedia.org/wiki/メジロ牧場', 'https://upload.wikimedia.org/wikipedia/commons/8/81/Owner_Mejiro_Farm.svg', 'https://upload.wikimedia.org/wikipedia/commons/1/1f/Mejiro_Bright_19991226R1.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_1994108411.jpg', 'https://commons.wikimedia.org/wiki/File:Mejiro_Bright_19991226R1.jpg', 'https://db.netkeiba.com/horse/result/1994108411/'],
+    uncertain: ['coat.tone', 'size.withersCm', 'silks.colors (the green is darker in photos than the SVG)', 'legs.RH (side read from right-side photos only; the other hind may have a small white coronet)'],
   },
   {
     id: 'mejiro-dober', en: 'Mejiro Dober', jp: 'メジロドーベル', born: 1994, sex: 'female',
     coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0.2, mane: null, notes: '鹿毛 per ja.wikipedia, uma-furusato and en.netkeiba ("Bay"); JBIS returned 403 so it was skipped. In photos (1997 Oaks, 2014 stud) she is a bright red bay with a black mane and tail; the tone 0.2 comes from those photos.' },
     face: { type: 'star', notes: 'From a photo: the 2014 front view on uma-furusato shows a small diamond-shaped star between the eyes, with no stripe or snip. One netkeiba stable photo (no=7) shows a horse with a full stripe. It does not match her other photos, so it is probably mislabelled.' },
-    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    legs: { LF: 'none', RF: 'none', LH: 'pastern', RH: 'pastern' },
     style: { primary: 'sashi', secondary: 'senko', why: 'First-corner position ÷ field size in her G1 wins: Hanshin 3sai Himba 5/10, Oaks 12/16, Shuka Sho 9/18, QEII Cup 1998 8/14, QEII Cup 1999 8/18. ja.wikipedia says she sat 後方 in the Oaks and 中団 in the Shuka Sho before closing. She also raced up front at times: led throughout to win the 1997 All Comers, and was 2nd at every corner in the 1998 Takarazuka Kinen.' },
     size: { weightKg: [450, 492], typicalKg: 476, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Weights from en.netkeiba: 450 kg on debut (Jul 1996), 492 kg in the 1998 Arima Kinen. Big wins: 466 kg Hanshin, 472 kg Oaks, 478 kg Shuka Sho, 478 kg QEII Cup 1998, 476 kg QEII Cup 1999. Trainer Okubo called her "本質的にはマイラー" (a miler by build and temperament).' },
-    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: { fore: '#f2f0ea', hind: '#f2f0ea' }, notes: 'The 1997 Oaks finish photo (JRA-VAN memorial) shows a bare head: no hood, blinkers or shadow roll. She had a brown leather bridle, ring bit, green rubber-grip reins and a plaited mane. ja.wikipedia says she wore a 覆面 (hood) at the Oaks only until just before the start. In the 21 Nov 1999 retirement-ceremony photo (Commons) she wears white leg wraps with dark stripes on all four legs. No race photo showing her legs was found to confirm bandages in races.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: { fore: '#f2f0ea', hind: '#f2f0ea' }, notes: 'The 1997 Oaks finish photo (JRA-VAN memorial) shows a bare head: no hood, blinkers or shadow roll. She had a brown leather bridle, ring bit, green rubber-grip reins and a plaited mane. ja.wikipedia says she wore a 覆面 (hood) at the Oaks only until just before the start. White leg wraps with green stripes on all four legs on race days (netkeiba G1 paddock photos with the jockey up) and at her 21 Nov 1999 retirement ceremony.' },
     silks: { owner: 'メジロ商事（株） (Mejiro Shoji)', desc: '白、緑一本輪、緑袖 — white body, one green hoop, green sleeves (cap colour follows the gate)', colors: ['#ffffff', '#2f9a5e'] },
     saddleNumber: 16, // 1997 Yushun Himba (Oaks) (en.netkeiba race page)
     career: '1996 Hanshin 3sai Himba S; 1997 Yushun Himba (Oaks) and Shuka Sho; 1998 and 1999 Queen Elizabeth II Cup (back-to-back), giving 5 G1 wins and JRA divisional champion four years running (1996–99)',
-    sources: ['https://ja.wikipedia.org/wiki/メジロドーベル', 'https://en.wikipedia.org/wiki/Mejiro_Dober', 'https://ja.wikipedia.org/wiki/メジロ牧場', 'https://en.netkeiba.com/db/horse/result/1994108393/', 'https://en.netkeiba.com/db/race/199705030410/', 'https://jra-van.jp/fun/memorial/img/horses/l_1994108393.jpg', 'https://upload.wikimedia.org/wikipedia/commons/9/9f/Mejiro_Dober_19991121R1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Owner_Mejiro_Shouji.svg', 'https://uma-furusato.com/search_horse/0000286632.html', 'https://db.netkeiba.com/show_photo.php?horse_id=1994108393&no=3&tn=no&tmp=no'],
-    uncertain: ['coat.tone', 'legs (no race photo of her lower legs)', 'gear.bandages (retirement ceremony only)', 'gear.bitLifter', 'size.withersCm', 'size.build'],
+    sources: ['https://ja.wikipedia.org/wiki/メジロドーベル', 'https://en.wikipedia.org/wiki/Mejiro_Dober', 'https://ja.wikipedia.org/wiki/メジロ牧場', 'https://en.netkeiba.com/db/horse/result/1994108393/', 'https://en.netkeiba.com/db/race/199705030410/', 'https://jra-van.jp/fun/memorial/img/horses/l_1994108393.jpg', 'https://upload.wikimedia.org/wikipedia/commons/9/9f/Mejiro_Dober_19991121R1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Owner_Mejiro_Shouji.svg', 'https://uma-furusato.com/search_horse/0000286632.html', 'https://db.netkeiba.com/show_photo.php?horse_id=1994108393&no=3&tn=no&tmp=no', 'https://db.netkeiba.com/horse/1994108393/'],
+    uncertain: ['coat.tone', 'gear.bitLifter', 'size.withersCm', 'size.build', 'legs.RH height (low-medium)'],
   },
   {
     id: 'seeking-the-pearl', en: 'Seeking the Pearl', jp: 'シーキングザパール', born: 1994, sex: 'female',
@@ -886,22 +886,22 @@ window.HORSES = [
     silks: { owner: '植中倫子 (Uenaka; owner listed 植中倫子→植中昌子, en.netkeiba lists Masako Uenaka)', desc: 'At the 1997 NHK Mile Cup: red body with light-blue stars and light-blue sleeves. By the 1998 Mile CS the silks were crimson with white stars on both body and sleeves, which looks like the change to 植中昌子. Caps follow the JRA bracket colour (orange for 7-枠 in the NHK Mile).', colors: ['#d8283a', '#3aa6dc'] },
     saddleNumber: 13, // 1997 NHK Mile Cup, 7枠13番 (en.netkeiba race page; visible on the saddle cloth in the JRA-VAN photo)
     career: '1996 Daily Hai Sansai S (G2), 1997 New Zealand Trophy (G2), 1997 NHK Mile Cup (G1), 1998 Prix Maurice de Gheest (G1, Deauville; first Japanese-trained winner of a European/French G1); 8 wins from 21 starts',
-    sources: ['https://ja.wikipedia.org/wiki/シーキングザパール', 'https://en.wikipedia.org/wiki/Seeking_the_Pearl', 'https://en.netkeiba.com/db/horse/1994109364/', 'https://en.netkeiba.com/db/horse/result/1994109364/', 'https://en.netkeiba.com/db/race/199705020811/', 'https://jra-van.jp/fun/memorial/img/horses/l_1994109364.jpg', 'https://commons.wikimedia.org/wiki/File:SeekingThePearl-1998-11-22.jpg'],
-    uncertain: ['coat.tone', 'face.type (no frontal photo)', 'legs', 'size.build', 'style.primary', 'gear.bitLifter', 'gear.bandages (paddock only seen)', 'silks.owner', 'silks.colors (the pattern changed between 1997 and 1998)'],
+    sources: ['https://ja.wikipedia.org/wiki/シーキングザパール', 'https://en.wikipedia.org/wiki/Seeking_the_Pearl', 'https://en.netkeiba.com/db/horse/1994109364/', 'https://en.netkeiba.com/db/horse/result/1994109364/', 'https://en.netkeiba.com/db/race/199705020811/', 'https://jra-van.jp/fun/memorial/img/horses/l_1994109364.jpg', 'https://commons.wikimedia.org/wiki/File:SeekingThePearl-1998-11-22.jpg', 'https://db.netkeiba.com/horse/1994109364/'],
+    uncertain: ['coat.tone', 'legs', 'size.build', 'style.primary', 'gear.bitLifter', 'silks.owner'],
   },
   {
     id: 'silence-suzuka', en: 'Silence Suzuka', jp: 'サイレンススズカ', born: 1994, sex: 'male',
     coat: { reg: '栗毛', key: 'kuri', greyness: null, tone: 0, mane: null, notes: '栗毛 per ja.wikipedia and en.netkeiba (Chestnut); JBIS returned 403 so it was not checked. In the 1998 race photos he is a rich, mid-to-deep red chestnut, and his mane and tail are the same colour as his coat.' },
     face: { type: 'stripe', notes: 'From photos only. In both 1998 race photos the hood covers his upper face. White shows down the front of the nose from below the hood to the muzzle, which fits the lower end of a stripe/blaze reaching the nostrils. Some of that white may be the white noseband.' },
-    legs: { LF: 'none', RF: 'none', LH: 'sock', RH: 'none' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'sock' },
     style: { primary: 'nige', secondary: null, why: 'He led at every corner in all of his 1998 races: Nakayama Kinen, Kinko Sho and Takarazuka Kinen 1-1-1-1 (13 runners), Mainichi Okan 1-1-1, and 1-1 in the 1998 Tenno Sho before he was pulled up. He also led at 1-1-1 in the 1997 Tenno Sho. ja.wiki says he took the lead from the start and drew away (大逃げ).' },
     size: { weightKg: [428, 452], typicalKg: 446, withersCm: null, girthCm: null, cannonCm: null, build: 'compact', notes: 'Race-day weights: 428 at the 1997 Yayoi Sho, 452 at the 1998 Mainichi Okan, 446 at the Takarazuka Kinen. ja.wiki calls him 華奢で小柄 (slight and small), smaller than a normal foal at birth. By age 5 his shoulders had broadened and his chest had deepened. He was light for a colt.' },
-    gear: { hood: true, hoodColors: { main: '#2f8f5f', trim: '#f2f0ea', ears: '#2f8f5f' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#f2f0ea', pompom: '#f2c200', bandages: { fore: '#f2f0ea', hind: null }, notes: 'Green メンコ with white eye-hole trim and green ear covers, a yellow pompom at the poll, a white bridle and green reins. Seen in photos of the 1998 Mainichi Okan (JRA-VAN) and the 1998 Tenno Sho (Commons). ja.wiki says he first wore the green menko at the 1997 Derby to keep him calm. White fore wraps stop at the fetlock above a dark pastern, so they read as bandages. The left hind is white in both photos (bandage or sock is unclear); the right hind is dark. No photo of the Takarazuka Kinen was checked.' },
+    gear: { hood: true, hoodColors: { main: '#2f8f5f', trim: '#f2f0ea', ears: '#2f8f5f' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#f2f0ea', pompom: '#f2c200', bandages: { fore: '#f2f0ea', hind: null }, notes: 'Green メンコ with white eye-hole trim and green ear covers, a yellow pompom at the poll, a white bridle and green reins. Seen in photos of the 1998 Mainichi Okan (JRA-VAN) and the 1998 Tenno Sho (Commons). ja.wiki says he first wore the green menko at the 1997 Derby to keep him calm. White fore wraps stop at the fetlock above a dark pastern, so they read as bandages. The white hind is his right hind, with an irregular top over a pale hoof (white hair, not a bandage; netkeiba near-front and right-side paddock photos); the left hind is dark. No photo of the Takarazuka Kinen was checked.' },
     silks: { owner: '永井啓弍 (Keiji Nagai)', desc: '緑、黄袖緑一本輪: green body, yellow sleeves with a single green hoop', colors: ['#17a06a', '#f5d000'] },
     saddleNumber: 13, // 1998 Takarazuka Kinen: frame 8, horse 13 (en.netkeiba race page and ja.wiki table)
     career: '1998 Takarazuka Kinen (G1); 1998 Nakayama Kinen, Kinko Sho, Mainichi Okan (G2); 1998 Kokura Daishoten (G3, run at Chukyo); fatally injured while leading the 1998 Tenno Sho (Autumn)',
-    sources: ['https://ja.wikipedia.org/wiki/サイレンススズカ', 'https://en.netkeiba.com/db/horse/1994103997/', 'https://en.netkeiba.com/db/race/199809030811/', 'https://ja.wikipedia.org/wiki/永井啓弍', 'https://jra-van.jp/fun/memorial/img/silks/382004.gif', 'https://jra-van.jp/fun/memorial/img/horses/l_1994103997.jpg', 'https://upload.wikimedia.org/wikipedia/commons/d/d0/Silence_Suzuka.jpg'],
-    uncertain: ['face.type (the hood covers the upper face)', 'legs (LH white: a sock or a bandage)', 'gear.bandages', 'gear.bridle', 'gear.hoodColors', 'size.build', 'coat.tone'],
+    sources: ['https://ja.wikipedia.org/wiki/サイレンススズカ', 'https://en.netkeiba.com/db/horse/1994103997/', 'https://en.netkeiba.com/db/race/199809030811/', 'https://ja.wikipedia.org/wiki/永井啓弍', 'https://jra-van.jp/fun/memorial/img/silks/382004.gif', 'https://jra-van.jp/fun/memorial/img/horses/l_1994103997.jpg', 'https://upload.wikimedia.org/wikipedia/commons/d/d0/Silence_Suzuka.jpg', 'https://db.netkeiba.com/horse/1994103997/'],
+    uncertain: ['face.type (the hood covers the upper face)', 'gear.bandages', 'gear.bridle', 'gear.hoodColors', 'size.build', 'coat.tone'],
   },
   {
     id: 'stay-gold', en: 'Stay Gold', jp: 'ステイゴールド', born: 1994, sex: 'male',
@@ -915,7 +915,7 @@ window.HORSES = [
     saddleNumber: 9, // 2001 Hong Kong Vase (his last race and most famous win; en.netkeiba race 2001G0121605); he wore the "9 STAY GOLD" Vase cloth at his 2002 retirement ceremony
     career: '2001 Hong Kong Vase (G1), 2001 Dubai Sheema Classic (G2, then), 2001 Nikkei Shinshun Hai (G2), 2000 Meguro Kinen (G2). 2nd in the 1998 Tenno Sho (Spring and Autumn), 1998 Takarazuka Kinen and 1999 Tenno Sho (Autumn). 7 wins from 50 starts.',
     sources: ['https://ja.wikipedia.org/wiki/ステイゴールド_(競走馬)', 'https://en.netkeiba.com/db/horse/result/1994108729/', 'https://en.netkeiba.com/db/race/2001G0121605/', 'https://db.netkeiba.com/horse/1994108729/', 'https://db.netkeiba.com/show_photo.php?horse_id=1994108729&no=14319&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1994108729&no=11996&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1994108729&no=11583&tn=no&tmp=no', 'https://jra-van.jp/fun/memorial/img/horses/l_1994108729.jpg', 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Stay_Gold_19991226P1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/e/ec/Staygold.jpg', 'https://ja.wikipedia.org/wiki/社台レースホース', 'https://en.wikipedia.org/wiki/Stay_Gold_(horse)'],
-    uncertain: ['face.type', 'legs (small stud and paddock photos)', 'gear.hood and hoodColors (1999 Arima photo; not confirmed for the HK Vase)', 'gear.blinkers (left eye only; drawn as a pair)', 'gear.bitLifter', 'size.withersCm (en.wikipedia only)'],
+    uncertain: ['gear.blinkers (left eye only; drawn as a pair)', 'gear.bitLifter', 'size.withersCm (en.wikipedia only)'],
   },
   {
     id: 'taiki-shuttle', en: 'Taiki Shuttle', jp: 'タイキシャトル', born: 1994, sex: 'male',
@@ -928,8 +928,8 @@ window.HORSES = [
     silks: { owner: '大樹ファーム (Taiki Farm)', desc: 'Green body with scattered white stars; green sleeves with white vertical stripes; white breeches (from race photos; JRA G1 caps follow the 枠 colour)', colors: ['#1d6b3a', '#ffffff'] },
     saddleNumber: 2, // 1998 Yasuda Kinen: 枠1 馬番2 (JRA G1 archive; the 1998 Mile CS was 枠6 馬番9)
     career: '13 starts, 11 wins: 1997 Unicorn S, Swan S, Mile Championship, Sprinters S; 1998 Keio Hai Spring Cup, Yasuda Kinen, Prix Jacques le Marois (G1, France), Mile Championship; 1998 JRA Horse of the Year',
-    sources: ['https://ja.wikipedia.org/wiki/タイキシャトル', 'https://en.wikipedia.org/wiki/Taiki_Shuttle', 'https://en.netkeiba.com/db/horse/result/1994109686/', 'https://www.jra.go.jp/datafile/seiseki/g1/yasuda/result/yasuda1998.html', 'https://www.jra.go.jp/datafile/seiseki/g1/mile/result/mile1998.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1994109686.jpg', 'https://upload.wikimedia.org/wikipedia/commons/9/9f/Taiki_Shuttle.jpg', 'https://upload.wikimedia.org/wikipedia/commons/1/1c/TaikiShuttle-1998-11-22.jpg', 'https://upload.wikimedia.org/wikipedia/commons/e/ef/15th-MileChampionship.jpg'],
-    uncertain: ['legs.LH (one white hind to above the fetlock in two race photos; side read from the gait)', 'size.build', 'gear.bridle', 'silks.desc', 'silks.colors', 'coat.mane'],
+    sources: ['https://ja.wikipedia.org/wiki/タイキシャトル', 'https://en.wikipedia.org/wiki/Taiki_Shuttle', 'https://en.netkeiba.com/db/horse/result/1994109686/', 'https://www.jra.go.jp/datafile/seiseki/g1/yasuda/result/yasuda1998.html', 'https://www.jra.go.jp/datafile/seiseki/g1/mile/result/mile1998.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1994109686.jpg', 'https://upload.wikimedia.org/wikipedia/commons/9/9f/Taiki_Shuttle.jpg', 'https://upload.wikimedia.org/wikipedia/commons/1/1c/TaikiShuttle-1998-11-22.jpg', 'https://upload.wikimedia.org/wikipedia/commons/e/ef/15th-MileChampionship.jpg', 'https://commons.wikimedia.org/wiki/File:TaikiShuttle-1998-11-22.jpg'],
+    uncertain: ['size.build', 'gear.bridle', 'silks.desc', 'silks.colors', 'coat.mane'],
   },
   {
     id: 'el-condor-pasa', en: 'El Condor Pasa', jp: 'エルコンドルパサー', born: 1995, sex: 'male',
@@ -942,22 +942,22 @@ window.HORSES = [
     silks: { owner: '渡邊隆 (Takashi Watanabe)', desc: 'Yellow body, one blue hoop, red sleeves. The cap was the frame colour in Japan (green in the Japan Cup) and red with blue in France.', colors: ['#f7d417', '#1f3fae', '#d81e34'] },
     saddleNumber: 11, // 1998 Japan Cup (JRA G1 archive, en.netkeiba race page)
     career: '1998 NHK Mile Cup (G1), 1998 Japan Cup (G1), 1999 Grand Prix de Saint-Cloud (G1), 1999 Prix Foy (G2); 2nd in the 1999 Arc by half a length; 1999 JRA Horse of the Year',
-    sources: ['https://ja.wikipedia.org/wiki/エルコンドルパサー', 'https://en.wikipedia.org/wiki/El_Condor_Pasa_(horse)', 'https://en.netkeiba.com/db/horse/1995108742/', 'https://db.netkeiba.com/horse/result/1995108742/', 'https://en.netkeiba.com/db/race/199805050810/', 'https://www.jra.go.jp/datafile/seiseki/g1/jc/result/jc1998.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1995108742.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/jc/result/photo/1998-1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/f/fb/El_Condor_Pasa_19991128I1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/7/7f/Owner_Watanabe_Takashi.svg', 'https://media.gettyimages.com/id/1175328288/photo/hippisme-arc.jpg', 'https://media.gettyimages.com/id/1554480/photo/arc-x.jpg'],
-    uncertain: ['size.withersCm', 'silks.colors (netkeiba and JRA-VAN link a blue-and-white silks image; race photos and Commons show yellow, blue and red)', 'gear.hood (no photo of his 1997-98 races)'],
+    sources: ['https://ja.wikipedia.org/wiki/エルコンドルパサー', 'https://en.wikipedia.org/wiki/El_Condor_Pasa_(horse)', 'https://en.netkeiba.com/db/horse/1995108742/', 'https://db.netkeiba.com/horse/result/1995108742/', 'https://en.netkeiba.com/db/race/199805050810/', 'https://www.jra.go.jp/datafile/seiseki/g1/jc/result/jc1998.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1995108742.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/jc/result/photo/1998-1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/f/fb/El_Condor_Pasa_19991128I1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/7/7f/Owner_Watanabe_Takashi.svg', 'https://media.gettyimages.com/id/1175328288/photo/hippisme-arc.jpg', 'https://media.gettyimages.com/id/1554480/photo/arc-x.jpg', 'https://db.netkeiba.com/horse/1995108742/'],
+    uncertain: ['size.withersCm'],
   },
   {
     id: 'grass-wonder', en: 'Grass Wonder', jp: 'グラスワンダー', born: 1995, sex: 'male',
     coat: { reg: '栗毛', key: 'kuri', greyness: null, tone: 0, mane: null, notes: 'Registered 栗毛 / Chestnut (ja.wikipedia, en.netkeiba). Photos show a bright red-gold chestnut, with the mane and tail the same shade or a little darker.' },
     face: { type: 'star', notes: 'Small, slightly irregular white star in the middle of the forehead. No stripe or snip. en.wikipedia: "a chestnut horse with a white star"; the size comes from the JRA-VAN 1999 Arima photo.' },
-    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'coronet' },
     style: { primary: 'sashi', secondary: 'senko', why: 'Position at the first corner in his G1s: 7th of 15 (1997 Asahi Hai), 8th of 16 (1998 Arima), 6th of 12 (1999 Takarazuka), 11th of 14 (1999 Arima). From there he made a long sweeping move from the 3rd corner (8-8-6-4, 6-6-6-2, 11-10-7-3). ja.wikipedia: "第3コーナーから先団に進出". He sat 2nd in two of his 2yo wins (2-2-2-2, 2-2) and was 4-3-3-3 in the 1998 AR Kyowakoku Cup.' },
     size: { weightKg: [480, 530], typicalKg: 500, withersCm: 161, girthCm: null, cannonCm: null, build: 'heavy', notes: 'Weighed 480 kg on debut, 486 kg for the Asahi Hai, 498 kg (1998 Arima), 504 kg (1999 Takarazuka) and 512 kg (1999 Arima), with a peak of 530 kg (2000 Nikkei Sho). Withers 15.3½ hh per en.wikipedia (about 161 cm). Trainer Ogata praised his high hocks, well-laid shoulder and very developed hindquarters.' },
     gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#e8862a', pompom: null, bandages: { fore: '#f2f0ea', hind: null }, notes: 'At the 1999 Arima Kinen (JRA-VAN memorial photo and the Commons paddock photo): no hood, no shadow roll or blinkers, a plain noseband, an orange bridle and reins with yellow edging, white bandages on both forelegs and bare hind legs. Gear in his other races was not checked.' },
     silks: { owner: '半沢（有） (Hanzawa Co., Ltd.)', desc: 'White, red sash, blue sleeves with a red hoop', colors: ['#f2f0ea', '#d22630', '#2a5bd7'] },
     saddleNumber: 7, // 1999 Arima Kinen (JRA G1 archive)
     career: '1997 Asahi Hai Sansai Stakes; 1998 Arima Kinen; 1999 Takarazuka Kinen; 1999 Arima Kinen (beat Special Week by a nose); also 1999 Mainichi Okan, 1999 Keio Hai Spring Cup and 1997 Keio Hai Sansai Stakes. 15 starts, 9 wins.',
-    sources: ['https://ja.wikipedia.org/wiki/グラスワンダー', 'https://en.netkeiba.com/db/horse/1995108676/', 'https://db.netkeiba.com/horse/result/1995108676/', 'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/arima1999.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1995108676.jpg', 'https://upload.wikimedia.org/wikipedia/commons/8/86/Grass_Wonder_19991226.jpg', 'https://db.netkeiba.com/show_photo.php?horse_id=1995108676&no=1&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1995108676&no=4&tn=no&tmp=no', 'https://rcdnv2.netkeiba.com/img/db/colours/541800.gif', 'https://en.wikipedia.org/wiki/Grass_Wonder'],
-    uncertain: ['legs.LH / legs.RH (grass hides the hind coronets; maybe a small white spot)', 'gear.bridle', 'gear (1999 Arima photos only)', 'size.build', 'silks.desc (the red sleeve hoop from a 40 px image)'],
+    sources: ['https://ja.wikipedia.org/wiki/グラスワンダー', 'https://en.netkeiba.com/db/horse/1995108676/', 'https://db.netkeiba.com/horse/result/1995108676/', 'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/arima1999.html', 'https://jra-van.jp/fun/memorial/img/horses/l_1995108676.jpg', 'https://upload.wikimedia.org/wikipedia/commons/8/86/Grass_Wonder_19991226.jpg', 'https://db.netkeiba.com/show_photo.php?horse_id=1995108676&no=1&tn=no&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=1995108676&no=4&tn=no&tmp=no', 'https://rcdnv2.netkeiba.com/img/db/colours/541800.gif', 'https://en.wikipedia.org/wiki/Grass_Wonder', 'https://db.netkeiba.com/horse/1995108676/'],
+    uncertain: ['gear.bridle', 'gear (1999 Arima photos only)', 'size.build', 'silks.desc (the red sleeve hoop from a 40 px image)'],
   },
   // ---- Batch 9 (2026-10): #68–75, foaled 1995–96 ----
   {
@@ -1316,16 +1316,16 @@ window.HORSES = [
   {
     id: 'admire-groove', en: 'Admire Groove', jp: 'アドマイヤグルーヴ', born: 2000, sex: 'female', // foaled 2000-04-30, died 2012-10-15
     coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: -0.2, mane: null, notes: 'Registered 鹿毛 (ja.wikipedia, en.netkeiba "Bay Mare"). Photos show a dark bay: near-black neck and shoulders, red-brown flank and quarters, black points.' },
-    face: { type: 'stripe', notes: 'From photos only. The hood covers her forehead in every photo. A narrow white stripe runs down the nasal bone from below the hood to the nostrils (JRA-VAN 2003 EQII photo, Commons 2004 Tenno Sho paddock photo). There may be a star under the hood.' },
-    legs: { LF: 'none', RF: 'none', LH: 'sock', RH: 'sock' },
+    face: { type: 'star-stripe-snip', notes: 'From photos only. The hood covers her forehead in every photo. A narrow white stripe runs down the nasal bone from below the hood to the nostrils (JRA-VAN 2003 EQII photo, Commons 2004 Tenno Sho paddock photo). There may be a star under the hood.' },
+    legs: { LF: 'none', RF: 'coronet', LH: 'fetlock', RH: 'fetlock' },
     style: { primary: 'sashi', secondary: null, why: 'Mid-pack, then closes. EQII 2003 was 9-9-10-10 of 15 and EQII 2004 was 9-9-9-7 of 18; Shuka Sho 11/18, Tenno Sho Autumn 2004 9/17, Oka Sho 16/18 back to 12 (3rd). Only her first three races (maiden, Erica, Wakaba) were run near the front, 2nd-3rd.' },
     size: { weightKg: [448, 486], typicalKg: 463, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Lightest 448 kg (2003 Oka Sho), heaviest 486 kg (2005 Osaka Hai). 462 kg at the 2003 EQII and 464 kg at the 2004 EQII (en.netkeiba).' },
     gear: { hood: true, hoodColors: { main: '#1f5fbf', trim: '#2a9ae0', ears: '#1f5fbf' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#3a2a20', pompom: null, bandages: { fore: '#f2f0ea', hind: null }, notes: 'Royal-blue menko with blue ear covers and a lighter sky-blue lower band and eye-hole trim. The cheek carries the owner\'s yellow "RK" monogram (ja.wikipedia 近藤利一: his horses often wear an RK-embroidered menko; not drawn). Worn at the 2003 EQII (JRA-VAN and JRA G1 archive photos) and in the 2004 Tenno Sho (Autumn) paddock (Commons). The forelegs wear white bandages with blue stripes. The reins look blue.' },
     silks: { owner: '近藤利一 (Riichi Kondo)', desc: '水色、白袖、青鋸歯形 (ja.wikipedia: 「勝負服の柄は水色、白袖、青鋸歯形模様」): light-blue body with a blue sawtooth, white sleeves. Matches the 2003 EQII photo.', colors: ['#55c8ec', '#f2f0ea', '#1f3fa0'] },
     saddleNumber: 7, // 2003 Queen Elizabeth II Cup (4枠7番, 15 runners, won by a nose over Still in Love); 12 in her 2004 repeat
     career: 'Queen Elizabeth II Commemorative Cup (G1) 2003 and 2004. Also won the Rose S. (G2) 2003, Mermaid S. (G3) 2004 and Hanshin Himba S. (G2) 2005. 3rd in the 2003 Oka Sho, 2nd in the 2003 Shuka Sho. JRA Best Older Filly/Mare 2004. 8 wins from 21 starts, almost all with Yutaka Take. Dam of Duramente.',
-    sources: ['https://ja.wikipedia.org/wiki/アドマイヤグルーヴ', 'https://en.netkeiba.com/db/horse/2000107542/', 'https://en.netkeiba.com/db/horse/result/2000107542/', 'https://en.netkeiba.com/db/race/200308050411/', 'https://en.netkeiba.com/db/race/200408050411/', 'https://ja.wikipedia.org/wiki/近藤利一', 'https://jra-van.jp/fun/memorial/img/horses/l_2000107542.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/photo/2003-1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/3/36/Admire_Grove_20041031P1.jpg'],
-    uncertain: ['coat.tone', 'face.type (the hood hides the forehead)', 'legs (forelegs always bandaged; the hind whites may be bandages)', 'gear.hoodColors', 'gear.bridle', 'silks.desc (Wikipedia\'s order)'],
+    sources: ['https://ja.wikipedia.org/wiki/アドマイヤグルーヴ', 'https://en.netkeiba.com/db/horse/2000107542/', 'https://en.netkeiba.com/db/horse/result/2000107542/', 'https://en.netkeiba.com/db/race/200308050411/', 'https://en.netkeiba.com/db/race/200408050411/', 'https://ja.wikipedia.org/wiki/近藤利一', 'https://jra-van.jp/fun/memorial/img/horses/l_2000107542.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/photo/2003-1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/3/36/Admire_Grove_20041031P1.jpg', 'https://uma-furusato.com/archives/011/202103/7b186ef3a78fcfd76f8deba63c2cb41a9122a08311eae52b0bd5657350527fca.jpg', 'https://uma-furusato.com/archives/011/202103/e9ca9460f157d97b1dc2fafa66ac12b685320b42f88cb8bb887aa0758f5bde33.jpg'],
+    uncertain: ['coat.tone', 'gear.hoodColors', 'gear.bridle', 'silks.desc (Wikipedia\'s order)', 'legs.RF (a white coronet over a pale hoof in two photos; low-medium)', 'legs.LH / legs.RH heights (verifiers read both as fetlock; one read RH as pastern)'],
   },
   {
     id: 'neo-universe', en: 'Neo Universe', jp: 'ネオユニヴァース', born: 2000, sex: 'male',
@@ -1338,8 +1338,8 @@ window.HORSES = [
     silks: { owner: '社台レースホース (Shadai Race Horse Co., Ltd.)', desc: '黄、黒縦縞、袖青一本輪 (yellow body with black vertical stripes; yellow sleeves with one blue hoop)', colors: ['#f5d000', '#111111', '#1f4fa8'] },
     saddleNumber: 13, // 2003 Tokyo Yushun (Japanese Derby), gate 7 (JRA G1 archive + en.netkeiba); he was No. 3 in the 2003 Satsuki Sho
     career: '2003 Satsuki Sho (G1) and Tokyo Yushun / Japanese Derby (G1); also 2003 Kisaragi Sho (G3), Spring S (G2), 2004 Sankei Osaka Hai (G2); JRA Best 3yo Colt 2003; 13 starts, 7 wins',
-    sources: ['https://ja.wikipedia.org/wiki/ネオユニヴァース', 'https://en.netkeiba.com/db/horse/2000101426/', 'https://en.netkeiba.com/db/race/200306040811/', 'https://en.netkeiba.com/db/race/200305020410/', 'https://www.jra.go.jp/datafile/seiseki/g1/derby/result/derby2003.html', 'https://www.jra.go.jp/datafile/seiseki/g1/derby/result/photo/2003-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/satsuki/result/photo/2003-2.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_2000101426.jpg', 'https://upload.wikimedia.org/wikipedia/commons/6/6b/2003-6-29-NeoUniverse.jpg', 'https://ja.wikipedia.org/wiki/社台レースホース', 'https://uma-furusato.com/search_horse/0000701577.html'],
-    uncertain: ['face.type (one stud photo)', 'legs.LH / legs.RH (one paddock photo; heights approximate)', 'gear.hoodColors.trim', 'gear.bridle', 'size.build'],
+    sources: ['https://ja.wikipedia.org/wiki/ネオユニヴァース', 'https://en.netkeiba.com/db/horse/2000101426/', 'https://en.netkeiba.com/db/race/200306040811/', 'https://en.netkeiba.com/db/race/200305020410/', 'https://www.jra.go.jp/datafile/seiseki/g1/derby/result/derby2003.html', 'https://www.jra.go.jp/datafile/seiseki/g1/derby/result/photo/2003-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/satsuki/result/photo/2003-2.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_2000101426.jpg', 'https://upload.wikimedia.org/wikipedia/commons/6/6b/2003-6-29-NeoUniverse.jpg', 'https://ja.wikipedia.org/wiki/社台レースホース', 'https://uma-furusato.com/search_horse/0000701577.html', 'https://db.netkeiba.com/photo/list.html?id=2000101426'],
+    uncertain: ['gear.hoodColors.trim', 'gear.bridle', 'size.build'],
   },
   {
     id: 'still-in-love', en: 'Still in Love', jp: 'スティルインラブ', born: 2000, sex: 'female',
@@ -1352,8 +1352,8 @@ window.HORSES = [
     silks: { owner: '(有)ノースヒルズマネジメント (North Hills Management)', desc: '水色、赤十字襷、赤袖 (light blue, red cross-belts, red sleeves)', colors: ['#7ec8e3', '#d22630'] },
     saddleNumber: 17, // 2003 Shuka Sho, 枠8 馬番17 (JRA G1 archive, en.netkeiba); she was No.9 in the Oka Sho and No.3 in the Oaks
     career: '2003 Oka Sho, Yushun Himba (Oaks) and Shuka Sho: the fillies\' Triple Tiara, the second after Mejiro Ramonu (1986). 2003 JRA Award for Best 3yo Filly; 2nd in the 2003 QEII Cup. 16 starts, 5 wins, all under Hideaki Miyuki.',
-    sources: ['https://ja.wikipedia.org/wiki/スティルインラブ', 'https://en.netkeiba.com/db/horse/2000106022/', 'https://db.netkeiba.com/horse/result/2000106022/', 'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/ouka2003.html', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/oaks2003.html', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/shuka2003.html', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2003-1.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_2000106022.jpg', 'https://commons.wikimedia.org/wiki/File:2003-4-13-StillinLove.JPG', 'https://ja.wikipedia.org/wiki/ノースヒルズ'],
-    uncertain: ['coat.tone', 'coat.mane (photos)', 'face.type (one photo)', 'legs', 'size.build', 'gear.bridle', 'silks.owner (the ノースヒルズ article does not name the management company)'],
+    sources: ['https://ja.wikipedia.org/wiki/スティルインラブ', 'https://en.netkeiba.com/db/horse/2000106022/', 'https://db.netkeiba.com/horse/result/2000106022/', 'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/ouka2003.html', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/oaks2003.html', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/shuka2003.html', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2003-1.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_2000106022.jpg', 'https://commons.wikimedia.org/wiki/File:2003-4-13-StillinLove.JPG', 'https://ja.wikipedia.org/wiki/ノースヒルズ', 'https://db.netkeiba.com/photo/list.html?id=2000106022'],
+    uncertain: ['coat.tone', 'legs', 'size.build', 'gear.bridle', 'silks.owner (the ノースヒルズ article does not name the management company)'],
   },
   {
     id: 'zenno-rob-roy', en: 'Zenno Rob Roy', jp: 'ゼンノロブロイ', born: 2000, sex: 'male',
@@ -1366,27 +1366,27 @@ window.HORSES = [
     silks: { owner: '大迫忍 (2004; later 大迫久美子)', desc: '黄、袖緑一本輪、緑鋸歯形 (yellow body with a green sawtooth over the upper body; yellow sleeves with one green hoop)', colors: ['#f2d21b', '#1e8a3c'] },
     saddleNumber: 1, // 2004 Arima Kinen (枠1 馬番1), which completed the autumn sweep in a record 2:29.5; Tenno Sho (Autumn) 2004 = 13, Japan Cup 2004 = 9
     career: '2004 Tenno Sho (Autumn), Japan Cup and Arima Kinen (the autumn older-horse triple), 2004 JRA Horse of the Year; 2003 Aoba Sho and Kobe Shimbun Hai; 2nd in the 2003 Tokyo Yushun and the 2005 Juddmonte International',
-    sources: ['https://ja.wikipedia.org/wiki/ゼンノロブロイ', 'https://ja.wikipedia.org/wiki/大迫忍', 'https://en.netkeiba.com/db/horse/2000101517/', 'https://en.netkeiba.com/db/horse/result/2000101517/', 'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/arima2004.html', 'https://www.jra.go.jp/datafile/seiseki/g1/akiten/result/akiten2004.html', 'https://jra-van.jp/fun/memorial/img/horses/l_2000101517.jpg', 'https://upload.wikimedia.org/wikipedia/commons/5/58/Zenno_rob_roy20040327.jpg', 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Zenno_Rob_Roy_20041031.jpg'],
-    uncertain: ['legs.LH (registry 左後一白; the height from photos)', 'size.build', 'gear.bridle', 'silks.colors', 'style (en.netkeiba has the 2003 Derby at 2-2-2-2; ja.wiki says 中団の後方)'],
+    sources: ['https://ja.wikipedia.org/wiki/ゼンノロブロイ', 'https://ja.wikipedia.org/wiki/大迫忍', 'https://en.netkeiba.com/db/horse/2000101517/', 'https://en.netkeiba.com/db/horse/result/2000101517/', 'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/arima2004.html', 'https://www.jra.go.jp/datafile/seiseki/g1/akiten/result/akiten2004.html', 'https://jra-van.jp/fun/memorial/img/horses/l_2000101517.jpg', 'https://upload.wikimedia.org/wikipedia/commons/5/58/Zenno_rob_roy20040327.jpg', 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Zenno_Rob_Roy_20041031.jpg', 'https://db.netkeiba.com/photo/list.html?id=2000101517'],
+    uncertain: ['size.build', 'gear.bridle', 'silks.colors', 'style (en.netkeiba has the 2003 Derby at 2-2-2-2; ja.wiki says 中団の後方)'],
   },
   {
     id: 'sweep-tosho', en: 'Sweep Tosho', jp: 'スイープトウショウ', born: 2001, sex: 'female',
     coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: 'ja.wikipedia infobox 鹿毛; en.netkeiba "Bay Mare". Photos: rich medium-dark bay with black points, black mane and tail. JBIS skipped (403).' },
-    face: { type: 'blaze', notes: 'From photos: white starts as a star on the forehead and runs as a fairly narrow, unbroken band down the nose to just above the nostrils (JRA-VAN memorial win photo). It could also be read as a long star-stripe (流星鼻梁白). Not stated in any Japanese text. ja.wikipedia says she had 三白眼 (eye whites showing) like her damsire Dancing Brave.' },
-    legs: { LF: 'none', RF: 'none', LH: 'fetlock', RH: 'none' },
+    face: { type: 'star-stripe', notes: 'From photos: white starts as a star on the forehead and runs as a fairly narrow, unbroken band down the nose to just above the nostrils (JRA-VAN memorial win photo). It could also be read as a long star-stripe (流星鼻梁白). Not stated in any Japanese text. ja.wikipedia says she had 三白眼 (eye whites showing) like her damsire Dancing Brave.' },
+    legs: { LF: 'fetlock', RF: 'fetlock', LH: 'fetlock', RH: 'none' },
     style: { primary: 'sashi', secondary: 'oikomi', why: 'As a 2- and 3-year-old she was often at the back at the first corner (Hanshin JF 14/18, Tulip 14/15, Oka 17/18, Shuka Sho 17/18, Eliza 2004 16/18). From 2005 she mostly sat mid-pack (Takarazuka 8/15 then 6th at the 4th corner, Eliza 2005 10/18, Tenno Sho 11/18). ja.wikipedia: 「出遅れて後方待機」「中団後方を追走」「後方から大外に持ち出して追い上げ」.' },
     size: { weightKg: [446, 480], typicalKg: 460, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'en.netkeiba weights: 446 (2004 Tulip Sho and Oaks) up to 480 (late 2007). 450 at the 2004 Shuka Sho, 460 at the 2005 Takarazuka Kinen, 464 at the 2005 Elizabeth Cup.' },
     gear: { hood: false, hoodColors: { main: '#f4d23a', trim: '#b31e3a', ears: '#b31e3a' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#f2f0ea', pompom: null, bandages: null, notes: 'Her big-race photos (JRA-VAN memorial finish shot; JRA 2004 Shuka Sho photo) show a bare head and bare ears, a white bridle and noseband, navy reins and no blinkers or shadow roll. In the paddock (Commons photo, 2005 Mainichi Okan) she wore a menko in the silks pattern (yellow with red 元禄 checks, red ear covers and trim; hoodColors records it) and white fore bandages; both appear to have come off before the race.' },
     silks: { owner: 'トウショウ産業株式会社 (Tosho Sangyo)', desc: '黄、赤元禄、紫袖 — yellow body with large red (crimson) diamond checks and purple sleeves. The Japanese wording is pieced together from the photos plus the JRA pattern term 元禄 for this check; no fetched page states it.', colors: ['#f4d23a', '#b31e3a', '#7d3c98'] },
     saddleNumber: 11, // 2005 Takarazuka Kinen: 6枠11番 (en.netkeiba race table, ja.wikipedia, JRA G1 archive)
     career: '2004 Shuka Sho; 2005 Takarazuka Kinen; 2005 Queen Elizabeth II Cup (2005 JRA Best Older Filly/Mare); plus 2006 Kyoto Daishoten (G2). 24 starts, 8 wins.',
-    sources: ['https://ja.wikipedia.org/wiki/スイープトウショウ', 'https://en.netkeiba.com/db/horse/result/2001104313/', 'https://www.jra.go.jp/datafile/seiseki/g1/takara/result/takara2005.html', 'https://jra-van.jp/fun/memorial/img/horses/l_2001104313.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2004-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/takara/result/photo/2005-1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/3/34/Sweep_Tosho20051009.jpg', 'https://en.wikipedia.org/wiki/Sweep_Tosho'],
-    uncertain: ['face.type (blaze or long star-stripe)', 'legs (LH from one paddock photo)', 'silks.desc (the JRA wording is reconstructed)', 'silks.colors', 'gear.bridle', 'size.withersCm'],
+    sources: ['https://ja.wikipedia.org/wiki/スイープトウショウ', 'https://en.netkeiba.com/db/horse/result/2001104313/', 'https://www.jra.go.jp/datafile/seiseki/g1/takara/result/takara2005.html', 'https://jra-van.jp/fun/memorial/img/horses/l_2001104313.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2004-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/takara/result/photo/2005-1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/3/34/Sweep_Tosho20051009.jpg', 'https://en.wikipedia.org/wiki/Sweep_Tosho', 'https://db.netkeiba.com/photo/list.html?id=2001104313'],
+    uncertain: ['silks.desc (the JRA wording is reconstructed)', 'silks.colors', 'gear.bridle', 'size.withersCm', 'face.type (one checker saw the stripe end in a snip between the nostrils)'],
   },
   {
     id: 'air-messiah', en: 'Air Messiah', jp: 'エアメサイア', born: 2002, sex: 'female',
     coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: -0.3, mane: null, notes: 'Registered 鹿毛 (ja.wikipedia infobox, en.netkeiba "Bay"). In the 2005 photos she looks like a dark bay with black points, so tone is nudged darker from the photos only.' },
-    face: { type: 'none', notes: 'Not stated in any text. In every photo found (2005 Shuka Sho finish, 2005 Oaks, 2005 Elizabeth paddock) the yellow hood covers her forehead, and the visible lower face and muzzle look dark with no white. A star under the hood cannot be ruled out.' },
+    face: { type: 'star-stripe', notes: 'Not stated in any text. In every photo found (2005 Shuka Sho finish, 2005 Oaks, 2005 Elizabeth paddock) the yellow hood covers her forehead, and the visible lower face and muzzle look dark with no white. A star under the hood cannot be ruled out.' },
     legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
     style: { primary: 'sashi', secondary: 'senko', why: 'Usually mid-pack or further back, then closed: Oka Sho 12th of 18 at the corner, Oaks 9th of 18, Shuka Sho 12-12-12-9 of 18, Elizabeth Cup 14th of 18, Victoria Mile 11th of 18. En Wikipedia on the Shuka Sho: "chased the middle of the pack, then took the lead early in the straight". She raced up front at times (Elfin S 3-3 of 12, Nakayama Kinen 2-2-3-3 of 12).' },
     size: { weightKg: [458, 476], typicalKg: 468, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: '458 kg (2005 Elfin S, Fillies Revue) to 476 kg (2006 Victoria Mile). 468 at the Shuka Sho win, 462 at the Rose S win.' },
@@ -1394,28 +1394,28 @@ window.HORSES = [
     silks: { owner: '(株)ラッキーフィールド (吉原毎文)', desc: '黄、青一本輪、青袖', colors: ['#f2d01e', '#1f4fb0'] },
     saddleNumber: 10, // 2005 Shuka Sho: 枠5, 馬番10 (JRA G1 archive + en.netkeiba; the saddle cloth reads 10 in the JRA finish photo)
     career: '2005 Shuka Sho (G1), 2005 Rose Stakes (G2); 2nd 2005 Yushun Himba (Oaks) and 2006 Victoria Mile; 12 starts, 4 wins',
-    sources: ['https://ja.wikipedia.org/wiki/エアメサイア', 'https://ja.wikipedia.org/wiki/吉原毎文', 'https://en.netkeiba.com/db/horse/2002100516/', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/shuka2005.html', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2005-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2005-2.jpg', 'https://upload.wikimedia.org/wikipedia/commons/c/c7/%E3%82%A8%E3%82%A2%E3%83%A1%E3%82%B5%E3%82%A4%E3%82%A2.JPG', 'https://en.wikipedia.org/wiki/Air_Messiah'],
-    uncertain: ['coat.tone', 'face.type (the hood hides the forehead)', 'legs (small photos)', 'gear.hoodColors (the blue brow band; the bars round the eye holes come with the band pattern and are not seen in photos)'],
+    sources: ['https://ja.wikipedia.org/wiki/エアメサイア', 'https://ja.wikipedia.org/wiki/吉原毎文', 'https://en.netkeiba.com/db/horse/2002100516/', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/shuka2005.html', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2005-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2005-2.jpg', 'https://upload.wikimedia.org/wikipedia/commons/c/c7/%E3%82%A8%E3%82%A2%E3%83%A1%E3%82%B5%E3%82%A4%E3%82%A2.JPG', 'https://en.wikipedia.org/wiki/Air_Messiah', 'https://uma-furusato.com/archives/011/202103/948c1d486f16d37aeefd2e9c9cb70b92b29503c4d83e444c1fb78d0c1460fb1a.jpg'],
+    uncertain: ['coat.tone', 'gear.hoodColors (the blue brow band; the bars round the eye holes come with the band pattern and are not seen in photos)'],
   },
   {
     id: 'cesario', en: 'Cesario', jp: 'シーザリオ', born: 2002, sex: 'female',
     coat: { reg: '青毛', key: 'ao', greyness: null, tone: 0, mane: null, notes: '青毛 per ja.wikipedia infobox; en.netkeiba "Black". Photos (paddock 2005-04-10, Oaks 2005) show a jet-black coat with no visible tan on the muzzle or flanks.' },
     face: { type: 'star', notes: 'Small, irregular white star on the forehead at about eye level (JRA-VAN Oaks close-up and Commons paddock photo). No stripe or snip visible; the muzzle is dark.' },
-    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    legs: { LF: 'none', RF: 'none', LH: 'fetlock', RH: 'pastern' },
     style: { primary: 'senko', secondary: 'oikomi', why: 'Usually sat near the front: debut 4-4-4, Kanchiku Sho 3-3-3-3, Flower Cup G3 3-2-3-2, American Oaks tracked 3rd and went at the 3rd turn. Oka Sho 6-11-10/18 after trouble at the 1st corner (fastest closing 3F, beaten a head). Her signature Oaks win came from far back: 15-16-13-12 of 18, fastest final 3F of 33.3.' },
     size: { weightKg: [454, 464], typicalKg: 460, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'JRA race-day weights: 464, 458, 456, 454, 460 (Oaks, +6). No weight was recorded for the American Oaks.' },
     gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1a1a', browband: '#2a5ab8', pompom: null, bandages: { fore: '#f2f0ea', hind: '#f2f0ea' }, notes: 'Oaks 2005 photos (JRA-VAN close-up, JRA archive finish shots): bare head, black race bridle with a blue beaded browband, white leg bandages with two green stripes on all four legs (the same wraps are worn in the 2005-04-10 paddock photo). ja.wikipedia says a メンコ she did not normally use was prepared for the American Oaks trip; whether she wore it is unconfirmed.' },
     silks: { owner: '（有）キャロットファーム (Carrot Farm)', desc: '緑、白二本輪、白袖赤一本輪 (green, two white hoops, white sleeves with one red hoop)', colors: ['#1e9a50', '#f2f0ea', '#d22630'] },
     saddleNumber: 4, // 2005 Yushun Himba: 枠2 馬番4 (JRA G1 archive + en.netkeiba race page; "4" on the saddle cloth in the photos)
     career: '2005 Yushun Himba / Japanese Oaks (G1), 2005 American Oaks (G1, the first US G1 won by a Japan-trained horse), 2005 Flower Cup (G3); 2nd 2005 Oka Sho; 5 wins from 6 starts; dam of G1 winners Epiphaneia, Leontes and Saturnalia',
-    sources: ['https://ja.wikipedia.org/wiki/シーザリオ', 'https://en.netkeiba.com/db/horse/2002100844/', 'https://en.netkeiba.com/db/race/200505030211/', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/oaks2005.html', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2005-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2005-2.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_2002100844.jpg', 'https://upload.wikimedia.org/wikipedia/commons/f/f5/Cesario-2005-4-10.jpg', 'https://ja.wikipedia.org/wiki/キャロットファーム', 'https://rcdnv2.netkeiba.com/img/db/colours/486800.gif'],
-    uncertain: ['legs (bandaged in every photo)', 'face.notes', 'gear.bridle', 'silks.colors'],
+    sources: ['https://ja.wikipedia.org/wiki/シーザリオ', 'https://en.netkeiba.com/db/horse/2002100844/', 'https://en.netkeiba.com/db/race/200505030211/', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/oaks2005.html', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2005-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2005-2.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_2002100844.jpg', 'https://upload.wikimedia.org/wikipedia/commons/f/f5/Cesario-2005-4-10.jpg', 'https://ja.wikipedia.org/wiki/キャロットファーム', 'https://rcdnv2.netkeiba.com/img/db/colours/486800.gif', 'https://uma-furusato.com/archives/011/202103/92c6ca0c2dd0e378e750d6ee431d6824987b408563e87901804dfa6c45d4fa60.jpg'],
+    uncertain: ['face.notes', 'gear.bridle', 'silks.colors', 'legs.LH / legs.RH (both hinds white; which is taller is not settled)'],
   },
   // ---- Batch 13 (2026-10): #100–107, foaled 2002–04 ----
   {
     id: 'daring-heart', en: 'Daring Heart', jp: 'デアリングハート', born: 2002, sex: 'female',
     coat: { reg: '栃栗毛', key: 'tochikuri', greyness: null, tone: 0, mane: '#2a1a14', notes: 'ja.wikipedia infobox says 栃栗毛. en.netkeiba just says "Chestnut", and the Commons category is "Liver chestnut". In the photos (2005 to 2008) she is a deep red-brown liver chestnut that looks almost black in shade or backlight. Her mane and tail are nearly black-brown, much darker than the default reddish tochikuri mane.' },
-    face: { type: 'stripe', notes: 'From photos only: a black hood covered her forehead in every photo found. Front three-quarter shots (NHK Mile 2005, Victoria Mile 2006, TCK Jo-o Hai 2008) show a thin white line down the front of the nose below the hood. The side-on 2008 paddock shot shows no white on the muzzle. A star under the hood cannot be ruled out, and the line could also be hood or noseband trim.' },
+    face: { type: 'star-stripe', notes: 'From photos only: a black hood covered her forehead in every photo found. Front three-quarter shots (NHK Mile 2005, Victoria Mile 2006, TCK Jo-o Hai 2008) show a thin white line down the front of the nose below the hood. The side-on 2008 paddock shot shows no white on the muzzle. A star under the hood cannot be ruled out, and the line could also be hood or noseband trim.' },
     legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
     style: { primary: 'senko', secondary: null, why: 'netkeiba 通過 (corner positions): 3-2-2/16 in Fuchu Himba S 2006 and 4-4-4/16 in 2007, 6-5-4-1/14 when winning the Queen S 2006, 6-4/18 in NHK Mile 2005, 2-2-3/18 in Epsom C 2007, 3-3-3-3/13 in QE2 Cup 2007, 2-2/16 in February S 2008. She sat in the front third to just behind the leaders.' },
     size: { weightKg: [408, 436], typicalKg: 424, withersCm: null, girthCm: null, cannonCm: null, build: 'compact', notes: 'Light filly. en.netkeiba race-day weights run from 408 kg (Swan S 2005) to 436 kg (Queen S 2007). She weighed 424 kg for the Queen S 2006 and Fuchu Himba S 2006, and 428 kg for the Fuchu Himba S 2007. No body measurements are published.' },
@@ -1423,29 +1423,13 @@ window.HORSES = [
     silks: { owner: '社台レースホース (Shadai Race Horse Co. Ltd.)', desc: '黄、黒縦縞、袖青一本輪', colors: ['#f5d000', '#111111', '#1f4fbf'] },
     saddleNumber: 8, // 馬番 8 in the 2007 Fuchu Himba Stakes (G3), the second of her back-to-back wins in the race (she was #3 in 2006)
     career: 'Never won a G1. Graded wins: Queen Stakes (G3) 2006, Fuchu Himba Stakes (G3) 2006 and 2007. Placed 3rd in the Oka Sho 2005, 2nd in the NHK Mile Cup 2005 and 3rd in the Victoria Mile 2007. 26 starts, 4 wins. Granddam of Triple Tiara winner Daring Tact (through Daring Bird).',
-    sources: [
-      'https://ja.wikipedia.org/wiki/デアリングハート',
-      'https://en.netkeiba.com/db/horse/2002100600/',
-      'https://en.netkeiba.com/db/horse/result/2002100600/',
-      'https://en.netkeiba.com/db/race/200705040511/',
-      'https://en.netkeiba.com/db/race/200605040411/',
-      'https://en.netkeiba.com/db/race/200601010209/',
-      'https://en.netkeiba.com/db/race/200505020611/',
-      'https://ja.wikipedia.org/wiki/社台レースホース',
-      'https://cdnv2.netkeiba.com/img/db/colours/415800.gif',
-      'https://commons.wikimedia.org/wiki/File:Daring-Heart_20080224tokyo11race_paddock.jpg',
-      'https://db.netkeiba.com/show_photo.php?horse_id=2002100600&no=221&tmp=no',
-      'https://db.netkeiba.com/show_photo.php?horse_id=2002100600&no=222&tmp=no',
-      'https://db.netkeiba.com/show_photo.php?horse_id=2002100600&no=226&tmp=no',
-      'https://db.netkeiba.com/show_photo.php?horse_id=2002100600&no=227&tmp=no',
-      'https://db.netkeiba.com/show_photo.php?horse_id=2002100600&no=3155&tmp=no',
-    ],
-    uncertain: ['face.type', 'face.notes', 'legs.RF', 'legs.RH', 'gear.hoodColors.trim', 'gear.blinkers', 'size.build'],
+    sources: ['https://ja.wikipedia.org/wiki/デアリングハート', 'https://en.netkeiba.com/db/horse/2002100600/', 'https://en.netkeiba.com/db/horse/result/2002100600/', 'https://en.netkeiba.com/db/race/200705040511/', 'https://en.netkeiba.com/db/race/200605040411/', 'https://en.netkeiba.com/db/race/200601010209/', 'https://en.netkeiba.com/db/race/200505020611/', 'https://ja.wikipedia.org/wiki/社台レースホース', 'https://cdnv2.netkeiba.com/img/db/colours/415800.gif', 'https://commons.wikimedia.org/wiki/File:Daring-Heart_20080224tokyo11race_paddock.jpg', 'https://db.netkeiba.com/show_photo.php?horse_id=2002100600&no=221&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=2002100600&no=222&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=2002100600&no=226&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=2002100600&no=227&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=2002100600&no=3155&tmp=no', 'https://uma-furusato.com/archives/011/202103/3d17584491411c8140854a2eba7a1caf618aeb0e28b66affc6faf547560ad5d3.jpg'],
+    uncertain: ['gear.hoodColors.trim', 'gear.blinkers', 'size.build'],
   },
   {
     id: 'rhein-kraft', en: 'Rhein Kraft', jp: 'ラインクラフト', born: 2002, sex: 'female',
     coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: 'Bay per en.netkeiba ("Bay") and ja.wikipedia (鹿毛); JBIS skipped (403). Photos: rich mid-to-dark bay, black mane, tail and lower legs; looks darker in the race photos than in the paddock shots.' },
-    face: { type: 'none', notes: 'photo: the lower face and muzzle are plain bay with no snip (2005 Oka Sho paddock close-up). The left profile in the race photo (JRA-VAN memorial) shows no white. The forehead is hidden by the paddock hood, so a small star cannot be ruled out.' },
+    face: { type: 'star-stripe', notes: 'photo: the lower face and muzzle are plain bay with no snip (2005 Oka Sho paddock close-up). The left profile in the race photo (JRA-VAN memorial) shows no white. The forehead is hidden by the paddock hood, so a small star cannot be ruled out.' },
     legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'fetlock' }, // photo: one white hind, coronet up to just over the fetlock, pale hoof; Commons 2005-04-10 paddock shots (left side, it is the far leg coming from behind the near stifle) + JRA Oka Sho photo 3 (right side, near hind white). All other legs dark with dark hooves.
     style: { primary: 'senko', secondary: 'sashi', why: 'Corners: Oka Sho 3-4-4/18, NHK Mile 4-4/18, Rose S 2-2-2-1/15, Shuka Sho 5-5-4-2/18, Takamatsunomiya 5-5/18, Hanshin Himba 3-3/12, Fantasy S 3-3/13; mid-pack in JF 6-7-7, Fillies Revue 9-9, Mile CS 9-8, Victoria Mile 8-7. Wikipedia: "好位5番手追走から直線先頭に立ち" (Oka Sho), "4番手追走" (NHK Mile).' },
     size: { weightKg: [452, 470], typicalKg: 454, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'en.netkeiba: 454 at debut, 452 at Fantasy S/JF, 454 at both the 2005 Oka Sho (-6) and NHK Mile (±0); filled out to 464-470 at 3yo autumn and 4yo (peak 470 at the 2006 Takamatsunomiya Kinen).' },
@@ -1453,22 +1437,8 @@ window.HORSES = [
     silks: { owner: '大澤繁昌', desc: '桃、緑星散、袖緑二本輪', colors: ['#e8559a', '#1e8a46'] },
     saddleNumber: 17, // 2005 Oka Sho (8枠17番, en.netkeiba + JRA G1 archive + photos); in the 2005 NHK Mile Cup she was 6枠12番
     career: 'Oka Sho (G1) 2005, NHK Mile Cup (G1) 2005 (変則二冠); Fillies\' Revue (G2) 2005, Hanshin Himba S (G2) 2006; 2nd Shuka Sho 2005, 2nd Takamatsunomiya Kinen 2006; 13 starts 6 wins; died Aug 2006 of acute heart failure',
-    sources: [
-      'https://ja.wikipedia.org/wiki/ラインクラフト',
-      'https://ja.wikipedia.org/wiki/大澤繁昌',
-      'https://en.netkeiba.com/db/horse/2002100959/',
-      'https://en.netkeiba.com/db/race/200509020611/',
-      'https://en.netkeiba.com/db/race/200505020611/',
-      'https://en.netkeiba.com/db/race/200408050211/',
-      'https://en.netkeiba.com/db/race/200409050211/',
-      'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/ouka2005.html',
-      'https://jra-van.jp/fun/memorial/img/horses/l_2002100959.jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/photo/2005-2.jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/photo/2005-3.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/c/cc/RheinKraft-2005-4-10.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/9/93/Rhein_Kraft_65th_Oka_sho.jpg',
-    ],
-    uncertain: ['face.type', 'legs.RH', 'coat.tone', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bandages', 'silks.colors'],
+    sources: ['https://ja.wikipedia.org/wiki/ラインクラフト', 'https://ja.wikipedia.org/wiki/大澤繁昌', 'https://en.netkeiba.com/db/horse/2002100959/', 'https://en.netkeiba.com/db/race/200509020611/', 'https://en.netkeiba.com/db/race/200505020611/', 'https://en.netkeiba.com/db/race/200408050211/', 'https://en.netkeiba.com/db/race/200409050211/', 'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/ouka2005.html', 'https://jra-van.jp/fun/memorial/img/horses/l_2002100959.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/photo/2005-2.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/photo/2005-3.jpg', 'https://upload.wikimedia.org/wikipedia/commons/c/cc/RheinKraft-2005-4-10.jpg', 'https://upload.wikimedia.org/wikipedia/commons/9/93/Rhein_Kraft_65th_Oka_sho.jpg', 'https://db.netkeiba.com/photo/list.html?id=2002100959', 'https://commons.wikimedia.org/wiki/File:RheinKraft-2005-4-10.jpg'],
+    uncertain: ['coat.tone', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bandages', 'silks.colors'],
   },
   {
     id: 'fusaichi-pandora', en: 'Fusaichi Pandora', jp: 'フサイチパンドラ', born: 2003, sex: 'female',
@@ -1481,18 +1451,8 @@ window.HORSES = [
     silks: { owner: '関口房朗 (Fusao Sekiguchi)', desc: '赤、袖黄一本輪、黄鋸歯形', colors: ['#d22630', '#f5d000'] },
     saddleNumber: 15, // 8枠15番, 2006 エリザベス女王杯
     career: '2006 Queen Elizabeth II Cup (G1, promoted from 2nd after Kawakami Princess was demoted); 2007 Sapporo Kinen (G2); 2nd 2006 Yushun Himba (Oaks) and 2007 QEII Cup',
-    sources: [
-      'https://ja.wikipedia.org/wiki/フサイチパンドラ',
-      'https://en.netkeiba.com/db/horse/result/2003103043/',
-      'https://en.netkeiba.com/db/race/200608060411/',
-      'https://ja.wikipedia.org/wiki/関口房朗',
-      'https://ja.wikipedia.org/wiki/勝負服_(競馬)',
-      'https://commons.wikimedia.org/wiki/File:Fusaichi_Pandora_20071125P1.jpg',
-      'https://db.netkeiba.com/show_photo.php?horse_id=2003103043&no=1498&tn=yes&tmp=no',
-      'https://db.netkeiba.com/show_photo.php?horse_id=2003103043&no=1502&tn=yes&tmp=no',
-      'https://en.wikipedia.org/wiki/Fusaichi_Pandora',
-    ],
-    uncertain: ['face.type', 'legs.RF', 'legs.RH', 'gear.pompom', 'gear.shadowRoll', 'size.build'],
+    sources: ['https://ja.wikipedia.org/wiki/フサイチパンドラ', 'https://en.netkeiba.com/db/horse/result/2003103043/', 'https://en.netkeiba.com/db/race/200608060411/', 'https://ja.wikipedia.org/wiki/関口房朗', 'https://ja.wikipedia.org/wiki/勝負服_(競馬)', 'https://commons.wikimedia.org/wiki/File:Fusaichi_Pandora_20071125P1.jpg', 'https://db.netkeiba.com/show_photo.php?horse_id=2003103043&no=1498&tn=yes&tmp=no', 'https://db.netkeiba.com/show_photo.php?horse_id=2003103043&no=1502&tn=yes&tmp=no', 'https://en.wikipedia.org/wiki/Fusaichi_Pandora', 'https://db.netkeiba.com/photo/list.html?id=2003103043'],
+    uncertain: ['legs.RF', 'legs.RH', 'gear.pompom', 'gear.shadowRoll', 'size.build'],
   },
   {
     id: 'kawakami-princess', en: 'Kawakami Princess', jp: 'カワカミプリンセス', born: 2003, sex: 'female',
@@ -1505,75 +1465,36 @@ window.HORSES = [
     silks: { owner: '三石川上牧場 (Mitsuishi Kawakami Bokujo)', desc: '桃、緑菱山形、袖緑二本輪', colors: ['#e85fae', '#2f8f62'] },
     saddleNumber: 9,
     career: 'Yushun Himba (Japanese Oaks) 2006 and Shuka Sho 2006, unbeaten in her first five starts (fillies\' double crown); first past the post in the 2006 Queen Elizabeth II Cup but demoted to 12th; 17 starts, 5 wins',
-    sources: [
-      'https://ja.wikipedia.org/wiki/カワカミプリンセス',
-      'https://ja.wikipedia.org/wiki/三石川上牧場',
-      'https://en.netkeiba.com/db/horse/2003107045/',
-      'https://db.netkeiba.com/horse/result/2003107045/',
-      'https://en.netkeiba.com/db/race/200605030211/',
-      'https://en.netkeiba.com/db/race/200608050411/',
-      'https://en.netkeiba.com/db/race/200608060411/',
-      'https://jra-van.jp/fun/memorial/img/horses/l_2003107045.jpg',
-      'https://jra-van.jp/fun/memorial/img/silks/691800.gif',
-      'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2006-3.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/9/96/Kawakami_Princess_20070624P1.jpg',
-      'https://en.wikipedia.org/wiki/Kawakami_Princess',
-    ],
-    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'gear.bitLifter', 'gear.hoodColors.trim', 'size.build'],
+    sources: ['https://ja.wikipedia.org/wiki/カワカミプリンセス', 'https://ja.wikipedia.org/wiki/三石川上牧場', 'https://en.netkeiba.com/db/horse/2003107045/', 'https://db.netkeiba.com/horse/result/2003107045/', 'https://en.netkeiba.com/db/race/200605030211/', 'https://en.netkeiba.com/db/race/200608050411/', 'https://en.netkeiba.com/db/race/200608060411/', 'https://jra-van.jp/fun/memorial/img/horses/l_2003107045.jpg', 'https://jra-van.jp/fun/memorial/img/silks/691800.gif', 'https://www.jra.go.jp/datafile/seiseki/g1/oaks/result/photo/2006-3.jpg', 'https://upload.wikimedia.org/wikipedia/commons/9/96/Kawakami_Princess_20070624P1.jpg', 'https://en.wikipedia.org/wiki/Kawakami_Princess', 'https://db.netkeiba.com/photo/list.html?id=2003107045'],
+    uncertain: ['gear.bitLifter', 'gear.hoodColors.trim', 'size.build'],
   },
   {
     id: 'aston-machan', en: 'Aston Machan', jp: 'アストンマーチャン', born: 2004, sex: 'female',
     coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: 'Bay per ja/en Wikipedia and en.netkeiba. In the JRA-VAN photo of her 2007 Sprinters win she is a bright reddish bay with a black mane and tail and black lower legs.' },
-    face: { type: 'star-stripe', notes: 'From the photo only (JRA-VAN memorial, 2007 Sprinters): a white star on the forehead runs into a narrow stripe down the face that widens slightly above the nostrils. It may reach between the nostrils (a snip), but the photo does not show that clearly.' },
-    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    face: { type: 'star-stripe-snip', notes: 'From the photo only (JRA-VAN memorial, 2007 Sprinters): a white star on the forehead runs into a narrow stripe down the face that widens slightly above the nostrils. It may reach between the nostrils (a snip), but the photo does not show that clearly.' },
+    legs: { LF: 'none', RF: 'none', LH: 'fetlock', RH: 'fetlock' },
     style: { primary: 'senko', secondary: 'nige', why: 'Graded-stakes first-corner positions (en.netkeiba) were 2/14, 5/14, 3/18, 3/16, 2/18 and 3/16 through the 2007 Kitakyushu Kinen, then 1-1 in the 2007 Sprinters, 2007 Swan S and 2008 Silk Road S. ja.wikipedia describes the Sprinters as a 逃げ from the inside rail with a 3-length lead.' },
     size: { weightKg: [460, 486], typicalKg: 486, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Race-day weights 460-486 kg. ja/en Wikipedia say her trainer added about 10 kg before the 2007 Sprinters, where she weighed 486 (+10).' },
-    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1a1a', pompom: null, bandages: { fore: '#f2f0ea', hind: '#f2f0ea' }, notes: 'Sprinters 2007 photo: no hood, blinkers or shadow roll; black bridle with a white browband trimmed in red. 2007 Oka Sho photos (Commons; one in the paddock, one on the course with the jockey up) show white leg bandages with a red top stripe; the hind pair is clear, the fore only in the paddock photo. Legs are not visible in the Sprinters photo.' },
+    gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1a1a', pompom: null, bandages: null, notes: 'Sprinters 2007 photo: no hood, blinkers or shadow roll; black bridle with a white browband trimmed in red. 2007 Oka Sho photos (Commons; one in the paddock, one on the course with the jockey up) show white leg bandages with a red top stripe; the hind pair is clear, the fore only in the paddock photo. Legs are not visible in the Sprinters photo.' },
     silks: { owner: '戸佐眞弓 (Mayumi Tosa)', desc: '白、海老襷、海老袖', colors: ['#ffffff', '#a73836'] },
     saddleNumber: 7, // 2007 Sprinters Stakes: gate 4, horse no. 7 (en.netkeiba; "7" saddle cloth and blue gate-4 cap in the JRA-VAN photo)
     career: '2007 Sprinters Stakes (G1, wire-to-wire on heavy ground, only the second 3yo filly to win it); 2006 Kokura Nisai S (G3), 2006 Fantasy S (G3), 2007 Fillies\' Revue (G2); 2nd 2006 Hanshin JF; died April 2008',
-    sources: [
-      'https://ja.wikipedia.org/wiki/アストンマーチャン',
-      'https://en.wikipedia.org/wiki/Aston_Machan',
-      'https://en.netkeiba.com/db/horse/2004103323/',
-      'https://db.netkeiba.com/horse/2004103323/',
-      'https://ja.wikipedia.org/wiki/戸佐眞弓',
-      'https://commons.wikimedia.org/wiki/File:Owner_Tosa_Mayumi.svg',
-      'https://ja.wikipedia.org/wiki/勝負服_(競馬)',
-      'https://jra-van.jp/fun/memorial/img/horses/l_2004103323.jpg',
-      'https://commons.wikimedia.org/wiki/File:Aston-machan.jpg',
-      'https://commons.wikimedia.org/wiki/File:Aston_Machan_in_Ohkasho_DSCN3626_20070408.JPG',
-    ],
-    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'gear.bandages.fore', 'size.withersCm', 'size.girthCm', 'size.cannonCm'],
+    sources: ['https://ja.wikipedia.org/wiki/アストンマーチャン', 'https://en.wikipedia.org/wiki/Aston_Machan', 'https://en.netkeiba.com/db/horse/2004103323/', 'https://db.netkeiba.com/horse/2004103323/', 'https://ja.wikipedia.org/wiki/戸佐眞弓', 'https://commons.wikimedia.org/wiki/File:Owner_Tosa_Mayumi.svg', 'https://ja.wikipedia.org/wiki/勝負服_(競馬)', 'https://jra-van.jp/fun/memorial/img/horses/l_2004103323.jpg', 'https://commons.wikimedia.org/wiki/File:Aston-machan.jpg', 'https://commons.wikimedia.org/wiki/File:Aston_Machan_in_Ohkasho_DSCN3626_20070408.JPG', 'https://db.netkeiba.com/photo/list.html?id=2004103323'],
+    uncertain: ['gear.bandages.fore', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'legs.RF (a pale striped hoof in bandaged photos; a white coronet is possible)'],
   },
   {
     id: 'daiwa-scarlet', en: 'Daiwa Scarlet', jp: 'ダイワスカーレット', born: 2004, sex: 'female',
     coat: { reg: '栗毛', key: 'kuri', greyness: null, tone: 0, mane: null, notes: 'Bright red chestnut in photos; mane and tail about the same shade as the body, the tail a little darker. 栗毛 per ja/en Wikipedia and en.netkeiba.' },
     face: { type: 'star-stripe', notes: 'From photos: in the 2007 Oka Sho winner photo (no hood) there is a large white star running into a stripe that narrows down the face. In hooded 2008 photos the narrow stripe shows below the hood and ends above the nostrils. No text source.' },
-    legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
+    legs: { LF: 'none', RF: 'none', LH: 'sock', RH: 'sock' },
     style: { primary: 'nige', secondary: 'senko', why: 'Position at the first corner/early call (netkeiba 通過): Tulip 1/16, Rose 1/14, Shuka 1/18, Eliza 1/13, Osaka Hai 1/11, Tenno Sho (Autumn) 1/17, Arima 2008 1/14 (1-1-1-1). Sat 2nd-3rd in Shinzan Kinen 3/10, Oka 3/18 and Arima 2007 2/15. ja Wikipedia calls her a front-runner who led out of natural early speed, not a classic all-out 逃げ type.' },
     size: { weightKg: [484, 498], typicalKg: 486, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'Race-day weights from netkeiba, 12 starts: 494, 488, 490, 488, 486, 490, 484, 484, 486, 498, 498, 494. G1 wins: Oka 486, Shuka 484, Eliza 484, Arima 2008 494.' },
     gear: { hood: true, hoodColors: { main: '#2f5fd8', trim: '#4fa6ee', ears: '#3a8fe6' }, blinkers: false, shadowRoll: false, bitLifter: false, bridle: '#1a1a1a', pompom: null, bandages: { fore: '#f2f0ea', hind: '#f2f0ea' }, notes: 'Royal-blue mesh menko with blue ear covers and light-blue piping round the eye holes. She wore it from the autumn of 2007 (Shuka Sho, Queen Elizabeth Cup, both Arima Kinens, 2008 Tenno Sho photos); there was no hood at the 2007 Oka Sho. White leg bandages with two navy stripes on all four legs in every race photo. Black bridle, plain noseband.' },
     silks: { owner: '大城敬三 (ダイワ)', desc: '青、白一本輪、白袖', colors: ['#2440c8', '#ffffff'] },
     saddleNumber: 13, // 2008 有馬記念, 8枠13番 (en.netkeiba race 200806050810, ja Wikipedia, JRA-VAN photo saddle cloth)
     career: 'Oka Sho 2007, Shuka Sho 2007, Queen Elizabeth II Cup 2007, Arima Kinen 2008 (led all the way; first filly or mare to win it in 37 years). 12 starts: 8 wins, 4 seconds, never out of the top two.',
-    sources: [
-      'https://ja.wikipedia.org/wiki/ダイワスカーレット',
-      'https://en.wikipedia.org/wiki/Daiwa_Scarlet',
-      'https://ja.wikipedia.org/wiki/大城敬三',
-      'https://commons.wikimedia.org/wiki/File:Owner_Ohshiro_Keizo.svg',
-      'https://en.netkeiba.com/db/horse/2004103198/',
-      'https://db.netkeiba.com/horse/result/2004103198/',
-      'https://en.netkeiba.com/db/race/200806050810/',
-      'https://jra-van.jp/fun/memorial/img/horses/l_2004103198.jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/photo/2008-1.jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/photo/2007-1.jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2007-1.jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/photo/2007-1.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/f/ff/Daiwa-Scarlet_20081102tokyo11race.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/e/eb/Horseracing_arima-kinen_2007.jpg',
-    ],
-    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'size.build', 'size.typicalKg', 'gear.hoodColors', 'gear.bitLifter', 'coat.tone'],
+    sources: ['https://ja.wikipedia.org/wiki/ダイワスカーレット', 'https://en.wikipedia.org/wiki/Daiwa_Scarlet', 'https://ja.wikipedia.org/wiki/大城敬三', 'https://commons.wikimedia.org/wiki/File:Owner_Ohshiro_Keizo.svg', 'https://en.netkeiba.com/db/horse/2004103198/', 'https://db.netkeiba.com/horse/result/2004103198/', 'https://en.netkeiba.com/db/race/200806050810/', 'https://jra-van.jp/fun/memorial/img/horses/l_2004103198.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/arima/result/photo/2008-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/ouka/result/photo/2007-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2007-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/photo/2007-1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Daiwa-Scarlet_20081102tokyo11race.jpg', 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Horseracing_arima-kinen_2007.jpg', 'https://uma-furusato.com/archives/011/202103/8544c22a73e118c2c77a238ce627b0840fde361286638fcc42ca727a2bb04b0b.jpg', 'https://db.netkeiba.com/photo/list.html?id=2004103198'],
+    uncertain: ['size.build', 'size.typicalKg', 'gear.hoodColors', 'gear.bitLifter', 'coat.tone', 'legs.RH height (two checkers read sock, one fetlock)'],
   },
   {
     id: 'dream-journey', en: 'Dream Journey', jp: 'ドリームジャーニー', born: 2004, sex: 'male',
@@ -1586,16 +1507,8 @@ window.HORSES = [
     silks: { owner: 'サンデーレーシング (Sunday Racing)', desc: '黒、赤十字襷、袖黄縦縞', colors: ['#111111', '#d22630', '#f5c800'] },
     saddleNumber: 9, // 馬番 9 in BOTH signature wins: 2009 Takarazuka Kinen (枠6) and 2009 Arima Kinen (枠5). Seen on the saddle cloth in both photos and in Wikipedia/netkeiba.
     career: '2006 Asahi Hai Futurity Stakes, 2009 Takarazuka Kinen, 2009 Arima Kinen. Best 2yo colt 2006, best older male 2009. 9 wins from 31 starts.',
-    sources: [
-      'https://ja.wikipedia.org/wiki/ドリームジャーニー',
-      'https://en.netkeiba.com/db/horse/2004102753/',
-      'https://db.netkeiba.com/horse/result/2004102753/',
-      'https://ja.wikipedia.org/wiki/サンデーレーシング',
-      'https://jra-van.jp/fun/memorial/img/horses/l_2004102753.jpg',
-      'https://commons.wikimedia.org/wiki/File:The_50th_Takarazuka_Kinen_20090628.jpg',
-      'https://commons.wikimedia.org/wiki/File:Dream_Journey_20070527P1.jpg',
-    ],
-    uncertain: ['face.type', 'face.notes', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'size.weightKg'],
+    sources: ['https://ja.wikipedia.org/wiki/ドリームジャーニー', 'https://en.netkeiba.com/db/horse/2004102753/', 'https://db.netkeiba.com/horse/result/2004102753/', 'https://ja.wikipedia.org/wiki/サンデーレーシング', 'https://jra-van.jp/fun/memorial/img/horses/l_2004102753.jpg', 'https://commons.wikimedia.org/wiki/File:The_50th_Takarazuka_Kinen_20090628.jpg', 'https://commons.wikimedia.org/wiki/File:Dream_Journey_20070527P1.jpg', 'https://db.netkeiba.com/photo/list.html?id=2004102753'],
+    uncertain: ['size.withersCm', 'size.girthCm', 'size.cannonCm', 'size.weightKg'],
   },
   {
     id: 'furioso', en: 'Furioso', jp: 'フリオーソ', born: 2004, sex: 'male', // 牡, Brian's Time x ファーザ, trained by 川島正行 (Funabashi)
@@ -1608,18 +1521,8 @@ window.HORSES = [
     silks: { owner: '戸崎圭太 (NAR jockey silks / 騎手服 worn on Furioso; owner ダーレー・ジャパン・ファーム)', desc: '青、赤星散', colors: ['#2b4cc0', '#d0202e'] },
     saddleNumber: 1, // 2008 帝王賞 (JpnI, Ohi, 25 Jun 2008): 1枠1番 of 13 runners, won wire-to-wire 1-1-1-1, 507 kg (en.netkeiba race 200844062511). He was #4 in both the 2010 Teio Sho and the 2011 Kawasaki Kinen; he was 2nd in the 2010 Kawasaki Kinen
     career: 'JpnI wins: 全日本2歳優駿 2006, ジャパンダートダービー 2007, 帝王賞 2008 & 2010, 川崎記念 2011, かしわ記念 2011. 39 starts, 11 wins; NAR earnings record ¥845,446,000.',
-    sources: [
-      'https://ja.wikipedia.org/wiki/フリオーソ_(2004年生の競走馬)',
-      'https://en.netkeiba.com/db/horse/result/2004106867/',
-      'https://en.netkeiba.com/db/race/200844062511/',
-      'https://ja.wikipedia.org/wiki/戸崎圭太',
-      'https://ja.wikipedia.org/wiki/ダーレー・ジャパン',
-      'https://commons.wikimedia.org/wiki/File:Furioso-2008-11-3.jpg',
-      'https://commons.wikimedia.org/wiki/File:Furioso_20071229P1.jpg',
-      'https://commons.wikimedia.org/wiki/File:Furioso_20100923R1.jpg',
-      'https://db.netkeiba.com/photo/list.html?id=2004106867',
-    ],
-    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'gear.hoodColors', 'gear.blinkers', 'gear.bridle', 'gear.bandages', 'size.build', 'silks.desc'],
+    sources: ['https://ja.wikipedia.org/wiki/フリオーソ_(2004年生の競走馬)', 'https://en.netkeiba.com/db/horse/result/2004106867/', 'https://en.netkeiba.com/db/race/200844062511/', 'https://ja.wikipedia.org/wiki/戸崎圭太', 'https://ja.wikipedia.org/wiki/ダーレー・ジャパン', 'https://commons.wikimedia.org/wiki/File:Furioso-2008-11-3.jpg', 'https://commons.wikimedia.org/wiki/File:Furioso_20071229P1.jpg', 'https://commons.wikimedia.org/wiki/File:Furioso_20100923R1.jpg', 'https://db.netkeiba.com/photo/list.html?id=2004106867'],
+    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'gear.hoodColors', 'gear.blinkers', 'gear.bridle', 'gear.bandages', 'size.build'],
   },
   // ---- Batch 14 (2026-10): #108–115, foaled 2004–06 ----
   {
@@ -1633,53 +1536,27 @@ window.HORSES = [
     silks: { owner: '谷水雄三 (Yuzo Tanimizu, タニノ)', desc: '黄、水色襷', colors: ['#f5d90f', '#3cb4e6'] },
     saddleNumber: 3, // 2007 東京優駿 (Japanese Derby): 2枠3番 (ja.wikipedia; "3" on the saddle cloth in the JRA-VAN, JRA gallery and Commons Derby photos)
     career: 'G1 wins: Hanshin Juvenile Fillies 2006, Tokyo Yushun (Japanese Derby) 2007, Yasuda Kinen 2008, Tenno Sho (Autumn) 2008, Victoria Mile 2009, Yasuda Kinen 2009, Japan Cup 2009. 26 starts, 10 wins. JRA Hall of Fame (顕彰馬) 2011.',
-    sources: [
-      'https://ja.wikipedia.org/wiki/ウオッカ_(競走馬)',
-      'https://ja.wikipedia.org/wiki/谷水雄三',
-      'https://commons.wikimedia.org/wiki/File:Owner_Tanimizu_Yuzo.svg',
-      'https://en.netkeiba.com/db/horse/result/2004104258/',
-      'https://db.netkeiba.com/horse/result/2004104258/',
-      'https://www.jra.go.jp/gallery/dendo/horse29/',
-      'https://www.jra.go.jp/gallery/dendo/horse29/img/pic_gallery_1.jpg',
-      'https://www.jra.go.jp/gallery/dendo/horse29/img/pic_gallery_2.jpg',
-      'https://www.jra.go.jp/gallery/dendo/horse29/img/pic_gallery_3.jpg',
-      'https://www.jra.go.jp/gallery/dendo/horse29/img/pic_gallery_8.jpg',
-      'https://jra-van.jp/fun/memorial/img/horses/l_2004104258.jpg',
-      'https://commons.wikimedia.org/wiki/File:Vodka(horse)_20070527R1.jpg',
-      'https://commons.wikimedia.org/wiki/File:Vodka(horse)_20070527R3.jpg',
-      'https://commons.wikimedia.org/wiki/File:Vodka(horse)_20070608a.jpg',
-      'https://commons.wikimedia.org/wiki/File:The_4th_Victoria_Mile_20090517.jpg',
-      'https://commons.wikimedia.org/wiki/File:Vodka_DSCN2884_20061112.JPG',
-    ],
-    uncertain: ['coat.tone', 'face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.primary', 'size.weightKg', 'size.typicalKg', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'silks.colors'],
+    sources: ['https://ja.wikipedia.org/wiki/ウオッカ_(競走馬)', 'https://ja.wikipedia.org/wiki/谷水雄三', 'https://commons.wikimedia.org/wiki/File:Owner_Tanimizu_Yuzo.svg', 'https://en.netkeiba.com/db/horse/result/2004104258/', 'https://db.netkeiba.com/horse/result/2004104258/', 'https://www.jra.go.jp/gallery/dendo/horse29/', 'https://www.jra.go.jp/gallery/dendo/horse29/img/pic_gallery_1.jpg', 'https://www.jra.go.jp/gallery/dendo/horse29/img/pic_gallery_2.jpg', 'https://www.jra.go.jp/gallery/dendo/horse29/img/pic_gallery_3.jpg', 'https://www.jra.go.jp/gallery/dendo/horse29/img/pic_gallery_8.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_2004104258.jpg', 'https://commons.wikimedia.org/wiki/File:Vodka(horse)_20070527R1.jpg', 'https://commons.wikimedia.org/wiki/File:Vodka(horse)_20070527R3.jpg', 'https://commons.wikimedia.org/wiki/File:Vodka(horse)_20070608a.jpg', 'https://commons.wikimedia.org/wiki/File:The_4th_Victoria_Mile_20090517.jpg', 'https://commons.wikimedia.org/wiki/File:Vodka_DSCN2884_20061112.JPG', 'https://db.netkeiba.com/photo/list.html?id=2004104258'],
+    uncertain: ['coat.tone', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.primary', 'size.weightKg', 'size.typicalKg', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'silks.colors'],
   },
   {
     id: 'casino-drive', en: 'Casino Drive', jp: 'カジノドライヴ', born: 2005, sex: 'male', // 牡, Mineshaft x Better Than Honour, foaled in Kentucky (bred by Shell Bloodstock), trained by 藤沢和雄 (Miho). Died 5 Aug 2019
     coat: { reg: '栗毛', key: 'kuri', greyness: null, tone: 0, mane: null, notes: 'ja.wikipedia infobox 栗毛 and en.netkeiba "Chestnut" (JBIS not fetched). Photo (2008 Japan Cup Dirt paddock, Commons): bright copper-red chestnut. Mane and tail are about the same shade as the body, and the tail ends are a little lighter.' },
     face: { type: 'blaze', notes: 'photo only (Commons, 2008 JCD paddock, left profile): white runs from the forehead down the front of the face to the muzzle between the nostrils. The width cannot be seen side-on, so it may be a star-stripe-snip instead. JRA 2009 February S photos also show a white line down the face. No text source.' },
-    legs: { LF: 'sock', RF: 'none', LH: 'none', RH: 'sock' }, // photo: a white sock to about mid-cannon on one fore and just above the fetlock on one hind; LF and RH (a diagonal pair) from the stride and depth cues
+    legs: { LF: 'sock', RF: 'none', LH: 'none', RH: 'fetlock' }, // photo: a white sock to about mid-cannon on one fore and just above the fetlock on one hind; LF and RH (a diagonal pair) from the stride and depth cues
     style: { primary: 'senko', secondary: 'nige', why: 'en.netkeiba 通過: debut 1-1-1-1 of 13, 2008 JCD 5-4-3-4 of 15, Alexandrite S 2-2-2-2 of 11, 2009 February S 2-2 of 16, Nigawa S 2-2-2-2 of 14, Akhalteke S 4-2 of 16, Tsubasa Sho 5-5 of 16. ja.wiki: JCD 「道中好位を進み」, February S 「手ごたえ良く先頭へ躍り出る」. Peter Pan running position not found.' },
     size: { weightKg: [508, 536], typicalKg: 520, withersCm: null, girthCm: null, cannonCm: null, build: 'heavy', notes: 'Race-day 馬体重 from en.netkeiba (Japan only; US/UAE races have no weights): debut 522, 2008 JCD 530, Alexandrite S 508 (-22), 2009 February S 518, 2011: 532, 536, 534. There is no weight for his signature US win, so typicalKg is about the middle of his Japanese runs. The paddock photo shows a big, long-bodied colt. No measurements found.' },
     gear: { hood: false, hoodColors: null, blinkers: false, shadowRoll: '#1c1a19', bitLifter: false, bridle: '#1a1714', pompom: null, bandages: null, notes: '2008 Japan Cup Dirt paddock photo (Commons): no menko, ears bare, black bridle, and a thick black sheepskin noseband (shadow roll) across the nose. No blinkers, legs unbandaged. The JRA 2009 February S finish photos are too small to confirm gear in the race. The ja.wiki citation "虎模様のメンコ" is a netkeiba article about trainer 藤沢和雄 and does not tie a tiger hood to this horse.' },
     silks: { owner: '山本英俊', desc: '水色、袖白一本輪', colors: ['#7cc7ea', '#ffffff'] },
     saddleNumber: 1, // 2008 Peter Pan Stakes (G2, Belmont Park, 10 May 2008): 馬番 1 of 9, won by 5¾ lengths under K. Desormeaux (ja.wikipedia race table; Equibase not checked). In Japan: 6枠11番 in the 2008 JCD (6th), 7枠14番 in the 2009 February S (2nd)
     career: 'Peter Pan Stakes (G2, Belmont Park) 2008 by 5¾ lengths, the first US graded dirt stakes win by a Japan-trained horse. Scratched from the 2008 Belmont Stakes on race morning (stone bruise, left hind). 2nd in the 2009 February Stakes. 11 starts, 4 wins (Japan 7-2, USA 3-2, UAE 1-0).',
-    sources: [
-      'https://ja.wikipedia.org/wiki/カジノドライヴ',
-      'https://en.wikipedia.org/wiki/Casino_Drive',
-      'https://en.netkeiba.com/db/horse/2005110112/',
-      'https://en.netkeiba.com/db/horse/result/2005110112/',
-      'https://ja.wikipedia.org/wiki/山本英俊',
-      'https://commons.wikimedia.org/wiki/File:Casino_Drive.jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/feb/result/photo/2009-1.jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/feb/result/photo/2009-2.jpg',
-    ],
-    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'gear.shadowRoll', 'gear.bandages', 'gear.bridle', 'size.typicalKg', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'saddleNumber', 'silks.colors', 'style.why'],
+    sources: ['https://ja.wikipedia.org/wiki/カジノドライヴ', 'https://en.wikipedia.org/wiki/Casino_Drive', 'https://en.netkeiba.com/db/horse/2005110112/', 'https://en.netkeiba.com/db/horse/result/2005110112/', 'https://ja.wikipedia.org/wiki/山本英俊', 'https://commons.wikimedia.org/wiki/File:Casino_Drive.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/feb/result/photo/2009-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/feb/result/photo/2009-2.jpg', 'https://db.netkeiba.com/photo/list.html?id=2005110112', 'https://static01.nyt.com/images/blogs/therail/CASINODRIVE533.JPG'],
+    uncertain: ['gear.bandages', 'gear.bridle', 'size.typicalKg', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'silks.colors', 'style.why'],
   },
   {
     id: 'espoir-city', en: 'Espoir City', jp: 'エスポワールシチー', born: 2005, sex: 'male', // 牡, Gold Allure x エミネントシチー, trained by 安達昭夫 (Ritto), bred by 幾千世牧場
     coat: { reg: '栗毛', key: 'kuri', greyness: null, tone: 0, mane: null, notes: '栗毛 per ja.wikipedia and en.netkeiba ("chestnut"). JBIS was not fetched. Photos: medium red chestnut. He looks darker and liver-toned when sweated up (2011 Miyako S photo). Forelock and mane are a shade darker than the body. The tail is red at the dock and darker toward the end.' },
-    face: { type: 'star-stripe', notes: 'From photos only: a white star high on the forehead runs into a narrow, unbroken stripe down the nasal bone to about nostril level (2013 JBC Sprint post-race front view, 2009 JCD winner photo, and below the hood in the 2013 JCD paddock photo). It may end in a tiny snip. No text source.' },
+    face: { type: 'star-stripe-snip', notes: 'From photos only: a white star high on the forehead runs into a narrow, unbroken stripe down the nasal bone to about nostril level (2013 JBC Sprint post-race front view, 2009 JCD winner photo, and below the hood in the 2013 JCD paddock photo). It may end in a tiny snip. No text source.' },
     legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
     style: { primary: 'senko', secondary: 'nige', why: 'en.netkeiba 通過: led at the first call in the 2009 JCD (1-1-1-1, 16 runners) and all three Nambu Hai wins (1-1). He was 2nd-3rd in most other graded races: 2010 Feb S 2-2/15, 2010 Kashiwa 3-3-3-3/14, 2012 Kashiwa 2-2-2-1/13, 2013 JBC Sprint 3-3-3-1/12, 2011 Miyako 2-2-2-2. ja.wiki calls him a front-runner (逃げ), but the trainer says he is "not merely a 逃げ馬".' },
     size: { weightKg: [464, 511], typicalKg: 500, withersCm: null, girthCm: null, cannonCm: null, build: 'heavy', notes: 'Race-day weights from en.netkeiba, 40 starts. He was 464-490 kg as a 3yo on turf (lightest 464 in Jun 2008), then 478-511 kg on dirt. Big wins: 2009 JCD 502, 2010 Feb S 498, Kashiwa 2009/2010/2012 486/496/495, Nambu Hai 2009/2012/2013 500/497/500, 2013 JBC Sprint 506. No measurements were found.' },
@@ -1687,27 +1564,13 @@ window.HORSES = [
     silks: { owner: '友駿ホースクラブ (Yushun Horse Club)', desc: '青、赤袖、白三本輪', colors: ['#2440c8', '#d7192f', '#ffffff'] }, // the three white hoops run across the body and the sleeves (the notation lists the sleeves first)
     saddleNumber: 1, // 2009 ジャパンカップダート (Hanshin, 6 Dec 2009): 1枠1番, won wire-to-wire 1-1-1-1 (en.netkeiba; saddle cloth "1" in the Commons winner photo). He was #4 (2枠4番) in the 2010 February Stakes.
     career: 'Japan Cup Dirt 2009 (first 4yo winner), February Stakes 2010; JpnI Kashiwa Kinen 2009/2010/2012, Mile Championship Nambu Hai 2009/2012/2013, JBC Sprint 2013. 40 starts, 17 wins.',
-    sources: [
-      'https://ja.wikipedia.org/wiki/エスポワールシチー',
-      'https://en.wikipedia.org/wiki/Espoir_City',
-      'https://en.netkeiba.com/db/horse/result/2005102837/',
-      'https://ja.wikipedia.org/wiki/友駿ホースクラブ',
-      'https://commons.wikimedia.org/wiki/File:Owner_Yushun_Horse_Club_002.svg',
-      'https://commons.wikimedia.org/wiki/File:Espoir-City-091206.jpg',
-      'https://commons.wikimedia.org/wiki/File:Espoir_City_20090505P1.jpg',
-      'https://commons.wikimedia.org/wiki/File:The_21st_Kashiwa_Kinen_20090505.jpg',
-      'https://commons.wikimedia.org/wiki/File:Espoir-City20111106.jpg',
-      'https://commons.wikimedia.org/wiki/File:Espoir-City_IMG_1801-2_20131201.JPG',
-      'https://commons.wikimedia.org/wiki/File:Espoir-city_JBC-Classic_2013(IMG1).jpg',
-      'https://commons.wikimedia.org/wiki/File:Espoir-city_JBC-Classic_2013(IMG2).jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/feb/result/photo/2010-1.jpg',
-    ],
-    uncertain: ['coat.reg', 'face.type', 'face.notes', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'style.primary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hood', 'gear.bitLifter', 'gear.bridle', 'silks.colors'],
+    sources: ['https://ja.wikipedia.org/wiki/エスポワールシチー', 'https://en.wikipedia.org/wiki/Espoir_City', 'https://en.netkeiba.com/db/horse/result/2005102837/', 'https://ja.wikipedia.org/wiki/友駿ホースクラブ', 'https://commons.wikimedia.org/wiki/File:Owner_Yushun_Horse_Club_002.svg', 'https://commons.wikimedia.org/wiki/File:Espoir-City-091206.jpg', 'https://commons.wikimedia.org/wiki/File:Espoir_City_20090505P1.jpg', 'https://commons.wikimedia.org/wiki/File:The_21st_Kashiwa_Kinen_20090505.jpg', 'https://commons.wikimedia.org/wiki/File:Espoir-City20111106.jpg', 'https://commons.wikimedia.org/wiki/File:Espoir-City_IMG_1801-2_20131201.JPG', 'https://commons.wikimedia.org/wiki/File:Espoir-city_JBC-Classic_2013(IMG1).jpg', 'https://commons.wikimedia.org/wiki/File:Espoir-city_JBC-Classic_2013(IMG2).jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/feb/result/photo/2010-1.jpg', 'https://db.netkeiba.com/photo/list.html?id=2005102837', 'https://db.netkeiba.com/horse/result/2005102837/'],
+    uncertain: ['coat.reg', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.hood', 'gear.bitLifter', 'gear.bridle', 'silks.colors'],
   },
   {
     id: 'smart-falcon', en: 'Smart Falcon', jp: 'スマートファルコン', born: 2005, sex: 'male', // 牡, born 4 Apr 2005, Gold Allure x ケイシュウハーブ, bred by 岡田スタッド, trained by 畠山吉宏 then 小崎憲 (Ritto)
     coat: { reg: '栗毛', key: 'kuri', greyness: null, tone: 0, mane: null, notes: 'ja.wikipedia infobox says 栗毛; en.netkeiba and en.wikipedia say "Chestnut" (JBIS not fetched). Photos: bright red-gold chestnut. Mane and tail are about the same red as the body (2008 Satsuki Sho paddock, 2008 JBC Sprint paddock).' },
-    face: { type: 'star', notes: 'photo: a small, slightly long white star high on the forehead under the browband in the 2008 JBC Sprint warm-up photo (Commons DSCN5551). No other white shows on the side views. No text source.' },
+    face: { type: 'star-stripe-snip', notes: 'photo: a small, slightly long white star high on the forehead under the browband in the 2008 JBC Sprint warm-up photo (Commons DSCN5551). No other white shows on the side views. No text source.' },
     legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
     style: { primary: 'nige', secondary: 'senko', why: 'netkeiba 通過 shows 1-1-1-1 in the 2010 and 2011 Tokyo Daishoten, the 2011 Teio Sho, the 2011 JBC Classic, the 2012 Kawasaki Kinen, the 2011 Diolite Kinen and others. He sat 2nd-4th in the 2010 Teio Sho (2-3-3-3), the 2009 Mercury Cup (3-3-3-3) and the 2010 Nippon TV Hai (4-4-3-3). He was held up only in early JRA turf races. ja.wiki: 「スタートから積極的にハナを奪い…逃げ切り勝ち」, 「好発したフリオーソからハナを奪うと」.' },
     size: { weightKg: [476, 513], typicalKg: 506, withersCm: null, girthCm: null, cannonCm: null, build: 'heavy', notes: 'Race-day 馬体重 from en.netkeiba: lightest 476 kg (2008 Satsuki Sho, turf), 484-508 kg in 2008-09, then 499-513 kg. Weights in the big wins: 2010 Tokyo Daishoten 502, 2011 Teio Sho 507, 2011 JBC Classic 510, 2011 Tokyo Daishoten 513 (his heaviest), 2012 Kawasaki Kinen 506. No height or girth measurements were found.' },
@@ -1715,23 +1578,8 @@ window.HORSES = [
     silks: { owner: '大川徹 (Toru Okawa)', desc: '桃、黒元禄', colors: ['#ec5a9e', '#141414'] }, // the notation is read from the netkeiba colours image (pink, a lattice of black diamonds); the sleeves may carry a black hoop
     saddleNumber: 13, // 2010 東京大賞典 (Ohi, 29 Dec 2010): 8枠13番, won wire-to-wire 1-1-1-1 in a Japanese record 2:00.4, 502 kg (en.netkeiba race 201044122910). The 13 is on the saddle cloth in the Commons finish photo. He was 12 in the 2011 Tokyo Daishoten.
     career: 'JpnI/GI wins: JBC Classic 2010 & 2011, Tokyo Daishoten 2010 (Japanese record 2:00.4) & 2011, Teio Sho 2011, Kawasaki Kinen 2012. 34 starts: 23 wins, 4 seconds, 1 third. Ran 10th in the 2012 Dubai World Cup.',
-    sources: [
-      'https://ja.wikipedia.org/wiki/スマートファルコン',
-      'https://en.wikipedia.org/wiki/Smart_Falcon',
-      'https://en.netkeiba.com/db/horse/2005100097/',
-      'https://en.netkeiba.com/db/horse/result/2005100097/',
-      'https://en.netkeiba.com/db/race/201044122910/',
-      'https://en.netkeiba.com/db/race/201144122910/',
-      'https://db.netkeiba.com/horse/2005100097/',
-      'https://cdnv2.netkeiba.com/img/db/colours/007803.gif',
-      'https://commons.wikimedia.org/wiki/File:The_56th_Tokyo_Daishoten_20101229.jpg',
-      'https://commons.wikimedia.org/wiki/File:Smart_Falcon.jpg',
-      'https://commons.wikimedia.org/wiki/File:Smart_Falcon_JBC_Sonoda_DSCN5551_20081103.JPG',
-      'https://commons.wikimedia.org/wiki/File:Smart_Falcon_20080420P1.jpg',
-      'https://commons.wikimedia.org/wiki/File:The_13th_Mercury_Cup_20090720.jpg',
-      'https://commons.wikimedia.org/wiki/File:Example_of_Horse_Racing_Colours_of_Japan_21.svg',
-    ],
-    uncertain: ['face.type', 'face.notes', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'silks.desc', 'silks.colors', 'size.build', 'size.typicalKg', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bandages', 'gear.bitLifter'],
+    sources: ['https://ja.wikipedia.org/wiki/スマートファルコン', 'https://en.wikipedia.org/wiki/Smart_Falcon', 'https://en.netkeiba.com/db/horse/2005100097/', 'https://en.netkeiba.com/db/horse/result/2005100097/', 'https://en.netkeiba.com/db/race/201044122910/', 'https://en.netkeiba.com/db/race/201144122910/', 'https://db.netkeiba.com/horse/2005100097/', 'https://cdnv2.netkeiba.com/img/db/colours/007803.gif', 'https://commons.wikimedia.org/wiki/File:The_56th_Tokyo_Daishoten_20101229.jpg', 'https://commons.wikimedia.org/wiki/File:Smart_Falcon.jpg', 'https://commons.wikimedia.org/wiki/File:Smart_Falcon_JBC_Sonoda_DSCN5551_20081103.JPG', 'https://commons.wikimedia.org/wiki/File:Smart_Falcon_20080420P1.jpg', 'https://commons.wikimedia.org/wiki/File:The_13th_Mercury_Cup_20090720.jpg', 'https://commons.wikimedia.org/wiki/File:Example_of_Horse_Racing_Colours_of_Japan_21.svg', 'https://db.netkeiba.com/photo/list.html?id=2005100097'],
+    uncertain: ['silks.colors', 'size.build', 'size.typicalKg', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bandages', 'gear.bitLifter', 'face.type (the stripe is faint and broken; one checker read star-snip)'],
   },
   {
     id: 'buena-vista', en: 'Buena Vista', jp: 'ブエナビスタ', born: 2006, sex: 'female', // 牝, Special Week x ビワハイジ, trained by 松田博資 (Ritto), bred by ノーザンファーム
@@ -1744,22 +1592,8 @@ window.HORSES = [
     silks: { owner: 'サンデーレーシング (Sunday Racing)', desc: '黒、赤十字襷、袖黄縦縞', colors: ['#111111', '#d22630', '#f5c800'] },
     saddleNumber: 2, // 2011 ジャパンカップ, 1枠2番 of 16 (en.netkeiba race 201105050810; "2" is on the saddle cloth in Commons Buena-Vista-horse20111127.jpg)
     career: 'Hanshin Juvenile Fillies 2008, Oka Sho 2009, Yushun Himba (Oaks) 2009, Victoria Mile 2010, Tenno Sho (Autumn) 2010, Japan Cup 2011. 23 starts, 9 wins (2 starts in Dubai). Career earnings ¥1,478,869,700, the most by any mare when she retired.',
-    sources: [
-      'https://ja.wikipedia.org/wiki/ブエナビスタ_(競走馬)',
-      'https://en.netkeiba.com/db/horse/result/2006103319/',
-      'https://en.netkeiba.com/db/race/201105050810/',
-      'https://ja.wikipedia.org/wiki/サンデーレーシング',
-      'https://commons.wikimedia.org/wiki/Category:Buena_Vista_(horse)',
-      'https://upload.wikimedia.org/wikipedia/commons/4/4a/Buena-Vista-horse20111127.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/6/66/Buena-Vista-horse20100220.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/8/88/Buena_Vista_(horse).jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/3/3c/Buena_Vista_horse.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/1/14/The_69th_Oka_Sho_20090412.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/b/bd/The_70th_Yushun_Himba_20090524R1.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/d/da/34th_Queen_Elizabeth_II_Cup.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/4/4c/Buena-Vista-horse20111225.jpg',
-    ],
-    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'gear.bridle', 'gear.bandages', 'gear.shadowRoll', 'size.typicalKg', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'size.weightKg'],
+    sources: ['https://ja.wikipedia.org/wiki/ブエナビスタ_(競走馬)', 'https://en.netkeiba.com/db/horse/result/2006103319/', 'https://en.netkeiba.com/db/race/201105050810/', 'https://ja.wikipedia.org/wiki/サンデーレーシング', 'https://commons.wikimedia.org/wiki/Category:Buena_Vista_(horse)', 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Buena-Vista-horse20111127.jpg', 'https://upload.wikimedia.org/wikipedia/commons/6/66/Buena-Vista-horse20100220.jpg', 'https://upload.wikimedia.org/wikipedia/commons/8/88/Buena_Vista_(horse).jpg', 'https://upload.wikimedia.org/wikipedia/commons/3/3c/Buena_Vista_horse.jpg', 'https://upload.wikimedia.org/wikipedia/commons/1/14/The_69th_Oka_Sho_20090412.jpg', 'https://upload.wikimedia.org/wikipedia/commons/b/bd/The_70th_Yushun_Himba_20090524R1.jpg', 'https://upload.wikimedia.org/wikipedia/commons/d/da/34th_Queen_Elizabeth_II_Cup.jpg', 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Buena-Vista-horse20111225.jpg', 'https://db.netkeiba.com/photo/list.html?id=2006103319'],
+    uncertain: ['face.type', 'legs.LH', 'gear.bridle', 'gear.bandages', 'gear.shadowRoll', 'size.typicalKg', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'size.weightKg'],
   },
   {
     id: 'nakayama-festa', en: 'Nakayama Festa', jp: 'ナカヤマフェスタ', born: 2006, sex: 'male', // 牡, Stay Gold line, bred by 新井牧場, trained by 二ノ宮敬宇 (Miho)
@@ -1772,20 +1606,13 @@ window.HORSES = [
     silks: { owner: '和泉信一 (ナカヤマ); owned by his daughter 和泉信子 until she died in late 2009', desc: '赤、白二本輪、青袖', colors: ['#d22630', '#ffffff', '#2450c0'] },
     saddleNumber: 17, // 2010 宝塚記念 (G1, Hanshin, 27 Jun 2010): 8枠17番 of 17, 8th favourite, won (ja.wikipedia, en.netkeiba, "17" on the saddle cloth in the Commons and JRA-VAN photos)
     career: 'Takarazuka Kinen 2010 (G1, 8th favourite, beat Buena Vista). Also won the St Lite Kinen 2009 (G2) and the Tokyo Sports Hai Nisai S 2008 (G3). 2nd in the 2010 Prix de l\'Arc de Triomphe, beaten a head by Workforce, and 2nd in the 2010 Prix Foy. JRA Award, best older male horse 2010. 15 starts, 5 wins.',
-    sources: [
-      'https://ja.wikipedia.org/wiki/ナカヤマフェスタ',
-      'https://en.netkeiba.com/db/horse/result/2006102424/',
-      'https://db.netkeiba.com/horse/result/2006102424/',
-      'https://ja.wikipedia.org/wiki/和泉信一',
-      'https://jra-van.jp/fun/memorial/img/horses/l_2006102424.jpg',
-      'https://commons.wikimedia.org/wiki/File:Nakayama-Festa20100627(1).jpg',
-    ],
-    uncertain: ['face.type', 'face.notes', 'coat.tone', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'style.secondary', 'silks.colors'],
+    sources: ['https://ja.wikipedia.org/wiki/ナカヤマフェスタ', 'https://en.netkeiba.com/db/horse/result/2006102424/', 'https://db.netkeiba.com/horse/result/2006102424/', 'https://ja.wikipedia.org/wiki/和泉信一', 'https://jra-van.jp/fun/memorial/img/horses/l_2006102424.jpg', 'https://commons.wikimedia.org/wiki/File:Nakayama-Festa20100627(1).jpg', 'https://db.netkeiba.com/photo/list.html?id=2006102424'],
+    uncertain: ['coat.tone', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'style.secondary', 'silks.colors'],
   },
   {
     id: 'red-desire', en: 'Red Desire', jp: 'レッドディザイア', born: 2006, sex: 'female', // 牝, マンハッタンカフェ x グレイトサンライズ, bred by 社台ファーム, trained by 松永幹夫 (Ritto)
     coat: { reg: '鹿毛', key: 'kage', greyness: null, tone: 0, mane: null, notes: 'Registered 鹿毛 (ja.wikipedia infobox; en.wikipedia and en.netkeiba "Bay"; JBIS returned 403). Photos: an ordinary mid bay with a reddish-brown body, black mane and tail, and black lower legs (JRA-VAN 2009 Shuka Sho photo).' },
-    face: { type: 'none', notes: 'photo: in the JRA-VAN 2009 Shuka Sho photo (near side, three-quarter view) the face is plain dark brown with no star, stripe or snip showing. The forehead is only partly visible, so a small star cannot be ruled out. She raced without a hood. No text source.' },
+    face: { type: 'star', notes: 'photo: in the JRA-VAN 2009 Shuka Sho photo (near side, three-quarter view) the face is plain dark brown with no star, stripe or snip showing. The forehead is only partly visible, so a small star cannot be ruled out. She raced without a hood. No text source.' },
     legs: { LF: 'none', RF: 'none', LH: 'none', RH: 'none' },
     style: { primary: 'sashi', secondary: 'oikomi', why: 'netkeiba 通過, first call / field: Oka Sho 12/18, Oaks 9/17, Rose S 11/18, Shuka Sho 8/18 (8-8-5-5), Japan Cup 9/18, Victoria Mile 9/18, Arima 2010 15/15, Sapporo Kinen 2011 11/13. ja.wiki: Oaks「中団でレースを進め」, JC「中団に控え、直線で一気に先団を飲み込み」, Oka「後方待機から直線抜け出す」, Al Maktoum R3「後方追走から…大外から強襲」.' },
     size: { weightKg: [476, 494], typicalKg: 480, withersCm: null, girthCm: null, cannonCm: null, build: 'average', notes: 'netkeiba race-day 馬体重 (JRA starts only): 476 (debut), 476 (Elfin S), 478 (Oka), 484 (Oaks), 494 (Rose S), 480 (Shuka Sho win, -14), 478 (JC), 476 (VM), 478 (Arima 2010), 484 (Sapporo Kinen 2011). ja.wiki table range is 476-494. Weights for the Dubai and US starts are not listed. No measurements were found.' },
@@ -1793,20 +1620,8 @@ window.HORSES = [
     silks: { owner: '東京ホースレーシング (Tokyo Horse Racing, "Red" club horses)', desc: '赤、白星散、袖白一本輪', colors: ['#d22630', '#ffffff'] },
     saddleNumber: 5, // 2009 秋華賞 (Kyoto, 18 Oct 2009): 3枠5番, won by a nose from Buena Vista under 四位洋文. Confirmed by the JRA result page, en.netkeiba and the "5 レッドディザイア" saddle cloth in the JRA-VAN photo
     career: 'Shuka Sho 2009 (beat Buena Vista by a nose), Al Maktoum Challenge Round 3 (G2, Meydan) 2010. 2nd in the 2009 Oka Sho and Yushun Himba, 3rd in the 2009 Japan Cup. 14 starts, 4 wins.',
-    sources: [
-      'https://ja.wikipedia.org/wiki/レッドディザイア',
-      'https://en.wikipedia.org/wiki/Red_Desire',
-      'https://en.netkeiba.com/db/horse/result/2006102929/',
-      'https://db.netkeiba.com/horse/result/2006102929/',
-      'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/shuka2009.html',
-      'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2009-1.jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2009-3.jpg',
-      'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2009-4.jpg',
-      'https://jra-van.jp/fun/memorial/img/horses/l_2006102929.jpg',
-      'https://ja.wikipedia.org/wiki/東京ホースレーシング',
-      'https://commons.wikimedia.org/wiki/File:Owner_Tokyo_Racing.svg',
-    ],
-    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'gear.bridle', 'gear.bandages', 'gear.bitLifter', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm'],
+    sources: ['https://ja.wikipedia.org/wiki/レッドディザイア', 'https://en.wikipedia.org/wiki/Red_Desire', 'https://en.netkeiba.com/db/horse/result/2006102929/', 'https://db.netkeiba.com/horse/result/2006102929/', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/shuka2009.html', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2009-1.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2009-3.jpg', 'https://www.jra.go.jp/datafile/seiseki/g1/shuka/result/photo/2009-4.jpg', 'https://jra-van.jp/fun/memorial/img/horses/l_2006102929.jpg', 'https://ja.wikipedia.org/wiki/東京ホースレーシング', 'https://commons.wikimedia.org/wiki/File:Owner_Tokyo_Racing.svg', 'https://db.netkeiba.com/photo/list.html?id=2006102929'],
+    uncertain: ['legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'gear.bridle', 'gear.bandages', 'gear.bitLifter', 'style.secondary', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm'],
   },
   {
     id: 'tosen-jordan', en: 'Tosen Jordan', jp: 'トーセンジョーダン', born: 2006, sex: 'male', // 牡, born 4 Feb 2006, Jungle Pocket x エヴリウィスパー, bred by Northern Farm, trained by 池江泰寿 (Ritto)
@@ -1819,21 +1634,8 @@ window.HORSES = [
     silks: { owner: '島川隆哉 (トーセン)', desc: '緑、青菱山形、青袖', colors: ['#1e9a4b', '#2448c8'] },
     saddleNumber: 12, // 2011 天皇賞(秋), 6枠12番 of 18 (ja.wikipedia 競走成績; en.netkeiba race 201105040911; "12" on the saddle cloth in the Commons finish photo Tosen-Jordan20111030(2).jpg)
     career: 'Tenno Sho (Autumn) 2011 at 7th favourite, in 1:56.1, a Japanese record for 2000m on turf. Also won the AJCC 2011, Sapporo Kinen 2011 and Copa Republica Argentina 2010. 2nd in the Japan Cup 2011 and Tenno Sho (Spring) 2012. 30 starts, 9 wins.',
-    sources: [
-      'https://ja.wikipedia.org/wiki/トーセンジョーダン',
-      'https://db.netkeiba.com/horse/result/2006103169/',
-      'https://en.netkeiba.com/db/horse/result/2006103169/',
-      'https://en.netkeiba.com/db/race/201105040911/',
-      'https://ja.wikipedia.org/wiki/島川隆哉',
-      'https://commons.wikimedia.org/wiki/Category:Tosen_Jordan',
-      'https://commons.wikimedia.org/wiki/File:Tosen-Jordan20111030(1).jpg',
-      'https://commons.wikimedia.org/wiki/File:Tosen-Jordan20111030(2).jpg',
-      'https://commons.wikimedia.org/wiki/File:Tosen-Jordan20091114.jpg',
-      'https://commons.wikimedia.org/wiki/File:Tosen_Jordan_20121125a.jpg',
-      'https://commons.wikimedia.org/wiki/File:Tosen_Jordan_IMG_9770_20140607.JPG',
-      'https://commons.wikimedia.org/wiki/File:The_Copa_Republica_Argentina_20101107.jpg',
-    ],
-    uncertain: ['face.type', 'legs.LF', 'legs.RF', 'legs.LH', 'legs.RH', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bitLifter', 'silks.colors'],
+    sources: ['https://ja.wikipedia.org/wiki/トーセンジョーダン', 'https://db.netkeiba.com/horse/result/2006103169/', 'https://en.netkeiba.com/db/horse/result/2006103169/', 'https://en.netkeiba.com/db/race/201105040911/', 'https://ja.wikipedia.org/wiki/島川隆哉', 'https://commons.wikimedia.org/wiki/Category:Tosen_Jordan', 'https://commons.wikimedia.org/wiki/File:Tosen-Jordan20111030(1).jpg', 'https://commons.wikimedia.org/wiki/File:Tosen-Jordan20111030(2).jpg', 'https://commons.wikimedia.org/wiki/File:Tosen-Jordan20091114.jpg', 'https://commons.wikimedia.org/wiki/File:Tosen_Jordan_20121125a.jpg', 'https://commons.wikimedia.org/wiki/File:Tosen_Jordan_IMG_9770_20140607.JPG', 'https://commons.wikimedia.org/wiki/File:The_Copa_Republica_Argentina_20101107.jpg', 'https://db.netkeiba.com/photo/list.html?id=2006103169'],
+    uncertain: ['face.type', 'size.build', 'size.withersCm', 'size.girthCm', 'size.cannonCm', 'gear.bridle', 'gear.bitLifter', 'silks.colors'],
   },
   // ---- Batch 15 (2026-10): #116–123, foaled 2006–08 ----
   {
