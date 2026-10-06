@@ -245,7 +245,8 @@ window.LOCATIONS = [
     id: 'kyoto', en: 'Kyoto Racecourse', jp: '京都競馬場', group: 'JRA G1', builder: 'track', gait: 'race',
     hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2033,
     // Kikuka Sho, late October (post 15:40): a low WSW sun toward the 4th corner, slightly behind the stand
-    // (stand faces ~145°, the straight runs ~55°, from the GSI aerial; elevation raised 16.7° -> 18° for readable shadows)
+    // (OSM rails: the straight runs 52.9° true and the stand faces 142.9°, so sunAzimDeg = trueAz - 322.9; NOAA for 26 Oct 2025
+    // gives true 241.4°, i.e. -81.5, kept at -83; elevation raised 16.2° -> 18° for readable shadows)
     time: {
       month: 10, post: '15:40', sunElevDeg: 18, sunAzimDeg: -83, fogNear: 140, fogFar: 420, exposure: 1.0,
       sky: { top: '#6d9dd3', mid: '#b5cce4', horizon: '#ead8bf', sun: '#fff0d4' },
@@ -256,7 +257,7 @@ window.LOCATIONS = [
     infieldTrees: 0, // the infield is nearly all lake
     saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // classic (Kikuka Sho): 紫紺 with yellow text
     stand: { name: 'Goal Side Stand (2023)', lengthM: 255, floors: 7, depthM: 38, colors: { body: '#e7e6e2', roof: '#ecebe7', glass: '#41698c', seats: '#dcdcd8' } },
-    infield: [{ type: 'pond', xFrac: 0, sizeM: [550, 100], distM: 80, notes: 'The flood-control lake (a remnant of Ogura-ike) fills almost the whole infield; longer than W, so it reads as one continuous lake. Benten island with its shrine sits near the middle.' }],
+    infield: [{ type: 'pond', xFrac: 0, sizeM: [510, 120], distM: 87, notes: 'OSM way 318977201: 508 m long, 60,519 m², near shore ~85 m from the turf inner rail. The flood-control lake (a remnant of Ogura-ike) fills almost the whole infield; longer than W, so it reads as one continuous lake. Benten island with its shrine sits near the middle.' }],
     backdrop: {
       ranges: [
         { r: 585, base: '#8d97b2', h: [6, 26], step: 0.16, haze: 0.62 }, // Uji / Daigo hills E–SE, Kyotanabe hills S
@@ -280,7 +281,7 @@ window.LOCATIONS = [
     },
     signature: 'A huge infield lake with wooded Benten island beyond a flat 403.7 m straight, the 4.3 m 淀の坂 hill on the far 3rd corner, and the 2023 Goal Side stand with its long blue glass band and thin cantilevered roof.',
     sources: ['https://www.jra.go.jp/facilities/race/kyoto/course/index.html', 'https://ja.wikipedia.org/wiki/京都競馬場', 'https://en.wikipedia.org/wiki/Kyoto_Racecourse', 'https://www.obayashi.co.jp/thinking/detail/project78.html', 'https://commons.wikimedia.org/wiki/File:Kyoto_Racecourse_Aerial_photograph_2020_cropped.jpg'],
-    uncertain: ['stand.colors (2023 photos)', 'stand.floors (6 or 7)', 'stand.depthM (estimated)', 'time (computed sun)', 'infield[0] size and distance (±15 m from the aerial)', 'backdrop.ranges', 'backdrop.landmarks[0] (the screen is really much closer, on the shore)', 'facts.races[0].month (late April or early May)', 'needs new kits: Benten island, fountains, 淀の坂, the poplar wall along the back straight'],
+    uncertain: ['stand.colors (2023 photos; glass looks darker, about #263d4b, in shade)', 'stand.depthM (estimated)', 'backdrop.ranges', 'backdrop.landmarks[0] (the screen really stands on the lake\'s near shore ~78 m out; drawn at 300 m because the backdrop does not scroll)', 'facts.races[0].month (late April or early May)', 'needs new kits: Benten island, fountains, 淀の坂, the poplar wall along the back straight'],
   },
   {
     // Seasonal variant: Kyoto on Tenno Sho (Spring) day (天皇賞（春）). `variantOf` takes the 'kyoto' entry (stand, lake, backdrop, facts)
@@ -289,9 +290,9 @@ window.LOCATIONS = [
     // Turf 3200 m on the OUTER course: the start is on the back straight, the field goes about 1.5 laps, climbs the 淀の坂 twice and passes
     // the stands once. Post 15:40 in every running checked (netkeiba: 2019, 2020, 2023-2026 at Kyoto; 2021-22 at Hanshin while Kyoto was rebuilt).
     // Sun (NOAA algorithm) for 3 May 2026, 15:40 JST, at 34.908N 135.727E: elevation 36.2°, true azimuth 264.2°. Scene mapping from the base
-    // entry (stand facing ~145°, straight ~55°): sunAzimDeg = trueAz - 325, which gives the base's -83 for late October; 264.2 - 325 = -61.
+    // entry (stand facing 142.9° from the OSM rails): sunAzimDeg = trueAz - 322.9 = 264.2 - 322.9 = -59.
     time: {
-      month: 5, post: '15:40', sunElevDeg: 36, sunAzimDeg: -61, fogNear: 130, fogFar: 400, exposure: 1.0,
+      month: 5, post: '15:40', sunElevDeg: 36, sunAzimDeg: -59, fogNear: 130, fogFar: 400, exposure: 1.0,
       sky: { top: '#6b9dd8', mid: '#b3cde7', horizon: '#e0e6e6', sun: '#fff5e0' }, // Golden Week blue, pale bluish-white haze low down
       sunColor: '#fff3dc', sunIntensity: 3.0,                                     // a high, white mid-afternoon sun
       hemiSky: '#dde8f4', hemiGround: '#7d8d4e', hemiIntensity: 1.22,             // green bounce off the fresh turf
@@ -324,7 +325,6 @@ window.LOCATIONS = [
       'https://commons.wikimedia.org/wiki/File:Kyoto_Racecourse_2023_3.jpg',
     ],
     uncertain: [
-      'time.sunAzimDeg (-61 relies on the base entry\'s stand facing of ~145° from the GSI aerial; not re-measured)',
       'time.month (5; the race fell on 28 or 30 April in 2019, 2023 and 2024)',
       'time.sky, fog, exposure, light colours and intensities (look values from 2023-2025 photos, not measured)',
       'turf / lawn / verge / leaf colours (median samples from Commons photos, toned down by eye)',
@@ -338,7 +338,7 @@ window.LOCATIONS = [
     hand: 'right', surface: 'turf', lead: 'L', W: 400, seed: 2034,
     // Oka Sho, early-to-mid April (post 15:40): spring haze, Somei Yoshino in full bloom, overseeded turf bright green
     time: {
-      month: 4, post: '15:40', sunElevDeg: 33, sunAzimDeg: 60, fogNear: 120, fogFar: 390, exposure: 1.02,
+      month: 4, post: '15:40', sunElevDeg: 33, sunAzimDeg: 59, fogNear: 120, fogFar: 390, exposure: 1.02,
       sky: { top: '#7aa6d6', mid: '#bdd2e6', horizon: '#e7e4da', sun: '#fff4e0' },
       sunColor: '#fff1dc', sunIntensity: 2.8, hemiSky: '#e2eaf2', hemiGround: '#7f8752', hemiIntensity: 1.22,
     },
@@ -361,7 +361,7 @@ window.LOCATIONS = [
     },
     facts: {
       turfCircM: 2089, dirtCircM: 1517.6, turfStraightM: 473.6, dirtStraightM: 352.7, elevationM: 2.4,
-      straightProfile: [[473.6, 0], [200, -1.4], [80, 0.4], [0, 0.4]], // outer course: a gentle dip off the turn, then the 1.8 m hill 200–80 m out
+      straightProfile: [[473.6, 0], [190, -1.4], [69, 0.4], [0, 0.4]], // outer course: a gentle dip off the turn, then the 1.8 m hill 190–69 m out (JRA 高低断面図)
       races: [
         { name: 'Osaka Hai', jp: '大阪杯', surface: 'turf', distM: 2000, month: 4 },
         { name: 'Oka Sho (Japanese 1000 Guineas)', jp: '桜花賞', surface: 'turf', distM: 1600, month: 4 },
@@ -380,9 +380,10 @@ window.LOCATIONS = [
     id: 'hanshin-takarazuka', variantOf: 'hanshin', en: 'Hanshin Racecourse (Takarazuka Kinen, rain)', jp: '阪神競馬場（宝塚記念・雨）', group: 'JRA G1',
     // Turf 2200 m on the INNER course (netkeiba: 芝2200m 右). Post time 15:40 in every running checked, 2015-2026. Since 2025 it is
     // run in mid-June (2025-06-15, 2026-06-14) 「暑熱や梅雨の影響を鑑み」; before that the last Sunday of June.
-    // Sun computed for 14 Jun 15:40 JST at Hanshin: elevation 40.8°, true azimuth 272° (mapped through the base entry's bearing).
+    // Sun computed for 14 Jun 15:40 JST at Hanshin: elevation 40.8°, true azimuth 272° (OSM: stand on the south side facing 17.2°,
+    // so sunAzimDeg = trueAz - 197.2 = 75).
     time: {
-      month: 6, post: '15:40', sunElevDeg: 41, sunAzimDeg: 77, fogNear: 60, fogFar: 280, exposure: 0.96,
+      month: 6, post: '15:40', sunElevDeg: 41, sunAzimDeg: 75, fogNear: 60, fogFar: 280, exposure: 0.96,
       sky: { top: '#7d858d', mid: '#9aa1a7', horizon: '#b4b8b9', sun: '#d6d7d2' }, // flat tsuyu overcast, a brighter grey patch where the sun is
       sunColor: '#e4e7e6', sunIntensity: 0.8,                                     // soft, cool, almost shadowless key light
       hemiSky: '#c6ccd1', hemiGround: '#4f5e3c', hemiIntensity: 1.65,             // the diffuse light does the work; wet green bounce from below
@@ -400,6 +401,9 @@ window.LOCATIONS = [
     crowd: 0.25,                                            // a thin crowd out on the apron in the rain (most stay under the roof)
     saddleCloth: { cloth: '#3a2a96', ink: '#ffffff' },      // the standard JRA G1 紫紺 with white text
     backdrop: { clouds: 0 },                                // one low grey deck, no separate clouds
+    // The INNER course (JRA course table, inner A): 356.5 m straight, 1689 m round, 1.9 m elevation; the same hill as the outer
+    // course, read off the JRA 内回り 高低断面図 (bottom ~190 m out, crest ~69 m out).
+    facts: { turfStraightM: 356.5, turfCircM: 1689, elevationM: 1.9, straightProfile: [[356.5, 0], [190, -0.43], [69, 1.39], [0, 1.39]] },
     signature: 'Takarazuka Kinen in the rainy season: a low grey sky swallowing the Rokko hills, steady rain over deep-green summer noshiba, the dirt dark and shining, clods flying, and the purple G1 cloths soaked almost black.',
     sources: [
       'https://ja.wikipedia.org/wiki/宝塚記念',
@@ -424,7 +428,7 @@ window.LOCATIONS = [
       'https://commons.wikimedia.org/wiki/File:ブローザホーン_宝塚記念優勝時.jpg',
     ],
     uncertain: [
-      'time.sunElevDeg / sunAzimDeg (computed; the scene azimuth is mapped through the base entry, not re-derived from the aerial)',
+      'time.sunElevDeg (computed; real elevation used)',
       'time.sky, fog, exposure, light colours and intensities (look values for tsuyu overcast, not measured)',
       'rain.intensity / slantDeg (2026 was 天候:雨 on 重; how hard it rained was not measured)',
       'turf grass (Hanshin-specific overseeding not confirmed; the summer noshiba / winter ryegrass split is from the general オーバーシード article)',
@@ -432,7 +436,7 @@ window.LOCATIONS = [
       'wet.darken and puddles (no photo of the dirt course or apron in rain)',
       'umbrellas in the crowd (no photo found)',
       'saddleCloth (no explicit source for the Takarazuka Kinen cloth; white ink as for non-classic G1s)',
-      'the race uses the INNER course, whose home straight is shorter than the base entry\'s outer straightProfile',
+      'facts.straightProfile (inner course, ±0.2 m, read off the JRA chart)',
     ],
   },
   {
@@ -463,7 +467,7 @@ window.LOCATIONS = [
     },
     facts: {
       turfCircM: 1705.9, dirtCircM: 1530, turfStraightM: 412.5, dirtStraightM: 410.7, elevationM: 3.5,
-      straightProfile: [[412.5, 0], [340, 0], [240, 2.0], [0, 2.0]], // down off the 3rd–4th corner, then a 2.0 m climb 340–240 m out
+      straightProfile: [[412.5, 0], [342, -0.37], [241, 1.68], [50, 2.0], [0, 2.0]], // JRA 芝 chart: down off the 3rd–4th corner to a dip ~342 m out, a ~2 m climb to ~241 m out (約2%), then a gentle rise to the post
       races: [
         { name: 'Takamatsunomiya Kinen', jp: '高松宮記念', surface: 'turf', distM: 1200, month: 3 },
         { name: 'Champions Cup', jp: 'チャンピオンズカップ', surface: 'dirt', distM: 1800, month: 12 },
@@ -471,7 +475,7 @@ window.LOCATIONS = [
     },
     signature: 'A long 412.5 m straight that climbs a 2.0 m hill right at its start; the Pegasus stand’s huge one-way cantilevered roof of steel ribs and white membrane fins (Pegasus’s wings), with the tower-shaped Twin Hat behind it.',
     sources: ['https://www.jra.go.jp/facilities/race/chukyo/course/index.html', 'https://ja.wikipedia.org/wiki/中京競馬場', 'https://en.wikipedia.org/wiki/Chukyo_Racecourse', 'https://ja.wikipedia.org/wiki/高松宮記念_(競馬)', 'https://ja.wikipedia.org/wiki/チャンピオンズカップ_(競馬)', 'https://www.yamashitasekkei.co.jp/project/post_4/', 'https://commons.wikimedia.org/wiki/File:Chukyo_Racecourse_Main-Stand_PEGASUS,_Toyoake_2018.jpg'],
-    uncertain: ['time (computed sun; sunAzimDeg 70–78)', 'turf / dirt widths (secondary source)', 'stand.colors and size (photos, aerial)', 'stand.floors', 'infield[0] jump count', 'backdrop (flat horizon; heights are guesses)', 'backdrop.landmarks[0] (the screen is really ~60 m away; size estimated)', 'facts.straightProfile (only the 340→240 m climb is sourced)', 'needs new kits: the Pegasus membrane-fin roof, Twin Hat, power pylons'],
+    uncertain: ['time (computed sun; sunAzimDeg 70–78: OSM has no track ways at Chukyo to re-measure the stand facing)','stand.colors and size (photos, aerial)', 'stand.floors', 'infield[0] jump count', 'backdrop (flat horizon; heights are guesses)', 'backdrop.landmarks[0] (the screen is really ~60 m away; size estimated)', 'facts.straightProfile (only the 340→240 m climb is sourced)', 'needs new kits: the Pegasus membrane-fin roof, Twin Hat, power pylons'],
   },
   {
     id: 'oi', en: 'Oi Racecourse (night)', jp: '大井競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
@@ -595,7 +599,7 @@ window.LOCATIONS = [
     dirt: { color: '#b09a7e', widthM: 25 }, // warm grey-tan Aomori sand (since 2011)
     rails: { color: '#f4f4f0' },
     lawn: '#55573a', apron: '#9a9c98', leaf: ['#3f6436', '#4d7340', '#5a7d45'], autumn: 0, dust: '#a8957c',
-    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // assumed as at Oi (per-track NAR conventions unchecked)
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // Kawasaki 重賞: 紫紺 with yellow text (ja.wikipedia ゼッケン (競馬); a 2025 Commons photo shows a yellow number)
     stand: { name: 'No.1 (1983) and No.2 (1997, renewed 2016) stands', lengthM: 185, floors: 5, depthM: 40, colors: { body: '#e6e7e8', roof: '#eef0f1', glass: '#4a5a66', seats: '#d46a3a' } },
     infield: [], infieldTrees: 2, // lawn plaza, betting halls and a car park
     backdrop: {
@@ -623,7 +627,7 @@ window.LOCATIONS = [
     },
     signature: 'Sparking Night: a tight, flat 1,200 m left-handed sand oval with a 300 m straight, the 72 m Kawasaki Dream Vision across the infield, and the city’s lights all round.',
     sources: ['https://ja.wikipedia.org/wiki/川崎競馬場', 'https://en.wikipedia.org/wiki/Kawasaki_Racecourse', 'https://www.oddspark.com/keiba/racetrack/34/course.html', 'https://ja.wikipedia.org/wiki/川崎記念', 'https://nar.netkeiba.com/race/result.html?race_id=202545040911', 'https://en.wikipedia.org/wiki/List_of_largest_video_screens'],
-    uncertain: ['time (computed sun; stand orientation from the aerial)', 'sky / light values', 'floodlights (from photos)', 'dirt.color', 'lawn (dormant in April)', 'stand size and colours', 'backdrop.landmarks[0] (size sourced; really ~190 m away)', 'skyline bearings and heights', 'JBC distances (2012/2016)', 'needs new kits: the infield car park and halls, lamps along the stand roofs'],
+    uncertain: ['time (computed sun; stand orientation from the aerial)', 'sky / light values', 'floodlights: OSM maps 36 masts, ~12 per 400 m along the inner rail of the back straight plus clusters at both turns and none in front of the stands (roof lamps); the engine always draws masts on both sides, so needs a one-sided option', 'backdrop.landmarks[0] screen: OSM video_wall way 1465458882, ~74 m wide, 188-193 m out just beyond the back straight', 'dirt.color', 'lawn (dormant in April)', 'stand size and colours', 'skyline bearings and heights', 'JBC distances (2012/2016)', 'needs new kits: the infield car park and halls, lamps along the stand roofs'],
   },
   {
     id: 'funabashi', en: 'Funabashi Racecourse (night)', jp: '船橋競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
@@ -639,7 +643,7 @@ window.LOCATIONS = [
     dirt: { color: '#b2a898', widthM: 25 }, // grey sand
     rails: { color: '#f4f4f0' },
     lawn: '#466e35', apron: '#7f837f', leaf: ['#3e5f37', '#4f7540', '#5f8447'], autumn: 0, dust: '#a99f90',
-    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // assumed as at Oi (per-track NAR conventions unchecked)
+    saddleCloth: { cloth: '#006633', ink: '#f5c800' }, // Kashiwa Kinen: 深緑 (deep green) with yellow text (ja.wikipedia ゼッケン (競馬))
     stand: { name: 'New stand (A 2022, B 2024)', lengthM: 140, floors: 5, depthM: 35, colors: { body: '#e4e5e3', roof: '#e9eaea', glass: '#424850', seats: '#9b93bf' } },
     infield: [{ type: 'pond', xFrac: 0.8, sizeM: [55, 90], distM: 125, notes: 'Reedy pond and wetland at the 1st–2nd-corner end of the infield.' }],
     infieldTrees: 6,
@@ -667,16 +671,17 @@ window.LOCATIONS = [
     },
     signature: 'Heartbeat Nighter: a flat, grey-sand, left-handed oval with banked spiral turns and a short 308 m straight, floodlight masts on both sides, the 2022–24 stand of white slabs and dark glass, and LaLaport TOKYO-BAY next door.',
     sources: ['https://ja.wikipedia.org/wiki/船橋競馬場', 'https://en.wikipedia.org/wiki/Funabashi_Racecourse', 'https://ja.wikipedia.org/wiki/かしわ記念', 'https://nar.netkeiba.com/race/result.html?race_id=202543050511', 'https://ja.wikipedia.org/wiki/ナイター競走', 'https://commons.wikimedia.org/wiki/File:Funabashi_Racecourse_Aerial_view.jpg'],
-    uncertain: ['time (computed sun; stand orientation from a 1989 aerial)', 'sky / light values', 'floodlights (from photos)', 'dirt.color', 'apron / lawn / leaf', 'stand size and colours', 'backdrop.landmarks[0] (size estimated; really ~60–80 m away)', 'skyline bearings and heights', 'infield pond size and position', 'needs new kits: the slab-and-glass stand, yellow-lit rails, the infield mini-oval'],
+    uncertain: ['time (computed sun; stand orientation from a 1989 aerial)', 'sky / light values', 'floodlights (from photos)', 'dirt.color', 'apron / lawn / leaf', 'stand size and colours (OSM building 182651985 is 209 x 47 m, five storeys; the entry has 140 x 35)', 'backdrop.landmarks[0] (size estimated; really ~60–80 m away)', 'skyline bearings and heights', 'infield pond size and position', 'needs new kits: the slab-and-glass stand, yellow-lit rails, the infield mini-oval'],
   },
   {
     id: 'urawa', en: 'Urawa Racecourse (twilight)', jp: '浦和競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
     hand: 'left', surface: 'dirt', lead: 'R', W: 400, seed: 2039,
     dirtOnly: true, // one dirt oval, no turf (24 m on the home straight)
     // Sakitama Hai (JpnI since 2024, 1400 m), late June, post 18:50: sunset (sun ~1.5° up over the 4th corner, raised to 8° for
-    // readable shading); the floodlights (2023) are on but the low sun is still the key light
+    // readable shading); the floodlights (2023) are on but the low sun is still the key light. Scene frame (OSM): the straight runs
+    // 128.2° true with the stand on its SW side, facing 38.2°; sun (NOAA) 25 Jun 2025 18:50 at true 298.3°, so sunAzimDeg = 38.2 + 180 - 298.3 = -80.
     time: {
-      month: 6, post: '18:50', sunElevDeg: 8, sunAzimDeg: -71, fogNear: 140, fogFar: 440, exposure: 1.05,
+      month: 6, post: '18:50', sunElevDeg: 8, sunAzimDeg: -80, fogNear: 140, fogFar: 440, exposure: 1.05,
       sky: { top: '#5476a8', mid: '#a6b4cc', horizon: '#f0c6a0', sun: '#ffb35c' }, // early-summer sunset
       sunColor: '#ffb46e', sunIntensity: 1.9, hemiSky: '#b9c3d8', hemiGround: '#6e6248', hemiIntensity: 1.0,
     },
@@ -684,7 +689,7 @@ window.LOCATIONS = [
     dirt: { color: '#b5a088', widthM: 24 }, // light beige-grey sand
     rails: { color: '#f4f4f0' },
     lawn: '#62903f', apron: '#a3a29c', leaf: ['#3f6436', '#4d7340', '#5a7d45'], autumn: 0, dust: '#a8957c',
-    saddleCloth: { cloth: '#3a2a96', ink: '#ffffff' }, // Sakitama Hai: 紫紺 with white text (ゼッケン (競馬))
+    saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // 2025 Sakitama Hai: 紫紺 with yellow text (ja.wikipedia ゼッケン (競馬): yellow 2017-2025, white only from 2026)
     stand: { name: 'No.3 and No.2 stands (2019)', lengthM: 180, floors: 5, depthM: 30, colors: { body: '#cfd3d8', roof: '#45474d', glass: '#46637d', seats: '#3a7f96' } },
     infield: [{ type: 'pond', xFrac: 0.25, sizeM: [45, 25], distM: 40, notes: 'The retention basin in the infield memorial park (浦和記念公園).' }],
     infieldTrees: 8, // park lawn with clipped shrubs, hedges and small trees
@@ -713,7 +718,7 @@ window.LOCATIONS = [
     },
     signature: 'A tight, flat 1,200 m left-handed sand oval with a 220 m straight packed into Saitama housing; an infield memorial park of clipped shrubs and a pond; glass stands with dark slab roofs; twilight (薄暮) racing under new floodlights since 2023.',
     sources: ['https://ja.wikipedia.org/wiki/浦和競馬場', 'https://en.wikipedia.org/wiki/Urawa_Racecourse', 'https://ja.wikipedia.org/wiki/さきたま杯', 'https://nar.netkeiba.com/race/result.html?race_id=202542062511', 'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)', 'https://commons.wikimedia.org/wiki/File:Urawa_Racecourse_Aerial_photograph.1989.jpg'],
-    uncertain: ['time (computed; sun raised from 1.5° to 8° for readable shading)', 'sky / light values', 'floodlights (from a photo)', 'dirt.color', 'lawn (June assumed)', 'stand size and colours', 'infield pond size and position', 'backdrop.landmarks (screen size estimated; really ~140 m away)', 'skyline bearings and heights', 'JBC 2019 Sprint / Ladies’ distances not fetched', 'needs new kits: topiary, the dark slab stand roof, the narrower back straight'],
+    uncertain: ['time (computed; sun raised from 1.5° to 8° for readable shading)', 'sky / light values (the 2025 Sakitama Hai was run 曇 (overcast) on 不良 going per netkeiba; the clear golden sunset is artistic)', 'floodlights (from a photo)', 'dirt.color', 'lawn (June assumed)', 'stand size and colours', 'infield pond size and position', 'backdrop.landmarks (screen size estimated; really ~140 m away)', 'skyline bearings and heights', 'JBC 2019 Sprint / Ladies’ distances not fetched', 'needs new kits: topiary, the dark slab stand roof, the narrower back straight'],
   },
   {
     id: 'morioka', en: 'Morioka Racecourse (night)', jp: '盛岡競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
@@ -761,7 +766,7 @@ window.LOCATIONS = [
     },
     signature: 'OROパーク: a big, hilly left-handed 1,600 m dirt oval with Japan’s only NAR turf course inside it, a 4.4 m hill over the 3rd–4th corner and a rise from ~150 m out on a 300 m straight. The 1996 stand is clad in silver aluminium, with angular cantilevered decks and a V-shaped glass atrium. Forest runs right behind the back straight, Mt Iwate stands to the NW, and the Nambu Hai is now run under floodlights.',
     sources: ['https://ja.wikipedia.org/wiki/盛岡競馬場', 'https://www.oddspark.com/keiba/racetrack/11/course.html', 'https://en.wikipedia.org/wiki/Morioka_Racecourse', 'https://ja.wikipedia.org/wiki/マイルチャンピオンシップ南部杯', 'https://nar.netkeiba.com/race/result.html?race_id=202535101312', 'https://nar.netkeiba.com/race/result.html?race_id=202435101412', 'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)', 'https://ja.wikipedia.org/wiki/JBCクラシック', 'https://www.openstreetmap.org/way/566989957', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/16/58476/24883.jpg', 'https://commons.wikimedia.org/wiki/File:Morioka_racecourse_grandstand.JPG', 'https://commons.wikimedia.org/wiki/File:Morioka_Racecourse_2024.jpg', 'https://commons.wikimedia.org/wiki/File:11R_南部杯_トウホクビジン_(10287637683).jpg'],
-    uncertain: ['time.post (18:15 in 2024 and 2025; earlier years ran ~16:30 in daylight)', 'sky / light values', 'floodlights (count, height, colour: only “towers on the dirt course since Sept 2018” is sourced)', 'backdrop.landmarks[0]: Mt Iwate really stands at bearing ~178, behind the stand; it is moved to -28 (across the infield) as artistic licence. Its height is computed', 'backdrop.landmarks[1]: screen size and position are guessed. A ~55 m dark structure on the aerial, opposite the stand and ~65 m from the dirt rail, is probably the screen', 'backdrop.ranges (heights are guesses; Mt Hayachine lies ~123° (scene -13) but is probably hidden by the near hills)', 'stand.lengthM / depthM (from the aerial, ±15 m) and colours (2015 and 2024 photos)', 'infield[0] (pond reading, size and position from the aerial)', 'turf.color / lawn / leaf / autumn (October in Iwate)', 'facts.straightProfile (only the shape is sourced: the 3rd–4th-corner hill and a climb from ~150 m out; the heights are guesses)', 'JBC Sprint / Ladies’ Classic distances at Morioka (not fetched)', 'needs new kits: the V-shaped glass atrium and angular cantilevered stand decks; the pale inner ring (~20 m) inside the turf and a small loop at the NE end of the infield; the 芝スタンド grass bank near the 4th corner; the forest close behind the back straight'],
+    uncertain: ['time.post (18:15 in 2024 and 2025; earlier years ran ~16:30 in daylight)', 'sky / light values', 'floodlights (count, height, colour: only “towers on the dirt course since Sept 2018” is sourced)', 'backdrop.landmarks[0]: Mt Iwate really stands at true 313.6°, 25.8 km (OSM node 5214573299), scene bearing +179, behind the stand; it is moved to -28 (across the infield) as artistic licence. Its height is computed', 'backdrop.landmarks[1]: screen size and position are guessed. A ~55 m dark structure on the aerial, opposite the stand and ~65 m from the dirt rail, is probably the screen', 'backdrop.ranges (heights are guesses; Mt Hayachine lies ~123° (scene -13) but is probably hidden by the near hills)', 'stand.lengthM / depthM (from the aerial, ±15 m) and colours (2015 and 2024 photos)', 'infield[0] (pond reading, size and position from the aerial)', 'turf.color / lawn / leaf / autumn (October in Iwate)', 'facts.straightProfile (only the shape is sourced: the 3rd–4th-corner hill and a climb from ~150 m out; the heights are guesses)', 'JBC Sprint / Ladies’ Classic distances at Morioka (not fetched)', 'needs new kits: the V-shaped glass atrium and angular cantilevered stand decks; the pale inner ring (~20 m) inside the turf and a small loop at the NE end of the infield; the 芝スタンド grass bank near the 4th corner; the forest close behind the back straight'],
   },
   {
     id: 'kanazawa', en: 'Kanazawa Racecourse (JBC years)', jp: '金沢競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
@@ -769,10 +774,10 @@ window.LOCATIONS = [
     dirtOnly: true, // one 20 m dirt oval, no turf; a 1,080 m x 16 m training track runs just inside it
     // JBC Classic (JpnI, 2100 m), scheduled for 3 Nov 2026, post 16:25: a day meeting, so no floodlights.
     // Sun at 36.636N 136.675E: elevation 4.8°, azimuth 247° (WSW). Sunset is about 16:51.
-    // On the GSI aerial the stand faces 90° (E) and the home straight runs 0° (N), so the sun is low behind the stand,
-    // 23° toward the 4th corner. Elevation raised 4.8° -> 6° for readable light.
+    // On the GSI aerial the stand faces 87.9° and the home straight runs 357.9°, so the sun (true 247.2°) is low behind the stand,
+    // 21° toward the 4th corner. Elevation raised 4.8° -> 6° for readable light.
     time: {
-      month: 11, post: '16:25', sunElevDeg: 6, sunAzimDeg: -23, fogNear: 130, fogFar: 420, exposure: 1.0, night: false,
+      month: 11, post: '16:25', sunElevDeg: 6, sunAzimDeg: -21, fogNear: 130, fogFar: 420, exposure: 1.0, night: false,
       sky: { top: '#6c8cbd', mid: '#c6c1c6', horizon: '#f1c896', sun: '#ffd6a0' }, // late-autumn golden hour on the Japan Sea side
       sunColor: '#ffc88e', sunIntensity: 2.2, hemiSky: '#d6d8e2', hemiGround: '#776c4c', hemiIntensity: 1.05,
     },
@@ -791,7 +796,7 @@ window.LOCATIONS = [
       landmarks: [
         { type: 'screen', bearingDeg: 0, distM: 300, wM: 15, hM: 7.5, liftM: 0.5 },          // big screen under a traditional kawara tiled roof (really ~30 m inside the inner rail, opposite the middle of the stand)
         { type: 'screen', bearingDeg: 6, distM: 300, wM: 8, hM: 5.5, liftM: 0.5 },           // results board (着順掲示板), also with a tiled roof, just north of the screen
-        { type: 'fuji', bearingDeg: -81, distM: 575, heightM: 28 },                          // Hakusan (2,702 m), about 54 km SSE; may have early snow
+        { type: 'fuji', bearingDeg: -83, distM: 575, heightM: 28 },                          // Hakusan (2,702 m): OSM peak node 1821390107, true 170.8°, 54.4 km; may have early snow
         { type: 'skyline', fromDeg: -125, toDeg: -95, distM: 540, heightM: [3, 10] },       // central Kanazawa / station towers, about 7 km SSW
       ],
       clouds: 8,
@@ -807,7 +812,7 @@ window.LOCATIONS = [
     },
     signature: 'Hokuriku’s only local track, by the Kahokugata lagoon near the Sea of Japan: a flat 1,200 m right-handed oval of pale sand with a short 236 m straight. Across the infield the big screen and the results board both wear traditional grey kawara tiled roofs, among clipped topiary and a tall tree belt. The 5-storey 1973 stand has a deep cantilevered roof, and Hakusan stands far to the SSE.',
     sources: ['https://ja.wikipedia.org/wiki/金沢競馬場', 'https://www.kanazawakeiba.com/race/course/', 'https://www.kanazawakeiba.com/facilities/outline/', 'https://www.kanazawakeiba.com/race/info-37700/', 'https://ja.wikipedia.org/wiki/JBCクラシック', 'https://ja.wikipedia.org/wiki/ジャパンブリーディングファームズカップ', 'https://ja.wikipedia.org/wiki/ゼッケン_(競馬)', 'https://commons.wikimedia.org/wiki/File:Kanazawa_racecourse_vision.JPG', 'https://commons.wikimedia.org/wiki/File:Kanazawa_racecourse_stand.jpg', 'https://commons.wikimedia.org/wiki/File:Kanazawa_Racecourse_Aerial_photograph.1975.jpg', 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/17/115297/51182.jpg'],
-    uncertain: ['time (the 2026 JBC post time is from the announced schedule; the sun is computed; elevation raised 4.8° -> 6°; at 16:25 the stand’s ~300 m shadow really covers the straight and most of the infield)', 'the 22 track floodlights (2023, for 薄暮/night racing) are probably already lit at a 16:25 post in November; left out because night: false', 'sky / light values (Hokuriku in November is often overcast)', 'saddleCloth: Wikipedia says the 2013/2021 JBC Sprint and Ladies’ Classic at Kanazawa used 紫紺 with WHITE text; the JBC Classic is not listed (yellow assumed from the top-tier row); JBC logo on the cloth since 2021', 'dirt.color (2016 photo predates the 2021 sand)', 'lawn / leaf / autumn (season guessed)', 'stand.lengthM / depthM (from the GSI aerial) and stand.colors (2016 photo)', 'stand year (the site opened 1973; any later renovation not checked)', 'backdrop.landmarks[0..1] (sizes estimated from a photo; really ~30 m inside the inner rail, not 300 m; the finish-post position is unknown)', 'backdrop.landmarks[2] Hakusan (bearing and distance from map coordinates recalled, not fetched; snow cap and visibility past the 4th-corner trees not verified)', 'backdrop.ranges and the Kanazawa skyline (map geography, not verified)', 'infieldTrees (the tree belt along the back straight)', 'the Sea of Japan and the Kahokugata lagoon are behind the stand (W/NW), so the camera cannot see them', 'needs new kits: kawara tiled roofs on the screen and board, topiary hedges, the inner training track, the infield playground and ring'],
+    uncertain: ['time (post 16:25 confirmed by kanazawakeiba.com race info 37700; the sun is computed; elevation raised 4.8° -> 6°; at 16:25 the stand’s ~300 m shadow really covers the straight and most of the infield)', 'the 22 track floodlights (2023, for 薄暮/night racing) are probably already lit at a 16:25 post in November; left out because night: false', 'sky / light values (Hokuriku in November is often overcast)', 'saddleCloth: Wikipedia says the 2013/2021 JBC Sprint and Ladies’ Classic at Kanazawa used 紫紺 with WHITE text; the JBC Classic is not listed; 2013 Kanazawa JBC Classic photos on Commons show yellow numbers (Hokko Tarumae 1, Hatano Vainqueur 9), medium confidence; JBC logo on the cloth since 2021', 'dirt.color (2016 photo predates the 2021 sand)', 'lawn / leaf / autumn (season guessed)', 'stand.lengthM / depthM (from the GSI aerial) and stand.colors (2016 photo)', 'stand year (the site opened 1973; any later renovation not checked)', 'backdrop.landmarks[0..1] (sizes estimated from a photo; really ~30 m inside the inner rail, not 300 m; the finish-post position is unknown)', 'backdrop.landmarks[2] Hakusan (bearing from OSM; snow cap and visibility past the 4th-corner trees not verified)', 'backdrop.ranges and the Kanazawa skyline (map geography, not verified)', 'infieldTrees (the tree belt along the back straight)', 'the Sea of Japan and the Kahokugata lagoon are behind the stand (W/NW), so the camera cannot see them', 'needs new kits: kawara tiled roofs on the screen and board, topiary hedges, the inner training track, the infield playground and ring'],
   },
   {
     id: 'saga', en: 'Saga Racecourse (night)', jp: '佐賀競馬場', group: 'NAR JpnI', builder: 'track', gait: 'race',
@@ -826,7 +831,7 @@ window.LOCATIONS = [
     lawn: '#5f6d3c', apron: '#9c9a94', // infield lawn in early November, starting to go dormant
     leaf: ['#2f4f2c', '#3d5e35', '#4a6a3c'], autumn: 0.1, dust: '#b8ad98', // evergreen woods on the ridge
     saddleCloth: { cloth: '#3a2a96', ink: '#f5c800' }, // Saga graded races and NAR dirt-graded races: 紫紺 with yellow text (ja.wikipedia ゼッケン)
-    stand: { name: 'Main stand (red brick)', lengthM: 175, floors: 4, depthM: 35, colors: { body: '#b0503c', roof: '#c0583f', glass: '#3d4a52', seats: '#8a8f96' } },
+    stand: { name: 'Main stand (red brick)', lengthM: 180, floors: 4, depthM: 40, colors: { body: '#b0503c', roof: '#c0583f', glass: '#3d4a52', seats: '#8a8f96' } },
     infield: [], infieldTrees: 5, // lawn with round clipped hedges along the inner rail, a playground, a pergola and a few trees
     backdrop: {
       ranges: [
@@ -908,11 +913,12 @@ window.LOCATIONS = [
   {
     id: 'beach', en: 'Beach at dawn', jp: '夜明けの浜辺', group: 'Strolling', builder: 'beach', gait: 'canter', W: 120, seed: 2060,
     reference: 'Kujukuri-hama (九十九里浜), Chiba: a 66 km Pacific sand arc from 刑部岬 to 太東崎, as seen near Kujukuri town / Toyoumi (不動堂海岸). Riding: 九十九里浜一宮乗馬センター at the south end (Ichinomiya).',
-    // 23 Sep, ~05:55 JST: the sun is 4° up, rising out of the sea. The shoreline bears ~40°, so the beach faces ~130° (SE).
-    // The camera is on the land side looking out to sea, +X = SW: the sun (az 93°) stands 36° left of straight out to sea,
-    // inside the default three-quarter view, so the horse is backlit against the sunrise.
+    // 23 Sep, ~05:50 JST: the sun is 4° up (sunrise 05:25), rising out of the sea at azimuth ~93°. The shoreline bears ~34° (OSM
+    // coastline ways 130931900 / 130930669 along the Kujukuri-machi coast), so the beach faces ~124° (SE). The camera is on the land
+    // side looking out to sea, +X = SW: the sun stands ~31° left of straight out to sea, inside the default three-quarter view, so
+    // the horse is backlit against the sunrise.
     time: {
-      month: 9, sunElevDeg: 4, sunAzimDeg: -144, fogNear: 70, fogFar: 380, exposure: 1.2, fillIntensity: 0.9, // exposure and fill raised: the horse is backlit
+      month: 9, sunElevDeg: 4, sunAzimDeg: -149, fogNear: 70, fogFar: 380, exposure: 1.2, fillIntensity: 0.9, // exposure and fill raised: the horse is backlit
       sky: { top: '#647b9e', mid: '#bfc3c6', horizon: '#f3b574', sun: '#ffd890' }, // sampled from a Toyoumi sunrise photo: orange band at the horizon, grey-blue above
       sunColor: '#ffb27a', sunIntensity: 1.8, hemiSky: '#b3bccc', hemiGround: '#8e806a', hemiIntensity: 1.35,
     },
@@ -927,7 +933,7 @@ window.LOCATIONS = [
     extras: [{ mode: 'companion', x: -5, z: -2.5 }], // guided beach rides go out in small groups
     signature: 'Kujukuri at first light: a dead-flat grey-beige sand arc facing the Pacific, the sun lifting straight out of the sea through an orange haze band, long lines of surf, a mirror of wet sand, and a low grassy dune backed by a dark belt of Japanese black pines.',
     sources: ['https://ja.wikipedia.org/wiki/九十九里浜', 'https://ja.wikipedia.org/wiki/一宮町', 'https://ja.wikipedia.org/wiki/浦河町', 'https://ja.wikipedia.org/wiki/うらかわ優駿ビレッジAERU', 'https://commons.wikimedia.org/wiki/File:Toyoumi_beach_new_year.jpg', 'https://commons.wikimedia.org/wiki/File:First_sunrise_at_Kujukuri_Beach,_Japan.jpg', 'https://commons.wikimedia.org/wiki/File:蓮沼海浜公園付近（九十九里浜、山武市）_-_panoramio.jpg', 'https://commons.wikimedia.org/wiki/File:Sirasato_beach_2022.jpg', 'https://commons.wikimedia.org/wiki/File:Kujukuri_beach_and_around_2.jpg', 'https://commons.wikimedia.org/wiki/File:Kujukuri_Beach.jpg'],
-    uncertain: ['time (sun computed for 23 Sep at 35.53°N 140.46°E; the ~40° shoreline bearing from the GPS tags of two Commons photos, ±10°; 4° chosen so the sun stays in the three-quarter view)', 'sky / light (sampled from a clear 1 Jan 2018 sunrise photo; September air is hazier)', 'sand colours (the photos are exposed for the sky; dry sand scaled up about 1.5×)', 'sand.wetWidthM, sea.waterlineZ, sea.waveM (estimates)', 'sea colours (dawn photo samples, darkened for the far sea)', 'dunes.distM / heightM (not sourced)', 'pines (the black-pine coastal forest is sourced; count, distance and colours are guesses)', 'props.driftwood (count guessed; no rocks on this sand coast)', 'backdrop: the headlands at the ends of the arc (~30 km) and the 九十九里ビーチタワー are not drawn', 'extras (a companion for a group ride is plausible, not verified)', 'needs kits: a sun-glitter path on the sea and wet sand, a drawn sun disc'],
+    uncertain: ['time (sun computed for 23 Sep at 35.53°N 140.46°E; the ~34° shoreline bearing from OSM coastline ways 130931900 / 130930669 (Kujukuri-machi coast); 4° chosen so the sun stays in the three-quarter view)', 'sky / light (sampled from a clear 1 Jan 2018 sunrise photo; September air is hazier)', 'sand colours (the photos are exposed for the sky; dry sand scaled up about 1.5×)', 'sand.wetWidthM, sea.waterlineZ, sea.waveM (estimates)', 'sea colours (dawn photo samples, darkened for the far sea)', 'dunes.distM / heightM (not sourced)', 'pines (the black-pine coastal forest is sourced; count, distance and colours are guesses)', 'props.driftwood (count guessed; no rocks on this sand coast)', 'backdrop: the headlands at the ends of the arc (~30 km) and the 九十九里ビーチタワー are not drawn', 'extras (a companion for a group ride is plausible, not verified)', 'needs kits: a sun-glitter path on the sea and wet sand, a drawn sun disc'],
   },
   {
     id: 'hill-gallops', en: 'Ritto hill gallop (坂路)', jp: '栗東トレセン 坂路コース', group: 'Strolling', builder: 'hill', gait: 'race', W: 300, seed: 2070,
